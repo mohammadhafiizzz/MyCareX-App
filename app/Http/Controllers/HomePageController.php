@@ -10,5 +10,3 @@ class HomePageController extends Controller {
         return view('index');
     }
 }
-
-?>
