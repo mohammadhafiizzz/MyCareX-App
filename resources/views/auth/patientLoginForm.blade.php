@@ -1,5 +1,5 @@
 <!-- Login Modal -->
-<div id="loginModal" class="fixed inset-0 bg-gray-950/50 z-50 hidden flex items-center justify-center p-4">
+<div id="loginModal" class="fixed inset-0 bg-gray-950/50 z-50 hidden items-center justify-center p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95"
         id="loginModalContent">
         <!-- Modal Header -->
