@@ -48,8 +48,15 @@
             </div>
         </div>
 
-        <!-- Gender, Blood Type, & Race -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Date of Birth & Gender -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="dateOfBirth" class="block text-sm font-medium text-gray-700 mb-2">
+                    Date of Birth <span class="text-red-500">*</span>
+                </label>
+                <input type="date" id="dateOfBirth" name="date_of_birth" required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+            </div>
             <div>
                 <label for="gender" class="block text-sm font-medium text-gray-700 mb-2">
                     Gender <span class="text-red-500">*</span>
@@ -61,6 +68,10 @@
                     <option value="female">Female</option>
                 </select>
             </div>
+        </div>
+
+        <!-- Blood Type & Race -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label for="blood_type" class="block text-sm font-medium text-gray-700 mb-2">
                     Blood Type <span class="text-red-500">*</span>
