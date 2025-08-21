@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -52,6 +53,13 @@ class Patient extends Model
         'email_verified_at' => 'datetime'
     ];
 
+    // Custom attributes
+    protected $appends = [
+        'age',
+        'bmi',
+        'full_address'
+    ];
+
     // Auto-generated patient_id primary key
     protected static function boot() {
         parent::boot();
@@ -64,5 +72,21 @@ class Patient extends Model
                     : 'P0001';
             }
         });
+    }
+
+    public function getAgeAttribute() {
+        return Carbon::parse($this->date_of_birth)->age;
+    }
+
+    public function getBmiAttribute() {
+        if ($this->height && $this->weight) {
+            $heightInMeters = $this->height / 100;
+            return round($this->weight / ($heightInMeters * $heightInMeters), 1);
+        }
+        return null;
+    }
+
+    public function getFullAddressAttribute() {
+        return $this->address . ', ' . $this->postal_code . ', ' . $this->state;
     }
 }
