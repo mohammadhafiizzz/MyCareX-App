@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Patient extends Model
+class Patient extends Authenticatable
 {
     use HasFactory;
 
@@ -74,10 +74,12 @@ class Patient extends Model
         });
     }
 
+    // Accessor for age
     public function getAgeAttribute() {
         return Carbon::parse($this->date_of_birth)->age;
     }
 
+    // Accessor for BMI
     public function getBmiAttribute() {
         if ($this->height && $this->weight) {
             $heightInMeters = $this->height / 100;
@@ -86,7 +88,26 @@ class Patient extends Model
         return null;
     }
 
+    // Accessor for full address
     public function getFullAddressAttribute() {
         return $this->address . ', ' . $this->postal_code . ', ' . $this->state;
+    }
+
+    // Mutators for password encryption
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    // Search scope
+    public function scopeSearch($query, $searchTerm) {
+        if (empty($searchTerm)) {
+            return $query;
+        }
+
+        return $query->where(function ($qry) use ($searchTerm) {
+            $qry->where('full_name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('ic_number', 'like', '%' . $searchTerm . '%')
+                ->orWhere('email', 'like', '%' . $searchTerm . '%');
+        });
     }
 }

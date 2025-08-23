@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (relationshipSelect && otherRelationshipInput) {
         relationshipSelect.addEventListener('change', function () {
-            if (this.value === 'other') {
+            if (this.value === 'Other') {
                 otherRelationshipInput.classList.remove('hidden');
                 otherRelationshipInput.required = true;
             } else {
@@ -21,11 +21,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Handle race "Other" option
     const raceSelect = document.getElementById('race');
     const otherRaceInput = document.getElementById('otherRace');
-    const otherRaceLabel = document.getElementById('otherRaceLabel');
 
     if (raceSelect && otherRaceInput) {
         raceSelect.addEventListener('change', function () {
-            if (this.value === 'other') {
+            if (this.value === 'Other') {
                 otherRaceInput.classList.remove('hidden');
                 otherRaceInput.required = true;
             } else {
@@ -53,31 +52,96 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // IC Number formatting
-    document.getElementById('icNumber').addEventListener('input', function (e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length >= 6) {
-            value = value.substring(0, 6) + '-' + value.substring(6);
-        }
-        if (value.length >= 9) {
-            value = value.substring(0, 9) + '-' + value.substring(9, 13);
-        }
-        e.target.value = value;
-    });
+    function formatIcNumber(input) {
+        let isDeleting = false;
 
-    // Phone number formatting
-    function formatPhoneNumber(input) {
+        input.addEventListener('keydown', function (e) {
+            // Detect backspace or delete
+            isDeleting = e.key === 'Backspace' || e.key === 'Delete';
+        });
+
         input.addEventListener('input', function (e) {
+            // Don't format while deleting
+            if (isDeleting) {
+                return;
+            }
+
             let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 3) {
-                value = value.substring(0, 3) + '-' + value.substring(3);
+            let formattedValue = '';
+
+            if (value.length > 0) {
+                formattedValue = value.substring(0, 6);
+                if (value.length >= 6) {
+                    formattedValue += '-' + value.substring(6, 8);
+                }
+                if (value.length >= 8) {
+                    formattedValue += '-' + value.substring(8, 12);
+                }
             }
-            if (value.length >= 7) {
-                value = value.substring(0, 7) + ' ' + value.substring(7, 11);
-            }
-            e.target.value = value;
+
+            e.target.value = formattedValue;
         });
     }
 
+    // Phone number formatting 
+    function formatPhoneNumber(input) {
+        let isDeleting = false;
+
+        input.addEventListener('keydown', function (e) {
+            isDeleting = e.key === 'Backspace' || e.key === 'Delete';
+        });
+
+        input.addEventListener('input', function (e) {
+            if (isDeleting) return;
+
+            let value = e.target.value.replace(/\D/g, '');
+            let formattedValue = '';
+
+            if (value.length === 0) return;
+
+            if (value.startsWith('011')) {
+                // Format: 011-XXXX XXXX
+                formattedValue = '011';
+                if (value.length > 3) {
+                    formattedValue += '-' + value.substring(3, 7);  // 4 digits
+                }
+                if (value.length > 7) {
+                    formattedValue += ' ' + value.substring(7, 11); // 4 digits
+                }
+            }
+            else if (value.startsWith('01')) {
+                // Format: 01X-XXX XXXX  
+                formattedValue = value.substring(0, 3);
+                if (value.length > 3) {
+                    formattedValue += '-' + value.substring(3, 6);  // 3 digits
+                }
+                if (value.length > 6) {
+                    formattedValue += ' ' + value.substring(6, 10); // 4 digits
+                }
+            }
+            else if (value.startsWith('0')) {
+                // Landline format: 0X-XXXX XXXX
+                formattedValue = value.substring(0, 2);
+                if (value.length > 2) {
+                    formattedValue += '-' + value.substring(2, 6);  // 4 digits
+                }
+                if (value.length > 6) {
+                    formattedValue += ' ' + value.substring(6, 10); // 4 digits
+                }
+            }
+            else {
+                // International or other
+                formattedValue = value;
+            }
+
+            e.target.value = formattedValue;
+        });
+    }
+
+    // Apply formatting to all fields
+    formatIcNumber(document.getElementById('icNumber'));
+    formatIcNumber(document.getElementById('emergencyContactIcNumber'));
+
     formatPhoneNumber(document.getElementById('phoneNumber'));
-    formatPhoneNumber(document.getElementById('emergencyContactPhone'));
+    formatPhoneNumber(document.getElementById('emergencyContactNumber'));
 });

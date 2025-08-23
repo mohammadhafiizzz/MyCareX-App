@@ -18,7 +18,7 @@
 
         <!-- Modal Body -->
         <div class="p-6">
-            <form action="#" method="POST" class="space-y-4">
+            <form action="{{ route('patient.login') }}" method="POST" class="space-y-4">
                 @csrf
 
                 <!-- Email Field -->
@@ -96,7 +96,7 @@
         <div class="px-6 py-4 bg-gray-50 rounded-b-xl">
             <p class="text-center text-sm text-gray-600">
                 Don't have an account?
-                <a href="{{ route('register') }}" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                <a href="{{ route('patient.register.form') }}" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">
                     Create one here
                 </a>
             </p>

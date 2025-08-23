@@ -79,7 +79,7 @@
                     in one platform designed specifically for Malaysians
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('register') }}"
+                    <a href="{{ route('patient.register.form') }}"
                         class="inline-flex items-center px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
                         Get Started
                         <i class="fas fa-arrow-right ml-2"></i>

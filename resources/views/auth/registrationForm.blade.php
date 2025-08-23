@@ -11,15 +11,15 @@
         <!-- Full Name & IC Number -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label for="full_name" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">
                     Full Name <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="full_name" name="full_name" required
+                <input type="text" id="fullName" name="full_name" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     placeholder="Enter your full name as per IC">
             </div>
             <div>
-                <label for="ic_number" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="icNumber" class="block text-sm font-medium text-gray-700 mb-2">
                     IC Number <span class="text-red-500">*</span>
                 </label>
                 <input type="text" id="icNumber" name="ic_number" required
@@ -31,7 +31,7 @@
         <!-- Phone & Email -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label for="phone_number" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-2">
                     Phone Number <span class="text-red-500">*</span>
                 </label>
                 <input type="tel" id="phoneNumber" name="phone_number" required
@@ -73,10 +73,10 @@
         <!-- Blood Type & Race -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label for="blood_type" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="bloodType" class="block text-sm font-medium text-gray-700 mb-2">
                     Blood Type <span class="text-red-500">*</span>
                 </label>
-                <select name="blood_type" id="blood_type" required
+                <select name="blood_type" id="bloodType" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                     <option value="">Select Blood Type</option>
                     <option value="O+">O+</option>
@@ -98,14 +98,14 @@
                 <select id="race" name="race" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                     <option value="">Select Race</option>
-                    <option value="malay">Malay</option>
-                    <option value="chinese">Chinese</option>
-                    <option value="indian">Indian</option>
-                    <option value="other">Other</option>
+                    <option value="Malay">Malay</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Other">Other</option>
                 </select>
                 <input type="text"
                     class="mt-2 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors hidden"
-                    id="otherRace" name="race" placeholder="Please specify your race">
+                    id="otherRace" name="other_race" placeholder="Please specify your race">
             </div>
         </div>
 
@@ -119,10 +119,10 @@
 
         <!-- Home Address -->
         <div>
-            <label for="home_address" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
                 Home Address <span class="text-red-500">*</span>
             </label>
-            <textarea id="home_address" name="home_address" rows="3" required
+            <textarea id="address" name="address" rows="3" required
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
                 placeholder="Enter your complete home address"></textarea>
         </div>
@@ -144,22 +144,22 @@
                 <select id="state" name="state" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                     <option value="">Select State</option>
-                    <option value="johor">Johor</option>
-                    <option value="kedah">Kedah</option>
-                    <option value="kelantan">Kelantan</option>
-                    <option value="malacca">Malacca</option>
-                    <option value="negeri_sembilan">Negeri Sembilan</option>
-                    <option value="pahang">Pahang</option>
-                    <option value="penang">Penang</option>
-                    <option value="perak">Perak</option>
-                    <option value="perlis">Perlis</option>
-                    <option value="sabahan">Sabah</option>
-                    <option value="sarawak">Sarawak</option>
-                    <option value="selangor">Selangor</option>
-                    <option value="terengganu">Terengganu</option>
-                    <option value="kuala_lumpur">W.P. Kuala Lumpur</option>
-                    <option value="labuan">W.P. Labuan</option>
-                    <option value="putrajaya">W.P. Putrajaya</option>
+                    <option value="Johor">Johor</option>
+                    <option value="Kedah">Kedah</option>
+                    <option value="Kelantan">Kelantan</option>
+                    <option value="Malacca">Malacca</option>
+                    <option value="Negeri Sembilan">Negeri Sembilan</option>
+                    <option value="Pahang">Pahang</option>
+                    <option value="Penang">Penang</option>
+                    <option value="Perak">Perak</option>
+                    <option value="Perlis">Perlis</option>
+                    <option value="Sabah">Sabah</option>
+                    <option value="Sarawak">Sarawak</option>
+                    <option value="Selangor">Selangor</option>
+                    <option value="Terengganu">Terengganu</option>
+                    <option value="Kuala Lumpur">W.P. Kuala Lumpur</option>
+                    <option value="Labuan">W.P. Labuan</option>
+                    <option value="Putrajaya">W.P. Putrajaya</option>
                 </select>
             </div>
         </div>
@@ -175,18 +175,18 @@
         <!-- Emergency Name & IC Number -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label for="emergency_contact_name" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="emergencyContactName" class="block text-sm font-medium text-gray-700 mb-2">
                     Contact Name <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="emergency_contact_name" name="emergency_contact_name" required
+                <input type="text" id="emergencyContactName" name="emergency_contact_name" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     placeholder="Full name">
             </div>
             <div>
-                <label for="emergency_contact_ic" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="emergencyContactIcNumber" class="block text-sm font-medium text-gray-700 mb-2">
                     IC Number <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="emergency_contact_ic" name="emergency_contact_ic" required
+                <input type="text" id="emergencyContactIcNumber" name="emergency_contact_ic_number" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     placeholder="123456-78-9012" maxlength="14">
             </div>
@@ -195,27 +195,27 @@
         <!-- Emergency Contact & Relationship -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label for="emergency_contact_phone" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="emergencyContactNumber" class="block text-sm font-medium text-gray-700 mb-2">
                     Contact Phone <span class="text-red-500">*</span>
                 </label>
-                <input type="tel" id="emergencyContactPhone" name="emergency_contact_phone" required
+                <input type="tel" id="emergencyContactNumber" name="emergency_contact_number" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     placeholder="01X-XXX XXXX">
             </div>
             <div>
                 <!-- TODO: check for input validation when user select 'Other' -->
-                <label for="emergency_contact_relationship" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="emergencyContactRelationship" class="block text-sm font-medium text-gray-700 mb-2">
                     Relationship <span class="text-red-500">*</span>
                 </label>
                 <select id="emergencyContactRelationship" name="emergency_contact_relationship" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                     <option value="">Select Relationship</option>
-                    <option value="spouse">Spouse</option>
-                    <option value="parent">Parent</option>
-                    <option value="child">Child</option>
-                    <option value="sibling">Sibling</option>
-                    <option value="friend">Friend</option>
-                    <option value="other">Other</option>
+                    <option value="Spouse">Spouse</option>
+                    <option value="Parent">Parent</option>
+                    <option value="Child">Child</option>
+                    <option value="Sibling">Sibling</option>
+                    <option value="Friend">Friend</option>
+                    <option value="Other">Other</option>
                 </select>
 
                 <!-- Other Relationship (Appear when "Other" is selected) -->
