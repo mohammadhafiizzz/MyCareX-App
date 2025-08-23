@@ -63,6 +63,60 @@ document.addEventListener('DOMContentLoaded', function () {
             icon.classList.add('fa-eye-slash');
         }
     });
+
+    // Format IC Number
+    function formatIcNumber(input) {
+        if (!input) return; // Guard against null elements
+        
+        let isDeleting = false;
+
+        input.addEventListener('keydown', function (e) {
+            isDeleting = e.key === 'Backspace' || e.key === 'Delete';
+        });
+
+        input.addEventListener('input', function (e) {
+            if (isDeleting) return;
+
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            let formattedValue = '';
+
+            if (value.length > 0) {
+                formattedValue = value.substring(0, 6);
+                if (value.length >= 6) {
+                    formattedValue += '-' + value.substring(6, 8);
+                }
+                if (value.length >= 8) {
+                    formattedValue += '-' + value.substring(8, 12);
+                }
+            }
+
+            e.target.value = formattedValue;
+        });
+
+        // Handle paste events
+        input.addEventListener('paste', function (e) {
+            setTimeout(() => {
+                let value = e.target.value.replace(/\D/g, '');
+                let formattedValue = '';
+
+                if (value.length > 0) {
+                    formattedValue = value.substring(0, 6);
+                    if (value.length >= 6) {
+                        formattedValue += '-' + value.substring(6, 8);
+                    }
+                    if (value.length >= 8) {
+                        formattedValue += '-' + value.substring(8, 12);
+                    }
+                }
+
+                e.target.value = formattedValue;
+            }, 10);
+        });
+    }
+
+    // **Apply formatting to login IC number field**
+    const loginIcNumber = document.getElementById('icNumber');
+    formatIcNumber(loginIcNumber);
 });
 
 // Mobile menu toggle

@@ -9,13 +9,12 @@ use App\Http\Controllers\Patient as Patient;
 Route::get('/', [HomePageController::class, 'index'])->name('index');
 
 // Patient Routes
-Route::prefix('patient')->group(function () {
+Route::prefix('patient')->middleware(['web'])->group(function () {
     // Patient Registration
     Route::get('/register', [PatientRegistrationController::class, 'showRegistrationForm'])->name('patient.register.form');
     Route::post('/register', [PatientRegistrationController::class, 'register'])->name('patient.register');
 
     // Patient Login
-    Route::get('/login', [Patient\Auth\LoginController::class, 'showLoginForm'])->name('patient.login.form');
     Route::post('/login', [Patient\Auth\LoginController::class, 'login'])->name('patient.login');
 
     // Patient Dashboard (should be protected)

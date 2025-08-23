@@ -10,42 +10,21 @@ class Patient extends Authenticatable
 {
     use HasFactory;
 
-    // Primary key
     protected $primaryKey = 'patient_id';
     public $incrementing = false;
     protected $keyType = 'string';
 
-    // Table attributes
     protected $fillable = [
-        'patient_id',
-        'full_name',
-        'ic_number',
-        'phone_number',
-        'email',
-        'password',
-        'date_of_birth',
-        'gender',
-        'blood_type',
-        'race',
-        'height',
-        'weight',
-        'address',
-        'postal_code',
-        'state',
-        'emergency_contact_number',
-        'emergency_contact_name',
-        'emergency_contact_ic_number',
-        'emergency_contact_relationship',
+        'patient_id', 'full_name', 'ic_number', 'phone_number', 'email', 
+        'password', 'date_of_birth', 'gender', 'blood_type', 'race', 
+        'height', 'weight', 'address', 'postal_code', 'state',
+        'emergency_contact_number', 'emergency_contact_name', 
+        'emergency_contact_ic_number', 'emergency_contact_relationship', 
         'profile_image_url'
     ];
 
-    // Hidden value
-    protected $hidden = [
-        'password',
-        'remember_token'
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
-    // Automatic data type conversion
     protected $casts = [
         'date_of_birth' => 'date',
         'height' => 'decimal:2',
@@ -53,17 +32,27 @@ class Patient extends Authenticatable
         'email_verified_at' => 'datetime'
     ];
 
-    // Custom attributes
-    protected $appends = [
-        'age',
-        'bmi',
-        'full_address'
-    ];
+    // **CRITICAL: These methods tell Laravel to use ic_number for authentication**
+    public function getAuthIdentifierName()
+    {
+        return 'ic_number';
+    }
 
-    // Auto-generated patient_id primary key
+    public function getAuthIdentifier()
+    {
+        return $this->ic_number;
+    }
+
+    // **CRITICAL: This tells Laravel which field to use for username**
+    public function username()
+    {
+        return 'ic_number';
+    }
+
+    // Auto-generate patient_id
     protected static function boot() {
         parent::boot();
-
+        
         static::creating(function ($patient) {
             if (!$patient->patient_id) {
                 $lastPatient = static::orderBy('patient_id', 'desc')->first();
@@ -74,12 +63,11 @@ class Patient extends Authenticatable
         });
     }
 
-    // Accessor for age
+    // Other methods remain the same...
     public function getAgeAttribute() {
         return Carbon::parse($this->date_of_birth)->age;
     }
 
-    // Accessor for BMI
     public function getBmiAttribute() {
         if ($this->height && $this->weight) {
             $heightInMeters = $this->height / 100;
@@ -88,17 +76,14 @@ class Patient extends Authenticatable
         return null;
     }
 
-    // Accessor for full address
     public function getFullAddressAttribute() {
         return $this->address . ', ' . $this->postal_code . ', ' . $this->state;
     }
 
-    // Mutators for password encryption
     public function setPasswordAttribute($value) {
         $this->attributes['password'] = bcrypt($value);
     }
 
-    // Search scope
     public function scopeSearch($query, $searchTerm) {
         if (empty($searchTerm)) {
             return $query;

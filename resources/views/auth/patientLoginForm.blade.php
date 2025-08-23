@@ -20,15 +20,24 @@
         <div class="p-6">
             <form action="{{ route('patient.login') }}" method="POST" class="space-y-4">
                 @csrf
+                @if($errors->any())
+                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-                <!-- Email Field -->
+                <!-- IC Number Field -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-envelope text-gray-600 mr-2"></i>Email Address
+                    <label for="icNumber" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-id-card text-gray-600 mr-2"></i>IC Number
                     </label>
-                    <input type="email" id="email" name="email" required
+                    <input type="text" id="icNumber" name="ic_number" required maxlength="14"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                        placeholder="Enter your email">
+                        placeholder="Enter your IC number without dashes">
                 </div>
 
                 <!-- Password Field -->
@@ -72,21 +81,16 @@
                         <div class="w-full border-t border-gray-300"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                        <span class="px-2 bg-white text-gray-500">Or login with</span>
                     </div>
                 </div>
 
-                <!-- Social Login (Optional) -->
-                <div class="grid grid-cols-2 gap-3">
+                <!-- MyKad Login (Optional) -->
+                <div class="grid gap-3">
                     <button type="button"
                         class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                        <i class="fab fa-google text-red-500 mr-2"></i>
-                        <span class="text-sm font-medium text-gray-700">Google</span>
-                    </button>
-                    <button type="button"
-                        class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                        <i class="fas fa-id-card text-blue-600 mr-2"></i>
-                        <span class="text-sm font-medium text-gray-700">MyKad</span>
+                        <i class="fas fa-envelope text-blue-600 mr-2"></i>
+                        <span class="text-sm font-medium text-gray-700">E-Mail</span>
                     </button>
                 </div>
             </form>
