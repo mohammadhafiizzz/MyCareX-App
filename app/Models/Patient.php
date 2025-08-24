@@ -32,18 +32,16 @@ class Patient extends Authenticatable
         'email_verified_at' => 'datetime'
     ];
 
-    // **CRITICAL: These methods tell Laravel to use ic_number for authentication**
     public function getAuthIdentifierName()
     {
-        return 'ic_number';
+        return 'patient_id';
     }
 
     public function getAuthIdentifier()
     {
-        return $this->ic_number;
+        return $this->patient_id;
     }
 
-    // **CRITICAL: This tells Laravel which field to use for username**
     public function username()
     {
         return 'ic_number';

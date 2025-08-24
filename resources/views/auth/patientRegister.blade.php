@@ -68,7 +68,7 @@
         </div>
     </footer>
 
-    @vite(['resources/js/main/registration.js'])
+    @vite(['resources/js/main/userAuth/registration.js'])
 </body>
 
 </html>

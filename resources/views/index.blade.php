@@ -142,8 +142,8 @@
         </div>
     </section>
 
-    <script src="{{asset('js/main.js')}}"></script>
     @include('components.footer')
+    @vite(['resources/js/main/main.js'])
 
 </body>
 

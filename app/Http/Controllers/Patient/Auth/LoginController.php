@@ -21,7 +21,7 @@ class LoginController extends Controller
 
         // Validate credentials - expect formatted IC with dashes
         $request->validate([
-            'ic_number' => 'required|string|size:14', // Expect format: XXXXXX-XX-XXXX
+            'ic_number' => 'required|string|size:14',
             'password' => 'required|string'
         ]);
 
@@ -50,7 +50,7 @@ class LoginController extends Controller
         ]);
 
         $credentials = [
-            'ic_number' => $icNumber, // Use the formatted IC with dashes
+            'ic_number' => $icNumber,
             'password' => $request->password
         ];
         $remember = $request->boolean('remember');

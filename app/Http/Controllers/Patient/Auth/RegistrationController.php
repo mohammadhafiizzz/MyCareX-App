@@ -35,26 +35,30 @@ class RegistrationController extends Controller
             'emergency_contact_name' => 'required|string|max:100',
             'emergency_contact_ic_number' => 'required|string|max:20|unique:patients,emergency_contact_ic_number',
             'emergency_contact_relationship' => 'required|string|max:30',
-            'profile_image_url' => 'nullable|string'
+            'profile_image_url' => 'nullable|string',
+
+            // "Other" fields
+            'other_race' => 'required_if:race,Other|string|max:20|nullable',
+            'other_relationship' => 'required_if:emergency_contact_relationship,Other|string|max:30|nullable'
         ]);
 
         // Handle other race input
-        if ($validatedData['race'] == 'Other' && !empty($validatedData['other_race'])) {
-            $validatedData['race'] = $validatedData['other_race'];
+        if ($request->race === 'Other') {
+            $validatedData['race'] = $request->other_race;
         }
 
         // Handle other relationship input
-        if ($validatedData['emergency_contact_relationship'] == 'Other' && !empty($validatedData['other_relationship'])) {
-            $validatedData['emergency_contact_relationship'] = $validatedData['other_relationship'];
+        if ($request->emergency_contact_relationship === 'Other') {
+            $validatedData['emergency_contact_relationship'] = $request->other_relationship;
         }
 
         // Remove the 'other_race' and 'other_relationship' fields
         unset($validatedData['other_race']);
         unset($validatedData['other_relationship']);
 
-        $patient = Patient::create($validatedData);
+        Patient::create($validatedData);
 
-        return redirect()->route('patient.dashboard')
-            ->with('success', 'Registration successful!');
+        return redirect()->route('index')
+            ->with('success', 'Registration successful! Please Login');
     }
 }
