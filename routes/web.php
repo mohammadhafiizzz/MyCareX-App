@@ -29,5 +29,29 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
     Route::get('/profile', [Patient\ProfileController::class, 'showProfilePage'])
         ->name('patient.profile')
         ->middleware('auth:patient');
+
+    // Profile Update Routes (Protected)
+    Route::middleware('auth:patient')->group(function () {
+        Route::put('/profile/personal-info', [Patient\UpdateProfileController::class, 'updatePersonalInfo'])
+            ->name('patient.profile.update.personal');
+        
+        Route::put('/profile/physical-info', [Patient\UpdateProfileController::class, 'updatePhysicalInfo'])
+            ->name('patient.profile.update.physical');
+
+        Route::put('/profile/address-info', [Patient\UpdateProfileController::class, 'updateAddressInfo'])
+            ->name('patient.profile.update.address');
+
+        Route::put('/profile/emergency-contact', [Patient\UpdateProfileController::class, 'updateEmergencyInfo'])
+            ->name('patient.profile.update.emergency');
+
+        Route::put('/profile/password', [Patient\UpdateProfileController::class, 'updatePassword'])
+            ->name('patient.profile.update.password');
+
+        Route::put('/profile/picture', [Patient\UpdateProfileController::class, 'updateProfilePicture'])
+            ->name('patient.profile.update.picture');
+
+        Route::delete('/profile/account', [Patient\UpdateProfileController::class, 'deleteAccount'])
+            ->name('patient.profile.delete.account');
+    });
 });
 

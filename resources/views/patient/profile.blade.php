@@ -15,6 +15,46 @@
     <!-- Header -->
     @include('components.patientHeader')
 
+    {{-- Flash Messages --}}
+    @if (session('success'))
+        <div class="text-center mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-800">
+            <div class="flex items-start">
+                <i class="fas fa-check-circle mt-0.5 mr-3 text-green-600"></i>
+                <div>
+                    <p class="font-medium">{{ session('success') }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800">
+            <div class="flex items-start">
+                <i class="fas fa-exclamation-circle mt-0.5 mr-3 text-red-600"></i>
+                <div>
+                    <p class="font-medium">{{ session('error') }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- Validation Errors --}}
+    @if ($errors->any())
+        <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800">
+            <div class="flex items-start">
+                <i class="fas fa-times-circle mt-0.5 mr-3 text-red-600"></i>
+                <div>
+                    <p class="font-medium mb-2">Please fix the following errors:</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li class="text-sm">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 

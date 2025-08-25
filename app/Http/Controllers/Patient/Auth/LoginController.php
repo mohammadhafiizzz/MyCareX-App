@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,27 +26,15 @@ class LoginController extends Controller
 
         // **FIX: Use IC number AS-IS (with dashes) - don't strip them**
         $icNumber = $request->ic_number;
-        
-        Log::info('Login attempt started', [
-            'ic_number' => $icNumber,
-            'ip' => $request->ip()
-        ]);
 
         $patient = Patient::where('ic_number', $icNumber)->first();
-        if (!$patient) {
-            Log::warning('Patient not found', ['ic_number' => $icNumber]);
-            
+        if (!$patient) {            
             RateLimiter::hit($this->throttleKey($request));
             
             throw ValidationException::withMessages([
                 'ic_number' => 'The IC number or password is incorrect.',
             ]);
         }
-
-        Log::info('Patient found', [
-            'patient_id' => $patient->patient_id,
-            'ic_number' => $patient->ic_number
-        ]);
 
         $credentials = [
             'ic_number' => $icNumber,
@@ -58,12 +45,6 @@ class LoginController extends Controller
         if (Auth::guard('patient')->attempt($credentials, $remember)) {
             RateLimiter::clear($this->throttleKey($request));
             $request->session()->regenerate();
-            
-            Log::info('Patient logged in successfully', [
-                'patient_id' => Auth::guard('patient')->user()->patient_id,
-                'ic_number' => Auth::guard('patient')->user()->ic_number,
-                'ip' => $request->ip()
-            ]);
 
             return redirect()->intended(route('patient.dashboard'))
                 ->with('success', 'Welcome back, ' . Auth::guard('patient')->user()->full_name . '!');
@@ -71,26 +52,13 @@ class LoginController extends Controller
 
         RateLimiter::hit($this->throttleKey($request));
 
-        Log::warning('Authentication failed', [
-            'ic_number' => $icNumber,
-            'ip' => $request->ip()
-        ]);
-
         throw ValidationException::withMessages([
             'ic_number' => 'The IC number or password is incorrect.',
         ]);
     }
 
     public function logout(Request $request) {
-        $user = Auth::guard('patient')->user();
-        
-        if ($user) {
-            Log::info('Patient logged out', [
-                'patient_id' => $user->patient_id,
-                'ic_number' => $user->ic_number,
-                'ip' => $request->ip()
-            ]);
-        }
+        Auth::guard('patient')->user();
         
         Auth::guard('patient')->logout();
         $request->session()->invalidate();
