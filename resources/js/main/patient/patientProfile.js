@@ -1,4 +1,4 @@
-// Patient Profile JavaScript Functions
+// Patient Profile JavaScript Functions - Updated
 
 // Modal Elements
 const editPersonalModal = document.getElementById('editPersonalInfo');
@@ -10,12 +10,29 @@ function openProfilePictureModal() {
 }
 
 window.editPersonalInfo = function() {
-    // Show the personal info edit modal
     showModal('editPersonalInfo', 'editPersonalInfoContent');
+    setupEditPersonalFormListeners();
+}
+
+function setupEditPersonalFormListeners() {
+    const editRaceSelect = document.getElementById('edit_race');
+    const editOtherRaceInput = document.getElementById('edit_other_race');
+
+    if (editRaceSelect && editOtherRaceInput) {
+        editRaceSelect.addEventListener('change', function() {
+            if (this.value === 'Other') {
+                editOtherRaceInput.classList.remove('hidden');
+                editOtherRaceInput.required = true;
+            } else {
+                editOtherRaceInput.classList.add('hidden');
+                editOtherRaceInput.required = false;
+                editOtherRaceInput.value = '';
+            }
+        });
+    }
 }
 
 function editPhysicalInfo() {
-    // You can implement similar modal for physical info
     showModal('editPhysicalInfo', 'editPhysicalInfoContent');
 }
 
@@ -35,7 +52,22 @@ function deleteAccount() {
     showModal('deleteAccountModal', 'deleteAccountModalContent');
 }
 
-// Generic Modal Functions
+// Make closeModal globally accessible
+window.closeModal = function(modalId, modalContentId) {
+    const modal = document.getElementById(modalId);
+    const modalContent = document.getElementById(modalContentId);
+    
+    if (modal && modalContent) {
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }, 300);
+    }
+}
+
 function showModal(modalId, modalContentId) {
     const modal = document.getElementById(modalId);
     const modalContent = document.getElementById(modalContentId);
@@ -51,31 +83,12 @@ function showModal(modalId, modalContentId) {
     }
 }
 
-function closeModal(modalId, modalContentId) {
-    const modal = document.getElementById(modalId);
-    const modalContent = document.getElementById(modalContentId);
-    
-    if (modal && modalContent) {
-        modalContent.classList.remove('scale-100');
-        modalContent.classList.add('scale-95');
-        
-        setTimeout(() => {
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto'; // Restore scroll
-        }, 300);
-    }
-}
-
-// Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Patient Profile page loaded');
-    
-    // Close modals when clicking outside or on close button
     setupModalEventListeners();
 });
 
 function setupModalEventListeners() {
-    // List of all modals
     const modals = [
         { modalId: 'editPersonalInfo', contentId: 'editPersonalInfoContent' },
         { modalId: 'editPhysicalInfo', contentId: 'editPhysicalInfoContent' },
@@ -90,7 +103,6 @@ function setupModalEventListeners() {
         const closeBtn = document.getElementById(`close${modalId}`);
         
         if (modal) {
-            // Close modal on backdrop click
             modal.addEventListener('click', function(e) {
                 if (e.target === modal) {
                     closeModal(modalId, contentId);
@@ -98,7 +110,6 @@ function setupModalEventListeners() {
             });
         }
         
-        // Close modal on close button click
         if (closeBtn) {
             closeBtn.addEventListener('click', function() {
                 closeModal(modalId, contentId);
@@ -106,7 +117,6 @@ function setupModalEventListeners() {
         }
     });
 
-    // Close modal on Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             modals.forEach(({ modalId, contentId }) => {

@@ -79,14 +79,14 @@
                 <select name="blood_type" id="bloodType" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                     <option value="">Select Blood Type</option>
-                    <option value="O+">O+</option>
-                    <option value="O-">O-</option>
                     <option value="A+">A+</option>
                     <option value="A-">A-</option>
                     <option value="B+">B+</option>
                     <option value="B-">B-</option>
                     <option value="AB+">AB+</option>
                     <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
                     <option value="unknown">Do not know</option>
                 </select>
             </div>
