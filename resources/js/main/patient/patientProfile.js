@@ -42,7 +42,7 @@ function showModal(modalId, modalContentId) {
     
     if (modal && modalContent) {
         modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Prevent background scroll
+        document.body.style.overflow = 'hidden';
         
         setTimeout(() => {
             modalContent.classList.remove('scale-95');
