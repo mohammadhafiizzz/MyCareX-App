@@ -295,9 +295,14 @@
         </div>
     </div>
 
+    <!-- Profile Form Sections -->
     @include('patient.profileForm.personalInfo')
-
-    <!-- Add similar modals for other sections (Physical Info, Address, etc.) -->
+    @include('patient.profileForm.physicalInfo')
+    @include('patient.profileForm.addressInfo')
+    @include('patient.profileForm.emergencyContact')
+    @include('patient.profileForm.changePassword')
+    @include('patient.profileForm.deleteAccount')
+    @include('patient.profileForm.profilePicture')
 
     <!-- Footer -->
     @include('components.footer')
