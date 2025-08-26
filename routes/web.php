@@ -14,6 +14,12 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
     Route::get('/register', [PatientRegistrationController::class, 'showRegistrationForm'])->name('patient.register.form');
     Route::post('/register', [PatientRegistrationController::class, 'register'])->name('patient.register');
 
+    // Email verification
+    Route::get('/email/verify', [PatientRegistrationController::class, 'showEmailVerificationNotice'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [PatientRegistrationController::class, 'verify'])->name('verification.verify');
+    Route::post('/email/verification-notification', [PatientRegistrationController::class, 'resend'])->name('verification.resend');
+    Route::get('/email/verified', [PatientRegistrationController::class, 'showEmailVerified'])->name('verification.success');
+
     // Patient Login
     Route::post('/login', [Patient\Auth\LoginController::class, 'login'])->name('patient.login');
 
@@ -34,7 +40,7 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
     Route::middleware('auth:patient')->group(function () {
         Route::put('/profile/personal-info', [Patient\UpdateProfileController::class, 'updatePersonalInfo'])
             ->name('patient.profile.update.personal');
-        
+
         Route::put('/profile/physical-info', [Patient\UpdateProfileController::class, 'updatePhysicalInfo'])
             ->name('patient.profile.update.physical');
 

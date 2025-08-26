@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Patient\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Verified;
 
 class RegistrationController extends Controller
 {
@@ -12,6 +13,14 @@ class RegistrationController extends Controller
     // Show the patient registration form
     public function showRegistrationForm() {
         return view('auth.patientRegister');
+    }
+
+    public function showEmailVerificationNotice() {
+        return view('auth.verifyEmail');
+    }
+
+    public function showEmailVerified() {
+        return view('auth.emailVerified');
     }
 
     // Handle the patient registration
@@ -56,9 +65,32 @@ class RegistrationController extends Controller
         unset($validatedData['other_race']);
         unset($validatedData['other_relationship']);
 
-        Patient::create($validatedData);
+        // Create the patient
+        $patient = Patient::create($validatedData);
 
-        return redirect()->route('index')
-            ->with('success', 'Registration successful! Please Login');
+        // Email verification
+        $patient->sendEmailVerificationNotification();
+
+        return redirect()->route('verification.notice')
+            ->with('success', 'Registration successful! Please check your email to verify your account.');
+    }
+
+    public function verify(Request $request) {
+        $patient = Patient::find($request->route('id'));
+        
+        if (!hash_equals((string) $request->route('hash'), sha1($patient->getEmailForVerification()))) {
+            abort(403);
+        }
+
+        if ($patient->markEmailAsVerified()) {
+            event(new Verified($patient));
+        }
+
+        return redirect()->route('verification.success')->with('verified', true);
+    }
+
+    public function resend(Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('resent', true);
     }
 }

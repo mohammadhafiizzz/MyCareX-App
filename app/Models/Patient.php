@@ -5,10 +5,13 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
 
-class Patient extends Authenticatable
+
+class Patient extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $primaryKey = 'patient_id';
     public $incrementing = false;
@@ -20,7 +23,7 @@ class Patient extends Authenticatable
         'height', 'weight', 'address', 'postal_code', 'state',
         'emergency_contact_number', 'emergency_contact_name', 
         'emergency_contact_ic_number', 'emergency_contact_relationship', 
-        'profile_image_url'
+        'profile_image_url', 'email_verified_at'
     ];
 
     protected $hidden = ['password', 'remember_token'];
