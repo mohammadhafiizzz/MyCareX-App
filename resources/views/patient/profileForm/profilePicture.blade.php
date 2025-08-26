@@ -7,14 +7,16 @@
         <div
             class="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white rounded-t-xl z-10">
             <h2 class="text-xl font-bold text-gray-900">Update Profile Picture</h2>
-            <button class="text-gray-400 cursor-pointer hover:text-gray-600 transition-colors" id="closeprofilePictureModal">
+            <button class="text-gray-400 cursor-pointer hover:text-gray-600 transition-colors"
+                id="closeprofilePictureModal">
                 <i class="fas fa-times text-xl"></i>
             </button>
         </div>
 
         <!-- Modal Body - Scrollable Content -->
         <div class="overflow-y-auto flex-1">
-            <form action="#" method="POST" enctype="multipart/form-data" class="p-6">
+            <form action="{{ route('patient.profile.update.picture') }}" method="POST" enctype="multipart/form-data"
+                class="p-6">
                 @csrf
                 @method('PUT')
 
@@ -88,11 +90,14 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <h4 class="font-medium text-red-900">Remove Current Picture</h4>
-                                <p class="text-sm text-red-700">This will set your profile picture back to default</p>
+                                <p class="text-sm text-red-700">
+                                    This will set your profile picture back to default
+                                </p>
                             </div>
-                            <button type="button"
+                            <!-- Use a button that submits an external hidden form -->
+                            <button type="submit" form="deleteProfilePictureForm"
                                 class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
-                                onclick="confirmRemoveImage()">
+                                onclick="return confirm('Are you sure you want to remove your current profile picture?')">
                                 Remove
                             </button>
                         </div>
@@ -114,6 +119,13 @@
                     </button>
                 </div>
             </form>
+            @if(Auth::guard('patient')->user()->profile_image_url)
+                <form id="deleteProfilePictureForm" method="POST"
+                    action="{{ route('patient.profile.delete.picture') }}" class="hidden">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endif
         </div>
     </div>
 </div>

@@ -38,6 +38,18 @@
         </div>
     @endif
 
+    <!-- Info Box - Debugging Purpose -->
+    @if (session('info'))
+        <div class="mb-6 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-blue-800">
+            <div class="flex items-start">
+                <i class="fas fa-info-circle mt-0.5 mr-3 text-blue-600"></i>
+                <div>
+                    <p class="font-medium">{{ session('info') }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
     {{-- Validation Errors --}}
     @if ($errors->any())
         <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800">

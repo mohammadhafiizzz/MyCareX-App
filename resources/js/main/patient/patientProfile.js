@@ -206,30 +206,6 @@ function removePreview() {
     }
 }
 
-function confirmRemoveImage() {
-    if (confirm('Are you sure you want to remove your current profile picture?')) {
-        // Create form to remove image
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '#'; // Add your remove image route here
-
-        const csrf = document.createElement('input');
-        csrf.type = 'hidden';
-        csrf.name = '_token';
-        csrf.value = document.querySelector('meta[name="csrf-token"]')?.content || '';
-
-        const method = document.createElement('input');
-        method.type = 'hidden';
-        method.name = '_method';
-        method.value = 'DELETE';
-
-        form.appendChild(csrf);
-        form.appendChild(method);
-        document.body.appendChild(form);
-        form.submit();
-    }
-}
-
 // Main Event Listeners Setup
 function setupModalEventListeners() {
     const modals = [
@@ -429,7 +405,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Make functions globally accessible
     window.togglePasswordVisibility = togglePasswordVisibility;
     window.removePreview = removePreview;
-    window.confirmRemoveImage = confirmRemoveImage;
     window.editPhysicalInfo = editPhysicalInfo;
     window.editAddressInfo = editAddressInfo;
     window.editEmergencyInfo = editEmergencyInfo;

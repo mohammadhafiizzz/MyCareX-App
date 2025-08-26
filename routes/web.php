@@ -50,8 +50,11 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
         Route::put('/profile/picture', [Patient\UpdateProfileController::class, 'updateProfilePicture'])
             ->name('patient.profile.update.picture');
 
-        Route::delete('/profile/account', [Patient\UpdateProfileController::class, 'deleteAccount'])
+        Route::delete('/profile/account', [Patient\DeleteProfileController::class, 'deleteAccount'])
             ->name('patient.profile.delete.account');
+
+        Route::delete('/profile/picture', [Patient\DeleteProfileController::class, 'deleteProfilePicture'])
+            ->name('patient.profile.delete.picture');
     });
 });
 
