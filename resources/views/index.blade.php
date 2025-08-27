@@ -69,7 +69,7 @@
     @include('auth.patientLoginForm')
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-20 lg:py-25">
+    <section class="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-23 lg:py-27">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
@@ -96,7 +96,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="py-20 bg-gray-50" id="features">
+    <section class="py-15 bg-gray-50" id="features">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -142,8 +142,14 @@
         </div>
     </section>
 
+    @if (session('login_error'))
+        <script>
+            window.LOGIN_ERROR = @json(session('login_error'));
+        </script>
+    @endif
+
     @include('components.footer')
-    @vite(['resources/js/main/main.js'])
+    @vite(['resources/js/main/index.js'])
 
 </body>
 

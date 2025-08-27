@@ -12,8 +12,24 @@
 </head>
 
 <body class="font-[Inter] bg-gray-50 min-h-screen">
-    <div class="max-w-md mx-auto mt-20 p-6 bg-white rounded-lg shadow-md">
-        <div class="text-center mb-6">
+    <!-- Logo Branding -->
+    <div class="max-w-7xl mx-auto px-4 mt-20 sm:px-6 lg:px-8 p-2">
+        <div class="flex items-center justify-center h-16">
+            <div class="flex items-center space-x-3 mb-2">
+                <img src="{{ asset('images/MyCareX_Logo.png') }}" alt="MyCareX Logo" class="w-10 h-10 rounded-lg">
+                <div class="flex flex-col">
+                    <span class="text-xl font-semibold text-gray-900">MyCareX</span>
+                    <small class="text-xs font-normal text-gray-500">
+                        Personal Healthcare Records
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Message -->
+    <div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+        <div class="text-center mb-4 mt-4">
             <i class="fas fa-envelope text-blue-500 text-5xl mb-4"></i>
             <h1 class="text-2xl font-bold text-gray-900">Verify Your Email</h1>
         </div>
@@ -43,6 +59,11 @@
             Return to Login
         </a>
     </div>
+
+    <!-- Copyright footer -->
+    <footer class="text-center mt-8 pb-4">
+        <p class="text-xs text-gray-500">&copy; {{ date('Y') }} MyCareX. All rights reserved.</p>
+    </footer>
 </body>
 
 </html>

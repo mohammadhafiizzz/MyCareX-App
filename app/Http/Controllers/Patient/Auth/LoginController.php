@@ -18,22 +18,20 @@ class LoginController extends Controller
 
         $this->checkTooManyFailedAttempts($request);
 
-        // Validate credentials - expect formatted IC with dashes
+        // Field validation
         $request->validate([
             'ic_number' => 'required|string|size:14',
             'password' => 'required|string'
         ]);
 
-        // **FIX: Use IC number AS-IS (with dashes) - don't strip them**
         $icNumber = $request->ic_number;
 
         $patient = Patient::where('ic_number', $icNumber)->first();
-        if (!$patient) {            
+        if (!$patient) {
             RateLimiter::hit($this->throttleKey($request));
-            
-            throw ValidationException::withMessages([
-                'ic_number' => 'The IC number or password is incorrect.',
-            ]);
+            return back()
+                ->withInput($request->only('ic_number'))
+                ->with('login_error', 'The IC number or password is incorrect.');
         }
 
         $credentials = [
@@ -52,9 +50,9 @@ class LoginController extends Controller
 
         RateLimiter::hit($this->throttleKey($request));
 
-        throw ValidationException::withMessages([
-            'ic_number' => 'The IC number or password is incorrect.',
-        ]);
+        return back()
+            ->withInput($request->only('ic_number'))
+            ->with('login_error', 'The IC number or password is incorrect.');
     }
 
     public function logout(Request $request) {

@@ -12,7 +12,7 @@
 </head>
 
 <body class="font-[Inter] bg-gray-50 min-h-screen">
-    <!-- Add this to all authentication pages in the header section -->
+    <!-- Logo Branding -->
     <div class="max-w-7xl mx-auto px-4 mt-20 sm:px-6 lg:px-8 p-2">
         <div class="flex items-center justify-center h-16">
             <div class="flex items-center space-x-3 mb-2">
@@ -26,6 +26,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Forgot Password Form -->
     <div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
         <div class="text-center mb-4 mt-4">
             <i class="fas fa-unlock-alt text-blue-500 mb-2 text-4xl"></i>
