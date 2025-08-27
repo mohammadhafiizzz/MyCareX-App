@@ -79,6 +79,6 @@ class LoginController extends Controller
     }
 
     protected function throttleKey(Request $request) {
-        return $request->input('ic_number') . '|' . $request->ip(); // Keep dashes in throttle key too
+        return $request->input('ic_number') . '|' . $request->ip();
     }
 }

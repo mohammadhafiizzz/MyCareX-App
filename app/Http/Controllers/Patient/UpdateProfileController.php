@@ -18,64 +18,41 @@ class UpdateProfileController extends Controller
         $patient = $this->getAuthenticatedPatient();
 
         // Validation rules
-        try {
-            $validatedData = $request->validate([
-                'full_name' => 'required|string|max:100',
-                'email' => [
-                    'required',
-                    'email',
-                    'max:100',
-                    Rule::unique('patients', 'email')->ignore(
-                        $patient->getKey(),
-                        $patient->getKeyName()
-                    ),
-                ],
-                'phone_number' => 'required|string|max:15',
-                'date_of_birth' => 'required|date|before:today',
-                'gender' => 'required|in:male,female',
-                'blood_type' => 'required|string|max:10|in:A+,A-,B+,B-,AB+,AB-,O+,O-,unknown',
-                'race' => 'required|string|max:20',
-                'other_race' => 'required_if:race,Other|string|max:20|nullable',
-            ]);
+        $validatedData = $request->validate([
+            'full_name' => 'required|string|max:100',
+            'email' => [
+                'required',
+                'email',
+                'max:100',
+                Rule::unique('patients', 'email')->ignore(
+                    $patient->getKey(),
+                    $patient->getKeyName()
+                ),
+            ],
+            'phone_number' => 'required|string|max:15',
+            'date_of_birth' => 'required|date|before:today',
+            'gender' => 'required|in:male,female',
+            'blood_type' => 'required|string|max:10|in:A+,A-,B+,B-,AB+,AB-,O+,O-,unknown',
+            'race' => 'required|string|max:20',
+            'other_race' => 'required_if:race,Other|string|max:20|nullable',
+        ]);
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Error handling for validation failures
-            return redirect()->back()
-                ->withInput()
-                ->withErrors($e->errors())
-                ->with('error', 'Please check the form for errors.');
+        // Handle "Other" race input
+        if ($request->race === 'Other') {
+            $validatedData['race'] = $request->other_race;
         }
 
-        try {
-            // Handle "Other" race input
-            if ($request->race === 'Other') {
-                $validatedData['race'] = $request->other_race;
-            }
+        // Remove the 'other_race' field from validated data
+        unset($validatedData['other_race']);
 
-            // Remove the 'other_race' field from validated data
-            unset($validatedData['other_race']);
+        // Calculate age from date of birth
+        $dateOfBirth = new \DateTime($validatedData['date_of_birth']);
+        $today = new \DateTime('today');
+        $age = $dateOfBirth->diff($today)->y;
+        $validatedData['age'] = $age;
 
-            // Calculate age from date of birth
-            $dateOfBirth = new \DateTime($validatedData['date_of_birth']);
-            $today = new \DateTime('today');
-            $age = $dateOfBirth->diff($today)->y;
-            $validatedData['age'] = $age;
-
-            // Update the patient record
-            $patient->update($validatedData);
-
-            // Refresh the patient model to get updated data
-            $patient->refresh();
-
-            // Return success response
-            return redirect()->route('patient.profile')->with('success', 'Personal information updated successfully!');
-
-        } catch (\Exception $e) {
-            // Error handling for unexpected issues
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'An error occurred while updating your information. Please try again.');
-        }
+        // Commit and redirect with unified helper
+        return $this->updateAndRedirect($patient, $validatedData, 'Personal information updated successfully!');
     }
 
     /**
@@ -85,38 +62,20 @@ class UpdateProfileController extends Controller
         // Get the authenticated patient
         $patient = $this->getAuthenticatedPatient();
 
-        try {
-            // Validation rules
-            $validatedData = $request->validate([
-                'height' => 'required|numeric|min:30|max:300',
-                'weight' => 'required|numeric|min:1|max:500',
-                'bmi' => 'nullable|numeric|min:10|max:100',
-            ]);
+        // Validation rules
+        $validatedData = $request->validate([
+            'height' => 'required|numeric|min:30|max:300',
+            'weight' => 'required|numeric|min:1|max:500',
+            'bmi' => 'nullable|numeric|min:10|max:100',
+        ]);
 
-            // Calculate BMI if not provided
-            if (empty($validatedData['bmi'])) {
-                $validatedData['bmi'] = $patient->getBmiAttribute();
-            }
-
-            // Update the patient record
-            $patient->update($validatedData);
-            $patient->refresh();
-
-            // Return success response
-            return redirect()->route('patient.profile')->with('success', 'Physical information updated successfully!');
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Error handling for validation failures
-            return redirect()->back()
-                ->withInput()
-                ->withErrors($e->errors())
-                ->with('error', 'Please check the form for errors.');
-        } catch (\Exception $e) {
-            // Error handling for unexpected issues
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'An error occurred while updating your information. Please try again.');
+        // Calculate BMI if not provided
+        if (empty($validatedData['bmi'])) {
+            $validatedData['bmi'] = $patient->getBmiAttribute();
         }
+
+        // Commit and redirect with unified helper
+        return $this->updateAndRedirect($patient, $validatedData, 'Physical information updated successfully!');
     }
 
     /**
@@ -126,39 +85,19 @@ class UpdateProfileController extends Controller
         // Get the authenticated patient
         $patient = $this->getAuthenticatedPatient();
 
-        try {
-            // Validation rules
-            $validatedData = $request->validate([
-                'address' => 'required|string',                   // longText
-                'postal_code' => 'required|string|size:5',
-                'state' => 'required|in:Johor,Kedah,Kelantan,Malacca,Negeri Sembilan,Pahang,Penang,Perak,Perlis,Sabah,Sarawak,Selangor,Terengganu,Kuala Lumpur,Labuan,Putrajaya',
-            ]);
+        // Validation rules
+        $validatedData = $request->validate([
+            'address' => 'required|string',                   // longText
+            'postal_code' => 'required|string|size:5',
+            'state' => 'required|in:Johor,Kedah,Kelantan,Malacca,Negeri Sembilan,Pahang,Penang,Perak,Perlis,Sabah,Sarawak,Selangor,Terengganu,Kuala Lumpur,Labuan,Putrajaya',
+        ]);
 
-            // Generate full address
-            $fullAddress = $patient->getFullAddressAttribute();
-            $validatedData['full_address'] = $fullAddress;
+        // Generate full address
+        $fullAddress = $patient->getFullAddressAttribute();
+        $validatedData['full_address'] = $fullAddress;
 
-            // Update the patient record
-            $patient->update($validatedData);
-
-            // Refresh the patient model to get updated data
-            $patient->refresh();
-
-            // Return success response
-            return redirect()->route('patient.profile')->with('success', 'Address information updated successfully!');
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Error handling for validation failures
-            return redirect()->back()
-                ->withInput()
-                ->withErrors($e->errors())
-                ->with('error', 'Please check the form for errors.');
-        } catch (\Exception $e) {
-            // Error handling for unexpected issues
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'An error occurred while updating your information. Please try again.');
-        }
+        // Commit and redirect with unified helper
+        return $this->updateAndRedirect($patient, $validatedData, 'Address information updated successfully!');
     }
 
     /**
@@ -167,54 +106,34 @@ class UpdateProfileController extends Controller
     public function updateEmergencyInfo(Request $request) {
         // Get the authenticated patient
         $patient = $this->getAuthenticatedPatient();
-        
-        try {
-            // Validation rules
-            $validatedData = $request->validate([
-                'emergency_contact_number' => 'required|string|max:15',
-                'emergency_contact_name' => 'required|string|max:100',
-                'emergency_contact_ic_number' => [
-                    'required',
-                    'string',
-                    'max:20',
-                    Rule::unique('patients', 'emergency_contact_ic_number')->ignore(
-                        $patient->getKey(),
-                        $patient->getKeyName()
-                    ),
-                ],
-                'emergency_contact_relationship' => 'required|string|max:30',
-                'other_relationship' => 'required_if:emergency_contact_relationship,Other|string|max:30|nullable',
-            ]);
 
-            // Handle "Other" relationship input
-            if ($request->emergency_contact_relationship === 'Other') {
-                $validatedData['emergency_contact_relationship'] = $request->other_relationship;
-            }
+        // Validation rules
+        $validatedData = $request->validate([
+            'emergency_contact_number' => 'required|string|max:15',
+            'emergency_contact_name' => 'required|string|max:100',
+            'emergency_contact_ic_number' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('patients', 'emergency_contact_ic_number')->ignore(
+                    $patient->getKey(),
+                    $patient->getKeyName()
+                ),
+            ],
+            'emergency_contact_relationship' => 'required|string|max:30',
+            'other_relationship' => 'required_if:emergency_contact_relationship,Other|string|max:30|nullable',
+        ]);
 
-            // Remove the 'other_relationship' field from validated data
-            unset($validatedData['other_relationship']);
-
-            // Update the patient record
-            $patient->update($validatedData);
-
-            // Refresh the patient model to get updated data
-            $patient->refresh();
-
-            // Return success response
-            return redirect()->route('patient.profile')->with('success', 'Emergency contact information updated successfully!');
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Error handling for validation failures
-            return redirect()->back()
-                ->withInput()
-                ->withErrors($e->errors())
-                ->with('error', 'Please check the form for errors.');
-        } catch (\Exception $e) {
-            // Error handling for unexpected issues
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'An error occurred while updating your information. Please try again.');
+        // Handle "Other" relationship input
+        if ($request->emergency_contact_relationship === 'Other') {
+            $validatedData['emergency_contact_relationship'] = $request->other_relationship;
         }
+
+        // Remove the 'other_relationship' field from validated data
+        unset($validatedData['other_relationship']);
+
+        // Commit and redirect with unified helper
+        return $this->updateAndRedirect($patient, $validatedData, 'Emergency contact information updated successfully!');
     }
 
     /**
@@ -320,5 +239,16 @@ class UpdateProfileController extends Controller
 
         // Return the authenticated patient
         return $patient;
+    }
+
+    // Update, Refresh, and Redirect Helper
+    private function updateAndRedirect($patient, array $data, string $successMessage) {
+        try {
+            $patient->update($data);
+            $patient->refresh();
+            return redirect()->route('patient.profile')->with('success', $successMessage);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'An error occurred while updating your information. Please try again.');
+        }
     }
 }
