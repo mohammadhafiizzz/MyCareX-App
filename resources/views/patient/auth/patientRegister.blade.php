@@ -55,7 +55,7 @@
         <form action="{{ route('patient.register') }}" method="POST" id="registrationForm" class="space-y-8">
             @csrf
 
-            @include('auth.registrationForm')
+            @include('patient.auth.registrationForm')
 
         </form>
     </main>

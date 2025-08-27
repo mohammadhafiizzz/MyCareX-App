@@ -12,12 +12,12 @@ class ForgotPasswordController extends Controller
 {
     // Show the form to request a password reset link
     public function showLinkRequestForm() {
-        return view('auth.passwordEmailForm');
+        return view('patient.auth.passwordEmailForm');
     }
 
     // Success page
     public function showSuccess() {
-        return view('auth.passwordResetSuccess');
+        return view('patient.auth.passwordResetSuccess');
     }
 
     // Handle sending of reset link email
@@ -37,7 +37,7 @@ class ForgotPasswordController extends Controller
 
     // Show the reset form
     public function showResetForm(Request $request, string $token) {
-        return view('auth.passwordResetForm', [
+        return view('patient.auth.passwordResetForm', [
             'token' => $token,
             'email' => $request->query('email'),
         ]);

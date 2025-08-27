@@ -66,7 +66,7 @@
         </div>
     </nav>
 
-    @include('auth.patientLoginForm')
+    @include('patient.auth.patientLoginForm')
 
     <!-- Hero Section -->
     <section class="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-23 lg:py-27">

@@ -12,15 +12,15 @@ class RegistrationController extends Controller
 
     // Show the patient registration form
     public function showRegistrationForm() {
-        return view('auth.patientRegister');
+        return view('patient.auth.patientRegister');
     }
 
     public function showEmailVerificationNotice() {
-        return view('auth.verifyEmail');
+        return view('patient.auth.verifyEmail');
     }
 
     public function showEmailVerified() {
-        return view('auth.emailVerified');
+        return view('patient.auth.emailVerified');
     }
 
     // Handle the patient registration
