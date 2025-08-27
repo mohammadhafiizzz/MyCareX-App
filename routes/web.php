@@ -26,6 +26,20 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
     // Patient Logout
     Route::post('/logout', [Patient\Auth\LoginController::class, 'logout'])->name('patient.logout');
 
+    // Password Reset
+    Route::middleware('guest:patient')->group(function () {
+        Route::get('/forgot-password', [Patient\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])
+            ->name('patient.password.request');
+        Route::post('/forgot-password', [Patient\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])
+            ->name('patient.password.email');
+        Route::get('/reset-password/success', [Patient\Auth\ForgotPasswordController::class, 'showSuccess'])
+            ->name('password.reset.success');
+        Route::get('/reset-password/{token}', [Patient\Auth\ForgotPasswordController::class, 'showResetForm'])
+            ->name('password.reset');
+        Route::post('/reset-password', [Patient\Auth\ForgotPasswordController::class, 'reset'])
+            ->name('patient.password.update');
+    });
+
     // Patient Dashboard (should be protected)
     Route::get('/dashboard', [Patient\DashboardController::class, 'index'])
         ->name('patient.dashboard')
