@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\Patient\Auth\RegistrationController as PatientRegistrationController;
 use App\Http\Controllers\Patient as Patient;
+use App\Http\Controllers\Organisation as Organisation;
 
 // MyCareX Home Page
 Route::get('/', [HomePageController::class, 'index'])->name('index');
@@ -76,5 +77,11 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
         Route::delete('/profile/picture', [Patient\DeleteProfileController::class, 'deleteProfilePicture'])
             ->name('patient.profile.delete.picture');
     });
+});
+
+// Organisation Routes
+Route::prefix('organisation')->middleware(['web'])->group(function () {
+    // Organisation Login Page
+    Route::get('/', [Organisation\Auth\LoginController::class, 'showLoginPage'])->name('organisation.login');
 });
 
