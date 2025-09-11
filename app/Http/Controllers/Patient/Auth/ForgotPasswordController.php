@@ -30,9 +30,7 @@ class ForgotPasswordController extends Controller
         $status = Password::broker('patients')->sendResetLink($credentials);
 
         // Always return a generic response for privacy
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with('status', __($status))
-            : back()->with('status', __($status));
+        return back()->with('status', __($status));
     }
 
     // Show the reset form
