@@ -41,7 +41,7 @@
             <p class="text-lg text-gray-600">Join thousands of Malaysians managing their healthcare records securely</p>
         </div>
 
-        <!-- Registration Form -->
+        <!-- Error Messages -->
         @if ($errors->any())
             <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
                 <ul>
@@ -52,6 +52,7 @@
             </div>
         @endif
 
+        <!-- Registration Form -->
         <form action="{{ route('patient.register') }}" method="POST" id="registrationForm" class="space-y-8">
             @csrf
 
