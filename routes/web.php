@@ -5,6 +5,7 @@ use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\Patient\Auth\RegistrationController as PatientRegistrationController;
 use App\Http\Controllers\Patient as Patient;
 use App\Http\Controllers\Organisation as Organisation;
+use App\Http\Controllers\Admin as Admin;
 
 // MyCareX Home Page
 Route::get('/', [HomePageController::class, 'index'])->name('index');
@@ -83,5 +84,11 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
 Route::prefix('organisation')->middleware(['web'])->group(function () {
     // Organisation Login Page
     Route::get('/', [Organisation\Auth\LoginController::class, 'showLoginPage'])->name('organisation.login');
+});
+
+// Admin Routes
+Route::prefix('admin')->middleware(['web'])->group(function () {
+    // Admin Login Page
+    Route::get('/', [Admin\Auth\LoginController::class, 'showLoginForm'])->name('admin.login');
 });
 
