@@ -90,5 +90,8 @@ Route::prefix('organisation')->middleware(['web'])->group(function () {
 Route::prefix('admin')->middleware(['web'])->group(function () {
     // Admin Login Page
     Route::get('/', [Admin\Auth\LoginController::class, 'showLoginForm'])->name('admin.login');
+
+    // Admin Registration
+    Route::get('/register', [Admin\Auth\RegistrationController::class, 'showRegistrationForm'])->name('admin.register.form');
 });
 
