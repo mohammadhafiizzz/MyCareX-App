@@ -10,7 +10,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Auth\Passwords\CanResetPassword;
 
-
 class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswordContract
 {
     use HasFactory, Notifiable, CanResetPassword;
