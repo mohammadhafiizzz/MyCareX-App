@@ -59,8 +59,8 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
             if (!$patient->patient_id) {
                 $lastPatient = static::orderBy('patient_id', 'desc')->first();
                 $patient->patient_id = $lastPatient 
-                    ? 'P' . str_pad((intval(substr($lastPatient->patient_id, 1)) + 1), 4, '0', STR_PAD_LEFT)
-                    : 'P0001';
+                    ? 'P' . str_pad((intval(substr($lastPatient->patient_id, 1)) + 1), 14, '0', STR_PAD_LEFT)
+                    : 'P00000000000001';
             }
         });
     }

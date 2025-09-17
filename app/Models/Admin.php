@@ -15,4 +15,34 @@ class Admin extends Authenticatable implements CanResetPasswordContract, MustVer
     use HasFactory, Notifiable, CanResetPassword;
 
     protected $primaryKey = 'admin_id';
+    protected $incrementing = false;
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        'admin_id', 'full_name', 'ic_number', 'phone_number', 'email', 
+        'password', 'role', 'email_verified_at', 'profile_image_url'
+    ];
+
+    protected $hidden = ['password', 'remember_token'];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    public function getAuthIdentifierName()
+    {
+        return 'admin_id';
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->admin_id;
+    }
+
+    public function username()
+    {
+        return 'admin_id';
+    }
+
+    // Auto-generate admin_id
 }
