@@ -14,12 +14,12 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
 {
     use HasFactory, Notifiable, CanResetPassword;
 
-    protected $primaryKey = 'patient_id';
+    protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'patient_id', 'full_name', 'ic_number', 'phone_number', 'email', 
+        'full_name', 'ic_number', 'phone_number', 'email', 
         'password', 'date_of_birth', 'gender', 'blood_type', 'race', 
         'height', 'weight', 'address', 'postal_code', 'state',
         'emergency_contact_number', 'emergency_contact_name', 
@@ -36,56 +36,13 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
         'email_verified_at' => 'datetime'
     ];
 
-    public function getAuthIdentifierName()
-    {
-        return 'patient_id';
-    }
-
-    public function getAuthIdentifier()
-    {
-        return $this->patient_id;
-    }
-
+    // Username for authentication
     public function username()
     {
         return 'ic_number';
     }
 
-    // Auto-generate patient_id
-    protected static function boot() {
-        parent::boot();
-        
-        static::creating(function ($patient) {
-            if (!$patient->patient_id) {
-                $lastPatient = static::orderBy('patient_id', 'desc')->first();
-                $patient->patient_id = $lastPatient 
-                    ? 'P' . str_pad((intval(substr($lastPatient->patient_id, 1)) + 1), 14, '0', STR_PAD_LEFT)
-                    : 'P00000000000001';
-            }
-        });
-    }
-
-    // Other methods remain the same...
-    public function getAgeAttribute() {
-        return Carbon::parse($this->date_of_birth)->age;
-    }
-
-    public function getBmiAttribute() {
-        if ($this->height && $this->weight) {
-            $heightInMeters = $this->height / 100;
-            return round($this->weight / ($heightInMeters * $heightInMeters), 1);
-        }
-        return null;
-    }
-
-    public function getFullAddressAttribute() {
-        return $this->address . ', ' . $this->postal_code . ', ' . $this->state;
-    }
-
-    public function setPasswordAttribute($value) {
-        $this->attributes['password'] = bcrypt($value);
-    }
-
+    // Search scope for filtering patients
     public function scopeSearch($query, $searchTerm) {
         if (empty($searchTerm)) {
             return $query;
@@ -96,5 +53,36 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
                 ->orWhere('ic_number', 'like', '%' . $searchTerm . '%')
                 ->orWhere('email', 'like', '%' . $searchTerm . '%');
         });
+    }
+
+    /*--- ACCESSORS ---*/
+    // Get the formatted Patient ID
+    public function getFormattedIdAttribute() {
+        return 'P' . str_pad($this->id, 14, '0', STR_PAD_LEFT);
+    }
+
+    // Get age from date_of_birth
+    public function getAgeAttribute() {
+        return Carbon::parse($this->date_of_birth)->age;
+    }
+
+    // Calculate BMI
+    public function getBmiAttribute() {
+        if ($this->height && $this->weight) {
+            $heightInMeters = $this->height / 100;
+            return round($this->weight / ($heightInMeters * $heightInMeters), 1);
+        }
+        return null;
+    }
+
+    // Get full address
+    public function getFullAddressAttribute() {
+        return $this->address . ', ' . $this->postal_code . ', ' . $this->state;
+    }
+
+    /*--- MUTATORS ---*/
+    // Set and hash the password
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = bcrypt($value);
     }
 }

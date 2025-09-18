@@ -31,7 +31,7 @@ class UpdateProfileController extends Controller
             ],
             'phone_number' => 'required|string|max:15',
             'date_of_birth' => 'required|date|before:today',
-            'gender' => 'required|in:male,female',
+            'gender' => 'required|in:Male,Female',
             'blood_type' => 'required|string|max:10|in:A+,A-,B+,B-,AB+,AB-,O+,O-,unknown',
             'race' => 'required|string|max:20',
             'other_race' => 'required_if:race,Other|string|max:20|nullable',

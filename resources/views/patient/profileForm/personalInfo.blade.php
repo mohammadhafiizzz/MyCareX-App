@@ -66,8 +66,8 @@
                         <select id="edit_gender" name="gender"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
                             required>
-                            <option value="male" {{ Auth::guard('patient')->user()->gender === 'male' ? 'selected' : '' }}>Male</option>
-                            <option value="female" {{ Auth::guard('patient')->user()->gender === 'female' ? 'selected' : '' }}>Female</option>
+                            <option value="Male" {{ Auth::guard('patient')->user()->gender === 'Male' ? 'selected' : '' }}>Male</option>
+                            <option value="Female" {{ Auth::guard('patient')->user()->gender === 'Female' ? 'selected' : '' }}>Female</option>
                         </select>
                     </div>
 

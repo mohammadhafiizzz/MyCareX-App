@@ -101,7 +101,6 @@
                         <h3 class="text-xl font-semibold text-gray-900 mt-4">
                             {{ Auth::guard('patient')->user()->full_name }}
                         </h3>
-                        <!-- <p class="text-gray-600">Patient ID: {{ Auth::guard('patient')->user()->patient_id }}</p> -->
                         <p class="text-gray-600">Age: {{ Auth::guard('patient')->user()->age }} years old</p>
                     </div>
                 </div>

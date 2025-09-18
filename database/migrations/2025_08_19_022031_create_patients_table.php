@@ -11,14 +11,14 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('patients', function (Blueprint $table) {
-            $table->string('patient_id', 15)->primary();
+            $table->int('id')->primary();
             $table->string('full_name', 100);
             $table->string('ic_number', 20)->unique();
             $table->string('phone_number', 15);
             $table->string('email', 100)->unique();
             $table->string('password', 255);
             $table->date('date_of_birth');
-            $table->enum('gender', ['male', 'female']);
+            $table->enum('gender', ['Male', 'Female']);
             $table->string('blood_type', 10);
             $table->string('race', 20);
             $table->decimal('height', 5, 2)->nullable();

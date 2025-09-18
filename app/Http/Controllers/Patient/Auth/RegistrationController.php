@@ -32,7 +32,7 @@ class RegistrationController extends Controller
             'email' => 'required|email|max:100|unique:patients,email',
             'password' => 'required|min:8|confirmed',
             'date_of_birth' => 'required|date',
-            'gender' => 'required|in:male,female',
+            'gender' => 'required|in:Male,Female',
             'blood_type' => 'required|string|max:10',
             'race' => 'required|string|max:20',
             'height' => 'nullable|numeric|between:1,999.99',  // decimal(5,2)
