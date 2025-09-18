@@ -50,6 +50,10 @@
         <button class="bg-blue-500 text-white py-2 px-4 rounded cursor-pointer" type="submit">Register</button>
     </form>
 
+    @if (!$recordExists)
+        <p class="text-red-500">No admin user is registered. Please fill out the form to register the first admin for this system. The admin will be the "Super Admin"</p>
+    @endif
+
     <!-- Footer -->
 </body>
 

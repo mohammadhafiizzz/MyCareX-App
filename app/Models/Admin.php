@@ -15,7 +15,7 @@ class Admin extends Authenticatable implements CanResetPasswordContract, MustVer
     use HasFactory, Notifiable, CanResetPassword;
 
     protected $primaryKey = 'admin_id';
-    protected $incrementing = false;
+    public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
