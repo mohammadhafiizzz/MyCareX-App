@@ -13,7 +13,6 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 class Admin extends Authenticatable implements CanResetPasswordContract, MustVerifyEmail
 {
     use HasFactory, Notifiable, CanResetPassword;
-5
     protected $primaryKey = 'admin_id';
     public $incrementing = false;
     protected $keyType = 'string';
