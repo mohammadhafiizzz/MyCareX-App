@@ -15,7 +15,6 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
     use HasFactory, Notifiable, CanResetPassword;
 
     protected $primaryKey = 'id';
-    public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -58,7 +57,7 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
     /*--- ACCESSORS ---*/
     // Get the formatted Patient ID
     public function getFormattedIdAttribute() {
-        return 'P' . str_pad($this->id, 14, '0', STR_PAD_LEFT);
+        return 'P' . str_pad($this->id, 5, '0', STR_PAD_LEFT);
     }
 
     // Get age from date_of_birth

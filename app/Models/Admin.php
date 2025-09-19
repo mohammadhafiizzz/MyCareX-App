@@ -13,7 +13,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 class Admin extends Authenticatable implements CanResetPasswordContract, MustVerifyEmail
 {
     use HasFactory, Notifiable, CanResetPassword;
-
+5
     protected $primaryKey = 'admin_id';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -28,21 +28,6 @@ class Admin extends Authenticatable implements CanResetPasswordContract, MustVer
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function getAuthIdentifierName()
-    {
-        return 'admin_id';
-    }
-
-    public function getAuthIdentifier()
-    {
-        return $this->admin_id;
-    }
-
-    public function username()
-    {
-        return 'admin_id';
-    }
 
     // Auto-generate admin_id
     protected static function boot() {
@@ -62,7 +47,27 @@ class Admin extends Authenticatable implements CanResetPasswordContract, MustVer
         });
     }
 
-    // Mutator to hash password before saving
+    /*--- ACCESSORS ---*/
+    // Get the auth Admin ID
+    public function getAuthIdentifierName()
+    {
+        return 'admin_id';
+    }
+
+    // Get the auth Admin ID value
+    public function getAuthIdentifier()
+    {
+        return $this->admin_id;
+    }
+
+    // Username for authentication
+    public function username()
+    {
+        return 'admin_id';
+    }
+
+    /*--- MUTATORS ---*/
+    // Set hash password before saving
     public function setPasswordAttribute($value) {
         $this->attributes['password'] = bcrypt($value);
     }
