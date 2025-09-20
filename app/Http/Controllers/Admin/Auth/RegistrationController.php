@@ -24,7 +24,7 @@ class RegistrationController extends Controller
             'phone_number' => 'required|string|max:15',
             'email' => 'required|email|max:100|unique:admins,email',
             'password' => 'required|min:8|confirmed',
-            'role' => 'nullable|in:Super Admin,Admin',
+            'role' => 'nullable|in:superadmin,admin',
             'profile_image_url' => 'nullable|string',
         ]);
 
@@ -36,6 +36,9 @@ class RegistrationController extends Controller
         }
 
         // Create a new admin user
-        $admin = Admin::create([$validatedData]);
+        $admin = Admin::create($validatedData);
+
+        // Redirect with success message
+        return redirect()->route('admin.login')->with('success', 'Registration successful! Please verify your email before logging in.');
     }
 }

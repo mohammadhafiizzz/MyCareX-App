@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -10,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Auth\Passwords\CanResetPassword;
 
-class Admin extends Authenticatable implements CanResetPasswordContract, MustVerifyEmail
+class Admin extends Authenticatable implements CanResetPasswordContract
 {
     use HasFactory, Notifiable, CanResetPassword;
     protected $primaryKey = 'admin_id';
@@ -41,7 +40,7 @@ class Admin extends Authenticatable implements CanResetPasswordContract, MustVer
                 } else {
                     $newIdNumber = 1;
                 }
-                $admin->admin_id = 'MCX' . str_pad($newIdNumber, 5, '0', STR_PAD_LEFT);
+                $admin->admin_id = 'MCX' . str_pad($newIdNumber, 4, '0', STR_PAD_LEFT);
             }
         });
     }

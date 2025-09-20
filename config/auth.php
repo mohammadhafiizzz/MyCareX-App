@@ -46,6 +46,12 @@ return [
             'driver' => 'session',
             'provider' => 'patients',
         ],
+
+        // Admin guard configuration
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
     ],
 
     /*
@@ -75,6 +81,12 @@ return [
         'patients' => [
             'driver' => 'eloquent',
             'model' => App\Models\Patient::class,
+        ],
+
+        // Admin provider configuration
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
         ],
 
         // 'users' => [
@@ -117,8 +129,15 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-    ],
 
+        // Admin password reset configuration
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout

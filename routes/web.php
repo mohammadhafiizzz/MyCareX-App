@@ -93,5 +93,6 @@ Route::prefix('admin')->middleware(['web'])->group(function () {
 
     // Admin Registration
     Route::get('/register', [Admin\Auth\RegistrationController::class, 'showRegistrationForm'])->name('admin.register.form');
+    Route::post('/register', [Admin\Auth\RegistrationController::class, 'register'])->name('admin.register');
 });
 
