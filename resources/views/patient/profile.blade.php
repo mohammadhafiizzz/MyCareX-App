@@ -13,7 +13,7 @@
 <body class="font-[Inter] bg-gray-50">
 
     <!-- Header -->
-    @include('components.patientHeader')
+    @include('patient.components.patientHeader')
 
     {{-- Flash Messages --}}
     @if (session('success'))
@@ -356,7 +356,7 @@
     @include('patient.profileForm.profilePicture')
 
     <!-- Footer -->
-    @include('components.footer')
+    @include('patient.components.footer')
 
     <!-- Javascript -->
     @vite(['resources/js/main/patient/patientProfile.js'])

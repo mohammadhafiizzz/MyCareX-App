@@ -148,7 +148,7 @@
         </script>
     @endif
 
-    @include('components.footer')
+    @include('patient.components.footer')
     @vite(['resources/js/main/index.js'])
 
 </body>

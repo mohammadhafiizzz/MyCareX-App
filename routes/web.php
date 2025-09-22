@@ -42,7 +42,7 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
             ->name('patient.password.update');
     });
 
-    // Patient Dashboard (should be protected)
+    // Patient Dashboard (Protected)
     Route::get('/dashboard', [Patient\DashboardController::class, 'index'])
         ->name('patient.dashboard')
         ->middleware('auth:patient');
@@ -104,9 +104,9 @@ Route::prefix('admin')->middleware(['web'])->group(function () {
         ->name('admin.dashboard')
         ->middleware('auth:admin');
 
-    // Super Admin Dashboard
-    Route::get('/superadmin/dashboard', [Admin\DashboardController::class, 'superadminDashboard'])
-        ->name('superadmin.dashboard')
+    // Admin Management Page
+    Route::get('/management', [Admin\AdminManagementController::class, 'index'])
+        ->name('admin.management')
         ->middleware('auth:admin');
 });
 

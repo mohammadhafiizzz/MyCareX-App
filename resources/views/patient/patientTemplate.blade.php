@@ -13,13 +13,13 @@
 <body class="font-[Inter] bg-gray-100">
 
     <!-- Header -->
-    @include('components.patientHeader')
+    @include('patient.components.patientHeader')
 
     <!-- Main Content -->
 
     <!-- Footer -->
     <script src="{{ asset('js/patientHeader.js') }}"></script>
-    @include('components.footer')
+    @include('patient.components.footer')
 </body>
 
 </html>

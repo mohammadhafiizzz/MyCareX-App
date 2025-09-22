@@ -11,8 +11,4 @@ class DashboardController extends Controller
     public function index() {
         return view('admin.dashboard');
     }
-
-    public function superadminDashboard() {
-        return view('admin.superadminDashboard');
-    }
 }

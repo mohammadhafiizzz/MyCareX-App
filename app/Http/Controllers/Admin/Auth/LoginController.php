@@ -56,14 +56,9 @@ class LoginController extends Controller
             RateLimiter::clear($this->throttleKey($request));
             $request->session()->regenerate();
 
-            // Check the role and redirect accordingly
-            if ($admin->role === 'superadmin') {
-                return redirect()->intended(route('superadmin.dashboard'))
+            // Redirect to dashboard
+            return redirect()->intended(route('admin.dashboard'))
                     ->with('success', 'Welcome back, ' . $admin->full_name . '!');
-            } else {
-                return redirect()->intended(route('admin.dashboard'))
-                    ->with('success', 'Welcome back, ' . $admin->full_name . '!');
-            }
         }
 
         // Hit rate limiter on failed attempt

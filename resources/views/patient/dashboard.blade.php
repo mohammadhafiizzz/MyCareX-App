@@ -13,7 +13,7 @@
 <body class="font-[Inter] bg-gray-50">
 
     <!-- Header -->
-    @include('components.patientHeader')
+    @include('patient.components.patientHeader')
 
     <!-- Dashboard Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -153,7 +153,7 @@
     </div>
     
     <!-- Footer -->
-    @include('components.footer')
+    @include('patient.components.footer')
 
     <!-- Javascript -->
     @vite(['resources/js/main/main.js'])
