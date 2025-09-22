@@ -38,7 +38,7 @@
         </div>
     @endif
 
-    <!-- Info Box - Debugging Purpose -->
+    <!-- Info Box -->
     @if (session('info'))
         <div class="mb-6 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-blue-800">
             <div class="flex items-start">
