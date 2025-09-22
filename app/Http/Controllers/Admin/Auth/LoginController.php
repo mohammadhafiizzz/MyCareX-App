@@ -25,15 +25,49 @@ class LoginController extends Controller
             'password' => 'required|string'
         ]);
 
-        if (Auth::guard('admin')->attempt($credentials)) {
-            $request->session()->regenerate();
+        // Remember me
+        $remember = $request->boolean('remember');
+
+        /*
+        // Check email verification
+        if ($admin instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$admin->hasVerifiedEmail()) {
+            Auth::guard('admin')->logout();
+            RateLimiter::hit($this->throttleKey($request));
+            
+            return back()
+                ->withInput($request->only('admin_id'))
+                ->with('login_error', 'Please verify your email address first.');
+        }
+        */
+
+        // Login attempt
+        if (Auth::guard('admin')->attempt($credentials, $remember)) {
+            $admin = Auth::guard('admin')->user();
 
             // Check if account is verified by the Super Admin
-            
+            if (is_null($admin->account_verified_at)) {
+                Auth::guard('admin')->logout();
+                return back()
+                    ->withInput($request->only('admin_id'))
+                    ->with('login_error', 'Your account is not verified by the Super Admin.');
+            }
 
-            return redirect()->intended(route('admin.dashboard'))
-                ->with('success', 'Welcome back, ' . Auth::guard('admin')->user()->name . '!');
+            // Clear login attempts
+            RateLimiter::clear($this->throttleKey($request));
+            $request->session()->regenerate();
+
+            // Check the role and redirect accordingly
+            if ($admin->role === 'superadmin') {
+                return redirect()->intended(route('superadmin.dashboard'))
+                    ->with('success', 'Welcome back, ' . $admin->full_name . '!');
+            } else {
+                return redirect()->intended(route('admin.dashboard'))
+                    ->with('success', 'Welcome back, ' . $admin->full_name . '!');
+            }
         }
+
+        // Hit rate limiter on failed attempt
+        RateLimiter::hit($this->throttleKey($request));
 
         return back()
             ->withInput($request->only('admin_id'))
@@ -42,16 +76,27 @@ class LoginController extends Controller
 
     // Handle Logout
     public function logout(Request $request) {
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
+        return redirect()->route('admin.login')
+            ->with('success', 'You have been logged out successfully.');
     }
 
     // Throttle login attempts
     protected function checkTooManyFailedAttempts(Request $request) {
-
+        if (RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
+            $seconds = RateLimiter::availableIn($this->throttleKey($request));
+            
+            throw ValidationException::withMessages([
+                'admin_id' => "Too many login attempts. Please try again in {$seconds} seconds.",
+            ]);
+        }
     }
 
     // Generate throttle key
     protected function throttleKey(Request $request) {
-
+        return 'login.' . $request->input('admin_id') . '|' . $request->ip();
     }
 }

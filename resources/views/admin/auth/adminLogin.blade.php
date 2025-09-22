@@ -33,7 +33,7 @@
             <h1 class="text-3xl font-bold text-gray-800">Admin Portal <i class="fas fa-user text-blue-600"></i></h1>
         </div>
 
-        <form action="#" method="POST" id="adminLoginForm">
+        <form action="{{ route('admin.login.submit') }}" method="POST" id="adminLoginForm">
             @csrf
 
             <!-- Error Messages -->
@@ -52,7 +52,7 @@
                 <!-- Staff ID Field -->
                 <div>
                     <label for="staffId" class="block text-sm font-medium text-gray-700 mb-2">Staff ID</label>
-                    <input type="text" id="staffId" name="staff_id" oninput="this.value = this.value.toUpperCase()"
+                    <input type="text" id="staffId" name="admin_id" oninput="this.value = this.value.toUpperCase()"
                         placeholder="MCX12345"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
                 </div>
@@ -80,13 +80,31 @@
                 </div>
             </div>
         </form>
+
         <div class="text-center mt-6">
             <hr class="my-8 border-gray-300">
-            <a href="{{ route('admin.register.form') }}" class="text-sm border rounded-lg p-3 text-blue-600 hover:text-white hover:bg-blue-600 transition-colors">
+            <a href="{{ route('admin.register.form') }}"
+                class="text-sm border rounded-lg p-3 text-blue-600 hover:text-white hover:bg-blue-600 transition-colors">
                 Register new staff
             </a>
         </div>
     </div>
+
+    <!-- Error Messages - Add session error display -->
+    @if($errors->any() || session('login_error'))
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            @if($errors->any())
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
+            @if(session('login_error'))
+                <p>{{ session('login_error') }}</p>
+            @endif
+        </div>
+    @endif
 
     <!-- Copyright footer -->
     <footer class="text-center mt-8 pb-4">

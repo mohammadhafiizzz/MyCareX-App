@@ -79,7 +79,7 @@
                     <a href="#" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
                         <i class="fas fa-cog mr-3"></i>Settings
                     </a>
-                    <form action="#" method="POST" class="block">
+                    <form action="{{ route('patient.logout') }}" method="POST" class="block">
                         @csrf
                         <button type="submit" class="flex items-center w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-md">
                             <i class="fas fa-sign-out-alt mr-3"></i>Logout

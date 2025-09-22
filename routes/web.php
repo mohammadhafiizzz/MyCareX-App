@@ -88,11 +88,25 @@ Route::prefix('organisation')->middleware(['web'])->group(function () {
 
 // Admin Routes
 Route::prefix('admin')->middleware(['web'])->group(function () {
-    // Admin Login Page
+    // Admin Login
     Route::get('/', [Admin\Auth\LoginController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/login', [Admin\Auth\LoginController::class, 'login'])->name('admin.login.submit');
+
+    // Admin Logout
+    Route::post('/logout', [Admin\Auth\LoginController::class, 'logout'])->name('admin.logout');
 
     // Admin Registration
     Route::get('/register', [Admin\Auth\RegistrationController::class, 'showRegistrationForm'])->name('admin.register.form');
     Route::post('/register', [Admin\Auth\RegistrationController::class, 'register'])->name('admin.register');
+
+    // Admin Dashboard
+    Route::get('/dashboard', [Admin\DashboardController::class, 'index'])
+        ->name('admin.dashboard')
+        ->middleware('auth:admin');
+
+    // Super Admin Dashboard
+    Route::get('/superadmin/dashboard', [Admin\DashboardController::class, 'superadminDashboard'])
+        ->name('superadmin.dashboard')
+        ->middleware('auth:admin');
 });
 

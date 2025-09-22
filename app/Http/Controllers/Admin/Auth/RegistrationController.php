@@ -30,7 +30,10 @@ class RegistrationController extends Controller
 
         // Determine role
         if (!Admin::exists()) {
-            $validatedData['role'] = 'superadmin'; // First admin is Super Admin
+            // First admin is Super Admin, Verified by default
+            $validatedData['role'] = 'superadmin';
+            $validatedData['email_verified_at'] = now();
+            $validatedData['account_verified_at'] = now();
         } else {
             $validatedData['role'] = 'admin'; // Subsequent admins are regular Admins
         }
