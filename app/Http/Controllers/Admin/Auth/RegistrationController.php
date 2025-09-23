@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Verified;
 
 class RegistrationController extends Controller
 {
@@ -39,7 +38,7 @@ class RegistrationController extends Controller
         }
 
         // Create a new admin user
-        $admin = Admin::create($validatedData);
+        Admin::create($validatedData);
 
         // Redirect with success message
         return redirect()->route('admin.login')->with('success', 'Registration successful! Please verify your email before logging in.');

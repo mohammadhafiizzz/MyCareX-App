@@ -11,13 +11,28 @@ class AdminManagementController extends Controller
 {
     // Show Admin Management Page
     public function index() {
-
-        // default is pending
+        // default data set (pending admins)
         $admins = $this->queryByStatus('pending')->get();
+
+        // status counters
+        $pendingCount  = Admin::whereNull('account_verified_at')
+                            ->where('role', '!=', 'superadmin')
+                            ->count();
+
+        $approvedCount = Admin::whereNotNull('account_verified_at')
+                            ->where('role', '!=', 'superadmin')
+                            ->count();
+
+        $rejectedCount = Admin::whereNotNull('account_rejected_at')
+                            ->where('role', '!=', 'superadmin')
+                            ->count();
 
         return view('admin.adminManagement', [
             'defaultStatus' => 'pending',
-            'admins' => $admins,
+            'admins'        => $admins,
+            'pendingCount'  => $pendingCount,
+            'approvedCount' => $approvedCount,
+            'rejectedCount' => $rejectedCount,
         ]);
     }
 
@@ -64,4 +79,6 @@ class AdminManagementController extends Controller
         return redirect()->route('admin.management', ['status' => 'approved'])
             ->with('success', 'Admin account approved successfully.');
     }
+
+    // Reject admin account
 }

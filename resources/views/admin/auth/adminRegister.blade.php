@@ -44,14 +44,26 @@
 
         <p>
             <label for="confirmPassword">Confirm Password </label>
-            <input class="border border-gray-300 p-2 rounded" type="password" id="confirmPassword" name="password_confirmation" required>
+            <input class="border border-gray-300 p-2 rounded" type="password" id="confirmPassword"
+                name="password_confirmation" required>
         </p>
 
         <button class="bg-blue-500 text-white py-2 px-4 rounded cursor-pointer" type="submit">Register</button>
     </form>
 
     @if (!$recordExists)
-        <p class="text-red-500">No admin user is registered. Please fill out the form to register the first admin for this system. The admin will be the "Super Admin"</p>
+        <p class="text-red-500">No admin user is registered. Please fill out the form to register the first admin for this
+            system. The admin will be the "Super Admin"</p>
+    @endif
+
+    @if ($errors->any())
+        <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <!-- Footer -->
