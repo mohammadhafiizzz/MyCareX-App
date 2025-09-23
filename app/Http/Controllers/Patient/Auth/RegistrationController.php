@@ -35,14 +35,14 @@ class RegistrationController extends Controller
             'gender' => 'required|in:Male,Female',
             'blood_type' => 'required|string|max:10',
             'race' => 'required|string|max:20',
-            'height' => 'nullable|numeric|between:1,999.99',  // decimal(5,2)
-            'weight' => 'nullable|numeric|between:1,999.99',  // decimal(5,2)
-            'address' => 'required|string',                   // longText
+            'height' => 'nullable|numeric|between:1,999.99',
+            'weight' => 'nullable|numeric|between:1,999.99',
+            'address' => 'required|string',
             'postal_code' => 'required|string|size:5',
             'state' => 'required|in:Johor,Kedah,Kelantan,Malacca,Negeri Sembilan,Pahang,Penang,Perak,Perlis,Sabah,Sarawak,Selangor,Terengganu,Kuala Lumpur,Labuan,Putrajaya',
             'emergency_contact_number' => 'required|string|max:15',
             'emergency_contact_name' => 'required|string|max:100',
-            'emergency_contact_ic_number' => 'required|string|max:20|unique:patients,emergency_contact_ic_number',
+            'emergency_contact_ic_number' => 'required|string|max:20',
             'emergency_contact_relationship' => 'required|string|max:30',
             'profile_image_url' => 'nullable|string',
 

@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->enum('state', ['Johor', 'Kedah', 'Kelantan', 'Malacca', 'Negeri Sembilan', 'Pahang', 'Penang', 'Perak', 'Perlis', 'Sabah', 'Sarawak', 'Selangor', 'Terengganu', 'Kuala Lumpur', 'Labuan', 'Putrajaya']);
             $table->string('emergency_contact_number', 15);
             $table->string('emergency_contact_name', 100);
-            $table->string('emergency_contact_ic_number', 20)->unique();
+            $table->string('emergency_contact_ic_number', 20);
             $table->string('emergency_contact_relationship', 30);
             $table->string('profile_image_url')->nullable();
             $table->timestamps();
