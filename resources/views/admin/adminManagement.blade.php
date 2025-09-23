@@ -12,13 +12,15 @@
 
 <body class="font-[Inter] bg-gray-100">
     <div class="flex h-screen bg-gray-100">
-        
+
         <!-- Sidebar -->
         @include('admin.components.sidebar')
 
         <!-- Mobile menu button -->
         <div class="lg:hidden">
-            <button type="button" class="fixed top-4 left-4 z-50 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" id="mobile-menu-button">
+            <button type="button"
+                class="fixed top-4 left-4 z-50 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                id="mobile-menu-button">
                 <span class="sr-only">Open sidebar</span>
                 <i class="fas fa-bars text-xl"></i>
             </button>
@@ -26,7 +28,7 @@
 
         <!-- Main Content -->
         <div class="flex-1 w-max flex flex-col overflow-hidden">
-            
+
             <!-- Top Header -->
             <header class="bg-white shadow-sm border-b h-20 border-gray-200">
                 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -44,7 +46,7 @@
             <!-- Main Content Area -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    
+
                     <!-- Page Header -->
                     <div class="md:flex md:items-center md:justify-between mb-6">
                         <div class="flex-1 min-w-0">
@@ -116,75 +118,97 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Admin Details
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Contact Info
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Registration Date
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Status
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Actions
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    
-                                    <!-- Sample Row 1 -->
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    <div class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
-                                                        <span class="text-sm font-medium text-white">JD</span>
+                                    @forelse ($admins as $admin)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-10 w-10">
+                                                        <div
+                                                            class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
+                                                            <span class="text-sm font-medium text-white">
+                                                                {{ \Illuminate\Support\Str::of($admin->full_name)->split('/\s+/')->map(fn($p) => $p[0])->join('') }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">
+                                                            {{ $admin->full_name }}</div>
+                                                        <div class="text-sm text-gray-500">{{ $admin->admin_id }}</div>
                                                     </div>
                                                 </div>
-                                                <div class="ml-4">
-                                                    <div class="text-sm font-medium text-gray-900">John Doe</div>
-                                                    <div class="text-sm text-gray-500">MCX0002</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">john.doe@example.com</div>
-                                            <div class="text-sm text-gray-500">+60123456789</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ now()->subDays(2)->format('M j, Y') }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                <i class="fas fa-clock mr-1"></i>
-                                                Pending
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <div class="flex items-center justify-end space-x-2">
-                                                <button type="button" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" title="Approve">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                                <button type="button" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" title="Reject">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
 
-                                    <!-- Empty State (Hidden) -->
-                                    <tr class="hidden" id="empty-state">
-                                        <td colspan="5" class="px-6 py-12 text-center">
-                                            <div class="flex flex-col items-center">
-                                                <i class="fas fa-inbox text-gray-300 text-4xl mb-4"></i>
-                                                <h3 class="text-lg font-medium text-gray-900 mb-2">No pending verifications</h3>
-                                                <p class="text-gray-500">All admin accounts have been processed.</p>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            <!-- Contact -->
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900">{{ $admin->email }}</div>
+                                                <div class="text-sm text-gray-500">{{ $admin->phone_number }}</div>
+                                            </td>
+
+                                            <!-- Registration date -->
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $admin->created_at->format('M j, Y') }}
+                                            </td>
+
+                                            <!-- Status badge -->
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                @php
+                                                    $status = $admin->account_verified_at
+                                                        ? 'Approved'
+                                                        : ($admin->account_rejected_at ? 'Rejected' : 'Pending');
+                                                    $colors = [
+                                                        'Approved' => ['bg' => 'green', 'icon' => 'check-circle'],
+                                                        'Rejected' => ['bg' => 'red', 'icon' => 'times-circle'],
+                                                        'Pending' => ['bg' => 'yellow', 'icon' => 'clock']
+                                                    ];
+                                                @endphp
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                                    bg-{{ $colors[$status]['bg'] }}-100 text-{{ $colors[$status]['bg'] }}-800">
+                                                    <i class="fas fa-{{ $colors[$status]['icon'] }} mr-1"></i> {{ $status }}
+                                                </span>
+                                            </td>
+
+                                            <!-- Actions unchanged -->
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div class="flex items-center justify-end space-x-2">
+                                                    <button type="button" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" title="Approve">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                    <button type="button" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" title="Reject">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="p-6 text-center text-gray-500">
+                                                No {{ $defaultStatus }} admins found.
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -211,10 +235,12 @@
                     </p>
                 </div>
                 <div class="items-center px-4 py-3">
-                    <button id="modal-confirm" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
+                    <button id="modal-confirm"
+                        class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
                         Confirm
                     </button>
-                    <button id="modal-cancel" class="mt-3 px-4 py-2 bg-gray-300 text-gray-800 text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                    <button id="modal-cancel"
+                        class="mt-3 px-4 py-2 bg-gray-300 text-gray-800 text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
                         Cancel
                     </button>
                 </div>
@@ -228,12 +254,12 @@
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebar-overlay');
 
-        mobileMenuButton.addEventListener('click', function() {
+        mobileMenuButton.addEventListener('click', function () {
             sidebar.classList.toggle('-translate-x-full');
             sidebarOverlay.classList.toggle('hidden');
         });
 
-        sidebarOverlay.addEventListener('click', function() {
+        sidebarOverlay.addEventListener('click', function () {
             sidebar.classList.add('-translate-x-full');
             sidebarOverlay.classList.add('hidden');
         });
@@ -249,19 +275,19 @@
 
         // Action buttons
         document.querySelectorAll('button[title="Approve"]').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 showModal('Approve Admin', 'Are you sure you want to approve this admin account?', 'approve', 'green');
             });
         });
 
         document.querySelectorAll('button[title="Reject"]').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 showModal('Reject Admin', 'Are you sure you want to reject this admin account?', 'reject', 'red');
             });
         });
 
         document.querySelectorAll('button[title="Suspend"]').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 showModal('Suspend Admin', 'Are you sure you want to suspend this admin account?', 'suspend', 'orange');
             });
         });
@@ -269,20 +295,20 @@
         function showModal(title, message, action, color) {
             modalTitle.textContent = title;
             modalMessage.textContent = message;
-            
+
             // Update modal colors
             modalIcon.className = `mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-${color}-100`;
             modalIconClass.className = `fas fa-exclamation-triangle text-${color}-600`;
             modalConfirm.className = `px-4 py-2 bg-${color}-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-${color}-700 focus:outline-none focus:ring-2 focus:ring-${color}-300`;
-            
+
             modal.classList.remove('hidden');
         }
 
-        modalCancel.addEventListener('click', function() {
+        modalCancel.addEventListener('click', function () {
             modal.classList.add('hidden');
         });
 
-        modalConfirm.addEventListener('click', function() {
+        modalConfirm.addEventListener('click', function () {
             // Handle the confirmation logic here
             modal.classList.add('hidden');
             // Add your backend logic here

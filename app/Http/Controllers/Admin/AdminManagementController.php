@@ -11,18 +11,40 @@ class AdminManagementController extends Controller
 {
     // Show Admin Management Page
     public function index() {
-        return view('admin.adminManagement');
+
+        // default is pending
+        $admins = $this->queryByStatus('pending')->get();
+
+        return view('admin.adminManagement', [
+            'defaultStatus' => 'pending',
+            'admins' => $admins,
+        ]);
     }
 
-    // Get list of admins
+    // get list of admins by status
+    public function listAdmins($status) {
+        // query based on status
+        $collection = $this->queryByStatus($status)->get();
 
-    // Get pending admin verifications
-    public function getPendingAdmins() {
-        // Logic to fetch pending verifications
-        $pendingAdmins = Admin::whereNull('account_verified_at')
-            ->where('role', '!=', 'super_admin')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // return pure data
+        return response()->json($collection);
+    }
+
+    // query admins by status
+    private function queryByStatus($status) {
+        return match ($status) {
+            'pending'  => Admin::whereNull('account_verified_at')
+                            ->where('role', '!=', 'super_admin')
+                            ->orderByDesc('created_at'),
+            'approved' => Admin::whereNotNull('account_verified_at')
+                            ->where('account_rejected_at', null)
+                            ->where('role', '!=', 'super_admin')
+                            ->orderByDesc('created_at'),
+            'rejected' => Admin::whereNotNull('account_rejected_at')
+                            ->where('role', '!=', 'super_admin')
+                            ->orderByDesc('created_at'),
+            default    => Admin::query()->whereRaw('0 = 1'),
+        };
     }
 
     // Approve admin account

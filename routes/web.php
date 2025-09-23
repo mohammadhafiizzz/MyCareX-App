@@ -108,5 +108,10 @@ Route::prefix('admin')->middleware(['web'])->group(function () {
     Route::get('/management', [Admin\AdminManagementController::class, 'index'])
         ->name('admin.management')
         ->middleware('auth:admin');
+
+    // Get lists of admins
+    Route::get('management/list/{status}', [Admin\AdminManagementController::class, 'listAdmins'])
+        ->name('admin.management.list')
+        ->middleware('auth:admin');
 });
 
