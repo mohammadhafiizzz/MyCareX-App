@@ -185,29 +185,67 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /*----------- action buttons functionality ---------- */
+    let pendingAction = null;
+    let targetId = null;
+
+    function openModal(action, adminId, title, msg, color) {
+        pendingAction = action;
+        targetId = adminId;
+        showModal(title, msg, color);
+    }
+
     /* ---------- event delegation for buttons ---------- */
     tbody.addEventListener('click', e => {
         if (!e.target.closest('.action-btn')) return;
         const btn = e.target.closest('.action-btn');
 
+        const id = btn.dataset.id;
+
         if (btn.classList.contains('approve')) {
-            showModal(
+            openModal(
+                'approve',
+                id,
                 'Approve Admin',
                 'Are you sure you want to approve this admin account?',
                 'green'
             );
         } else if (btn.classList.contains('reject')) {
-            showModal(
+            openModal(
+                'reject',
+                id,
                 'Reject Admin',
                 'Are you sure you want to reject this admin account?',
                 'red'
             );
         } else if (btn.classList.contains('delete')) {
-            showModal(
+            openModal(
+                'delete',
+                id,
                 'Delete Admin',
                 'Are you sure you want to delete this admin account?',
                 'red'
             );
         }
     });
+
+    /* ---------- confirm modal action ---------- */
+    mConfirm.addEventListener('click', () => {
+        if (!pendingAction || !targetId) return;
+
+        fetch(`/admin/management/${pendingAction}/${targetId}`, {
+            method : 'POST',
+            headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept'      : 'application/json'
+            }
+        })
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(() => {
+            modal.classList.add('hidden');
+            // simply trigger the active card again to refresh counts + table
+            document.querySelector('.status-card.ring-blue-500').click();
+            })
+            .catch(() => alert('Action failed, please try again.'));
+        });
 });

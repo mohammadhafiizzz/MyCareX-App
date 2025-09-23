@@ -105,13 +105,28 @@ Route::prefix('admin')->middleware(['web'])->group(function () {
         ->middleware('auth:admin');
 
     // Admin Management Page
-    Route::get('/management', [Admin\AdminManagementController::class, 'index'])
-        ->name('admin.management')
-        ->middleware('auth:admin');
+    Route::prefix('/management')->middleware('auth:admin')->group(function () {
 
-    // Get lists of admins
-    Route::get('management/list/{status}', [Admin\AdminManagementController::class, 'listAdmins'])
-        ->name('admin.management.list')
-        ->middleware('auth:admin');
+        // Admin Management Page
+        Route::get('/', [Admin\AdminManagementController::class, 'index'])
+            ->name('admin.management');
+
+        // Get lists of admins
+        Route::get('/list/{status}', [Admin\AdminManagementController::class, 'listAdmins'])
+            ->name('admin.management.list');
+
+        // POST routes for approving/rejecting admin accounts
+        // Approve
+        Route::post('/approve/{admin}', [Admin\AdminManagementController::class, 'approveAdmin'])
+            ->name('admin.management.approve');
+
+        // Reject
+        Route::post('/reject/{admin}', [Admin\AdminManagementController::class, 'rejectAdmin'])
+            ->name('admin.management.reject');
+
+        // Delete
+        Route::post('/delete/{admin}', [Admin\AdminManagementController::class, 'deleteAdmin'])
+            ->name('admin.management.delete');
+    });
 });
 

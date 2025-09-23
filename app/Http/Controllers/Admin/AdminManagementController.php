@@ -63,22 +63,31 @@ class AdminManagementController extends Controller
     }
 
     // Approve admin account
-    public function approve(Request $request, $adminId)
-    {
-        $admin = Admin::where('admin_id', $adminId)->first();
-        
-        if (!$admin) {
-            return back()->with('error', 'Admin not found.');
-        }
-
+    public function approveAdmin(Admin $admin) {
         $admin->update([
             'account_verified_at' => now(),
-            'account_verified_by' => Auth::guard('admin')->user()->admin_id
+            'account_rejected_at' => null,
+            'account_verified_by' => Auth::guard('admin')->user()->id,
         ]);
 
-        return redirect()->route('admin.management', ['status' => 'approved'])
-            ->with('success', 'Admin account approved successfully.');
+        return response()->json(['ok' => true, 'message' => 'Admin account approved successfully.']);
     }
 
     // Reject admin account
+    public function rejectAdmin(Admin $admin) {
+        $admin->update([
+            'account_rejected_at' => now(),
+            'account_verified_at' => null,
+            'account_verified_by' => Auth::guard('admin')->user()->id,
+        ]);
+
+        return response()->json(['ok' => true, 'message' => 'Admin account rejected successfully.']);
+    }
+
+    // Delete admin account
+    public function deleteAdmin(Admin $admin) {
+        $admin->delete();
+
+        return response()->json(['ok' => true, 'message' => 'Admin account deleted successfully.']);
+    }
 }
