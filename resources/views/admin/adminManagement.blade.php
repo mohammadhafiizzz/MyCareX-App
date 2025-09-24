@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="ml-3">
                                         <p class="text-sm font-medium text-gray-500">Pending</p>
-                                        <p class="text-lg font-semibold text-gray-900" id="pending-count">{{ $pendingCount }}</p>
+                                        <p class="text-lg font-semibold text-gray-900" id="pendingCount">{{ $pendingCount }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                     </div>
                                     <div class="ml-3">
                                         <p class="text-sm font-medium text-gray-500">Approved</p>
-                                        <p class="text-lg font-semibold text-gray-900" id="approved-count">{{ $approvedCount }}</p>
+                                        <p class="text-lg font-semibold text-gray-900" id="approvedCount">{{ $approvedCount }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="ml-3">
                                         <p class="text-sm font-medium text-gray-500">Rejected</p>
-                                        <p class="text-lg font-semibold text-gray-900" id="rejected-count">{{ $rejectedCount }}</p>
+                                        <p class="text-lg font-semibold text-gray-900" id="rejectedCount">{{ $rejectedCount }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -194,10 +194,10 @@
                                             <!-- Actions -->
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex items-center justify-end space-x-2">
-                                                    <button type="button" class="action-btn approve inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" title="Approve">
+                                                    <button type="button" data-id="{{ $admin->admin_id }}" class="action-btn approve inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" title="Approve">
                                                         <i class="fas fa-check"></i>
                                                     </button>
-                                                    <button type="button" class="action-btn reject inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" title="Reject">
+                                                    <button type="button" data-id="{{ $admin->admin_id }}" class="action-btn reject inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" title="Reject">
                                                         <i class="fas fa-times"></i>
                                                     </button>
                                                 </div>

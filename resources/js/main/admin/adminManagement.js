@@ -42,11 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('hidden');
     }
 
+    // close modal
     mCancel.addEventListener('click', () => modal.classList.add('hidden'));
-    mConfirm.addEventListener('click', () => {
-        /* backend call placeholder */
-        modal.classList.add('hidden');
-    });
 
     /* ---------- header text map ---------- */
     const headerMap = {
@@ -133,19 +130,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? ` <button type="button" title="Approve" class="action-btn approve inline-flex items-center px-3 py-1 border border-transparent
                                         text-sm leading-4 font-medium rounded-md text-white bg-green-600
                                         hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                                        focus:ring-green-500">
+                                        focus:ring-green-500" data-id="${a.admin_id}">
                             <i class="fas fa-check"></i>
                         </button>
                         <button type="button" title="Reject" class="action-btn reject inline-flex items-center px-3 py-1 border border-transparent
                                         text-sm leading-4 font-medium rounded-md text-white bg-red-600
                                         hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                                        focus:ring-red-500">
+                                        focus:ring-red-500" data-id="${a.admin_id}">
                             <i class="fas fa-times"></i>
                         </button>`
                     : ` <button type="button" title="Delete" class="action-btn delete inline-flex items-center px-3 py-2 border border-transparent
                                         text-sm leading-4 font-medium rounded-md text-white bg-red-600
                                         hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                                        focus:ring-red-500">
+                                        focus:ring-red-500" data-id="${a.admin_id}">
                             <p>Delete</p>
                         </button>`;
 
@@ -229,23 +226,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    function refreshCounters(c) {
+        document.getElementById('pendingCount').textContent = c.pending;
+        document.getElementById('approvedCount').textContent = c.approved;
+        document.getElementById('rejectedCount').textContent = c.rejected;
+    }
+
     /* ---------- confirm modal action ---------- */
     mConfirm.addEventListener('click', () => {
         if (!pendingAction || !targetId) return;
 
         fetch(`/admin/management/${pendingAction}/${targetId}`, {
-            method : 'POST',
+            method: 'POST',
             headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Accept'      : 'application/json'
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
             }
         })
             .then(r => r.ok ? r.json() : Promise.reject())
             .then(() => {
-            modal.classList.add('hidden');
-            // simply trigger the active card again to refresh counts + table
-            document.querySelector('.status-card.ring-blue-500').click();
+                modal.classList.add('hidden');
+
+                // update counts
+                refreshCounters(data.counts);
+
+                // simply trigger the active card again to refresh counts + table
+                document.querySelector('.status-card.ring-blue-500').click();
             })
             .catch(() => alert('Action failed, please try again.'));
-        });
+    });
 });

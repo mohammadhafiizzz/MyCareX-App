@@ -105,7 +105,7 @@ Route::prefix('admin')->middleware(['web'])->group(function () {
         ->middleware('auth:admin');
 
     // Admin Management Page
-    Route::prefix('/management')->middleware('auth:admin')->group(function () {
+    Route::prefix('/management')->group(function () {
 
         // Admin Management Page
         Route::get('/', [Admin\AdminManagementController::class, 'index'])
@@ -117,15 +117,15 @@ Route::prefix('admin')->middleware(['web'])->group(function () {
 
         // POST routes for approving/rejecting admin accounts
         // Approve
-        Route::post('/approve/{admin}', [Admin\AdminManagementController::class, 'approveAdmin'])
+        Route::post('/approve/{admin:admin_id}', [Admin\AdminManagementController::class, 'approveAdmin'])
             ->name('admin.management.approve');
 
         // Reject
-        Route::post('/reject/{admin}', [Admin\AdminManagementController::class, 'rejectAdmin'])
+        Route::post('/reject/{admin:admin_id}', [Admin\AdminManagementController::class, 'rejectAdmin'])
             ->name('admin.management.reject');
 
         // Delete
-        Route::post('/delete/{admin}', [Admin\AdminManagementController::class, 'deleteAdmin'])
+        Route::post('/delete/{admin:admin_id}', [Admin\AdminManagementController::class, 'deleteAdmin'])
             ->name('admin.management.delete');
     });
 });

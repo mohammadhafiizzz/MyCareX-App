@@ -62,15 +62,29 @@ class AdminManagementController extends Controller
         };
     }
 
+    private function counters() {
+        return [
+            'pending'  => Admin::whereNull('account_verified_at')
+                            ->where('role', '!=', 'superadmin')
+                            ->count(),
+            'approved' => Admin::whereNotNull('account_verified_at')
+                            ->where('role', '!=', 'superadmin')
+                            ->count(),
+            'rejected' => Admin::whereNotNull('account_rejected_at')
+                            ->where('role', '!=', 'superadmin')
+                            ->count(),
+        ];
+    }
+
     // Approve admin account
     public function approveAdmin(Admin $admin) {
         $admin->update([
             'account_verified_at' => now(),
             'account_rejected_at' => null,
-            'account_verified_by' => Auth::guard('admin')->user()->id,
+            'account_verified_by' => Auth::guard('admin')->user()->admin_id,
         ]);
 
-        return response()->json(['ok' => true, 'message' => 'Admin account approved successfully.']);
+        return response()->json(['ok' => true, 'message' => 'Admin account approved successfully.', 'counts' => $this->counters()]);
     }
 
     // Reject admin account
@@ -78,16 +92,16 @@ class AdminManagementController extends Controller
         $admin->update([
             'account_rejected_at' => now(),
             'account_verified_at' => null,
-            'account_verified_by' => Auth::guard('admin')->user()->id,
+            'account_verified_by' => Auth::guard('admin')->user()->admin_id,
         ]);
 
-        return response()->json(['ok' => true, 'message' => 'Admin account rejected successfully.']);
+        return response()->json(['ok' => true, 'message' => 'Admin account rejected successfully.', 'counts' => $this->counters()]);
     }
 
     // Delete admin account
     public function deleteAdmin(Admin $admin) {
         $admin->delete();
 
-        return response()->json(['ok' => true, 'message' => 'Admin account deleted successfully.']);
+        return response()->json(['ok' => true, 'message' => 'Admin account deleted successfully.', 'counts' => $this->counters()]);
     }
 }
