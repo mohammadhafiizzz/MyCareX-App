@@ -11,7 +11,7 @@
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="font-[Inter] bg-gray-50 min-h-screen">
+<body class="font-[Inter] bg-gray-50">
     <!-- Logo Branding -->
     <div class="max-w-7xl mx-auto px-4 mt-15 sm:px-6 lg:px-8 p-2">
         <div class="flex items-center justify-center h-16">
@@ -81,12 +81,16 @@
             </div>
         </form>
 
+        <!-- Register new account -->
         <div class="text-center mt-6">
-            <hr class="my-8 border-gray-300">
-            <a href="{{ route('admin.register.form') }}"
-                class="text-sm border rounded-lg p-3 text-blue-600 hover:text-white hover:bg-blue-600 transition-colors">
-                Register new staff
-            </a>
+            <hr class="my-6 border-gray-300">
+            <p class="text-sm text-gray-600">
+                Don't have an account? 
+                <a href="{{ route('admin.register') }}" 
+                   class="text-blue-600 hover:text-blue-800 font-medium">
+                    Sign up here
+                </a>
+            </p>
         </div>
     </div>
 
@@ -107,7 +111,7 @@
     @endif
 
     <!-- Copyright footer -->
-    <footer class="text-center mt-8 pb-4">
+    <footer class="text-center mt-8">
         <p class="text-xs text-gray-500">&copy; {{ date('Y') }} MyCareX. All rights reserved.</p>
     </footer>
 
