@@ -78,21 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (e) => {
             // Set active state
             setActiveNav(link);
-            
-            // Optional: Store active state in localStorage
-            localStorage.setItem('activeNavItem', link.getAttribute('href'));
         });
     });
     
     // Set initial active state based on current page
     setInitialActiveState();
-    
-    // Optional: Restore active state from localStorage if page was refreshed
-    const storedActiveItem = localStorage.getItem('activeNavItem');
-    if (storedActiveItem) {
-        const storedLink = document.querySelector(`#sidebar nav a[href="${storedActiveItem}"]`);
-        if (storedLink) {
-            setActiveNav(storedLink);
-        }
-    }
 });
