@@ -194,10 +194,10 @@
                                             <!-- Actions -->
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex items-center justify-end space-x-2">
-                                                    <button type="button" data-id="{{ $admin->admin_id }}" class="action-btn approve inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" title="Approve">
+                                                    <button type="button" data-id="{{ $admin->admin_id }}" class="action-btn approve cursor-pointer inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" title="Approve">
                                                         <i class="fas fa-check"></i>
                                                     </button>
-                                                    <button type="button" data-id="{{ $admin->admin_id }}" class="action-btn reject inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" title="Reject">
+                                                    <button type="button" data-id="{{ $admin->admin_id }}" class="action-btn reject cursor-pointer inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" title="Reject">
                                                         <i class="fas fa-times"></i>
                                                     </button>
                                                 </div>
@@ -237,15 +237,26 @@
                 </div>
                 <div class="items-center px-4 py-3">
                     <button id="modalConfirm"
-                        class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
+                        class="cursor-pointer px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
                         Confirm
                     </button>
                     <button id="modalCancel"
-                        class="mt-3 px-4 py-2 bg-gray-300 text-gray-800 text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        class="cursor-pointer mt-3 px-4 py-2 bg-gray-300 text-gray-800 text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
                         Cancel
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="successNotification" class="fixed top-4 right-4 z-50 hidden">
+        <div class="bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-3">
+            <i class="fas fa-check-circle"></i>
+            <span id="notificationMessage">Action completed successfully</span>
+            <button id="closeNotification" class="ml-4 text-white hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
     </div>
 

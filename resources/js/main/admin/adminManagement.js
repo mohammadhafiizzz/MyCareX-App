@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-${color}-100`;
         mIcon.className = `fas fa-exclamation-triangle text-${color}-600`;
         mConfirm.className =
-            `px-4 py-2 bg-${color}-500 text-white text-base font-medium ` +
+            `px-4 py-2 bg-${color}-500 cursor-pointer text-white text-base font-medium ` +
             `rounded-md w-full shadow-sm hover:bg-${color}-700 ` +
             `focus:outline-none focus:ring-2 focus:ring-${color}-300`;
         modal.classList.remove('hidden');
@@ -130,19 +130,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? ` <button type="button" title="Approve" class="action-btn approve inline-flex items-center px-3 py-1 border border-transparent
                                         text-sm leading-4 font-medium rounded-md text-white bg-green-600
                                         hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                                        focus:ring-green-500" data-id="${a.admin_id}">
+                                        focus:ring-green-500 cursor-pointer" data-id="${a.admin_id}">
                             <i class="fas fa-check"></i>
                         </button>
                         <button type="button" title="Reject" class="action-btn reject inline-flex items-center px-3 py-1 border border-transparent
                                         text-sm leading-4 font-medium rounded-md text-white bg-red-600
                                         hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                                        focus:ring-red-500" data-id="${a.admin_id}">
+                                        focus:ring-red-500 cursor-pointer" data-id="${a.admin_id}">
                             <i class="fas fa-times"></i>
                         </button>`
                     : ` <button type="button" title="Delete" class="action-btn delete inline-flex items-center px-3 py-2 border border-transparent
                                         text-sm leading-4 font-medium rounded-md text-white bg-red-600
                                         hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                                        focus:ring-red-500" data-id="${a.admin_id}">
+                                        focus:ring-red-500 cursor-pointer" data-id="${a.admin_id}">
                             <p>Delete</p>
                         </button>`;
 
@@ -244,15 +244,51 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
             .then(r => r.ok ? r.json() : Promise.reject())
-            .then(() => {
+            .then(data => { // <-- FIXED: Capture response data
                 modal.classList.add('hidden');
 
                 // update counts
-                refreshCounters(data.counts);
+                refreshCounters(data.counts);  // <-- FIXED: Use captured data
+
+                // show notification
+                showNotification(data.message, data.type);
 
                 // simply trigger the active card again to refresh counts + table
                 document.querySelector('.status-card.ring-blue-500').click();
             })
             .catch(() => alert('Action failed, please try again.'));
     });
+
+    /* ---------- notification system ---------- */
+    const notification = document.getElementById('successNotification');
+    const notificationMsg = document.getElementById('notificationMessage');
+    const closeNotificationBtn = document.getElementById('closeNotification');
+
+    function showNotification(message, type) {
+        const colors = {
+            success: 'bg-green-500',
+            error: 'bg-red-500',
+            warning: 'bg-yellow-500'
+        };
+
+        const notificationDiv = notification.querySelector('div');
+        // Remove existing color classes
+        notificationDiv.className = notificationDiv.className.replace(/bg-\w+-500/g, '');
+        // Add new color class
+        notificationDiv.classList.add(colors[type]);
+
+        notificationMsg.textContent = message;
+        notification.classList.remove('hidden');
+
+        setTimeout(() => {
+            hideNotification();
+        }, 5000);
+    }
+
+    function hideNotification() {
+        notification.classList.add('hidden');
+    }
+
+    // Close notification on click
+    closeNotificationBtn?.addEventListener('click', hideNotification);
 });

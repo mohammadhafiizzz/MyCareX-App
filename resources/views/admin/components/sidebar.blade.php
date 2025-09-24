@@ -90,7 +90,7 @@
             </div>
             <form action="{{ route('admin.logout') }}" method="POST" class="ml-2">
                 @csrf
-                <button type="submit" class="text-gray-400 hover:text-red-600 transition-colors" title="Logout">
+                <button type="submit" class="text-gray-400 hover:text-red-600 transition-colors cursor-pointer" title="Logout">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </form>

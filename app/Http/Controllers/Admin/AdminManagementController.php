@@ -16,10 +16,12 @@ class AdminManagementController extends Controller
 
         // status counters
         $pendingCount  = Admin::whereNull('account_verified_at')
+                            ->whereNull('account_rejected_at')
                             ->where('role', '!=', 'superadmin')
                             ->count();
 
         $approvedCount = Admin::whereNotNull('account_verified_at')
+                            ->whereNull('account_rejected_at')
                             ->where('role', '!=', 'superadmin')
                             ->count();
 
@@ -49,14 +51,15 @@ class AdminManagementController extends Controller
     private function queryByStatus($status) {
         return match ($status) {
             'pending'  => Admin::whereNull('account_verified_at')
-                            ->where('role', '!=', 'super_admin')
+                            ->whereNull('account_rejected_at')
+                            ->where('role', '!=', 'superadmin')
                             ->orderByDesc('created_at'),
             'approved' => Admin::whereNotNull('account_verified_at')
                             ->where('account_rejected_at', null)
-                            ->where('role', '!=', 'super_admin')
+                            ->where('role', '!=', 'superadmin')
                             ->orderByDesc('created_at'),
             'rejected' => Admin::whereNotNull('account_rejected_at')
-                            ->where('role', '!=', 'super_admin')
+                            ->where('role', '!=', 'superadmin')
                             ->orderByDesc('created_at'),
             default    => Admin::query()->whereRaw('0 = 1'),
         };
@@ -65,9 +68,11 @@ class AdminManagementController extends Controller
     private function counters() {
         return [
             'pending'  => Admin::whereNull('account_verified_at')
+                            ->whereNull('account_rejected_at')
                             ->where('role', '!=', 'superadmin')
                             ->count(),
             'approved' => Admin::whereNotNull('account_verified_at')
+                            ->whereNull('account_rejected_at')
                             ->where('role', '!=', 'superadmin')
                             ->count(),
             'rejected' => Admin::whereNotNull('account_rejected_at')
@@ -84,7 +89,7 @@ class AdminManagementController extends Controller
             'account_verified_by' => Auth::guard('admin')->user()->admin_id,
         ]);
 
-        return response()->json(['ok' => true, 'message' => 'Admin account approved successfully.', 'counts' => $this->counters()]);
+        return response()->json(['ok' => true, 'message' => 'Admin account approved successfully.', 'type' => 'success', 'counts' => $this->counters()]);
     }
 
     // Reject admin account
@@ -95,13 +100,13 @@ class AdminManagementController extends Controller
             'account_verified_by' => Auth::guard('admin')->user()->admin_id,
         ]);
 
-        return response()->json(['ok' => true, 'message' => 'Admin account rejected successfully.', 'counts' => $this->counters()]);
+        return response()->json(['ok' => true, 'message' => 'Admin account rejected successfully.', 'type' => 'error', 'counts' => $this->counters()]);
     }
 
     // Delete admin account
     public function deleteAdmin(Admin $admin) {
         $admin->delete();
 
-        return response()->json(['ok' => true, 'message' => 'Admin account deleted successfully.', 'counts' => $this->counters()]);
+        return response()->json(['ok' => true, 'message' => 'Admin account deleted successfully.', 'type' => 'error', 'counts' => $this->counters()]);
     }
 }
