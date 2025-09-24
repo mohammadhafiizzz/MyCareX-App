@@ -16,17 +16,19 @@
     <!-- Navigation -->
     <nav class="mt-5 flex-1 px-2 bg-white space-y-1">
 
-        <!-- Dashboard -->
+        <!-- Dashboard - remove default blue classes -->
         <a href="{{ route('admin.dashboard') }}"
-            class="bg-blue-100 text-blue-700 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-            <i class="fas fa-tachometer-alt text-blue-500 mr-3 text-lg"></i>
+            class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+            data-nav-item="dashboard">
+            <i class="fas fa-tachometer-alt text-gray-400 group-hover:text-gray-600 mr-3 text-lg"></i>
             Dashboard
         </a>
 
         <!-- Admin Management - Superadmin only -->
         @if(Auth::guard('admin')->user()->role === 'superadmin')
             <a href="{{ route('admin.management') }}"
-                class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                data-nav-item="admin-management">
                 <i class="fas fa-user-shield text-gray-400 group-hover:text-gray-600 mr-3 text-lg"></i>
                 Admin Management
             </a>
@@ -90,10 +92,13 @@
             </div>
             <form action="{{ route('admin.logout') }}" method="POST" class="ml-2">
                 @csrf
-                <button type="submit" class="text-gray-400 hover:text-red-600 transition-colors cursor-pointer" title="Logout">
+                <button type="submit" class="text-gray-400 hover:text-red-600 transition-colors cursor-pointer"
+                    title="Logout">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </form>
         </div>
     </div>
 </div>
+
+@vite('resources/js/main/admin/sidebarNav.js')
