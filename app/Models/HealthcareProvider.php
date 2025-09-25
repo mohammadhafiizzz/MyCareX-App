@@ -22,10 +22,9 @@ class HealthcareProvider extends Authenticatable implements MustVerifyEmail, Can
         'email', 'password', 'phone_number', 'emergency_contact', 
         'website_url', 'contact_person_name', 'contact_person_phone_number', 
         'contact_person_designation', 'contact_person_ic_number', 
-        'address', 'postal_code', 'state', 'number_of_staff', 
-        'business_license_document', 'medical_license_document',
-        'profile_image_url', 'verification_status', 'verified_by',
-        'approved_at', 'rejected_at', 'rejection_reason',
+        'address', 'postal_code', 'state', 'business_license_document', 
+        'medical_license_document', 'profile_image_url', 'verification_status', 
+        'verified_by', 'approved_at', 'rejected_at', 'rejection_reason',
         'email_verified_at', 'last_login'
     ];
 
@@ -61,11 +60,6 @@ class HealthcareProvider extends Authenticatable implements MustVerifyEmail, Can
     // Get the full address attribute
     public function getFullAddressAttribute() {
         return "{$this->address}, {$this->postal_code} {$this->state}";
-    }
-
-    // Get number of staff with default value
-    public function getNumberOfStaffAttribute($value) {
-        return $value ?? '0';
     }
 
     /*--- MUTATORS ---*/
