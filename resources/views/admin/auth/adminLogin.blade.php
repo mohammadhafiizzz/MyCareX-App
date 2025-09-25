@@ -116,7 +116,7 @@
     </footer>
 
     <!-- Include the JavaScript file -->
-    @vite(['resources/js/main/admin/adminLogin.js']);
+    @vite(['resources/js/main/admin/adminLogin.js'])
 </body>
 
 </html>
