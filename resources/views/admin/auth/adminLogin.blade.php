@@ -30,7 +30,7 @@
     <!-- Login Form (Admin) -->
     <div class="max-w-lg mx-auto mt-2 bg-white p-8 rounded-xl shadow-md">
         <div class="text-center mb-6">
-            <h1 class="text-3xl font-bold text-gray-800">Admin Portal <i class="fas fa-user text-blue-600"></i></h1>
+            <h1 class="text-3xl font-bold text-gray-800">Admin Portal<i class="fas fa-user text-blue-600"></i></h1>
         </div>
 
         <form action="{{ route('admin.login.submit') }}" method="POST" id="adminLoginForm">

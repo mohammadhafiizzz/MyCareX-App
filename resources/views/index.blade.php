@@ -36,7 +36,7 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center space-x-4 font-medium">
-                    <a href="{{ route('organisation.login') }}"
+                    <a href="{{ route('organisation.home') }}"
                         class="px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                         Organization Portal <i class="fas fa-hospital"></i>
                     </a>
@@ -54,7 +54,7 @@
             <!-- Mobile Menu -->
             <div class="lg:hidden hidden" id="mobileMenu">
                 <div class="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
-                    <a href="{{ route('organisation.login') }}" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
+                    <a href="{{ route('organisation.home') }}" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
                         Organization Portal <i class="fas fa-hospital"></i>
                     </a>
                     <a href="#" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">About Us</a>
