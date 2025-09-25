@@ -15,7 +15,6 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
     use HasFactory, Notifiable, CanResetPassword;
 
     protected $primaryKey = 'id';
-    protected $keyType = 'string';
 
     protected $fillable = [
         'full_name', 'ic_number', 'phone_number', 'email', 
@@ -23,7 +22,7 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
         'height', 'weight', 'address', 'postal_code', 'state',
         'emergency_contact_number', 'emergency_contact_name', 
         'emergency_contact_ic_number', 'emergency_contact_relationship', 
-        'profile_image_url', 'email_verified_at'
+        'profile_image_url', 'email_verified_at', 'last_login'
     ];
 
     protected $hidden = ['password', 'remember_token'];

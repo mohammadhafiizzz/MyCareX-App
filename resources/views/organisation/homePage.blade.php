@@ -217,10 +217,10 @@
                     Ready to Join MyCareX?
                 </h2>
                 <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                    Connect your healthcare organization to Malaysia's leading patient record platform and enhance care coordination today.
+                    Connect your healthcare organisation to Malaysia's leading patient record platform and enhance care coordination today.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#"
+                    <a href="{{  route('organisation.register.form') }}"
                         class="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
                         <i class="fas fa-hospital mr-3"></i>
                         Register Healthcare Provider
@@ -240,7 +240,6 @@
     @endif
 
     @vite(['resources/js/main/organisation/homePage.js'])
-    @vite(['resources/js/main/index.js'])
 
 </body>
 

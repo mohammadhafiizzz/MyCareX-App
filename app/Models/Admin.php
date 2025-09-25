@@ -20,6 +20,7 @@ class Admin extends Authenticatable implements CanResetPasswordContract
         'admin_id', 'full_name', 'ic_number', 'phone_number', 'email', 
         'password', 'role', 'email_verified_at', 'profile_image_url',
         'account_verified_at', 'account_rejected_at', 'account_verified_by',
+        'email_verified_at', 'last_login'
     ];
 
     protected $hidden = ['password', 'remember_token'];

@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Auth\Passwords\CanResetPassword;
+
+class HealthcareProvider extends Authenticatable implements MustVerifyEmail, CanResetPasswordContract
+{
+    use HasFactory, Notifiable, CanResetPassword;
+
+    protected $primaryKey = 'id';
+
+    // fillable fields
+    protected $fillable = [
+        'organisation_name', 'organisation_type', 'registration_number', 
+        'license_number', 'license_expiry_date', 'establishment_date', 
+        'email', 'password', 'phone_number', 'emergency_contact', 
+        'website_url', 'contact_person_name', 'contact_person_phone_number', 
+        'contact_person_designation', 'contact_person_ic_number', 
+        'address', 'postal_code', 'state', 'number_of_staff', 
+        'business_license_document', 'medical_license_document',
+        'profile_image_url', 'verification_status', 'verified_by',
+        'approved_at', 'rejected_at', 'rejection_reason',
+        'email_verified_at', 'last_login'
+    ];
+
+    // hidden fields
+    protected $hidden = ['password', 'remember_token'];
+
+    // the username field for authentication
+    public function username() {
+        return 'email';
+    }
+
+    // Search scope for filtering healthcare providers
+    public function scopeSearch($query, $searchTerm) {
+        if (empty($searchTerm)) {
+            return $query;
+        }
+
+        return $query->where(function ($qry) use ($searchTerm) {
+            $qry->where('organisation_name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('organisation_type', 'like', '%' . $searchTerm . '%')
+                ->orWhere('registration_number', 'like', '%' . $searchTerm . '%')
+                ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                ->orWhere('phone_number', 'like', '%' . $searchTerm . '%');
+        });
+    }
+
+    /*--- ACCESSORS ---*/
+    // Get the formatted Healthcare Provider ID
+    public function getFormattedIdAttribute() {
+        return 'HCP' . str_pad($this->id, 5, '0', STR_PAD_LEFT);
+    }
+
+    // Get the full address attribute
+    public function getFullAddressAttribute() {
+        return "{$this->address}, {$this->postal_code} {$this->state}";
+    }
+
+    // Get number of staff with default value
+    public function getNumberOfStaffAttribute($value) {
+        return $value ?? '0';
+    }
+
+    /*--- MUTATORS ---*/
+    // Set the password attribute and hash it
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = bcrypt($value);
+    }
+}

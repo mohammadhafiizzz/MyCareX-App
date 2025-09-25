@@ -82,8 +82,11 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
 
 // Organisation Routes
 Route::prefix('organisation')->middleware(['web'])->group(function () {
-    // Organisation Login Page
+    // Organisation Home Page
     Route::get('/', [Organisation\HomePageController::class, 'index'])->name('organisation.home');
+
+    // Organisation Registration
+    Route::get('/register', [Organisation\Auth\RegistrationController::class, 'showRegistrationForm'])->name('organisation.register.form');
 });
 
 // Admin Routes
