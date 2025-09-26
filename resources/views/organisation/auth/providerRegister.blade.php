@@ -73,7 +73,7 @@
         @endif
 
         <!-- Registration Form -->
-        <form action="#" method="POST" enctype="multipart/form-data" id="providerRegistrationForm" class="space-y-8">
+        <form action="{{ route('organisation.register') }}" method="POST" enctype="multipart/form-data" id="providerRegistrationForm" class="space-y-8">
             @csrf
             @include('organisation.auth.providerRegistrationForm')
         </form>

@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use App\Notifications\HealthcareProviderVerifyEmail;
 
 class HealthcareProvider extends Authenticatable implements MustVerifyEmail, CanResetPasswordContract
 {
@@ -21,7 +22,7 @@ class HealthcareProvider extends Authenticatable implements MustVerifyEmail, Can
         'license_number', 'license_expiry_date', 'establishment_date', 
         'email', 'password', 'phone_number', 'emergency_contact', 
         'website_url', 'contact_person_name', 'contact_person_phone_number', 
-        'contact_person_designation', 'contact_person_ic_number', 
+        'contact_person_designation', 'registration_date', 'contact_person_ic_number', 
         'address', 'postal_code', 'state', 'business_license_document', 
         'medical_license_document', 'profile_image_url', 'verification_status', 
         'verified_by', 'approved_at', 'rejected_at', 'rejection_reason',
@@ -49,6 +50,11 @@ class HealthcareProvider extends Authenticatable implements MustVerifyEmail, Can
                 ->orWhere('email', 'like', '%' . $searchTerm . '%')
                 ->orWhere('phone_number', 'like', '%' . $searchTerm . '%');
         });
+    }
+
+    // Send the email verification notification
+    public function sendEmailVerificationNotification() {
+        $this->notify(new HealthcareProviderVerifyEmail);
     }
 
     /*--- ACCESSORS ---*/

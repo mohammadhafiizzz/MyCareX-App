@@ -258,7 +258,7 @@
             <label for="businessLicense" class="block text-sm font-medium text-gray-700 mb-2">
                 Business Registration Certificate <span class="text-red-500">*</span>
             </label>
-            <input type="file" id="businessLicense" name="business_license_document" required
+            <input type="file" id="businessLicense" name="business_license_document"
                 accept=".pdf,.jpg,.jpeg,.png"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
             <p class="text-xs text-gray-500 mt-1">Upload ROC/ROB certificate (PDF, JPG, PNG max 5MB)</p>
@@ -269,7 +269,7 @@
             <label for="medicalLicense" class="block text-sm font-medium text-gray-700 mb-2">
                 MOH Medical License <span class="text-red-500">*</span>
             </label>
-            <input type="file" id="medicalLicense" name="medical_license_document" required
+            <input type="file" id="medicalLicense" name="medical_license_document"
                 accept=".pdf,.jpg,.jpeg,.png"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
             <p class="text-xs text-gray-500 mt-1">Upload Ministry of Health license (PDF, JPG, PNG max 5MB)</p>

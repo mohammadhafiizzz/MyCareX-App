@@ -15,10 +15,12 @@ class RegistrationController extends Controller
         return view('patient.auth.patientRegister');
     }
 
+    // Show email verification notice
     public function showEmailVerificationNotice() {
         return view('patient.auth.verifyEmail');
     }
 
+    // Show email verified success page
     public function showEmailVerified() {
         return view('patient.auth.emailVerified');
     }
@@ -75,6 +77,7 @@ class RegistrationController extends Controller
             ->with('success', 'Registration successful! Please check your email to verify your account.');
     }
 
+    // Verify email address
     public function verify(Request $request) {
         $patient = Patient::find($request->route('id'));
         
@@ -89,6 +92,7 @@ class RegistrationController extends Controller
         return redirect()->route('verification.success')->with('verified', true);
     }
 
+    // Resend verification email
     public function resend(Request $request) {
         $request->user()->sendEmailVerificationNotification();
         return back()->with('resent', true);

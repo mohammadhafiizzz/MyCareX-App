@@ -87,6 +87,13 @@ Route::prefix('organisation')->middleware(['web'])->group(function () {
 
     // Organisation Registration
     Route::get('/register', [Organisation\Auth\RegistrationController::class, 'showRegistrationForm'])->name('organisation.register.form');
+    Route::post('/register', [Organisation\Auth\RegistrationController::class, 'register'])->name('organisation.register');
+
+    // Email verification
+    Route::get('/email/verify', [Organisation\Auth\RegistrationController::class, 'showEmailVerificationNotice'])->name('organisation.verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [Organisation\Auth\RegistrationController::class, 'verify'])->name('organisation.verification.verify');
+    Route::post('/email/verification-notification', [Organisation\Auth\RegistrationController::class, 'resend'])->name('organisation.verification.resend');
+    Route::get('/email/verified', [Organisation\Auth\RegistrationController::class, 'showEmailVerified'])->name('organisation.verification.success');
 });
 
 // Admin Routes
