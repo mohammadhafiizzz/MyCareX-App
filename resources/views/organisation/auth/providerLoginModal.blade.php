@@ -37,7 +37,7 @@
                     <label for="icNumber" class="block text-sm font-medium text-gray-700 mb-2">
                         <i class="fas fa-id-card text-gray-600 mr-2"></i>IC Number
                     </label>
-                    <input type="text" id="icNumber" name="ic_number" required maxlength="14"
+                    <input type="text" id="icNumber" name="ic_number" required 
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Enter your IC number without dashes">
                 </div>

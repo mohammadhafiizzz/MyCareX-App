@@ -35,7 +35,7 @@
         @endif
 
         <!-- Healthcare Provider Management -->
-        <a href="#"
+        <a href="{{ route('organisation.providerManagement') }}"
             class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
             <i class="fas fa-hospital text-gray-400 group-hover:text-gray-600 mr-3 text-lg"></i>
             Healthcare Providers

@@ -138,5 +138,32 @@ Route::prefix('admin')->middleware(['web'])->group(function () {
         Route::post('/delete/{admin:admin_id}', [Admin\AdminManagementController::class, 'deleteAdmin'])
             ->name('admin.management.delete');
     });
+
+    // Healthcare Provider Management Page
+    Route::prefix('/providers')->group(function () {
+        // Provider Management Dashboard
+        Route::get('/', [Organisation\ProviderManagementController::class, 'index'])
+            ->name('organisation.providerManagement');
+
+        // Provider Verification Dashboard
+        Route::get('/verification', [Organisation\ProviderManagementController::class, 'providerVerification'])
+            ->name('organisation.providerVerification');
+
+        // Provider Verification Requests
+        Route::get('/verification-requests', [Organisation\ProviderManagementController::class, 'verificationRequests'])
+            ->name('organisation.providers.verification.requests');
+
+        // Approve Provider
+        Route::post('/approve/{provider:id}', [Organisation\ProviderManagementController::class, 'approveProvider'])
+            ->name('organisation.providers.approve');
+
+        // Reject Provider
+        Route::post('/reject/{provider:id}', [Organisation\ProviderManagementController::class, 'rejectProvider'])
+            ->name('organisation.providers.reject');
+
+        // Delete Provider
+        Route::post('/delete/{provider:id}', [Organisation\ProviderManagementController::class, 'deleteProvider'])
+            ->name('organisation.providers.delete');
+    });
 });
 
