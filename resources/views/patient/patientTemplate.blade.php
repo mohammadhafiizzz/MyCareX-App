@@ -18,7 +18,7 @@
     <!-- Main Content -->
 
     <!-- Javascript and Footer -->
-    <script src="{{ asset('js/patientHeader.js') }}"></script>
+    @vite(['resources/js/main/patient/patientHeader.js'])
     @include('patient.components.footer')
 </body>
 
