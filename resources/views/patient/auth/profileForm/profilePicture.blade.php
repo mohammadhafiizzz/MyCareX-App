@@ -15,7 +15,7 @@
 
         <!-- Modal Body - Scrollable Content -->
         <div class="overflow-y-auto flex-1">
-            <form action="{{ route('patient.profile.update.picture') }}" method="POST" enctype="multipart/form-data"
+            <form action="{{ route('patient.auth.profile.update.picture') }}" method="POST" enctype="multipart/form-data"
                 class="p-6">
                 @csrf
                 @method('PUT')
@@ -121,7 +121,7 @@
             </form>
             @if(Auth::guard('patient')->user()->profile_image_url)
                 <form id="deleteProfilePictureForm" method="POST"
-                    action="{{ route('patient.profile.delete.picture') }}" class="hidden">
+                    action="{{ route('patient.auth.profile.delete.picture') }}" class="hidden">
                     @csrf
                     @method('DELETE')
                 </form>

@@ -12,7 +12,7 @@ class RegistrationController extends Controller
 {
     // Show Organisation Registration Form
     public function showRegistrationForm() {
-        return view('organisation.auth.providerRegister');
+        return view('organisation.auth.signup');
     }
 
     // Show email verification notice

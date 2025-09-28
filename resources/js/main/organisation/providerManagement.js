@@ -1,8 +1,8 @@
 /*
 
 Author: Mohammad Hafiz bin Mohan
-Description: JavaScript for Admin Management page
-File: resources/js/main/admin/adminManagement.js
+Description: JavaScript for Provider Management page
+File: resources/js/main/organisation/providerManagement.js
 
 */
 document.addEventListener('DOMContentLoaded', () => {
@@ -48,15 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ---------- header text map ---------- */
     const headerMap = {
         pending: {
-            page: 'Pending Admin Verifications',
+            page: 'Pending Healthcare Provider Verifications',
             table: 'Pending Verification Requests'
         },
         approved: {
-            page: 'Approved Admin Accounts',
+            page: 'Approved Healthcare Provider Accounts',
             table: 'Approved List'
         },
         rejected: {
-            page: 'Rejected Admin Accounts',
+            page: 'Rejected Healthcare Provider Accounts',
             table: 'Rejected List'
         }
     };
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const status = card.dataset.status;
 
             // fetch data
-            fetch(`/admin/management/list/${status}`)
+            fetch(`/admin/providers/list/${status}`)
                 .then(r => r.json())
                 .then(data => renderTable(status, data));
 
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ---------- table rendering ---------- */
-    const tbody = document.getElementById('adminTableBody');
+    const tbody = document.getElementById('providerTableBody');
 
     function renderTable(status, list) {
         tbody.innerHTML = '';
@@ -94,27 +94,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!list.length) {
             tbody.innerHTML =
                 `<tr><td colspan="5" class="p-6 text-center text-gray-500">` +
-                `No ${status} admins found.</td></tr>`;
+                `No ${status} healthcare providers found.</td></tr>`;
             return;
         }
 
-        list.forEach(a => {
-            const initials = a.full_name
+        list.forEach(p => {
+            const initials = p.organisation_name
                 .split(' ')
                 .map(p => p[0])
                 .join('');
-            const regDate = new Date(a.created_at).toLocaleDateString('en-US', {
+            const regDate = new Date(p.created_at).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric'
             });
 
+            const formattedId = 'HCP' + String(p.id).padStart(4, '0');
+
             let label, color, icon;
-            if (a.account_verified_at) {
+            if (p.verification_status === 'Approved') {
                 label = 'Approved';
                 color = 'green';
                 icon = 'check-circle';
-            } else if (a.account_rejected_at) {
+            } else if (p.verification_status === 'Rejected') {
                 label = 'Rejected';
                 color = 'red';
                 icon = 'times-circle';
@@ -130,19 +132,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? ` <button type="button" title="Approve" class="action-btn approve inline-flex items-center px-3 py-1 border border-transparent
                                         text-sm leading-4 font-medium rounded-md text-white bg-green-600
                                         hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                                        focus:ring-green-500 cursor-pointer" data-id="${a.admin_id}">
+                                        focus:ring-green-500 cursor-pointer" data-id="${p.id}">
                             <i class="fas fa-check"></i>
                         </button>
                         <button type="button" title="Reject" class="action-btn reject inline-flex items-center px-3 py-1 border border-transparent
                                         text-sm leading-4 font-medium rounded-md text-white bg-red-600
                                         hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                                        focus:ring-red-500 cursor-pointer" data-id="${a.admin_id}">
+                                        focus:ring-red-500 cursor-pointer" data-id="${p.id}">
                             <i class="fas fa-times"></i>
                         </button>`
                     : ` <button type="button" title="Delete" class="action-btn delete inline-flex items-center px-3 py-2 border border-transparent
                                         text-sm leading-4 font-medium rounded-md text-white bg-red-600
                                         hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                                        focus:ring-red-500 cursor-pointer" data-id="${a.admin_id}">
+                                        focus:ring-red-500 cursor-pointer" data-id="${p.id}">
                             <p>Delete</p>
                         </button>`;
 
@@ -155,14 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="text-sm font-medium text-white">${initials}</span>
                             </div>
                             <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">${a.full_name}</div>
-                                <div class="text-sm text-gray-500">${a.admin_id}</div>
+                                <div class="text-sm font-medium text-gray-900">${p.organisation_name}</div>
+                                <div class="text-sm text-gray-500">${formattedId}</div>
                             </div>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${a.email}</div>
-                        <div class="text-sm text-gray-500">${a.phone_number ?? '-'}</div>
+                        <div class="text-sm text-gray-900">${p.email}</div>
+                        <div class="text-sm text-gray-500">${p.phone_number ?? '-'}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         ${regDate}
@@ -186,9 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let pendingAction = null;
     let targetId = null;
 
-    function openModal(action, adminId, title, msg, color) {
+    function openModal(action, id, title, msg, color) {
         pendingAction = action;
-        targetId = adminId;
+        targetId = id;
         showModal(title, msg, color);
     }
 
@@ -203,24 +205,24 @@ document.addEventListener('DOMContentLoaded', () => {
             openModal(
                 'approve',
                 id,
-                'Approve Admin',
-                'Are you sure you want to approve this admin account?',
+                'Approve Provider',
+                'Are you sure you want to approve this provider account?',
                 'green'
             );
         } else if (btn.classList.contains('reject')) {
             openModal(
                 'reject',
                 id,
-                'Reject Admin',
-                'Are you sure you want to reject this admin account?',
+                'Reject Provider',
+                'Are you sure you want to reject this provider account?',
                 'red'
             );
         } else if (btn.classList.contains('delete')) {
             openModal(
                 'delete',
                 id,
-                'Delete Admin',
-                'Are you sure you want to delete this admin account?',
+                'Delete Provider',
+                'Are you sure you want to delete this provider account?',
                 'red'
             );
         }
@@ -236,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mConfirm.addEventListener('click', () => {
         if (!pendingAction || !targetId) return;
 
-        fetch(`/admin/management/${pendingAction}/${targetId}`, {
+        fetch(`/admin/providers/${pendingAction}/${targetId}`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,

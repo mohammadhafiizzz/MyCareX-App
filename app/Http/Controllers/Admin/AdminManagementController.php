@@ -29,7 +29,7 @@ class AdminManagementController extends Controller
                             ->where('role', '!=', 'superadmin')
                             ->count();
 
-        return view('admin.adminManagement', [
+        return view('admin.modules.admin.adminManagement', [
             'defaultStatus' => 'pending',
             'admins'        => $admins,
             'pendingCount'  => $pendingCount,

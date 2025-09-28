@@ -36,9 +36,9 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center space-x-4 font-medium">
-                    <a href="{{ route('organisation.home') }}"
+                    <a href="{{ route('organisation.index') }}"
                         class="px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                        Organisation Portal <i class="fas fa-hospital"></i>
+                        Organisation Portal
                     </a>
                     <a href="#"
                         class="px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200">
@@ -46,7 +46,7 @@
                     </a>
                     <a href="#"
                         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 login-modal-btn">
-                        Sign In <i class="fas fa-sign-in-alt"></i>
+                        Login</i>
                     </a>
                 </div>
             </div>
@@ -54,13 +54,13 @@
             <!-- Mobile Menu -->
             <div class="lg:hidden hidden" id="mobileMenu">
                 <div class="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
-                    <a href="{{ route('organisation.home') }}" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
-                        Organisation Portal <i class="fas fa-hospital"></i>
+                    <a href="{{ route('organisation.index') }}" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
+                        Organisation Portal
                     </a>
                     <a href="#" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">About Us</a>
                     <a href="#"
                         class="block px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 login-modal-btn">
-                        Sign In <i class="fas fa-sign-in-alt"></i></a>
+                        Login</i></a>
                 </div>
             </div>
         </div>

@@ -10,17 +10,25 @@ use Illuminate\Http\Request;
 class ProviderManagementController extends Controller
 {
     // Show healthcare provider list page
+    public function index() {
+        // Get all providers
+        $providers = HealthcareProvider::where('verification_status', 'Approved')->orderByDesc('created_at')->get();
+
+        return view('admin.modules.healthcareProvider.providerManagement', ['providers' => $providers, 'defaultStatus' => 'approved', 'providerCount' => $this->counters()['approved'], 'requestCount' => $this->counters()['pending']]);
+    }
+
+    // Show healthcare provider request list page
     public function providerVerification() {
         // default data set (pending providers)
-        $providers = $this->queryByStatus('Pending')->get();
+        $providers = $this->queryByStatus('pending')->get();
 
         // status counters
         $pendingCount  = HealthcareProvider::where('verification_status', 'Pending')->count();
         $approvedCount = HealthcareProvider::where('verification_status', 'Approved')->count();
         $rejectedCount = HealthcareProvider::where('verification_status', 'Rejected')->count();
 
-        return view('admin.providerVerification', [
-            'defaultStatus' => 'Pending',
+        return view('admin.modules.healthcareProvider.providerVerification', [
+            'defaultStatus' => 'pending',
             'providers'     => $providers,
             'pendingCount'  => $pendingCount,
             'approvedCount' => $approvedCount,
@@ -38,12 +46,12 @@ class ProviderManagementController extends Controller
     }
 
     private function queryByStatus($status) {
-        return match ($status) {
-            'Pending'  => HealthcareProvider::where('verification_status', 'Pending')
+        return match (strtolower($status)) {
+            'pending'  => HealthcareProvider::where('verification_status', 'Pending')
                             ->orderByDesc('created_at'),
-            'Approved' => HealthcareProvider::where('verification_status', 'Approved')
+            'approved' => HealthcareProvider::where('verification_status', 'Approved')
                             ->orderByDesc('created_at'),
-            'Rejected' => HealthcareProvider::where('verification_status', 'Rejected')
+            'rejected' => HealthcareProvider::where('verification_status', 'Rejected')
                             ->orderByDesc('created_at'),
             default    => HealthcareProvider::where('verification_status', 'Pending')
                             ->orderByDesc('created_at'),
@@ -53,9 +61,9 @@ class ProviderManagementController extends Controller
     // status counters
     private function counters() {
         return [
-            'Pending'  => HealthcareProvider::where('verification_status', 'Pending')->count(),
-            'Approved' => HealthcareProvider::where('verification_status', 'Approved')->count(),
-            'Rejected' => HealthcareProvider::where('verification_status', 'Rejected')->count(),
+            'pending'  => HealthcareProvider::where('verification_status', 'Pending')->count(),
+            'approved' => HealthcareProvider::where('verification_status', 'Approved')->count(),
+            'rejected' => HealthcareProvider::where('verification_status', 'Rejected')->count(),
         ];
     }
 

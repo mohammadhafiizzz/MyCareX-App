@@ -9,6 +9,6 @@ class ProfileController extends Controller
 {
     // Route for patient profile
     public function showProfilePage() {
-        return view('patient.profile');
+        return view('patient.auth.profile');
     }
 }

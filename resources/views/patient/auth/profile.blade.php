@@ -347,13 +347,13 @@
     </div>
 
     <!-- Profile Form Sections -->
-    @include('patient.profileForm.personalInfo')
-    @include('patient.profileForm.physicalInfo')
-    @include('patient.profileForm.addressInfo')
-    @include('patient.profileForm.emergencyContact')
-    @include('patient.profileForm.changePassword')
-    @include('patient.profileForm.deleteAccount')
-    @include('patient.profileForm.profilePicture')
+    @include('patient.auth.profileForm.personalInfo')
+    @include('patient.auth.profileForm.physicalInfo')
+    @include('patient.auth.profileForm.addressInfo')
+    @include('patient.auth.profileForm.emergencyContact')
+    @include('patient.auth.profileForm.changePassword')
+    @include('patient.auth.profileForm.deleteAccount')
+    @include('patient.auth.profileForm.profilePicture')
 
     <!-- Footer -->
     @include('patient.components.footer')

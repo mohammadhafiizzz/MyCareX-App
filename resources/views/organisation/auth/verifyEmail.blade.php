@@ -54,7 +54,7 @@
             </p>
         </div>
 
-        <a href="{{ route('organisation.home') }}"
+        <a href="{{ route('organisation.index') }}"
             class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors block text-center">
             Return to Login
         </a>

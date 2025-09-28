@@ -9,6 +9,6 @@ class LoginController extends Controller
 {
     // Organisation Login Page
     public function showLoginPage() {
-        return view("organisationPortal");
+        return view("organisation.auth.login");
     }
 }

@@ -14,7 +14,7 @@
 
         <!-- Modal Body - Scrollable Content -->
         <div class="overflow-y-auto flex-1">
-            <form action="{{ route('patient.profile.update.password') }}" method="POST" class="p-6">
+            <form action="{{ route('patient.auth.profile.update.password') }}" method="POST" class="p-6">
                 @csrf
                 @method('PUT')
 

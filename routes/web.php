@@ -49,41 +49,48 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
 
     // Patient Profile
     Route::get('/profile', [Patient\ProfileController::class, 'showProfilePage'])
-        ->name('patient.profile')
+        ->name('patient.auth.profile')
         ->middleware('auth:patient');
 
     // Profile Update Routes (Protected)
     Route::middleware('auth:patient')->group(function () {
         Route::put('/profile/personal-info', [Patient\UpdateProfileController::class, 'updatePersonalInfo'])
-            ->name('patient.profile.update.personal');
+            ->name('patient.auth.profile.update.personal');
 
         Route::put('/profile/physical-info', [Patient\UpdateProfileController::class, 'updatePhysicalInfo'])
-            ->name('patient.profile.update.physical');
+            ->name('patient.auth.profile.update.physical');
 
         Route::put('/profile/address-info', [Patient\UpdateProfileController::class, 'updateAddressInfo'])
-            ->name('patient.profile.update.address');
+            ->name('patient.auth.profile.update.address');
 
         Route::put('/profile/emergency-contact', [Patient\UpdateProfileController::class, 'updateEmergencyInfo'])
-            ->name('patient.profile.update.emergency');
+            ->name('patient.auth.profile.update.emergency');
 
         Route::put('/profile/password', [Patient\UpdateProfileController::class, 'updatePassword'])
-            ->name('patient.profile.update.password');
+            ->name('patient.auth.profile.update.password');
 
         Route::put('/profile/picture', [Patient\UpdateProfileController::class, 'updateProfilePicture'])
-            ->name('patient.profile.update.picture');
+            ->name('patient.auth.profile.update.picture');
 
         Route::delete('/profile/account', [Patient\DeleteProfileController::class, 'deleteAccount'])
-            ->name('patient.profile.delete.account');
+            ->name('patient.auth.profile.delete.account');
 
         Route::delete('/profile/picture', [Patient\DeleteProfileController::class, 'deleteProfilePicture'])
-            ->name('patient.profile.delete.picture');
+            ->name('patient.auth.profile.delete.picture');
     });
 });
 
 // Organisation Routes
 Route::prefix('organisation')->middleware(['web'])->group(function () {
     // Organisation Home Page
-    Route::get('/', [Organisation\HomePageController::class, 'index'])->name('organisation.home');
+    Route::get('/', [Organisation\HomePageController::class, 'index'])->name('organisation.index');
+
+    // Organisation Login
+    Route::get('/login', [Organisation\Auth\LoginController::class, 'showLoginPage'])->name('organisation.login.form');
+    Route::post('/login', [Organisation\Auth\LoginController::class, 'login'])->name('organisation.login');
+
+    // Organisation Logout
+    Route::post('/logout', [Organisation\Auth\LoginController::class, 'logout'])->name('organisation.logout');
 
     // Organisation Registration
     Route::get('/register', [Organisation\Auth\RegistrationController::class, 'showRegistrationForm'])->name('organisation.register.form');
@@ -148,6 +155,10 @@ Route::prefix('admin')->middleware(['web'])->group(function () {
         // Provider Verification Dashboard
         Route::get('/verification', [Organisation\ProviderManagementController::class, 'providerVerification'])
             ->name('organisation.providerVerification');
+
+        // Get lists of providers by status
+        Route::get('/list/{status}', [Organisation\ProviderManagementController::class, 'listProviders'])
+            ->name('organisation.providers.list');
 
         // Provider Verification Requests
         Route::get('/verification-requests', [Organisation\ProviderManagementController::class, 'verificationRequests'])

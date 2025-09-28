@@ -17,16 +17,6 @@
         <!-- Sidebar -->
         @include('admin.components.sidebar')
 
-        <!-- Mobile menu button -->
-        <div class="lg:hidden">
-            <button type="button"
-                class="fixed top-4 left-4 z-50 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-                id="mobileMenuButton">
-                <span class="sr-only">Open sidebar</span>
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-        </div>
-
         <!-- Main Content -->
         <div class="flex-1 w-max flex flex-col overflow-hidden">
 
@@ -51,6 +41,12 @@
                     <!-- Page Header -->
                     <div class="md:flex md:items-center md:justify-between mb-6">
                         <div class="flex-1 min-w-0">
+                            <div class="mb-4">
+                                <button class="text-blue-500 hover:underline cursor-pointer">
+                                    <i class="fas fa-arrow-left text-blue-500"></i>
+                                    <a href="{{ route('organisation.providerManagement') }}" class="text-sm font-medium truncate">Back</a>
+                                </button>
+                            </div>
                             <h2 id="pageHeader" class="text-xl font-bold leading-7 text-gray-900 sm:text-2xl sm:truncate">
                                 Pending Healthcare Provider Verifications
                             </h2>
@@ -105,12 +101,12 @@
                         </div>
                     </div>
 
-                    <!-- Pending Admins Table -->
+                    <!-- Pending Providers Table -->
                     <div class="bg-white shadow overflow-hidden sm:rounded-md">
                         <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                             <h3 id="tableHeader" class="text-lg leading-6 font-medium text-gray-900">Pending Verification Requests</h3>
                             <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                                Admin accounts awaiting verification approval
+                                Provider accounts awaiting verification approval
                             </p>
                         </div>
 
@@ -121,7 +117,7 @@
                                     <tr>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Admin Details
+                                            Provider Details
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -141,7 +137,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody id="adminTableBody" class="bg-white divide-y divide-gray-200">
+                                <tbody id="providerTableBody" class="bg-white divide-y divide-gray-200">
                                     @forelse ($providers as $provider)
                                         <tr class="hover:bg-gray-50">
                                             <td class="px-6 py-4 whitespace-nowrap">
@@ -156,8 +152,8 @@
                                                     </div>
                                                     <div class="ml-4">
                                                         <div class="text-sm font-medium text-gray-900">
-                                                            {{ $provider->full_name }}</div>
-                                                        <div class="text-sm text-gray-500">{{ $provider->id }}</div>
+                                                            {{ $provider->organisation_name }}</div>
+                                                        <div class="text-sm text-gray-500">{{ $provider->formatted_id }}</div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -176,9 +172,7 @@
                                             <!-- Status badge -->
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 @php
-                                                    $status = $provider->account_verified_at
-                                                        ? 'Approved'
-                                                        : ($provider->account_rejected_at ? 'Rejected' : 'Pending');
+                                                    $status = $provider->verification_status;
                                                     $colors = [
                                                         'Approved' => ['bg' => 'green', 'icon' => 'check-circle'],
                                                         'Rejected' => ['bg' => 'red', 'icon' => 'times-circle'],
@@ -206,7 +200,7 @@
                                     @empty
                                         <tr>
                                             <td colspan="5" class="p-6 text-center text-gray-500">
-                                                No {{ $defaultStatus }} admins found.
+                                                No {{ strtolower($defaultStatus) }} providers found.
                                             </td>
                                         </tr>
                                     @endforelse
@@ -260,7 +254,7 @@
         </div>
     </div>
 
-    @vite('resources/js/main/admin/adminManagement.js')
+    @vite('resources/js/main/organisation/providerManagement.js')
 </body>
 
 </html>

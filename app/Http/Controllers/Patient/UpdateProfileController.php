@@ -163,7 +163,7 @@ class UpdateProfileController extends Controller
             $patient->refresh();
 
             // Return success response
-            return redirect()->route('patient.profile')->with('success', 'Password updated successfully!');
+            return redirect()->route('patient.auth.profile')->with('success', 'Password updated successfully!');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Error handling for validation failures
             return redirect()->back()
@@ -218,7 +218,7 @@ class UpdateProfileController extends Controller
             $patient->save();
 
             return redirect()
-                ->route('patient.profile')
+                ->route('patient.auth.profile')
                 ->with('success', 'Profile picture updated successfully.');
         } catch (\Exception $e) {
             return redirect()
@@ -246,7 +246,7 @@ class UpdateProfileController extends Controller
         try {
             $patient->update($data);
             $patient->refresh();
-            return redirect()->route('patient.profile')->with('success', $successMessage);
+            return redirect()->route('patient.auth.profile')->with('success', $successMessage);
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', 'An error occurred while updating your information. Please try again.');
         }

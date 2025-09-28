@@ -38,7 +38,7 @@
                 <div class="hidden lg:flex items-center space-x-4 font-medium">
                     <a href="{{ route('index') }}"
                         class="px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                        Patient Portal <i class="fas fa-user"></i>
+                        Patient Portal</i>
                     </a>
                     <a href="#features"
                         class="px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200">
@@ -48,9 +48,9 @@
                         class="px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                         Contact
                     </a>
-                    <a href="#"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 login-modal-btn">
-                        Provider Login <i class="fas fa-sign-in-alt"></i>
+                    <a href="{{ route('organisation.login.form') }}"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        Login</i>
                     </a>
                 </div>
             </div>
@@ -59,20 +59,17 @@
             <div class="lg:hidden hidden" id="mobileMenu">
                 <div class="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
                     <a href="{{ route('index') }}" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
-                        Patient Portal <i class="fas fa-user"></i>
+                        Patient Portal</i>
                     </a>
                     <a href="#features" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">Features</a>
                     <a href="#contact" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">Contact</a>
-                    <a href="#"
-                        class="block px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 login-modal-btn">
-                        Provider Login <i class="fas fa-sign-in-alt"></i></a>
+                    <a href="{{ route('organisation.login.form') }}"
+                        class="block px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        Login</i></a>
                 </div>
             </div>
         </div>
     </nav>
-
-    {{-- Include Provider Login Modal --}}
-    @include('organisation.auth.providerLoginModal')
 
     <!-- Hero Section -->
     <section class="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-20 lg:py-20">
@@ -233,12 +230,7 @@
     <!-- Contact Section -->
     @include('patient.components.footer')
 
-    @if (session('login_error'))
-        <script>
-            window.PROVIDER_LOGIN_ERROR = @json(session('login_error'));
-        </script>
-    @endif
-
+    <!-- JavaScript -->
     @vite(['resources/js/main/organisation/homePage.js'])
 
 </body>

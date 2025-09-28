@@ -58,7 +58,7 @@
                 </div>
 
                 <!-- Confirmation Form -->
-                <form action="{{ route('patient.profile.delete.account') }}" method="POST">
+                <form action="{{ route('patient.auth.profile.delete.account') }}" method="POST">
                     @csrf
                     @method('DELETE')
 

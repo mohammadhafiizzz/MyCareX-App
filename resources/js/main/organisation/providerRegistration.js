@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Form submission handling
-    const form = document.getElementById('providerRegistrationForm');
+    const form = document.getElementById('registrationForm');
     const submitBtn = document.getElementById('submitBtn');
 
     if (form && submitBtn) {

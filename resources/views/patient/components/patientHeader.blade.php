@@ -40,7 +40,7 @@
                     <!-- Dropdown Menu -->
                     <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden" id="profileDropdownMenu">
                         <div class="py-2">
-                            <a href="{{ route('patient.profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                            <a href="{{ route('patient.auth.profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
                                 <i class="fas fa-user-edit mr-2"></i>My Profile
                             </a>
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
@@ -73,7 +73,7 @@
                     <div class="px-3 py-2 text-sm text-gray-500">
                         {{ Auth::guard('patient')->user()->full_name ?? 'Patient' }}
                     </div>
-                    <a href="{{ route('patient.profile') }}" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
+                    <a href="{{ route('patient.auth.profile') }}" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
                         <i class="fas fa-user-edit mr-3"></i>My Profile
                     </a>
                     <a href="#" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">

@@ -60,7 +60,7 @@ class HealthcareProvider extends Authenticatable implements MustVerifyEmail, Can
     /*--- ACCESSORS ---*/
     // Get the formatted Healthcare Provider ID
     public function getFormattedIdAttribute() {
-        return 'HCP' . str_pad($this->id, 5, '0', STR_PAD_LEFT);
+        return 'HCP' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
     }
 
     // Get the full address attribute
