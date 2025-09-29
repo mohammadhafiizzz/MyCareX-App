@@ -52,6 +52,12 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+
+        // Healthcare Provider guard configuration
+        'organisation' => [
+            'driver' => 'session',
+            'provider' => 'organisations',
+        ],
     ],
 
     /*
@@ -87,6 +93,12 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+
+        // Healthcare Provider provider configuration
+        'organisations' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\HealthcareProvider::class,
         ],
 
         // 'users' => [
@@ -133,6 +145,14 @@ return [
         // Admin password reset configuration
         'admins' => [
             'provider' => 'admins',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        // Healthcare Provider password reset configuration
+        'organisations' => [
+            'provider' => 'organisations',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

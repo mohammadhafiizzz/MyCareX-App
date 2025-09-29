@@ -15,12 +15,12 @@
     <!-- Navigation Header -->
     <nav class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-2">
-            <div class="flex items-center justify-between h-16">
-                <a href="#" class="flex items-center space-x-3">
+            <div class="flex items-center justify-between h-15">
+                <a href="{{ route('organisation.dashboard') }}" class="flex items-center space-x-3">
                     <img src="{{ asset('images/MyCareX_Logo.png') }}" alt="MyCareX Logo" class="w-10 h-10 rounded-lg">
                     <div class="flex flex-col">
-                        <span class="text-xl font-semibold text-gray-900">MyCareX</span>
-                        <small class="text-xs font-normal text-gray-500">
+                        <span class="text-lg font-semibold text-gray-900">MyCareX</span>
+                        <small class="text-[10px] font-normal text-gray-500">
                             Personal Healthcare Records
                         </small>
                     </div>
@@ -35,7 +35,7 @@
                 </button>
 
                 <!-- Desktop Navigation -->
-                <div class="hidden lg:flex items-center space-x-4 font-medium">
+                <div class="hidden lg:flex items-center text-[15px] space-x-4 font-medium">
                     <a href="{{ route('index') }}"
                         class="px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                         Patient Portal</i>
@@ -50,14 +50,14 @@
                     </a>
                     <a href="{{ route('organisation.login.form') }}"
                         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                        Login</i>
+                        Sign In</i>
                     </a>
                 </div>
             </div>
 
             <!-- Mobile Menu -->
             <div class="lg:hidden hidden" id="mobileMenu">
-                <div class="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
+                <div class="px-2 pt-2 pb-3 space-y-1 border-t text-[15px] border-gray-200">
                     <a href="{{ route('index') }}" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
                         Patient Portal</i>
                     </a>
@@ -65,7 +65,7 @@
                     <a href="#contact" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">Contact</a>
                     <a href="{{ route('organisation.login.form') }}"
                         class="block px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                        Login</i></a>
+                        Sign In</i></a>
                 </div>
             </div>
         </div>

@@ -2,25 +2,25 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
-use App\Http\Controllers\Patient\Auth\RegistrationController as PatientRegistrationController;
+use App\Http\Controllers\Admin as Admin;
 use App\Http\Controllers\Patient as Patient;
 use App\Http\Controllers\Organisation as Organisation;
-use App\Http\Controllers\Admin as Admin;
 
 // MyCareX Home Page
 Route::get('/', [HomePageController::class, 'index'])->name('index');
 
 // Patient Routes
-Route::prefix('patient')->middleware(['web'])->group(function () {
+Route::prefix('patient')->group(function () {
+
     // Patient Registration
-    Route::get('/register', [PatientRegistrationController::class, 'showRegistrationForm'])->name('patient.register.form');
-    Route::post('/register', [PatientRegistrationController::class, 'register'])->name('patient.register');
+    Route::get('/register', [Patient\Auth\RegistrationController::class, 'showRegistrationForm'])->name('patient.register.form');
+    Route::post('/register', [Patient\Auth\RegistrationController::class, 'register'])->name('patient.register');
 
     // Email verification
-    Route::get('/email/verify', [PatientRegistrationController::class, 'showEmailVerificationNotice'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [PatientRegistrationController::class, 'verify'])->name('verification.verify');
-    Route::post('/email/verification-notification', [PatientRegistrationController::class, 'resend'])->name('verification.resend');
-    Route::get('/email/verified', [PatientRegistrationController::class, 'showEmailVerified'])->name('verification.success');
+    Route::get('/email/verify', [Patient\Auth\RegistrationController::class, 'showEmailVerificationNotice'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [Patient\Auth\RegistrationController::class, 'verify'])->name('verification.verify');
+    Route::post('/email/verification-notification', [Patient\Auth\RegistrationController::class, 'resend'])->name('verification.resend');
+    Route::get('/email/verified', [Patient\Auth\RegistrationController::class, 'showEmailVerified'])->name('verification.success');
 
     // Patient Login
     Route::post('/login', [Patient\Auth\LoginController::class, 'login'])->name('patient.login');
@@ -42,18 +42,18 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
             ->name('patient.password.update');
     });
 
-    // Patient Dashboard (Protected)
-    Route::get('/dashboard', [Patient\DashboardController::class, 'index'])
-        ->name('patient.dashboard')
-        ->middleware('auth:patient');
+    // Authenticated Patient Routes (Protected)
+    Route::middleware(['auth:patient', 'verified'])->group(function () {
 
-    // Patient Profile
-    Route::get('/profile', [Patient\ProfileController::class, 'showProfilePage'])
-        ->name('patient.auth.profile')
-        ->middleware('auth:patient');
+        // Patient Dashboard
+        Route::get('/dashboard', [Patient\DashboardController::class, 'index'])
+            ->name('patient.dashboard');
 
-    // Profile Update Routes (Protected)
-    Route::middleware('auth:patient')->group(function () {
+        // Patient Profile
+        Route::get('/profile', [Patient\ProfileController::class, 'showProfilePage'])
+            ->name('patient.auth.profile');
+
+        // Update and Delete Profile
         Route::put('/profile/personal-info', [Patient\UpdateProfileController::class, 'updatePersonalInfo'])
             ->name('patient.auth.profile.update.personal');
 
@@ -81,7 +81,8 @@ Route::prefix('patient')->middleware(['web'])->group(function () {
 });
 
 // Organisation Routes
-Route::prefix('organisation')->middleware(['web'])->group(function () {
+Route::prefix('organisation')->group(function () {
+
     // Organisation Home Page
     Route::get('/', [Organisation\HomePageController::class, 'index'])->name('organisation.index');
 
@@ -101,10 +102,18 @@ Route::prefix('organisation')->middleware(['web'])->group(function () {
     Route::get('/email/verify/{id}/{hash}', [Organisation\Auth\RegistrationController::class, 'verify'])->name('organisation.verification.verify');
     Route::post('/email/verification-notification', [Organisation\Auth\RegistrationController::class, 'resend'])->name('organisation.verification.resend');
     Route::get('/email/verified', [Organisation\Auth\RegistrationController::class, 'showEmailVerified'])->name('organisation.verification.success');
+
+    // Authenticated Organisation Routes (Protected)
+    Route::middleware(['auth:organisation', 'verified'])->group(function () {
+        // Organisation Dashboard
+        Route::get('/dashboard', [Organisation\DashboardController::class, 'index'])
+            ->name('organisation.dashboard');
+    });
 });
 
 // Admin Routes
-Route::prefix('admin')->middleware(['web'])->group(function () {
+Route::prefix('admin')->group(function () {
+
     // Admin Login
     Route::get('/', [Admin\Auth\LoginController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [Admin\Auth\LoginController::class, 'login'])->name('admin.login.submit');
@@ -116,65 +125,67 @@ Route::prefix('admin')->middleware(['web'])->group(function () {
     Route::get('/register', [Admin\Auth\RegistrationController::class, 'showRegistrationForm'])->name('admin.register.form');
     Route::post('/register', [Admin\Auth\RegistrationController::class, 'register'])->name('admin.register');
 
-    // Admin Dashboard
-    Route::get('/dashboard', [Admin\DashboardController::class, 'index'])
-        ->name('admin.dashboard')
-        ->middleware('auth:admin');
-
-    // Admin Management Page
-    Route::prefix('/management')->group(function () {
+    // Authenticated Admin Routes (Protected)
+    Route::middleware('auth:admin')->group(function () {
+        // Admin Dashboard
+        Route::get('/dashboard', [Admin\DashboardController::class, 'index'])
+            ->name('admin.dashboard');
 
         // Admin Management Page
-        Route::get('/', [Admin\AdminManagementController::class, 'index'])
-            ->name('admin.management');
+        Route::prefix('/management')->group(function () {
 
-        // Get lists of admins
-        Route::get('/list/{status}', [Admin\AdminManagementController::class, 'listAdmins'])
-            ->name('admin.management.list');
+            // Admin Management Page
+            Route::get('/', [Admin\AdminManagementController::class, 'index'])
+                ->name('admin.management');
 
-        // POST routes for approving/rejecting admin accounts
-        // Approve
-        Route::post('/approve/{admin:admin_id}', [Admin\AdminManagementController::class, 'approveAdmin'])
-            ->name('admin.management.approve');
+            // Get lists of admins
+            Route::get('/list/{status}', [Admin\AdminManagementController::class, 'listAdmins'])
+                ->name('admin.management.list');
 
-        // Reject
-        Route::post('/reject/{admin:admin_id}', [Admin\AdminManagementController::class, 'rejectAdmin'])
-            ->name('admin.management.reject');
+            // POST routes for approving/rejecting admin accounts
+            // Approve
+            Route::post('/approve/{admin:admin_id}', [Admin\AdminManagementController::class, 'approveAdmin'])
+                ->name('admin.management.approve');
 
-        // Delete
-        Route::post('/delete/{admin:admin_id}', [Admin\AdminManagementController::class, 'deleteAdmin'])
-            ->name('admin.management.delete');
-    });
+            // Reject
+            Route::post('/reject/{admin:admin_id}', [Admin\AdminManagementController::class, 'rejectAdmin'])
+                ->name('admin.management.reject');
 
-    // Healthcare Provider Management Page
-    Route::prefix('/providers')->group(function () {
-        // Provider Management Dashboard
-        Route::get('/', [Organisation\ProviderManagementController::class, 'index'])
-            ->name('organisation.providerManagement');
+            // Delete
+            Route::post('/delete/{admin:admin_id}', [Admin\AdminManagementController::class, 'deleteAdmin'])
+                ->name('admin.management.delete');
+        });
 
-        // Provider Verification Dashboard
-        Route::get('/verification', [Organisation\ProviderManagementController::class, 'providerVerification'])
-            ->name('organisation.providerVerification');
+        // Healthcare Provider Management Page
+        Route::prefix('/providers')->group(function () {
+            // Provider Management Dashboard
+            Route::get('/', [Organisation\ProviderManagementController::class, 'index'])
+                ->name('organisation.providerManagement');
 
-        // Get lists of providers by status
-        Route::get('/list/{status}', [Organisation\ProviderManagementController::class, 'listProviders'])
-            ->name('organisation.providers.list');
+            // Provider Verification Dashboard
+            Route::get('/verification', [Organisation\ProviderManagementController::class, 'providerVerification'])
+                ->name('organisation.providerVerification');
 
-        // Provider Verification Requests
-        Route::get('/verification-requests', [Organisation\ProviderManagementController::class, 'verificationRequests'])
-            ->name('organisation.providers.verification.requests');
+            // Get lists of providers by status
+            Route::get('/list/{status}', [Organisation\ProviderManagementController::class, 'listProviders'])
+                ->name('organisation.providers.list');
 
-        // Approve Provider
-        Route::post('/approve/{provider:id}', [Organisation\ProviderManagementController::class, 'approveProvider'])
-            ->name('organisation.providers.approve');
+            // Provider Verification Requests
+            Route::get('/verification-requests', [Organisation\ProviderManagementController::class, 'verificationRequests'])
+                ->name('organisation.providers.verification.requests');
 
-        // Reject Provider
-        Route::post('/reject/{provider:id}', [Organisation\ProviderManagementController::class, 'rejectProvider'])
-            ->name('organisation.providers.reject');
+            // Approve Provider
+            Route::post('/approve/{provider:id}', [Organisation\ProviderManagementController::class, 'approveProvider'])
+                ->name('organisation.providers.approve');
 
-        // Delete Provider
-        Route::post('/delete/{provider:id}', [Organisation\ProviderManagementController::class, 'deleteProvider'])
-            ->name('organisation.providers.delete');
+            // Reject Provider
+            Route::post('/reject/{provider:id}', [Organisation\ProviderManagementController::class, 'rejectProvider'])
+                ->name('organisation.providers.reject');
+
+            // Delete Provider
+            Route::post('/delete/{provider:id}', [Organisation\ProviderManagementController::class, 'deleteProvider'])
+                ->name('organisation.providers.delete');
+        });
     });
 });
 

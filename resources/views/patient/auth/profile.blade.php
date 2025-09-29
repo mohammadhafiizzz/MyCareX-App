@@ -13,7 +13,7 @@
 <body class="font-[Inter] bg-gray-50">
 
     <!-- Header -->
-    @include('patient.components.patientHeader')
+    @include('patient.components.header')
 
     {{-- Flash Messages --}}
     @if (session('success'))

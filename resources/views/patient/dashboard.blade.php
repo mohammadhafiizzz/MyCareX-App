@@ -13,7 +13,7 @@
 <body class="font-[Inter] bg-gray-50">
 
     <!-- Header -->
-    @include('patient.components.patientHeader')
+    @include('patient.components.header')
 
     <!-- Dashboard Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

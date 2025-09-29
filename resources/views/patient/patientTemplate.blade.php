@@ -13,12 +13,12 @@
 <body class="font-[Inter] bg-gray-100">
 
     <!-- Header -->
-    @include('patient.components.patientHeader')
+    @include('patient.components.header')
 
     <!-- Main Content -->
 
     <!-- Javascript and Footer -->
-    @vite(['resources/js/main/patient/patientHeader.js'])
+    @vite(['resources/js/main/patient/header.js'])
     @include('patient.components.footer')
 </body>
 
