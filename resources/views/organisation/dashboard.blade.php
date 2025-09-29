@@ -19,6 +19,9 @@
     <!-- Header -->
     @include('organisation.components.header')
 
+    <!-- Navigation -->
+    @include('organisation.components.navbar')
+
     <!-- Main Content -->
 
     <!-- Javascript and Footer -->

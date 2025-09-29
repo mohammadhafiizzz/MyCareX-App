@@ -15,15 +15,14 @@
 </head>
 
 <body class="font-[Inter] bg-gray-100">
-    <div class="flex h-screen bg-gray-100">
-        
-        <!-- Header -->
-        @include('organisation.components.header')
 
-        <!-- Main Content -->
+    <!-- Header -->
+    @include('organisation.components.header')
+
+    <!-- Main Content -->
 
     <!-- Javascript and Footer -->
-     
+
 </body>
 
 </html>
