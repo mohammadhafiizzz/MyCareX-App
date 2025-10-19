@@ -120,7 +120,7 @@
                         <!-- Sign Up Link -->
                         <div class="text-center mt-4">
                             <span class="text-sm text-gray-600">Don't have account yet? </span>
-                            <a href="#" 
+                            <a href="{{ route('organisation.register.form') }}" 
                                class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
                                 Sign up
                             </a>

@@ -14,19 +14,19 @@
     <!-- Header -->
     <header class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-2">
-            <div class="flex items-center justify-between h-16">
+            <div class="flex items-center justify-between h-15">
                 <a href="{{ route('index') }}" class="flex items-center space-x-3">
                     <img src="{{ asset('images/MyCareX_Logo.png') }}" alt="MyCareX Logo" class="w-10 h-10 rounded-lg">
                     <div class="flex flex-col">
-                        <span class="text-xl font-semibold text-gray-900">MyCareX</span>
-                        <small class="text-xs font-normal text-gray-500">Personal Healthcare Records</small>
+                        <span class="text-lg font-semibold text-gray-900">MyCareX</span>
+                        <small class="text-[10px] font-normal text-gray-500">Personal Healthcare Records</small>
                     </div>
                 </a>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">Already have an account?</span>
+                <div class="text-[15px] font-medium flex items-center space-x-4">
+                    <span class="text-gray-600">Already have an account?</span>
                     <a href="{{ route('index') }}"
-                        class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
-                        Sign In <i class="fas fa-sign-in-alt"></i>
+                        class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white hover:border-whitetransition-colors duration-200">
+                        Sign In
                     </a>
                 </div>
             </div>

@@ -14,19 +14,19 @@
     <!-- Header -->
     <header class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-2">
-            <div class="flex items-center justify-between h-16">
+            <div class="flex items-center justify-between h-15">
                 <a href="{{ route('organisation.index') }}" class="flex items-center space-x-3">
                     <img src="{{ asset('images/MyCareX_Logo.png') }}" alt="MyCareX Logo" class="w-10 h-10 rounded-lg">
                     <div class="flex flex-col">
-                        <span class="text-xl font-semibold text-gray-900">MyCareX</span>
-                        <small class="text-xs font-normal text-gray-500">Healthcare Provider Portal</small>
+                        <span class="text-lg font-semibold text-gray-900">MyCareX</span>
+                        <small class="text-[10px] font-normal text-gray-500">Personal Healthcare Records</small>
                     </div>
                 </a>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">Already registered?</span>
+                <div class="text-[15px] font-medium flex items-center space-x-4">
+                    <span class="text-gray-600">Already registered?</span>
                     <a href="{{ route('organisation.index') }}"
-                        class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
-                        Sign In <i class="fas fa-sign-in-alt"></i>
+                        class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white hover:border-white transition-colors duration-200">
+                        Sign In
                     </a>
                 </div>
             </div>
@@ -42,7 +42,7 @@
         </div>
 
         <!-- Registration Process Steps -->
-        <div class="mb-8">
+        {{-- <div class="mb-8">
             <div class="flex items-center justify-between max-w-md mx-auto">
                 <div class="flex items-center">
                     <div class="flex items-center justify-center w-8 h-8 bg-blue-600 rounded-full text-white text-sm font-medium">1</div>
@@ -59,7 +59,7 @@
                     <span class="ml-2 text-sm text-gray-500">Approved</span>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Error Messages -->
         @if ($errors->any())
@@ -75,7 +75,7 @@
         <!-- Registration Form -->
         <form action="{{ route('organisation.register') }}" method="POST" enctype="multipart/form-data" id="registrationForm" class="space-y-8">
             @csrf
-            @include('organisation.auth.signupForm')
+            @include('organisation.auth.registrationForm')
         </form>
     </main>
 

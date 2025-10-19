@@ -349,8 +349,7 @@
         <div class="flex">
             <button type="submit" id="submitBtn"
                 class="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center">
-                <i class="fas fa-hospital mr-2"></i>
-                Register Organisation
+                Register
             </button>
         </div>
     </div>

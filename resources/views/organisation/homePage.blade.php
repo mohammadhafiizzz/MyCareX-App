@@ -16,7 +16,7 @@
     <nav class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-2">
             <div class="flex items-center justify-between h-15">
-                <a href="{{ route('organisation.dashboard') }}" class="flex items-center space-x-3">
+                <a href="{{ route('organisation.index') }}" class="flex items-center space-x-3">
                     <img src="{{ asset('images/MyCareX_Logo.png') }}" alt="MyCareX Logo" class="w-10 h-10 rounded-lg">
                     <div class="flex flex-col">
                         <span class="text-lg font-semibold text-gray-900">MyCareX</span>
