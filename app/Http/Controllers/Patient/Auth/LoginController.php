@@ -38,6 +38,10 @@ class LoginController extends Controller
             RateLimiter::clear($this->throttleKey($request));
             $request->session()->regenerate();
 
+            // Update last login timestamp
+            $patient->last_login = now();
+            $patient->save();
+
             return redirect()->intended(route('patient.dashboard'))
                 ->with('success', 'Welcome back, ' . $patient->full_name . '!');
         }

@@ -31,7 +31,8 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
         'date_of_birth' => 'date',
         'height' => 'decimal:2',
         'weight' => 'decimal:2',
-        'email_verified_at' => 'datetime'
+        'email_verified_at' => 'datetime',
+        'last_login' => 'datetime'
     ];
 
     // Username for authentication

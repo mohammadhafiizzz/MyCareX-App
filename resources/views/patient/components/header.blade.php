@@ -38,7 +38,7 @@
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden" id="profileDropdownMenu">
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden z-50" id="profileDropdownMenu">
                         <div class="py-2">
                             <a href="{{ route('patient.auth.profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
                                 <i class="fas fa-user-edit mr-2"></i>My Profile
@@ -60,7 +60,7 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div class="lg:hidden hidden" id="mobileMenu">
+        <div class="lg:hidden hidden z-50" id="mobileMenu">
             <div class="px-2 pt-2 pb-3 space-y-1 text-sm border-t border-gray-200">
                 <!-- Mobile Notifications -->
                 <button class="flex items-center w-full px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md" id="mobileNotificationBtn">

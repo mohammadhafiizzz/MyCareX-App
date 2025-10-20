@@ -15,6 +15,9 @@
     <!-- Header -->
     @include('patient.components.header')
 
+    <!-- Navbar -->
+    @include('patient.components.navbar')
+
     <!-- Main Content -->
 
     <!-- Javascript and Footer -->

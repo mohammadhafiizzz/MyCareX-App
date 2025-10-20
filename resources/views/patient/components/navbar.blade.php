@@ -4,25 +4,21 @@
             <div class="flex items-center">
                 <!-- Main Navigation -->
                 <div class="hidden md:ml-8 md:flex md:space-x-1">
-                    <a href="{{ route('organisation.dashboard') }}"
+                    <a href="{{ route('patient.dashboard') }}"
                        class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                         <i class="fas fa-home text-gray-400 group-hover:text-gray-600 mr-2"></i>Dashboard
                     </a>
-                    <a href="#"
+                    <a href="{{ route('patient.myrecords') }}"
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-users text-gray-400 group-hover:text-gray-600 mr-2"></i>Patients
+                        <i class="fas fa-file-medical-alt text-gray-400 group-hover:text-gray-600 mr-2"></i>My Records
                     </a>
                     <a href="#"
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-calendar-alt text-gray-400 group-hover:text-gray-600 mr-2"></i>Appointments
+                        <i class="fas fa-shield-halved text-gray-400 group-hover:text-gray-600 mr-2"></i>Access & Permissions
                     </a>
                     <a href="#"
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-chart-bar text-gray-400 group-hover:text-gray-600 mr-2"></i>Reports
-                    </a>
-                    <a href="#"
-                        class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-cog text-gray-400 group-hover:text-gray-600 mr-2"></i>Settings
+                        <i class="fas fa-calendar text-gray-400 group-hover:text-gray-600 mr-2"></i>Appointments
                     </a>
                 </div>
             </div>
@@ -30,7 +26,7 @@
             <!-- Right Side -->
             <div class="flex items-center space-x-4">
                 <!-- Logout -->
-                <form action="{{ route('organisation.logout') }}" method="POST" class="hidden md:block">
+                <form action="#" method="POST" class="hidden md:block">
                     @csrf
                     <input type="text"
                         class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
@@ -41,4 +37,4 @@
     </div>
 </nav>
 
-@vite('resources/js/main/organisation/navbar.js')
+@vite('resources/js/main/patient/navbar.js')

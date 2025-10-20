@@ -49,6 +49,10 @@ Route::prefix('patient')->group(function () {
         Route::get('/dashboard', [Patient\DashboardController::class, 'index'])
             ->name('patient.dashboard');
 
+        // My Records
+        Route::get('/my-records', [Patient\DashboardController::class, 'myRecords'])
+            ->name('patient.myrecords');
+
         // Patient Profile
         Route::get('/profile', [Patient\ProfileController::class, 'showProfilePage'])
             ->name('patient.auth.profile');
@@ -77,6 +81,9 @@ Route::prefix('patient')->group(function () {
 
         Route::delete('/profile/picture', [Patient\DeleteProfileController::class, 'deleteProfilePicture'])
             ->name('patient.auth.profile.delete.picture');
+
+        // Medical History (CRUD)
+        Route::get('/history', []);
     });
 });
 

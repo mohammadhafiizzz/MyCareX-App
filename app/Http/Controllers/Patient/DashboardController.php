@@ -7,8 +7,13 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    // Define route for web.php
+    // Define route for patient dashboard
     public function index() {
         return view('patient.dashboard');
+    }
+
+    // Define route for my records
+    public function myRecords() {
+        return view('patient.myrecords');
     }
 }
