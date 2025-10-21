@@ -131,7 +131,7 @@
                                     </td>
                                     
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="#" class="text-blue-600 hover:text-blue-900 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                                        <a href="#" class="edit-condition-btn text-blue-600 hover:text-blue-900 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
                                         data-id="{{ $condition->id }}">Edit</a>
                                     </td>
                                 </tr>

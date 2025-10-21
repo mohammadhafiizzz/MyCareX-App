@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // 1. Fetch data from the server
             try {
-                const response = await fetch(`/patient/condition/${conditionId}/json`);
+                const response = await fetch(`/patient/my-records/condition/${conditionId}/json`);
                 
                 if (!response.ok) {
                     throw new Error('Could not retrieve condition data.');
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function populateForm(condition, id) {
         // Set form action URLs
-        const updateUrl = `/patient/condition/${id}`;
+        const updateUrl = `/patient/my-records/condition/${id}`;
         editForm.setAttribute('action', updateUrl);
         deleteForm.setAttribute('action', updateUrl); // Delete also points to the same base URL
 

@@ -1,6 +1,6 @@
 <div 
     id="edit-condition-modal"
-    class="fixed inset-0 z-50 overflow-y-auto bg-gray-950/50 hidden items-center justify-center p-4"
+    class="fixed inset-0 z-50 overflow-y-auto bg-gray-950/50 flex hidden items-center justify-center p-4"
     aria-labelledby="edit-modal-title"
     role="dialog"
     aria-modal="true"
@@ -98,10 +98,27 @@
                     {{-- Note: Your 'add' form had 'Inactive', but your migration has 'Chronic'. I used 'Chronic'. --}}
                 </select>
             </div>
+        </form>
 
-            {{-- Form footer with all buttons --}}
-            <div class="pt-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3">
-                
+        <div class="pt-6 mt-6 border-t border-gray-200 flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center">
+
+            {{-- This separate form is for DELETING the record --}}
+            <form id="delete-condition-form" method="POST" action="#">
+                @csrf
+                @method('DELETE')
+                <button 
+                    type="submit" 
+                    id="delete-condition-button"
+                    onclick="return confirm('Are you sure you want to delete this condition? This action cannot be undone.');"
+                    class="inline-flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg shadow-sm hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                >
+                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                    Delete
+                </button>
+            </form>
+
+            {{-- This div groups the right-side buttons --}}
+            <div class="flex flex-col-reverse sm:flex-row sm:space-x-3 w-full sm:w-auto">
                 <button 
                     type="button" 
                     id="edit-modal-cancel-button"
@@ -111,28 +128,14 @@
                 </button>
 
                 <button 
-                    type="submit" {{-- This button submits the main edit form --}}
+                    type="submit" 
+                    form="edit-condition-form" {{-- <-- THIS IS THE MAGIC HTML5 ATTRIBUTE --}}
                     id="update-condition-button"
                     class="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 >
                     <span id="update-button-text">Save Changes</span>
                 </button>
             </div>
-        </form>
-
-        {{-- This separate form is for DELETING the record --}}
-        <form id="delete-condition-form" method="POST" action="#" class="absolute bottom-6 left-6">
-             @csrf
-             @method('DELETE')
-             <button 
-                type="submit" 
-                id="delete-condition-button"
-                onclick="return confirm('Are you sure you want to delete this condition? This action cannot be undone.');"
-                class="inline-flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg shadow-sm hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
-            >
-                <i class="fas fa-trash-alt" aria-hidden="true"></i>
-                Delete
-            </button>
-        </form>
+        </div>
     </div>
 </div>

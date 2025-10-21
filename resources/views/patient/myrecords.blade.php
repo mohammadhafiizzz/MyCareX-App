@@ -72,33 +72,93 @@
                             View all
                         </a>
                     </div>
-                    <div class="mt-4 flow-root">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Condition</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Noted By</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Hypertension</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Dr. Evelyn Reed</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Oct 15, 2025</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Diabetes Mellitus Type 2</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Dr. Evelyn Reed</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Sep 02, 2025</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Seasonal Allergies</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Self-Reported</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Aug 20, 2025</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="flow-root">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Condition</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Diagnosis Date</th>
+                                        <th scope="col" class="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Description</th>
+                                        <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Severity</th>
+                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @forelse ($conditions as $condition)
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {{ $condition->condition_name }}
+                                            </td>
+                                            
+                                            <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                                {{ $condition->diagnosis_date ? $condition->diagnosis_date->format('M d, Y') : 'N/A' }}
+                                            </td>
+                                            
+                                            <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                                {{ $condition->description ?? 'N/A' }}
+                                            </td>
+                                            
+                                            {{-- Severity Column --}}
+                                            <td class="px-4 py-4 whitespace-nowrap text-sm">
+                                                @switch($condition->severity)
+                                                    @case('Severe')
+                                                        <span class="inline-flex items-center font-medium text-red-700">
+                                                            <i class="fas fa-circle-exclamation mr-1.5" aria-hidden="true"></i> 
+                                                            {{ $condition->severity }}
+                                                        </span>
+                                                        @break
+
+                                                    @case('Moderate')
+                                                        <span class="inline-flex items-center font-medium text-yellow-700">
+                                                            <i class="fas fa-triangle-exclamation mr-1.5" aria-hidden="true"></i> 
+                                                            {{ $condition->severity }}
+                                                        </span>
+                                                        @break
+
+                                                    @case('Mild')
+                                                    @default
+                                                        <span class="inline-flex items-center font-medium text-green-700">
+                                                            <i class="fas fa-circle-check mr-1.5" aria-hidden="true"></i> 
+                                                            {{ $condition->severity }}
+                                                        </span>
+                                                @endswitch
+                                            </td>
+                                            
+                                            {{-- Status Column --}}
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                                @switch($condition->status)
+                                                    @case('Active')
+                                                        <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                            {{ $condition->status }}
+                                                        </span>
+                                                        @break
+
+                                                    @case('Chronic')
+                                                        <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                            {{ $condition->status }}
+                                                        </span>
+                                                        @break
+
+                                                    @case('Resolved')
+                                                    @default
+                                                        <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                            {{ $condition->status }}
+                                                        </span>
+                                                @endswitch
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
+                                                You have not added any medical conditions yet.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>

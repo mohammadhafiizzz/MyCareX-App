@@ -92,8 +92,8 @@ Route::prefix('patient')->group(function () {
             Route::post('/medical-conditions/add', [Modules\MedicalCondition\AddConditionController::class, 'add'])
                 ->name('patient.condition.add');
 
-            Route::get('/patient/condition/{condition}/json', [Modules\MedicalCondition\MedicalConditionController::class, 'getConditionJson'])
-            ->name('patient.condition.json');
+            Route::get('/condition/{condition}/json', [Modules\MedicalCondition\MedicalConditionController::class, 'getConditionJson'])
+                ->name('patient.condition.json');
         });
     });
 });
