@@ -8,10 +8,9 @@
     <title>MyCareX - Medical History</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="font-[Inter] bg-gray-100" x-data="{ isModalOpen: false }">
+<body class="font-[Inter] bg-gray-100">
 
     @include('patient.components.header')
 
@@ -31,6 +30,13 @@
             <p class="mt-1 text-lg text-gray-700">A complete record of your diagnosed conditions.</p>
         </div>
 
+        {{-- Success Message --}}
+        @if (session('message'))
+            <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
+                {{ session('message') }}
+            </div>
+        @endif
+
         <section class="bg-white rounded-xl mb-7 shadow-sm border border-gray-200" aria-labelledby="conditions-heading">
             <div class="p-6">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -39,9 +45,9 @@
                     </h2>
                     <button 
                         type="button" 
-                        @click="isModalOpen = true"
+                        id="show-add-condition-modal"
                         class="mt-3 sm:mt-0 w-full sm:w-auto inline-flex justify-center items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                        <i class="fas fa-plus" aria-hidden="true"></i>
+                        <i class="fas fa-plus"></i>
                         Add Condition
                     </button>
                 </div>
@@ -61,38 +67,81 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Condition Name</td>
-                                <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">Oct 15, 2020</td>
-                                <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">Notes on symptoms/management</td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                    <span class="inline-flex items-center font-medium text-red-700">
-                                        <i class="fas fa-exclamation-circle mr-1.5" aria-hidden="true"></i> Severity
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Status</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="#" class="text-blue-600 hover:text-blue-900 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">Edit</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Condition Name</td>
-                                <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">Oct 15, 2020</td>
-                                <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">Notes on symptoms/management</td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                    <span class="inline-flex items-center font-medium text-red-700">
-                                        <i class="fas fa-exclamation-circle mr-1.5" aria-hidden="true"></i> Severity
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Status</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="#" class="text-blue-600 hover:text-blue-900 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">Edit</a>
-                                </td>
-                            </tr>
+                            @forelse ($conditions as $condition)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        {{ $condition->condition_name }}
+                                    </td>
+                                    
+                                    <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                        {{ $condition->diagnosis_date ? $condition->diagnosis_date->format('M d, Y') : 'N/A' }}
+                                    </td>
+                                    
+                                    <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                        {{ $condition->description ?? 'N/A' }}
+                                    </td>
+                                    
+                                    {{-- Severity Column --}}
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm">
+                                        @switch($condition->severity)
+                                            @case('Severe')
+                                                <span class="inline-flex items-center font-medium text-red-700">
+                                                    <i class="fas fa-circle-exclamation mr-1.5" aria-hidden="true"></i> 
+                                                    {{ $condition->severity }}
+                                                </span>
+                                                @break
+
+                                            @case('Moderate')
+                                                <span class="inline-flex items-center font-medium text-yellow-700">
+                                                    <i class="fas fa-triangle-exclamation mr-1.5" aria-hidden="true"></i> 
+                                                    {{ $condition->severity }}
+                                                </span>
+                                                @breaks
+
+                                            @case('Mild')
+                                            @default
+                                                <span class="inline-flex items-center font-medium text-green-700">
+                                                    <i class="fas fa-circle-check mr-1.5" aria-hidden="true"></i> 
+                                                    {{ $condition->severity }}
+                                                </span>
+                                        @endswitch
+                                    </td>
+                                    
+                                    {{-- Status Column --}}
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        @switch($condition->status)
+                                            @case('Active')
+                                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                    {{ $condition->status }}
+                                                </span>
+                                                @break
+
+                                            @case('Chronic')
+                                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                    {{ $condition->status }}
+                                                </span>
+                                                @break
+
+                                            @case('Resolved')
+                                            @default
+                                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    {{ $condition->status }}
+                                                </span>
+                                        @endswitch
+                                    </td>
+                                    
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                                        data-id="{{ $condition->id }}">Edit</a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
+                                        You have not added any medical conditions yet.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -100,81 +149,16 @@
         </section>
     </div>
 
-    <div 
-        x-show="isModalOpen"
-        x-transition:enter="ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-10 overflow-y-auto bg-gray-500 bg-opacity-75"
-        aria-labelledby="modal-title"
-        role="dialog"
-        aria-modal="true"
-        style="display: none;"
-    >
-        <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <div
-                x-show="isModalOpen"
-                @click.outside="isModalOpen = false"
-                x-transition:enter="ease-out duration-300"
-                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                x-transition:leave="ease-in duration-200"
-                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="inline-block w-full max-w-lg p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white rounded-xl shadow-xl"
-            >
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-semibold leading-6 text-gray-900" id="modal-title">
-                        Add New Condition
-                    </h3>
-                    <button type="button" @click="isModalOpen = false" class="text-gray-400 hover:text-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                        <i class="fas fa-times" aria-hidden="true"></i>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                </div>
-                
-                <form class="mt-6 space-y-6">
-                    <div>
-                        <label for="condition_name" class="block text-sm font-medium text-gray-700">Condition Name</label>
-                        <input type="text" name="condition_name" id="condition_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="e.g., Hypertension">
-                    </div>
+    <!-- Add Condition Form -->
+    @include('patient.modules.medicalCondition.addConditionForm')
 
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <div>
-                            <label for="condition_status" class="block text-sm font-medium text-gray-700">Status</label>
-                            <select id="condition_status" name="condition_status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                <option>Active</option>
-                                <option>Resolved</option>
-                                <option>Inactive</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="condition_onset_date" class="block text-sm font-medium text-gray-700">Date of Onset</label>
-                            <input type="date" name="condition_onset_date" id="condition_onset_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                        </div>
-                    </div>
+    <!-- Edit Condition Form -->
+    @include('patient.modules.medicalCondition.editConditionForm')
 
-                    <div>
-                        <label for="condition_notes" class="block text-sm font-medium text-gray-700">Notes (Optional)</label>
-                        <textarea id="condition_notes" name="condition_notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="e.g., Self-reported, based on family history..."></textarea>
-                    </div>
-
-                    <div class="pt-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3">
-                        <button type="button" @click="isModalOpen = false" class="mt-3 sm:mt-0 w-full sm:w-auto inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                            Cancel
-                        </button>
-                        <button type="submit" class="w-full sm:w-auto inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                            Save Condition
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
+    <!-- Javascript and Footer -->
+    @vite(['resources/js/main/patient/header.js'])
+    @vite(['resources/js/main/medicalCondition/addConditionForm.js'])
+    @vite(['resources/js/main/medicalCondition/editConditionForm.js'])
     @include('patient.components.footer')
 
 </body>

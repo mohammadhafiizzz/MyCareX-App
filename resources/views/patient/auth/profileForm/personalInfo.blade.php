@@ -1,7 +1,7 @@
 <!-- Edit Personal Information Modal -->
 <div id="editPersonalInfo"
     class="fixed inset-0 bg-gray-950/50 z-50 flex hidden items-start justify-center p-4 overflow-y-auto">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 scale-95 my-4 min-h-fit max-h-screen overflow-y-auto"
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-200 scale-95 my-4 min-h-fit max-h-screen overflow-y-auto"
         id="editPersonalInfoContent">
         <!-- Modal Header -->
         <div

@@ -68,7 +68,7 @@
                         <h2 id="history-heading" class="text-xl font-semibold text-gray-900">
                             Recent Medical Conditions
                         </h2>
-                        <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-800 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                        <a href="{{ route('patient.medicalCondition') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                             View all
                         </a>
                     </div>

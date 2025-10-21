@@ -86,8 +86,14 @@ Route::prefix('patient')->group(function () {
                 ->name('patient.myrecords');
 
             // Medical Conditions (CRUD)
-            Route::get('/medical-conditions', [Modules\MedicalCondition\MainController::class, 'index'])
+            Route::get('/medical-conditions', [Modules\MedicalCondition\MedicalConditionController::class, 'index'])
                 ->name('patient.medicalCondition');
+
+            Route::post('/medical-conditions/add', [Modules\MedicalCondition\AddConditionController::class, 'add'])
+                ->name('patient.condition.add');
+
+            Route::get('/patient/condition/{condition}/json', [Modules\MedicalCondition\MedicalConditionController::class, 'getConditionJson'])
+            ->name('patient.condition.json');
         });
     });
 });
