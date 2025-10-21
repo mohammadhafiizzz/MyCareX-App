@@ -72,7 +72,8 @@ class LoginController extends Controller
     // Handle Logout
     public function logout(Request $request) {
         Auth::guard('admin')->logout();
-        $request->session()->invalidate();
+        // Regenerate session ID to prevent session fixation, but preserve session data for other guards
+        $request->session()->regenerate();
         $request->session()->regenerateToken();
 
         return redirect()->route('admin.login')

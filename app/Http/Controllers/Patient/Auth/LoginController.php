@@ -56,7 +56,9 @@ class LoginController extends Controller
     // Handle Logout
     public function logout(Request $request) {
         Auth::guard('patient')->logout();
-        $request->session()->invalidate();
+        // Regenerate session ID to prevent session fixation, but do NOT invalidate the whole session
+        // (invalidating clears other guards' data stored in the session)
+        $request->session()->regenerate();
         $request->session()->regenerateToken();
 
         return redirect()->route('index')

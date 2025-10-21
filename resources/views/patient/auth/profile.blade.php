@@ -360,7 +360,7 @@
 
     <!-- Javascript -->
     @vite(['resources/js/main/patient/patientProfile.js'])
-    @vite(['resources/js/main/patient/patientHeader.js'])
+    @vite(['resources/js/main/patient/header.js'])
 </body>
 
 </html>

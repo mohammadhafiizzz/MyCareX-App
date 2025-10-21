@@ -222,7 +222,7 @@
 
     <!-- Javascript -->
     @vite(['resources/js/main/main.js'])
-    @vite(['resources/js/main/patient/patientHeader.js'])
+    @vite(['resources/js/main/patient/header.js'])
 </body>
 
 </html>

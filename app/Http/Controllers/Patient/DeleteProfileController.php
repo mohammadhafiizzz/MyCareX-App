@@ -30,7 +30,8 @@ class DeleteProfileController extends Controller
             // Delete the patient account
             $patient->delete();
             Auth::guard('patient')->logout();
-            $request->session()->invalidate();
+            // Regenerate session to prevent session fixation without clearing other guards' session data
+            $request->session()->regenerate();
             $request->session()->regenerateToken();
 
             return redirect()->route('index')

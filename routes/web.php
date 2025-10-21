@@ -5,6 +5,7 @@ use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\Admin as Admin;
 use App\Http\Controllers\Patient as Patient;
 use App\Http\Controllers\Organisation as Organisation;
+use App\Http\Controllers\Modules as Modules;
 
 // MyCareX Home Page
 Route::get('/', [HomePageController::class, 'index'])->name('index');
@@ -49,10 +50,6 @@ Route::prefix('patient')->group(function () {
         Route::get('/dashboard', [Patient\DashboardController::class, 'index'])
             ->name('patient.dashboard');
 
-        // My Records
-        Route::get('/my-records', [Patient\DashboardController::class, 'myRecords'])
-            ->name('patient.myrecords');
-
         // Patient Profile
         Route::get('/profile', [Patient\ProfileController::class, 'showProfilePage'])
             ->name('patient.auth.profile');
@@ -82,8 +79,16 @@ Route::prefix('patient')->group(function () {
         Route::delete('/profile/picture', [Patient\DeleteProfileController::class, 'deleteProfilePicture'])
             ->name('patient.auth.profile.delete.picture');
 
-        // Medical History (CRUD)
-        Route::get('/history', []);
+        // My Records
+        Route::prefix('/my-records')->group(function () {
+            // My Records Main Page
+            Route::get('/', [Patient\DashboardController::class, 'myRecords'])
+                ->name('patient.myrecords');
+
+            // Medical Conditions (CRUD)
+            Route::get('/medical-conditions', [Modules\MedicalCondition\MainController::class, 'index'])
+                ->name('patient.medicalCondition');
+        });
     });
 });
 
