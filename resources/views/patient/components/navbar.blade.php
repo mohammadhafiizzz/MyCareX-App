@@ -18,7 +18,7 @@
                     </a>
                     <a href="#"
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-calendar text-gray-400 group-hover:text-gray-600 mr-2"></i>Appointments
+                        <i class="fas fa-clock-rotate-left text-gray-400 group-hover:text-gray-600 mr-2"></i>History
                     </a>
                 </div>
             </div>

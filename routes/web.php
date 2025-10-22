@@ -86,14 +86,36 @@ Route::prefix('patient')->group(function () {
                 ->name('patient.myrecords');
 
             // Medical Conditions (CRUD)
-            Route::get('/medical-conditions', [Modules\MedicalCondition\MedicalConditionController::class, 'index'])
-                ->name('patient.medicalCondition');
+            Route::prefix('/medical-conditions')->group(function () {
 
-            Route::post('/medical-conditions/add', [Modules\MedicalCondition\AddConditionController::class, 'add'])
-                ->name('patient.condition.add');
+                // Medical Conditions Page
+                Route::get('/', [Modules\MedicalCondition\MedicalConditionController::class, 'index'])
+                    ->name('patient.medicalCondition');
 
-            Route::get('/condition/{condition}/json', [Modules\MedicalCondition\MedicalConditionController::class, 'getConditionJson'])
-                ->name('patient.condition.json');
+                // Add Medical Condition
+                Route::post('/add', [Modules\MedicalCondition\AddConditionController::class, 'add'])
+                    ->name('patient.condition.add');
+
+                Route::get('/condition/{condition}/json', [Modules\MedicalCondition\MedicalConditionController::class, 'getConditionJson'])
+                    ->name('patient.condition.json');
+
+                // Update Medical Condition
+                Route::put('/{condition}', [Modules\MedicalCondition\UpdateConditionController::class, 'update'])
+                    ->name('patient.condition.update');
+
+                // Delete Medical Condition
+                Route::delete('/{condition}', [Modules\MedicalCondition\DeleteConditionController::class, 'delete'])
+                    ->name('patient.condition.delete');
+            });
+
+            // Medication (CRUD)
+            Route::prefix('/medication')->group(function () {
+
+                // Medication Page
+                Route::get('/', [Modules\Medication\MedicationController::class, 'index'])
+                    ->name('patient.medication');
+
+            });
         });
     });
 });

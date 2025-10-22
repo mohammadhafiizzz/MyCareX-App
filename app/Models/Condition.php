@@ -21,6 +21,6 @@ class Condition extends Model
 
     // casts fields
     protected $casts = [
-        'diagnosis_date' => 'date',
+        'diagnosis_date' => 'date:Y-m-d',
     ];
 }

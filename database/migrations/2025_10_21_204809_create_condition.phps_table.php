@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('conditions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->string('condition_name');
+            $table->string('condition_name', 150);
             $table->date('diagnosis_date')->nullable();
             $table->text('description')->nullable();
             $table->enum('severity', ['Mild', 'Moderate', 'Severe'])->default('Mild');

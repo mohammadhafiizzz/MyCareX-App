@@ -34,6 +34,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('patient.medication') }}" class="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 text-sm font-medium text-gray-800 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                        <i class="fas fa-pills text-blue-700" aria-hidden="true"></i>
+                        <span>Medication</span>
+                    </a>
+                </li>
+                <li>
                     <a href="#" class="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 text-sm font-medium text-gray-800 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                         <i class="fas fa-flask text-blue-700" aria-hidden="true"></i>
                         <span>Lab Results</span>
@@ -51,28 +57,22 @@
                         <span>Allergy</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 text-sm font-medium text-gray-800 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                        <i class="fas fa-pills text-blue-700" aria-hidden="true"></i>
-                        <span>Medication</span>
-                    </a>
-                </li>
             </ul>
         </nav>
 
         <div class="space-y-6">
 
-            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="history-heading">
+            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="condition-heading">
                 <div class="p-6">
                     <div class="flex items-center justify-between">
-                        <h2 id="history-heading" class="text-xl font-semibold text-gray-900">
+                        <h2 id="condition-heading" class="text-xl font-semibold text-gray-900">
                             Recent Medical Conditions
                         </h2>
                         <a href="{{ route('patient.medicalCondition') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                             View all
                         </a>
                     </div>
-                    <div class="flow-root">
+                    <div class="mt-4 flow-root">
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
@@ -81,7 +81,7 @@
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Diagnosis Date</th>
                                         <th scope="col" class="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Description</th>
                                         <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Severity</th>
-                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
                                         
                                     </tr>
                                 </thead>
@@ -127,7 +127,7 @@
                                             </td>
                                             
                                             {{-- Status Column --}}
-                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                            <td class="px-6 py-4 text-center whitespace-nowrap text-sm">
                                                 @switch($condition->status)
                                                     @case('Active')
                                                         <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
@@ -159,6 +159,43 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="meds-heading">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 id="meds-heading" class="text-xl font-semibold text-gray-900">
+                            Current Medications
+                        </h2>
+                        <a href="{{ route('patient.medication') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                            Manage
+                        </a>
+                    </div>
+                    <div class="mt-4 flow-root">
+                         <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Medication</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Dosage</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Frequency</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Medication Name</td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Dosage</td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Frequency</td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm">
+                                        <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Status</span>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Notes</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -284,46 +321,6 @@
                                          <span class="inline-flex items-center font-medium text-yellow-700">
                                              <i class="fas fa-exclamation-triangle mr-1.5" aria-hidden="true"></i> Moderate
                                         </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="meds-heading">
-                <div class="p-6">
-                    <div class="flex items-center justify-between">
-                        <h2 id="meds-heading" class="text-xl font-semibold text-gray-900">
-                            Current Medications
-                        </h2>
-                        <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-800 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                            Manage
-                        </a>
-                    </div>
-                    <div class="mt-4 flow-root">
-                         <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Medication</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Dosage</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Lisinopril</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">10mg, 1x daily</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                        <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Refill Due</span>
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Metformin</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">500mg, 2x daily</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                        <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
                                     </td>
                                 </tr>
                             </tbody>
