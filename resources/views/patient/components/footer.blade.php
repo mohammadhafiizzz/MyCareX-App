@@ -25,35 +25,31 @@
             <div class="space-y-4">
                 <h3 class="text-lg font-semibold">Quick Links</h3>
                 <ul class="space-y-2">
-                    <li><a href="{{ route('index') }}"
+                    <li><a href="{{ route('patient.dashboard') }}"
                             class="text-gray-300 hover:text-white transition-colors text-sm">Dashboard</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Medical History</a>
+                    <li><a href="{{ route('patient.myrecords') }}" class="text-gray-300 hover:text-white transition-colors text-sm">My Records</a>
                     </li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Medications</a>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Access & Permissions</a>
                     </li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Appointments</a>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Help Center</a>
                     </li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Lab Results</a>
-                    </li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Sharing &
-                            Permissions</a></li>
                 </ul>
             </div>
 
             <!-- Support -->
             <div class="space-y-4">
-                <h3 class="text-lg font-semibold">Support & Resources</h3>
+                <h3 class="text-lg font-semibold">Legal & Support</h3>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Help Center</a>
-                    </li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">User Guide</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Privacy Policy</a>
                     </li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Terms of
                             Service</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Help Center</a>
+                    </li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">User Guide</a></li>
                     <li><a href="mailto:support@mycarex.gov.my"
                             class="text-gray-300 hover:text-white transition-colors text-sm">Contact Support</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">System Status</a>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Accessibility</a>
                     </li>
                 </ul>
             </div>
@@ -94,9 +90,8 @@
             </div>
 
             <div class="flex flex-wrap gap-4 text-sm">
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">Accessibility</a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">Security</a>
                 <a href="#" class="text-gray-400 hover:text-white transition-colors">PDPA Compliance</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">Security</a>
                 <a href="#" class="text-gray-400 hover:text-white transition-colors">Sitemap</a>
             </div>
         </div>

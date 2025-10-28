@@ -22,10 +22,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">
-                Welcome, {{ Auth::guard('patient')->user()->full_name ?? 'Profile' }}
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
+                Hello, {{ Auth::guard('patient')->user()->full_name ?? 'Profile' }}
             </h1>
-            <p class="mt-1 text-lg text-gray-700">Here is your health summary.</p>
+            <p class="mt-1 text-base text-gray-600">Your health records at a glance.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -173,39 +173,33 @@
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="record-heading">
                     <div class="p-6">
                         <h2 id="record-heading" class="text-xl font-semibold text-gray-900 mb-4">
-                            My Medical Record
+                            Quick Access
                         </h2>
                         
                         <nav>
                             <ul role="list" class="space-y-1">
                                 <li>
-                                    <a href="#" class="group flex items-center p-3 text-md font-medium text-gray-800 rounded-lg hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
+                                    <a href="{{ route('patient.myrecords') }}" class="group flex items-center p-3 text-md font-medium text-gray-800 rounded-lg hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
                                         <i class="fas fa-file-medical-alt text-blue-700 w-6 text-center" aria-hidden="true"></i>
-                                        <span class="ml-3">Medical History</span>
+                                        <span class="ml-3">All Medical Records</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="group flex items-center p-3 text-md font-medium text-gray-800 rounded-lg hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
                                         <i class="fas fa-pills text-blue-700 w-6 text-center" aria-hidden="true"></i>
-                                        <span class="ml-3">Medications</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="group flex items-center p-3 text-md font-medium text-gray-800 rounded-lg hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
-                                        <i class="fas fa-exclamation-triangle text-blue-700 w-6 text-center" aria-hidden="true"></i>
-                                        <span class="ml-3">Allergies</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="group flex items-center p-3 text-md font-medium text-gray-800 rounded-lg hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
-                                        <i class="fas fa-syringe text-blue-700 w-6 text-center" aria-hidden="true"></i>
-                                        <span class="ml-3">Vaccinations</span>
+                                        <span class="ml-3">My Medications</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="group flex items-center p-3 text-md font-medium text-gray-800 rounded-lg hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
                                         <i class="fas fa-flask text-blue-700 w-6 text-center" aria-hidden="true"></i>
-                                        <span class="ml-3">Lab Results</span>
+                                        <span class="ml-3">Latest Lab Results</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="group flex items-center p-3 text-md font-medium text-gray-800 rounded-lg hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
+                                        <i class="fas fa-shield-halved text-blue-700 w-6 text-center" aria-hidden="true"></i>
+                                        <span class="ml-3">Access Requests</span>
                                     </a>
                                 </li>
                             </ul>

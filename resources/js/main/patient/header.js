@@ -28,6 +28,102 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Mobile menu active state
+    const mobileNavLinks = document.querySelectorAll('#mobileMenu a[href]:not([href="#"])');
+    
+    // Active state classes for mobile menu
+    const activeClasses = {
+        link: ['bg-blue-100', 'text-blue-700'],
+        icon: ['text-blue-500']
+    };
+
+    const inactiveClasses = {
+        link: ['text-gray-800', 'hover:bg-gray-50'],
+        icon: ['text-gray-700']
+    };
+
+    // Function to set active state for mobile menu
+    function setActiveMobileNav(activeLink) {
+        // Remove active state from all mobile nav links
+        mobileNavLinks.forEach(link => {
+            const icon = link.querySelector('i');
+            
+            // Remove active classes
+            link.classList.remove(...activeClasses.link);
+            if (icon) {
+                icon.classList.remove(...activeClasses.icon);
+            }
+            
+            // Add inactive classes
+            link.classList.add(...inactiveClasses.link);
+            if (icon && !icon.classList.contains('fa-user-edit') && !icon.classList.contains('fa-cog')) {
+                icon.classList.add(...inactiveClasses.icon);
+            }
+        });
+
+        // Set active state for the active link
+        const activeIcon = activeLink.querySelector('i');
+        
+        // Remove inactive classes
+        activeLink.classList.remove(...inactiveClasses.link);
+        if (activeIcon) {
+            activeIcon.classList.remove(...inactiveClasses.icon);
+        }
+        
+        // Add active classes
+        activeLink.classList.add(...activeClasses.link);
+        if (activeIcon) {
+            activeIcon.classList.add(...activeClasses.icon);
+        }
+    }
+
+    // Set initial active state based on current page
+    function setInitialMobileActiveState() {
+        const currentPath = window.location.pathname;
+
+        mobileNavLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href !== '#' && currentPath.includes(href.replace(window.location.origin, ''))) {
+                setActiveMobileNav(link);
+                return;
+            }
+        });
+    }
+
+    // Add click event listeners to mobile nav links
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            setActiveMobileNav(link);
+        });
+    });
+
+    // Initialize mobile menu active state
+    setInitialMobileActiveState();
+
+    // Mobile search modal functionality
+    const mobileSearchButton = document.getElementById('mobileSearchButton');
+    const searchModal = document.getElementById('searchModal');
+    const closeSearchModal = document.getElementById('closeSearchModal');
+
+    if (mobileSearchButton && searchModal) {
+        mobileSearchButton.addEventListener('click', function() {
+            searchModal.classList.remove('hidden');
+        });
+    }
+
+    if (closeSearchModal && searchModal) {
+        closeSearchModal.addEventListener('click', function() {
+            searchModal.classList.add('hidden');
+        });
+
+        // Close modal when clicking on backdrop
+        searchModal.addEventListener('click', function(e) {
+            if (e.target === searchModal) {
+                searchModal.classList.add('hidden');
+            }
+        });
+    }
+
     // Notification functionality (placeholder)
     const notificationBtn = document.getElementById('notificationBtn');
     const mobileNotificationBtn = document.getElementById('mobileNotificationBtn');

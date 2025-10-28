@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inactive state classes  
     const inactiveClasses = {
         link: ['text-gray-700', 'hover:bg-gray-100'],
-        icon: ['text-gray-400', 'group-hover:text-gray-600']
+        icon: ['text-gray-500', 'group-hover:text-gray-700']
     };
 
     // Function to set active state
