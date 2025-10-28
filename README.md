@@ -1,61 +1,250 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<img src="public/images/MyCareX_Logo.png" alt="MyCareX Logo" width="200">
 
-## About Laravel
+# MyCareX
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Personal Healthcare Records Management System
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+*A patient-centric health data platform solving interoperability challenges in Malaysia's healthcare system*
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-## Learning Laravel
+**🎓 Final Year Project | Computer Science Degree | UMS**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+[Demo](#-screenshots) • [Features](#-features) • [Installation](#-installation) • [Tech Stack](#-tech-stack)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+</div>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 📋 Overview
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**MyCareX** is a centralized personal health records (PHR) management system that empowers patients to own and control their medical data. Designed specifically for Malaysia's healthcare ecosystem, it addresses critical challenges in healthcare data interoperability, cost accessibility, and patient privacy.
 
-### Premium Partners
+### 🎯 The Problem It Solves
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- **🔗 Interoperability Crisis** – Healthcare providers in Malaysia operate in silos with incompatible systems
+- **💰 Data Access Costs** – Patients often pay fees to retrieve their own medical records from providers
+- **⚠️ Medical Errors** – Incomplete patient history when switching providers leads to treatment mistakes
+- **🔒 Privacy Concerns** – Patients have minimal control over who accesses their sensitive health data
 
-## Contributing
+### ✨ The Solution
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+MyCareX puts **patients in control**. All health data is stored in a centralized system where:
+- Patients decide which providers can access their records
+- Every data modification is tracked and auditable
+- Providers with granted access can manage records, but all actions are logged
+- Complete medical history travels with the patient across different healthcare facilities
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🚀 Features
 
-## Security Vulnerabilities
+### For Patients
+- ✅ **Centralized Health Records** – Store complete medical history, medications, lab results, and prescriptions in one place
+- 🔐 **Granular Access Control** – Approve or revoke provider access to your data at any time
+- 📊 **Audit Logging** – See who accessed or modified your records and when
+- 🌐 **Secure Data Sharing** – Share records with any registered healthcare provider in Malaysia
+- 📱 **24/7 Accessibility** – Access your health data anytime, anywhere
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### For Healthcare Providers
+- 🏥 **Complete Patient History** – Access comprehensive medical records (with patient consent)
+- 📝 **Data Management** – Update patient records, add diagnoses, prescriptions, and test results
+- 🔍 **Transparent Actions** – All modifications are tracked for accountability
+- 🤝 **Better Care Coordination** – Avoid duplicate tests and medication errors with full patient context
 
-## License
+### System Features
+- 🔒 **Role-Based Access Control (RBAC)** – Separate portals for patients and healthcare organizations
+- 📈 **Activity Tracking** – Complete audit trail of all data access and modifications
+- 🛡️ **Security First** – Built with healthcare data privacy standards in mind
+- 🇲🇾 **Malaysia-Focused** – Designed for local healthcare infrastructure and practices
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 📸 Screenshots
+
+### Patient Portal
+<img src="screenshots/patient-portal.png" alt="Patient Portal" width="800">
+
+*Patients can securely manage their health data and control provider access*
+
+### Healthcare Provider Portal
+<img src="screenshots/provider-portal.png" alt="Provider Portal" width="800">
+
+*Providers can access patient records (with permission) and enhance care coordination*
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technologies |
+|-------|-------------|
+| **Backend** | PHP 8.2, Laravel 12 |
+| **Frontend** | Blade Templates (67.1%), JavaScript (12.1%), CSS (0.1%) |
+| **Database** | MySQL |
+| **Tools** | Composer, NPM, Laravel Tinker, PHPUnit |
+| **Dev Environment** | Laravel Sail (Docker) |
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+- PHP >= 8.2
+- Composer
+- MySQL
+- Node.js & NPM
+
+### Setup Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/mohammadhafiizzz/MyCareX-App.git
+   cd MyCareX-App
+   ```
+
+2. **Install dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Environment configuration**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Configure database**
+   - Create a MySQL database
+   - Update `.env` with your database credentials:
+     ```env
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=mycarex
+     DB_USERNAME=your_username
+     DB_PASSWORD=your_password
+     ```
+
+5. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+6. **Seed the database (optional)**
+   ```bash
+   php artisan db:seed
+   ```
+
+7. **Build frontend assets**
+   ```bash
+   npm run dev
+   ```
+
+8. **Start the development server**
+   ```bash
+   php artisan serve
+   ```
+
+9. **Access the application**
+   - Patient Portal: `http://127.0.0.1:8000`
+   - Provider Portal: `http://127.0.0.1:8000/organisation`
+
+---
+
+## 🎓 Academic Context
+
+This project was developed as a **Final Year Project (FYP)** for a Computer Science degree at **Universiti Malaysia Sabah (UMS)**. It represents an academic prototype demonstrating:
+
+- Full-stack web application development
+- Healthcare data management systems
+- User authentication and authorization
+- Database design and normalization
+- Software engineering best practices
+- Real-world problem-solving in the Malaysian healthcare context
+
+**Note:** This is an academic prototype built for demonstration and research purposes.
+
+---
+
+## 🏗️ Project Structure
+
+```
+MyCareX-App/
+├── app/
+│   ├── Http/Controllers/    # Request handlers
+│   ├── Models/               # Eloquent models
+│   └── ...
+├── database/
+│   ├── migrations/           # Database schema
+│   └── seeders/              # Test data
+├── resources/
+│   ├── views/                # Blade templates
+│   ├── js/                   # JavaScript files
+│   └── css/                  # Stylesheets
+├── routes/
+│   └── web.php               # Application routes
+├── public/                   # Public assets
+└── screenshots/              # Application screenshots
+```
+
+---
+
+## 🔑 Key Functionalities
+
+- **User Authentication** – Secure login for patients and healthcare providers
+- **Access Request System** – Providers request access, patients approve/deny
+- **Medical Records CRUD** – Create, read, update, delete health records
+- **Audit Trail** – Complete history of all data access and modifications
+- **Role Management** – Patient vs. Provider permissions and capabilities
+- **Data Privacy Controls** – Granular permissions for sharing specific records
+
+---
+
+## 🌟 Future Enhancements
+
+- [ ] Mobile application (iOS/Android)
+- [ ] Integration with government health databases
+- [ ] AI-powered health insights and recommendations
+- [ ] Appointment scheduling system
+- [ ] Telemedicine integration
+- [ ] Multi-language support (Malay, English, Chinese, Tamil)
+- [ ] PDF report generation for medical records
+- [ ] Emergency access protocols for critical care situations
+
+---
+
+## 🤝 Contributing
+
+This is an academic project, but feedback and suggestions are welcome!
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/improvement`)
+3. Commit your changes (`git commit -m 'Add some improvement'`)
+4. Push to the branch (`git push origin feature/improvement`)
+5. Open a Pull Request
+
+---
+
+## 👨‍💻 Developer
+
+**Mohammad Hafiz**  
+Computer Science Student | UMS
+
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/hafiz-mohan-447590255)
+[![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/mohammadhafiizzz)
+
+---
+
+<div align="center">
+
+**Built with ❤️ for better healthcare in Malaysia**
+
+*Empowering patients, connecting providers, improving care*
+
+</div>
