@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeButton = document.getElementById('modal-close-button');
     const cancelButton = document.getElementById('modal-cancel-button');
     const modalPanel = document.getElementById('modal-panel');
+    const form = document.getElementById('add-condition-form');
 
     const showModal = () => {
         if (modal) {
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hide any server-rendered error container when user focuses inputs
     const errorMessageDiv = document.getElementById('form-error-message');
-    if (errorMessageDiv) {
+    if (errorMessageDiv && form) { // Add form check here
         form.addEventListener('input', () => {
             if (!errorMessageDiv.classList.contains('hidden')) {
                 errorMessageDiv.classList.add('hidden');

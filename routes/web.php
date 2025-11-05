@@ -106,6 +106,10 @@ Route::prefix('patient')->group(function () {
                 // Delete Medical Condition
                 Route::delete('/{condition}', [Modules\MedicalCondition\DeleteConditionController::class, 'delete'])
                     ->name('patient.condition.delete');
+
+                // More info Medical Condition
+                Route::get('/{condition}', [Modules\MedicalCondition\MedicalConditionController::class, 'moreInfo'])
+                    ->name('patient.condition.info');
             });
 
             // Medication (CRUD)

@@ -23,9 +23,9 @@
 
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900">
-                Medications
+                My Records
             </h1>
-            <p class="mt-1 text-lg text-gray-700">A complete record of your medications.</p>
+            <p class="mt-1 text-lg text-gray-700">Manage your own medical records.</p>
         </div>
 
         {{-- Success Message --}}
@@ -80,94 +80,6 @@
                 'All' => 'text-gray-500'
             ];
         @endphp
-
-        {{-- Summary Dashboard --}}
-        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8" aria-label="Medication summary cards">
-            <article class="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-xl p-6 shadow-md">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-white/15 rounded-full -mr-10 -mt-10"></div>
-                <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-12 mb-4"></div>
-                <div class="relative flex flex-col gap-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm uppercase tracking-wide text-white/80">Total Medications</p>
-                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $totalMedications }}</p>
-                        </div>
-                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-pills text-2xl" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                    <p class="text-xs text-white/80">Keep your medications list current for accurate reminders and safe care coordination.</p>
-                    <button
-                        type="button"
-                        onclick="document.getElementById('show-add-medication-modal')?.click()"
-                        class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600 transition"
-                        aria-label="Add a new medication">
-                        <i class="fas fa-plus-circle" aria-hidden="true"></i>
-                        Add medication
-                    </button>
-                </div>
-            </article>
-
-            <article class="relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-500 text-white rounded-xl p-6 shadow-md">
-                <div class="absolute top-0 right-0 w-20 h-20 bg-white/15 rounded-full -mr-8 -mt-8"></div>
-                <div class="relative flex flex-col gap-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm uppercase tracking-wide text-white/80">Active Medications</p>
-                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $activeMedications }}</p>
-                        </div>
-                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-heartbeat text-2xl" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                    <p class="text-xs text-white/80">Log doses to stay on track and share updates with your care provider.</p>
-                    <button type="button" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-500 transition" aria-label="Log medication dose">
-                        <i class="fas fa-clipboard-check" aria-hidden="true"></i>
-                        Log a dose
-                    </button>
-                </div>
-            </article>
-
-            <article class="relative overflow-hidden bg-gradient-to-br from-amber-500 to-amber-400 text-gray-900 rounded-xl p-6 shadow-md">
-                <div class="absolute top-0 right-0 w-16 h-16 bg-white/25 rounded-full -mr-6 -mt-6"></div>
-                <div class="relative flex flex-col gap-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm uppercase tracking-wide text-amber-900/80">Refill Soon</p>
-                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $upcomingRefills }}</p>
-                        </div>
-                        <div class="w-12 h-12 bg-white/40 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-prescription-bottle text-2xl" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                    <p class="text-xs text-amber-900/80">Schedule refills at least a week ahead to avoid gaps in treatment.</p>
-                    <button type="button" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/40 rounded-lg border border-white/60 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-700/50 transition" aria-label="Set a refill reminder">
-                        <i class="fas fa-bell" aria-hidden="true"></i>
-                        Set reminder
-                    </button>
-                </div>
-            </article>
-
-            <article class="relative overflow-hidden bg-gradient-to-br from-purple-600 to-indigo-500 text-white rounded-xl p-6 shadow-md">
-                <div class="absolute top-0 right-0 w-20 h-20 bg-white/15 rounded-full -mr-8 -mt-8"></div>
-                <div class="relative flex flex-col gap-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm uppercase tracking-wide text-white/80">Daily Routine</p>
-                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $dailyMedications }}</p>
-                        </div>
-                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-sun text-2xl" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                    <p class="text-xs text-white/80">Check your morning and evening routines to stay consistent.</p>
-                    <a href="#medications-list" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 transition" aria-label="Jump to medication list">
-                        <i class="fas fa-list-check" aria-hidden="true"></i>
-                        Review schedule
-                    </a>
-                </div>
-            </article>
-        </section>
 
         {{-- Filters & Quick Actions --}}
         <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="medications-controls-heading">

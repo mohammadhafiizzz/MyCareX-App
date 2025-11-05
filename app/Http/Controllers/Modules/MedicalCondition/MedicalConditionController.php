@@ -40,4 +40,18 @@ class MedicalConditionController extends Controller
             'condition' => $condition
         ]);
     }
+
+    /**
+     * Show details of a specific medical condition
+     */
+    public function moreInfo(Condition $condition) {
+        // Policy/Gate check: Ensure this condition belongs to the authenticated patient
+        if ($condition->patient_id !== Auth::guard('patient')->id()) {
+            return redirect()->route('patient.medicalCondition')->with('error', 'Unauthorized access to medical condition.');
+        }
+
+        return view('patient.modules.medicalCondition.moreInfo', [
+            'condition' => $condition
+        ]);
+    }
 }

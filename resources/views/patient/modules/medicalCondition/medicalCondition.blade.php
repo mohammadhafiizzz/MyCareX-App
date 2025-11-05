@@ -18,11 +18,11 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <div class="mb-8">            
+        <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900">
-                Medical Conditions
+                My Records
             </h1>
-            <p class="mt-1 text-lg text-gray-700">A complete record of your diagnosed conditions.</p>
+            <p class="mt-1 text-lg text-gray-700">Manage your own medical records.</p>
         </div>
 
         {{-- Success Message --}}
@@ -60,7 +60,7 @@
             ];
         @endphp
 
-        <!-- Summary Dashboard
+        {{-- <!-- Summary Dashboard 
         <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8" aria-label="Conditions summary cards">
             <article class="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-xl p-6 shadow-md">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-white/15 rounded-full -mr-10 -mt-10"></div>
@@ -146,7 +146,7 @@
                 </div>
             </article>
         </section>
-        -->
+        --> --}}
 
         {{-- Filters & Quick Actions --}}
         <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="conditions-controls-heading">
@@ -202,9 +202,9 @@
                         <span>Tip: Combine filters to target conditions that need urgent attention.</span>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 text-sm font-medium hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2">
-                            <i class="fas fa-notes-medical" aria-hidden="true"></i>
-                            Add follow-up
+                        <button type="button" id="reset-all-filters" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 text-sm font-medium hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2">
+                            <i class="fas fa-redo" aria-hidden="true"></i>
+                            Reset filters
                         </button>
                         <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
                             <i class="fas fa-share-alt" aria-hidden="true"></i>
@@ -221,7 +221,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                     <div>
                         <h2 id="conditions-heading" class="text-xl font-semibold text-gray-900">Medical Conditions</h2>
-                        <p class="mt-1 text-sm text-gray-600">Each card highlights severity, status, and the latest updates for quick review.</p>
+                        <p class="mt-1 text-sm text-gray-600">Highlights severity, status, and the latest updates for quick review.</p>
                     </div>
                     <div class="flex items-center gap-2 text-sm text-gray-500">
                         <i class="fas fa-info-circle text-blue-500" aria-hidden="true"></i>
@@ -328,28 +328,22 @@
                             <div class="flex flex-col items-stretch gap-2">
                                 <a href="#" class="edit-condition-btn inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2" data-id="{{ $condition->id }}">
                                     <i class="fas fa-pen-to-square" aria-hidden="true"></i>
-                                    Edit condition
+                                    Edit
                                 </a>
-                                <button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-semibold rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
-                                    <i class="fas fa-comment-medical" aria-hidden="true"></i>
-                                    Add follow-up
-                                </button>
-                                <button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-semibold rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
-                                    <i class="fas fa-download" aria-hidden="true"></i>
-                                    Download summary
-                                </button>
+                                <a href="{{ route('patient.condition.info', $condition->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                    <i class="fas fa-info-circle" aria-hidden="true"></i>
+                                    More info
+                                </a>
                             </div>
                         </div>
                     </article>
                 @empty
                     <div class="text-center py-16">
                         <div class="relative inline-block mb-6">
-                            <div class="w-32 h-32 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 rounded-full flex items-center justify-center animate-pulse">
+                            <div class="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center">
                                 <i class="fas fa-file-medical text-blue-600 text-5xl" aria-hidden="true"></i>
                             </div>
-                            <div class="absolute -top-3 -right-3 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                                <i class="fas fa-plus text-white text-lg" aria-hidden="true"></i>
-                            </div>
+                            
                         </div>
 
                         <h3 class="text-2xl font-bold text-gray-900 mb-3">No medical conditions tracked yet</h3>
@@ -378,7 +372,7 @@
                             </ul>
                         </div>
 
-                        <button type="button" onclick="document.getElementById('show-add-condition-modal')?.click()" class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl text-base font-semibold hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
+                        <button type="button" onclick="document.getElementById('show-add-condition-modal')?.click()" class="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-lg text-base font-semibold hover:bg-blue-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
                             <i class="fas fa-plus-circle" aria-hidden="true"></i>
                             Add your first condition
                         </button>
@@ -487,6 +481,7 @@
     @vite(['resources/js/main/patient/header.js'])
     @vite(['resources/js/main/medicalCondition/addConditionForm.js'])
     @vite(['resources/js/main/medicalCondition/editConditionForm.js'])
+    @vite(['resources/js/main/medicalCondition/conditionFilter.js'])
     @include('patient.components.footer')
 
 </body>

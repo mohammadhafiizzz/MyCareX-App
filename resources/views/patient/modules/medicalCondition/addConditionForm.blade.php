@@ -68,7 +68,8 @@
                     <label for="severity" class="block text-sm font-medium text-gray-700">Severity</label>
                     <select 
                         id="severity" 
-                        name="severity" 
+                        name="severity"
+                        required
                         class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     >
                         <option value="">Select severity</option>
@@ -84,12 +85,13 @@
                 <select 
                     id="status" 
                     name="status" 
+                    required
                     class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 >
                     <option value="" selected>Select status</option>
                     <option value="Active">Active</option>
+                    <option value="Chronic">Chronic</option>
                     <option value="Resolved">Resolved</option>
-                    <option value="Inactive">Inactive</option>
                 </select>
             </div>
 
