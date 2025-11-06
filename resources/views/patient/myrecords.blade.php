@@ -28,83 +28,98 @@
         @include('patient.components.recordNav')
 
         {{-- Health Stats Dashboard --}}
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8" aria-label="Health statistics summary cards">
+            
             {{-- Conditions Stats Card --}}
-            <div class="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full -mr-8 -mt-8"></div>
-                <div class="relative">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center">
-                            <i class="fas fa-file-medical-alt text-2xl"></i>
+            <article class="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-xl p-6 shadow-md">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-white/15 rounded-full -mr-10 -mt-10"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-12 mb-4"></div>
+                <div class="relative flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm uppercase tracking-wide text-white/80">Active Conditions</p>
+                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $conditions->count() }}</p>
                         </div>
-                        <span class="text-4xl font-bold">{{ $conditions->count() }}</span>
+                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-file-medical-alt text-2xl" aria-hidden="true"></i>
+                        </div>
                     </div>
-                    <h3 class="text-sm font-medium opacity-90">Active Conditions</h3>
-                    <p class="text-xs opacity-75 mt-1">
+                    <p class="text-xs text-white/80">
                         @if($conditions->where('severity', 'Severe')->count() > 0)
-                            <i class="fas fa-exclamation-circle mr-1"></i>
-                            {{ $conditions->where('severity', 'Severe')->count() }} need attention
+                            {{ $conditions->where('severity', 'Severe')->count() }} conditions need immediate attention
                         @else
-                            <i class="fas fa-check-circle mr-1"></i>
-                            All monitored
+                            All conditions are being monitored appropriately
                         @endif
                     </p>
+                    <a href="#conditions-list" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600 transition" aria-label="View all conditions">
+                        <i class="fas fa-list" aria-hidden="true"></i>
+                        View details
+                    </a>
                 </div>
-            </div>
+            </article>
 
             {{-- Medications Card --}}
-            <div class="relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full -mr-8 -mt-8"></div>
-                <div class="relative">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center">
-                            <i class="fas fa-pills text-2xl"></i>
+            <article class="relative overflow-hidden bg-gradient-to-br from-purple-600 to-purple-500 text-white rounded-xl p-6 shadow-md">
+                <div class="absolute top-0 right-0 w-16 h-16 bg-white/15 rounded-full -mr-6 -mt-6"></div>
+                <div class="relative flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm uppercase tracking-wide text-white/85">Current Medications</p>
+                            <p class="text-4xl font-bold mt-2" aria-live="polite">8</p>
                         </div>
-                        <span class="text-4xl font-bold">8</span>
+                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-pills text-2xl" aria-hidden="true"></i>
+                        </div>
                     </div>
-                    <h3 class="text-sm font-medium opacity-90">Current Medications</h3>
-                    <p class="text-xs opacity-75 mt-1">
-                        <i class="fas fa-bell mr-1"></i>
+                    <p class="text-xs text-white/80">Stay on schedule with your prescriptions and refills.</p>
+                    <button type="button" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 transition" aria-label="View medication schedule">
+                        <i class="fas fa-bell" aria-hidden="true"></i>
                         2 due today
-                    </p>
+                    </button>
                 </div>
-            </div>
+            </article>
 
             {{-- Lab Results Card --}}
-            <div class="relative overflow-hidden bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full -mr-8 -mt-8"></div>
-                <div class="relative">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center">
-                            <i class="fas fa-flask text-2xl"></i>
+            <article class="relative overflow-hidden bg-gradient-to-br from-green-600 to-green-500 text-white rounded-xl p-6 shadow-md">
+                <div class="absolute top-0 right-0 w-20 h-20 bg-white/25 rounded-full -mr-8 -mt-8"></div>
+                <div class="relative flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm uppercase tracking-wide text-white/80">Lab Results</p>
+                            <p class="text-4xl font-bold mt-2" aria-live="polite">4</p>
                         </div>
-                        <span class="text-4xl font-bold">4</span>
+                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-flask text-2xl" aria-hidden="true"></i>
+                        </div>
                     </div>
-                    <h3 class="text-sm font-medium opacity-90">Lab Results</h3>
-                    <p class="text-xs opacity-75 mt-1">
-                        <i class="fas fa-check-circle mr-1"></i>
-                        All normal range
-                    </p>
+                    <p class="text-xs text-white/80">All results within normal range. Keep tracking your health metrics.</p>
+                    <a href="#lab-results" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600 transition" aria-label="View lab results history">
+                        <i class="fas fa-chart-line" aria-hidden="true"></i>
+                        View history
+                    </a>
                 </div>
-            </div>
+            </article>
 
             {{-- Allergies Card --}}
-            <div class="relative overflow-hidden bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full -mr-8 -mt-8"></div>
-                <div class="relative">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center">
-                            <i class="fas fa-exclamation-triangle text-2xl"></i>
+            <article class="relative overflow-hidden bg-gradient-to-br from-red-600 to-red-500 text-white rounded-xl p-6 shadow-md">
+                <div class="absolute top-0 right-0 w-20 h-20 bg-white/15 rounded-full -mr-8 -mt-8"></div>
+                <div class="relative flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm uppercase tracking-wide text-white/80">Active Allergies</p>
+                            <p class="text-4xl font-bold mt-2" aria-live="polite">3</p>
                         </div>
-                        <span class="text-4xl font-bold">3</span>
+                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-2xl" aria-hidden="true"></i>
+                        </div>
                     </div>
-                    <h3 class="text-sm font-medium opacity-90">Active Allergies</h3>
-                    <p class="text-xs opacity-75 mt-1">
-                        <i class="fas fa-shield-alt mr-1"></i>
-                        2 severe reactions
-                    </p>
+                    <p class="text-xs text-white/80">Severe reactions: <span class="font-semibold">2</span>. Always inform your healthcare providers.</p>
+                    <button type="button" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-red-600 transition" aria-label="Manage allergy information">
+                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                        Manage allergies
+                    </button>
                 </div>
-            </div>
+            </article>
         </section>
 
         <div class="space-y-6">
@@ -212,47 +227,44 @@
                         {{-- Empty State with Illustration --}}
                         <div class="text-center py-16">
                             <div class="relative inline-block mb-6">
-                                <div class="w-32 h-32 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 rounded-full flex items-center justify-center animate-pulse">
-                                    <i class="fas fa-file-medical text-blue-600 text-5xl"></i>
+                                <div class="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-file-medical text-blue-600 text-5xl" aria-hidden="true"></i>
                                 </div>
-                                <div class="absolute -top-2 -right-2 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                                    <i class="fas fa-plus text-white text-lg"></i>
-                                </div>
+                                
                             </div>
-                            
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3">Start Your Health Journey</h3>
-                            <p class="text-gray-600 max-w-md mx-auto mb-8 text-lg">
-                                No medical conditions recorded yet. Add your first condition to keep track of your health history.
+
+                            <h3 class="text-2xl font-bold text-gray-900 mb-3">No medical conditions tracked yet</h3>
+                            <p class="max-w-xl mx-auto text-base text-gray-600 mb-8">
+                                Tracking your conditions helps your care team respond faster, personalise treatments, and monitor progress over time.
                             </p>
-                            
-                            {{-- Benefits list --}}
-                            <div class="max-w-lg mx-auto mb-8 text-left bg-blue-50 rounded-lg p-6 border border-blue-200">
+
+                            <div class="max-w-lg mx-auto mb-8 text-left bg-blue-50 rounded-xl p-6 border border-blue-200">
                                 <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                                    <i class="fas fa-lightbulb text-yellow-500"></i>
-                                    Why track your conditions?
+                                    <i class="fas fa-lightbulb text-yellow-500" aria-hidden="true"></i>
+                                    Why start tracking?
                                 </h4>
                                 <ul class="space-y-2 text-sm text-gray-700">
                                     <li class="flex items-start gap-2">
-                                        <i class="fas fa-check-circle text-green-600 mt-0.5"></i>
-                                        <span>Better communication with healthcare providers</span>
+                                        <i class="fas fa-check-circle text-green-600 mt-0.5" aria-hidden="true"></i>
+                                        <span>Spot warning signs early and share updates with your doctor.</span>
                                     </li>
                                     <li class="flex items-start gap-2">
-                                        <i class="fas fa-check-circle text-green-600 mt-0.5"></i>
-                                        <span>Track symptoms and progress over time</span>
+                                        <i class="fas fa-check-circle text-green-600 mt-0.5" aria-hidden="true"></i>
+                                        <span>Keep medication and treatment plans aligned across appointments.</span>
                                     </li>
                                     <li class="flex items-start gap-2">
-                                        <i class="fas fa-check-circle text-green-600 mt-0.5"></i>
-                                        <span>Receive personalized health insights</span>
+                                        <i class="fas fa-check-circle text-green-600 mt-0.5" aria-hidden="true"></i>
+                                        <span>Celebrate progress with clear, shareable health milestones.</span>
                                     </li>
                                 </ul>
                             </div>
-                            
+
                             <a href="{{ route('patient.medicalCondition') }}" 
-                               class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 text-lg font-medium">
+                               class="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-lg text-base font-semibold hover:bg-blue-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
                                 <i class="fas fa-plus-circle"></i>
                                 Add Your First Condition
                             </a>
-                        </div>
+                    </div>
                     @endforelse
                 </div>
             </section>

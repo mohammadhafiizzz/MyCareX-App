@@ -21,7 +21,7 @@ class DeleteConditionController extends Controller
         // Use the Model to delete the record
         $condition->delete();
 
-        // Redirect back to the previous page with a success message
-        return redirect()->back()->with('message', 'Medical condition deleted successfully.');
+        // Redirect to medical conditions page with a success message
+        return redirect()->route('patient.medicalCondition')->with('message', 'Medical condition deleted successfully.');
     }
 }

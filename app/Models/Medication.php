@@ -19,7 +19,8 @@ class Medication extends Model
         'end_date',
         'notes',
         'status',
-        'reason_for_med'
+        'reason_for_med',
+        'med_image'
     ];
 
     protected $casts = [

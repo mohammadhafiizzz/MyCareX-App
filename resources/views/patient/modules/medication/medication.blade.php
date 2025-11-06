@@ -264,11 +264,8 @@
                 @empty
                     <div class="text-center py-16">
                         <div class="relative inline-block mb-6">
-                            <div class="w-32 h-32 bg-gradient-to-br from-blue-100 via-teal-100 to-indigo-100 rounded-full flex items-center justify-center animate-pulse">
+                            <div class="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center">
                                 <i class="fas fa-pills text-blue-600 text-5xl" aria-hidden="true"></i>
-                            </div>
-                            <div class="absolute -top-3 -right-3 w-10 h-10 bg-emerald-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                                <i class="fas fa-plus text-white text-lg" aria-hidden="true"></i>
                             </div>
                         </div>
 
@@ -298,7 +295,7 @@
                             </ul>
                         </div>
 
-                        <button type="button" onclick="document.getElementById('show-add-medication-modal')?.click()" class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-xl text-base font-semibold hover:from-blue-700 hover:to-teal-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
+                        <button type="button" onclick="document.getElementById('show-add-medication-modal')?.click()" class="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-xl text-base font-semibold hover:bg-blue-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
                             <i class="fas fa-plus-circle" aria-hidden="true"></i>
                             Add your first medication
                         </button>
@@ -388,8 +385,11 @@
         @endif
     </div>
 
+    <!-- Add Medication Modal -->
+    @include('patient.modules.medication.addMedicationForm')
+
     <!-- Javascript and Footer -->
-    @vite(['resources/js/main/patient/header.js'])
+    @vite(['resources/js/main/patient/header.js', 'resources/js/main/medication/addMedicationForm.js'])
     @include('patient.components.footer')
 </body>
 

@@ -1,13 +1,13 @@
 <div 
     id="add-condition-modal"
-    class="fixed inset-0 z-50 overflow-y-auto bg-gray-950/50 hidden items-center justify-center p-4"
+    class="fixed inset-0 z-50 bg-gray-950/50 hidden items-center justify-center p-4 overflow-y-auto"
     aria-labelledby="modal-title"
     role="dialog"
     aria-modal="true"
 >
     <div
         id="modal-panel"
-        class="inline-block w-full max-w-lg p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white rounded-md shadow-xl"
+        class="relative w-full max-w-lg p-6 my-8 text-left align-middle bg-white rounded-md shadow-xl max-h-[90vh] overflow-y-auto"
     >
         <div class="flex items-center justify-between">
             <h3 class="text-xl font-semibold leading-6 text-gray-900" id="modal-title">
@@ -23,7 +23,7 @@
             </button>
         </div>
         
-        <form id="add-condition-form" class="mt-6 space-y-6" method="POST" action="{{ route('patient.condition.add') }}">
+        <form id="add-condition-form" class="mt-6 space-y-6" method="POST" action="{{ route('patient.condition.add') }}" enctype="multipart/form-data">
             @csrf 
 
             <div id="form-error-message" class="hidden p-3 rounded-md bg-red-50 border border-red-200">
@@ -93,6 +93,45 @@
                     <option value="Chronic">Chronic</option>
                     <option value="Resolved">Resolved</option>
                 </select>
+            </div>
+
+            <div>
+                <label for="add_attachment" class="block text-sm font-medium text-gray-700">Attachment (Optional)</label>
+                <div class="mt-1">
+                    <input 
+                        type="file" 
+                        id="add_attachment" 
+                        name="attachment" 
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        class="hidden"
+                    >
+                    <div id="add_fileDropArea" class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition">
+                        <div id="add_fileDropContent">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2" aria-hidden="true"></i>
+                            <p class="text-sm text-gray-600 font-medium mb-1">Click to browse or drag and drop</p>
+                            <p class="text-xs text-gray-500">PDF, JPG, PNG (Max 10MB)</p>
+                        </div>
+                        <div id="add_filePreview" class="hidden">
+                            <i class="fas fa-file-alt text-3xl text-blue-600 mb-2" aria-hidden="true"></i>
+                            <p id="add_fileName" class="text-sm text-gray-900 font-medium mb-1"></p>
+                            <p id="add_fileSize" class="text-xs text-gray-500 mb-2"></p>
+                            <button type="button" id="add_removeFile" class="text-xs text-red-600 hover:text-red-700 font-medium">
+                                <i class="fas fa-times-circle" aria-hidden="true"></i>
+                                Remove file
+                            </button>
+                        </div>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">
+                        <i class="fas fa-info-circle" aria-hidden="true"></i>
+                        You can also upload an attachment later from the condition details page.
+                    </p>
+                </div>
+                <div id="add_uploadError" class="hidden mt-2 p-2 bg-red-50 border border-red-200 rounded-lg">
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-exclamation-circle text-red-600 mt-0.5" aria-hidden="true"></i>
+                        <p id="add_uploadErrorMessage" class="text-xs text-red-700"></p>
+                    </div>
+                </div>
             </div>
 
             <div class="pt-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3">

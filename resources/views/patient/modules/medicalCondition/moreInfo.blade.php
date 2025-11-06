@@ -214,7 +214,7 @@
                             </div>
                             <h2 class="text-xl font-semibold text-gray-900">Attachments</h2>
                         </div>
-                        <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 text-sm font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
+                        <button type="button" id="uploadAttachmentBtn" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 text-sm font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
                             <i class="fas fa-upload text-xs" aria-hidden="true"></i>
                             Upload
                         </button>
@@ -222,18 +222,27 @@
 
                     @if ($condition->doc_attachments_url)
                         <div class="space-y-3">
-                            <a href="{{ $condition->doc_attachments_url }}" target="_blank" class="group flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 transition">
-                                <div class="flex-shrink-0 w-12 h-12 bg-gray-100 group-hover:bg-blue-100 rounded-lg flex items-center justify-center transition">
-                                    <i class="fas fa-file-pdf text-red-500 text-xl" aria-hidden="true"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-semibold text-gray-900 truncate">Medical Document</p>
-                                    <p class="text-xs text-gray-500 mt-1">Click to view or download</p>
-                                </div>
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600" aria-hidden="true"></i>
-                                </div>
-                            </a>
+                            <div class="flex items-center gap-3">
+                                <a href="{{ $condition->doc_attachments_url }}" target="_blank" class="group flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 transition flex-1">
+                                    <div class="flex-shrink-0 w-12 h-12 bg-gray-100 group-hover:bg-blue-100 rounded-lg flex items-center justify-center transition">
+                                        <i class="fas fa-file-pdf text-red-500 text-xl" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-semibold text-gray-900 truncate">Medical Document</p>
+                                        <p class="text-xs text-gray-500 mt-1">Click to view or download</p>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600" aria-hidden="true"></i>
+                                    </div>
+                                </a>
+                                <form method="POST" action="{{ route('patient.condition.delete.attachment', $condition->id) }}" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this attachment? This action cannot be undone.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="p-3 bg-red-50 text-red-600 rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 transition" title="Delete attachment">
+                                        <i class="fas fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     @else
                         <div class="text-center py-8">
@@ -241,7 +250,7 @@
                                 <i class="fas fa-folder-open text-gray-400 text-2xl" aria-hidden="true"></i>
                             </div>
                             <p class="text-sm text-gray-500 mb-3">No attachments yet</p>
-                            <button type="button" class="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium">
+                            <button type="button" id="uploadAttachmentBtnEmpty" class="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium">
                                 <i class="fas fa-plus-circle" aria-hidden="true"></i>
                                 Upload medical document
                             </button>
@@ -334,10 +343,12 @@
 
     <!-- Edit Condition Form -->
     @include('patient.modules.medicalCondition.editConditionForm')
+    @include('patient.modules.medicalCondition.uploadConditionForm')
 
     <!-- Javascript and Footer -->
     @vite(['resources/js/main/patient/header.js'])
     @vite(['resources/js/main/medicalCondition/editConditionForm.js'])
+    @vite(['resources/js/main/medicalCondition/uploadAttachment.js'])
     @include('patient.components.footer')
 
 </body>

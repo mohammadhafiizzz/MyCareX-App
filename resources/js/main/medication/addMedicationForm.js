@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    const modal = document.getElementById('add-condition-modal');
-    const showButton = document.getElementById('show-add-condition-modal');
+    const modal = document.getElementById('add-medication-modal');
+    const showButton = document.getElementById('show-add-medication-modal');
     const closeButton = document.getElementById('modal-close-button');
     const cancelButton = document.getElementById('modal-cancel-button');
     const modalPanel = document.getElementById('modal-panel');
-    const form = document.getElementById('add-condition-form');
+    const form = document.getElementById('add-medication-form');
 
     const showModal = () => {
         if (modal) {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Show modal when the "Add Condition" button is clicked
+    // Show modal when the "Add Medication" button is clicked
     if (showButton) {
         showButton.addEventListener('click', showModal);
     }
@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addRemoveFileBtn = document.getElementById('add_removeFile');
     const addUploadError = document.getElementById('add_uploadError');
     const addUploadErrorMessage = document.getElementById('add_uploadErrorMessage');
+    const addImagePreview = document.getElementById('add_imagePreview');
 
     // Format file size
     function formatFileSize(bytes) {
@@ -109,18 +110,26 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Validate file type
-        const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+        // Validate file type - only images
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
         if (!allowedTypes.includes(file.type)) {
-            showAddError('Invalid file type. Please select a PDF, JPG, or PNG file.');
+            showAddError('Invalid file type. Please select a JPG or PNG image.');
             addFileInput.value = '';
             return;
         }
 
-        // Show file preview
-        if (addFileName && addFileSize && addFileDropContent && addFilePreview) {
+        // Show image preview
+        if (addFileName && addFileSize && addFileDropContent && addFilePreview && addImagePreview) {
             addFileName.textContent = file.name;
             addFileSize.textContent = formatFileSize(file.size);
+            
+            // Create image preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                addImagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            
             addFileDropContent.classList.add('hidden');
             addFilePreview.classList.remove('hidden');
         }
@@ -146,9 +155,10 @@ document.addEventListener('DOMContentLoaded', () => {
         addRemoveFileBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             addFileInput.value = '';
-            if (addFileDropContent && addFilePreview) {
+            if (addFileDropContent && addFilePreview && addImagePreview) {
                 addFileDropContent.classList.remove('hidden');
                 addFilePreview.classList.add('hidden');
+                addImagePreview.src = '';
             }
             hideAddError();
         });

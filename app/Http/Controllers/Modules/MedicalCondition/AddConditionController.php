@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Condition;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class AddConditionController extends Controller
 {
@@ -17,6 +18,7 @@ class AddConditionController extends Controller
             'description' => 'nullable|string',
             'severity' => 'required|in:Mild,Moderate,Severe',
             'status' => 'required|in:Active,Resolved,Chronic',
+            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240', // Optional attachment, max 10MB
         ]);
 
         // Get authenticated patient id
@@ -28,7 +30,41 @@ class AddConditionController extends Controller
         $validatedData['patient_id'] = $patientId;
 
         // Create new condition record
-        Condition::create($validatedData);
+        $condition = Condition::create($validatedData);
+
+        // Handle optional file upload
+        if ($request->hasFile('attachment')) {
+            try {
+                $file = $request->file('attachment');
+
+                // Target directory in public path
+                $destinationPath = public_path('files/medicalCondition');
+
+                // Ensure directory exists
+                if (!File::exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0755, true);
+                }
+
+                // Build filename: Condition_{CONDITION_ID}_Attachment.{ext}
+                $conditionId = $condition->id;
+                $baseName = 'Condition_' . $conditionId . '_Attachment';
+                $extension = strtolower($file->getClientOriginalExtension() ?: $file->extension());
+                $filename = $baseName . '.' . $extension;
+
+                // Move file into public/files/medicalCondition
+                $file->move($destinationPath, $filename);
+
+                // Build the public URL to store in DB
+                $publicUrl = asset('images/medicalCondition/' . $filename);
+
+                // Update the condition with attachment URL
+                $condition->doc_attachments_url = $publicUrl;
+                $condition->save();
+            } catch (\Exception $e) {
+                // If file upload fails, still create the condition but notify user
+                return redirect()->back()->with('warning', 'Medical condition added successfully, but attachment upload failed.');
+            }
+        }
 
         // Return back with success message
         return redirect()->back()->with('message', 'Medical condition added successfully');

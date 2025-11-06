@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!editModal) return; // Stop if the modal isn't on this page
 
     const editForm = document.getElementById('edit-condition-form');
-    const deleteForm = document.getElementById('delete-condition-form');
     const closeButton = document.getElementById('edit-modal-close-button');
     const cancelButton = document.getElementById('edit-modal-cancel-button');
 
@@ -18,14 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorMessages = document.getElementById('edit-form-error-message');
 
     // --- Modal Control Functions ---
-    const openModal = () => editModal.classList.remove('hidden');
-    const closeModal = () => {
-        editModal.classList.add('hidden');
-        errorMessages.classList.add('hidden'); // Hide errors
-        editForm.reset(); // Clear the form
+    const openModal = () => {
+        editModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden' // Prevent background scrolling
     };
-
-    // --- Attach Close Listeners ---
+    
+    const closeModal = () => {
+        editModal.style.display = 'none';
+        errorMessages.classList.add('hidden'); // Hide errors
+        document.body.style.overflow = 'auto'; // Restore background scrolling
+        editForm.reset(); // Clear the form
+    };    // --- Attach Close Listeners ---
     closeButton.addEventListener('click', closeModal);
     cancelButton.addEventListener('click', closeModal);
 
@@ -70,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set form action URLs to match your new routes
         const updateUrl = `/patient/my-records/medical-conditions/${id}`;
         editForm.setAttribute('action', updateUrl);
-        deleteForm.setAttribute('action', updateUrl); // Delete also points to the same base URL
 
         // Set field values
         fieldConditionName.value = condition.condition_name;

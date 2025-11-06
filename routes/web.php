@@ -99,6 +99,14 @@ Route::prefix('patient')->group(function () {
                 Route::get('/condition/{condition}/json', [Modules\MedicalCondition\MedicalConditionController::class, 'getConditionJson'])
                     ->name('patient.condition.json');
 
+                // Upload Attachment for Medical Condition
+                Route::post('/{condition}/upload-attachment', [Modules\MedicalCondition\UploadAttachmentController::class, 'upload'])
+                    ->name('patient.condition.upload.attachment');
+
+                // Delete Attachment for Medical Condition
+                Route::delete('/{condition}/delete-attachment', [Modules\MedicalCondition\UploadAttachmentController::class, 'deleteAttachment'])
+                    ->name('patient.condition.delete.attachment');
+
                 // Update Medical Condition
                 Route::put('/{condition}', [Modules\MedicalCondition\UpdateConditionController::class, 'update'])
                     ->name('patient.condition.update');
@@ -118,6 +126,10 @@ Route::prefix('patient')->group(function () {
                 // Medication Page
                 Route::get('/', [Modules\Medication\MedicationController::class, 'index'])
                     ->name('patient.medication');
+
+                // Add Medication
+                Route::post('/add', [Modules\Medication\AddMedicationController::class, 'add'])
+                    ->name('patient.medication.add');
 
             });
         });
