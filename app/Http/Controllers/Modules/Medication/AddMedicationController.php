@@ -66,7 +66,7 @@ class AddMedicationController extends Controller
                 $publicUrl = asset('images/medication/' . $filename);
 
                 // Update the medication with image URL
-                $medication->med_image = $publicUrl;
+                $medication->med_image_url = $publicUrl;
                 $medication->save();
             } catch (\Exception $e) {
                 // If file upload fails, still create the medication but notify user

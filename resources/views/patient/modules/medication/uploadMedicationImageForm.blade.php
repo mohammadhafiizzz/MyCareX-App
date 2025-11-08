@@ -19,14 +19,14 @@
             @csrf
 
             <div class="mb-6">
-                <label for="med_image" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="medImage" class="block text-sm font-medium text-gray-700 mb-2">
                     Select Image
                     <span class="text-red-500">*</span>
                 </label>
                 
                 <!-- File Input Area -->
                 <div class="relative">
-                    <input type="file" id="med_image" name="med_image" accept=".jpg,.jpeg,.png" required class="hidden">
+                    <input type="file" id="medImage" name="med_image_url" accept=".jpg,.jpeg,.png" required class="hidden">
                     <div id="imageDropArea" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition">
                         <div id="imageDropContent">
                             <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3" aria-hidden="true"></i>

@@ -20,7 +20,7 @@ class Medication extends Model
         'notes',
         'status',
         'reason_for_med',
-        'med_image'
+        'med_image_url'
     ];
 
     protected $casts = [

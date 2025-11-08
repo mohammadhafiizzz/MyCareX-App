@@ -118,10 +118,10 @@
                         <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
                             Medication Image:
                         </h3>
-                        @if ($medication->med_image)
+                        @if ($medication->med_image_url)
                             <div class="rounded-lg overflow-hidden border border-gray-200 bg-white">
                                 <img 
-                                    src="{{ $medication->med_image }}" 
+                                    src="{{ $medication->med_image_url }}" 
                                     alt="{{ $medication->medication_name }} image" 
                                     class="w-full h-auto max-h-96 object-contain"
                                     onerror="this.onerror=null; this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';"

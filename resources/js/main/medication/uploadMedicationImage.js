@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeModalBtn = document.getElementById('closeMedicationImageModal');
     const cancelBtn = document.getElementById('cancelMedicationImageBtn');
     const uploadForm = document.getElementById('uploadMedicationImageForm');
-    const fileInput = document.getElementById('med_image');
+    const fileInput = document.getElementById('medImage');
     const fileDropArea = document.getElementById('imageDropArea');
     const fileDropContent = document.getElementById('imageDropContent');
     const filePreview = document.getElementById('imagePreviewContainer');

@@ -27,11 +27,11 @@ class UploadMedicationImageController extends Controller
         
         // Validate the uploaded file
         $validatedData = $request->validate([
-            'med_image' => 'required|file|mimes:jpg,jpeg,png|max:10240', // Max 10MB
+            'med_image_url' => 'required|file|mimes:jpg,jpeg,png|max:10240', // Max 10MB
         ]);
 
         try {
-            $file = $request->file('med_image');
+            $file = $request->file('med_image_url');
                         
             if (!$file) {
                 return redirect()->back()->with('error', 'No file uploaded.');
@@ -52,8 +52,8 @@ class UploadMedicationImageController extends Controller
             $filename = $baseName . '.' . $extension;
             
             // Delete old image if exists
-            if ($medication->med_image) {
-                $oldFilename = basename($medication->med_image);
+            if ($medication->med_image_url) {
+                $oldFilename = basename($medication->med_image_url);
                 $oldFilePath = public_path('images/medication/' . $oldFilename);
                 if (File::exists($oldFilePath)) {
                     File::delete($oldFilePath);
@@ -71,7 +71,7 @@ class UploadMedicationImageController extends Controller
             $publicUrl = asset('images/medication/' . $filename);
 
             // Update the medication with image URL using direct attribute assignment
-            $medication->med_image = $publicUrl;
+            $medication->med_image_url = $publicUrl;
             
             $saved = $medication->save();
             
@@ -104,9 +104,9 @@ class UploadMedicationImageController extends Controller
 
         try {
             // Get the file path from the URL
-            if ($medication->med_image) {
+            if ($medication->med_image_url) {
                 // Extract filename from URL
-                $filename = basename($medication->med_image);
+                $filename = basename($medication->med_image_url);
                 $filePath = public_path('images/medication/' . $filename);
 
                 // Delete the file if it exists
@@ -115,7 +115,7 @@ class UploadMedicationImageController extends Controller
                 }
 
                 // Remove the URL from database
-                $medication->med_image = null;
+                $medication->med_image_url = null;
                 $medication->save();
 
                 return redirect()

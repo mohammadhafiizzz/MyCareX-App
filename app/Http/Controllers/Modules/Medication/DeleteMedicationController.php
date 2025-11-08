@@ -20,8 +20,8 @@ class DeleteMedicationController extends Controller
         }
 
         // Delete associated medication image if exists
-        if ($medication->med_image) {
-            $filename = basename($medication->med_image);
+        if ($medication->med_image_url) {
+            $filename = basename($medication->med_image_url);
             $filePath = public_path('images/medication/' . $filename);
             
             if (File::exists($filePath)) {
