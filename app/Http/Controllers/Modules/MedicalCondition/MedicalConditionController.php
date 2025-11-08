@@ -183,20 +183,6 @@ class MedicalConditionController extends Controller
         }
 
         // Process styling data for the condition
-        $severityBorderClass = match ($condition->severity) {
-            'Severe' => 'bg-red-500',
-            'Moderate' => 'bg-amber-500',
-            'Mild' => 'bg-green-500',
-            default => 'bg-gray-300',
-        };
-
-        $severityIconWrapper = match ($condition->severity) {
-            'Severe' => 'bg-red-100 text-red-600',
-            'Moderate' => 'bg-amber-100 text-amber-600',
-            'Mild' => 'bg-green-100 text-green-600',
-            default => 'bg-gray-100 text-gray-500',
-        };
-
         $severityGradient = match ($condition->severity) {
             'Severe' => 'from-red-600 to-rose-500',
             'Moderate' => 'from-amber-500 to-orange-500',
@@ -246,8 +232,6 @@ class MedicalConditionController extends Controller
 
         return view('patient.modules.medicalCondition.moreInfo', [
             'condition' => $condition,
-            'severityBorderClass' => $severityBorderClass,
-            'severityIconWrapper' => $severityIconWrapper,
             'severityGradient' => $severityGradient,
             'severityBadgeStyles' => $severityBadgeStyles,
             'severityBadgeIcon' => $severityBadgeIcon,

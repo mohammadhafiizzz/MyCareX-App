@@ -43,7 +43,7 @@
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
                         <h2 id="medications-controls-heading" class="text-xl font-semibold text-gray-900">Manage Medications</h2>
-                        <p class="mt-1 text-sm text-gray-600">Filter by status or schedule and stay ahead of upcoming doses or refills.</p>
+                        <p class="mt-1 text-sm text-gray-600">Filter by status or schedule and stay ahead of upcoming doses.</p>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-2">
                         <button 
@@ -116,7 +116,7 @@
 
                 @forelse ($medications as $medication)
                     <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-status="{{ $medication['dataStatus'] }}" data-frequency="{{ $medication['dataFrequency'] }}">
-                        <span class="absolute inset-y-0 left-0 w-1 {{ $medication['refillDueSoon'] ? 'bg-amber-500' : 'bg-blue-500' }}" aria-hidden="true"></span>
+                        <span class="absolute inset-y-0 left-0 w-1 bg-blue-500" aria-hidden="true"></span>
                         <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                             <div class="flex-1">
                                 <div class="flex flex-col sm:flex-row sm:items-start sm:gap-4">
@@ -160,11 +160,6 @@
                                         <span class="sr-only">Frequency:</span>
                                         <i class="fas fa-clock" aria-hidden="true"></i>
                                         {{ $medication['frequency'] }}
-                                    </span>
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200" role="status">
-                                        <span class="sr-only">Refill status:</span>
-                                        <i class="fas {{ $medication['refillDueSoon'] ? 'fa-hourglass-half text-amber-500' : 'fa-check text-emerald-500' }}" aria-hidden="true"></i>
-                                        {{ $medication['refillDueSoon'] ? 'Refill soon' : 'Refill on track' }}
                                     </span>
                                 </div>
                             </div>

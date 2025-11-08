@@ -113,11 +113,11 @@
 
                 @forelse ($conditions as $condition)
                     <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-severity="{{ $condition['severityData'] }}" data-status="{{ $condition['statusData'] }}">
-                        <span class="absolute inset-y-0 left-0 w-1 {{ $condition['severityBorderClass'] }}" aria-hidden="true"></span>
+                        <span class="absolute inset-y-0 left-0 w-1 bg-blue-500" aria-hidden="true"></span>
                         <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                             <div class="flex-1">
                                 <div class="flex flex-col sm:flex-row sm:items-start sm:gap-4">
-                                    <div class="flex items-center justify-center w-12 h-12 rounded-xl {{ $condition['severityIconWrapper'] }} flex-shrink-0">
+                                    <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex-shrink-0">
                                         <i class="fas fa-heartbeat text-xl" aria-hidden="true"></i>
                                     </div>
                                     <div class="mt-4 sm:mt-0">

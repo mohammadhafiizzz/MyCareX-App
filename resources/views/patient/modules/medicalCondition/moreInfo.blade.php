@@ -18,6 +18,21 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+        {{-- Success/Error Messages --}}
+        @if (session('success'))
+            <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
+                <i class="fas fa-check-circle text-green-600 mt-0.5" aria-hidden="true"></i>
+                <p class="text-sm text-green-800">{{ session('success') }}</p>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                <i class="fas fa-exclamation-circle text-red-600 mt-0.5" aria-hidden="true"></i>
+                <p class="text-sm text-red-800">{{ session('error') }}</p>
+            </div>
+        @endif
+
         {{-- Breadcrumb Navigation --}}
         <nav class="flex mb-8" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -214,10 +229,6 @@
                         <button type="button" class="edit-condition-btn w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" data-id="{{ $condition->id }}">
                             <i class="fas fa-pen-to-square" aria-hidden="true"></i>
                             Edit Condition
-                        </button>
-                        <button type="button" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
-                            <i class="fas fa-print" aria-hidden="true"></i>
-                            Print Details
                         </button>
                         <button type="button" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
                             <i class="fas fa-share-alt" aria-hidden="true"></i>

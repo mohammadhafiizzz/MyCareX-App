@@ -25,7 +25,7 @@ class UploadAttachmentController extends Controller
 
         // Validate the uploaded file
         $request->validate([
-            'attachment' => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240', // Max 10MB
+            'attachment' => 'required|file|mimes:pdf|max:10240', // Max 10MB, PDF only
         ]);
 
         try {

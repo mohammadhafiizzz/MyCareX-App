@@ -43,34 +43,68 @@
 
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                    <label for="dosage" class="block text-sm font-medium text-gray-700">Dosage <span class="text-red-500">*</span></label>
+                    <label for="dosage" class="block text-sm font-medium text-gray-700">Dosage (mg) <span class="text-red-500">*</span></label>
                     <input 
-                        type="text" 
+                        type="number"
                         name="dosage" 
                         id="dosage" 
                         required
+                        min="1"
+                        max="999999"
                         class="mt-1 block p-3 w-full border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
-                        placeholder="e.g., 500mg"
+                        placeholder="e.g., 500"
                     >
+                    <p class="mt-1 text-xs text-gray-500">Enter numeric value only (unit: mg)</p>
                 </div>
 
                 <div>
-                    <label for="frequency" class="block text-sm font-medium text-gray-700">Frequency <span class="text-red-500">*</span></label>
+                    <label for="status" class="block text-sm font-medium text-gray-700">Status <span class="text-red-500">*</span></label>
                     <select 
-                        id="frequency" 
-                        name="frequency"
+                        id="status" 
+                        name="status" 
                         required
-                        class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     >
-                        <option value="">Select frequency</option>
-                        <option value="Daily">Daily</option>
-                        <option value="Twice daily">Twice daily</option>
-                        <option value="Three times daily">Three times daily</option>
-                        <option value="Weekly">Weekly</option>
-                        <option value="Monthly">Monthly</option>
-                        <option value="As needed">As needed</option>
+                        <option value="">Select status</option>
+                        <option value="Active">Active</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Discontinued">Discontinued</option>
                     </select>
                 </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Frequency <span class="text-red-500">*</span></label>
+                <div class="grid grid-cols-4 gap-3">
+                    <div>
+                        <input 
+                            type="number" 
+                            id="frequency_times" 
+                            name="frequency_times"
+                            required
+                            min="1"
+                            max="24"
+                            class="block p-3 w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            placeholder="e.g., 2"
+                        >
+                    </div>
+                    <div class="col-span-3">
+                        <select 
+                            id="frequency_period" 
+                            name="frequency_period"
+                            required
+                            class="p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        >
+                            <option value="">Select period</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Hidden field to store the combined frequency value -->
+                <input type="hidden" id="frequency" name="frequency">
             </div>
 
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -81,7 +115,7 @@
                         name="start_date" 
                         id="start_date" 
                         required
-                        class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     >
                 </div>
 
@@ -91,26 +125,10 @@
                         type="date" 
                         name="end_date" 
                         id="end_date" 
-                        class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     >
                     <p class="mt-1 text-xs text-gray-500">Leave blank if ongoing</p>
                 </div>
-            </div>
-
-            <div>
-                <label for="status" class="block text-sm font-medium text-gray-700">Status <span class="text-red-500">*</span></label>
-                <select 
-                    id="status" 
-                    name="status" 
-                    required
-                    class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                >
-                    <option value="">Select status</option>
-                    <option value="Active">Active</option>
-                    <option value="On Hold">On Hold</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Discontinued">Discontinued</option>
-                </select>
             </div>
 
             <div>

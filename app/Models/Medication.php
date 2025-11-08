@@ -26,5 +26,29 @@ class Medication extends Model
     protected $casts = [
         'start_date' => 'date:Y-m-d',
         'end_date' => 'date:Y-m-d',
+        'dosage' => 'integer',
     ];
+
+    /**
+     * Get formatted dosage with unit
+     */
+    public function getFormattedDosageAttribute()
+    {
+        return $this->attributes['dosage'] ? $this->attributes['dosage'] . ' mg' : 'No dosage recorded';
+    }
+
+    /**
+     * Mutator: Store only integer value, remove any text/units
+     */
+    public function setDosageAttribute($value)
+    {
+        // If already an integer, just store it
+        if (is_int($value)) {
+            $this->attributes['dosage'] = $value;
+            return;
+        }
+        
+        // Extract numeric value from input (handles "500", "500mg", "500 mg", etc.)
+        $this->attributes['dosage'] = is_numeric($value) ? (int)$value : (int)preg_replace('/[^0-9]/', '', $value);
+    }
 }

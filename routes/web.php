@@ -131,6 +131,26 @@ Route::prefix('patient')->group(function () {
                 Route::post('/add', [Modules\Medication\AddMedicationController::class, 'add'])
                     ->name('patient.medication.add');
 
+                // Update Medication
+                Route::put('/{medication}', [Modules\Medication\UpdateMedicationController::class, 'update'])
+                    ->name('patient.medication.update');
+
+                // Delete Medication
+                Route::delete('/{medication}', [Modules\Medication\DeleteMedicationController::class, 'delete'])
+                    ->name('patient.medication.delete');
+
+                // Get Medication JSON (for edit form)
+                Route::get('/{medication}/json', [Modules\Medication\MedicationController::class, 'getJson'])
+                    ->name('patient.medication.json');
+
+                // Upload Image for Medication
+                Route::post('/{medication}/upload-image', [Modules\Medication\UploadMedicationImageController::class, 'upload'])
+                    ->name('patient.medication.upload.image');
+
+                // Delete Image for Medication
+                Route::delete('/{medication}/delete-image', [Modules\Medication\UploadMedicationImageController::class, 'deleteImage'])
+                    ->name('patient.medication.delete.image');
+
                 // Medication More Info
                 Route::get('/{medication}', [Modules\Medication\MedicationController::class, 'moreInfo'])
                     ->name('patient.medication.info');

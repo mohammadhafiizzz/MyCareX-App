@@ -72,6 +72,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const addUploadErrorMessage = document.getElementById('add_uploadErrorMessage');
     const addImagePreview = document.getElementById('add_imagePreview');
 
+    // Frequency combination logic
+    const frequencyTimes = document.getElementById('frequency_times');
+    const frequencyPeriod = document.getElementById('frequency_period');
+    const frequencyHidden = document.getElementById('frequency');
+
+    function updateFrequency() {
+        const times = frequencyTimes?.value;
+        const period = frequencyPeriod?.value;
+        
+        if (times && period && frequencyHidden) {
+            // Combine as "X times period" (e.g., "2 times daily")
+            frequencyHidden.value = `${times} ${times === '1' ? 'time' : 'times'} ${period}`;
+        }
+    }
+
+    if (frequencyTimes && frequencyPeriod) {
+        frequencyTimes.addEventListener('input', updateFrequency);
+        frequencyPeriod.addEventListener('change', updateFrequency);
+    }
+
     // Format file size
     function formatFileSize(bytes) {
         if (bytes === 0) return '0 Bytes';

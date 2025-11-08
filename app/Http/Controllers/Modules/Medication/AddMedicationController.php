@@ -14,7 +14,9 @@ class AddMedicationController extends Controller
     public function add(Request $request) {
         $validatedData = $request->validate([
             'medication_name' => 'required|string|max:255',
-            'dosage' => 'required|string|max:255',
+            'dosage' => 'required|integer|min:1|max:999999',
+            'frequency_times' => 'required|integer|min:1|max:24',
+            'frequency_period' => 'required|in:daily,weekly,monthly',
             'frequency' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
@@ -30,6 +32,9 @@ class AddMedicationController extends Controller
             return response()->json(['message' => 'Unauthenticated user'], 401);
         }
 
+        // Remove the temporary fields, only store the combined frequency
+        unset($validatedData['frequency_times'], $validatedData['frequency_period']);
+        
         $validatedData['patient_id'] = $patientId;
 
         // Create new medication record

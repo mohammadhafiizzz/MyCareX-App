@@ -32,6 +32,6 @@ class UpdateConditionController extends Controller
         $condition->update($validatedData);
 
         // Redirect back to the previous page with a success message
-        return redirect()->back()->with('message', 'Medical condition updated successfully.');
+        return redirect()->back()->with('success', 'Medical condition updated successfully.');
     }
 }

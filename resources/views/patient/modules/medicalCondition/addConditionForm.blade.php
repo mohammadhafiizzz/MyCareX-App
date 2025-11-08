@@ -60,7 +60,7 @@
                         type="date" 
                         name="diagnosis_date" 
                         id="diagnosis_date" 
-                        class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     >
                 </div>
 
@@ -70,7 +70,7 @@
                         id="severity" 
                         name="severity"
                         required
-                        class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     >
                         <option value="">Select severity</option>
                         <option value="Mild">Mild</option>
@@ -86,7 +86,7 @@
                     id="status" 
                     name="status" 
                     required
-                    class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 >
                     <option value="" selected>Select status</option>
                     <option value="Active">Active</option>

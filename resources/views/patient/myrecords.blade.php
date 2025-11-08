@@ -143,8 +143,7 @@
                         <div class="group relative bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-5 mb-4 hover:shadow-md transition-all duration-200 hover:border-blue-300">
                             {{-- Severity Indicator Bar --}}
                             <div class="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl 
-                                {{ $condition->severity === 'Severe' ? 'bg-red-500' : 
-                                   ($condition->severity === 'Moderate' ? 'bg-yellow-500' : 'bg-green-500') }}">
+                                 bg-blue-500" aria-hidden="true">
                             </div>
 
                             <div class="flex items-start justify-between">

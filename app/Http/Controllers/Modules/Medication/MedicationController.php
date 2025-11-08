@@ -28,10 +28,6 @@ class MedicationController extends Controller
         $today = \Illuminate\Support\Carbon::today();
         $totalMedications = $medications->count();
         $activeMedications = $medications->where('status', 'Active')->count();
-        $refillWindowEnd = $today->copy()->addDays(7);
-        $upcomingRefills = $medications->filter(function ($med) use ($today, $refillWindowEnd) {
-            return $med->end_date && $med->end_date->between($today, $refillWindowEnd, true);
-        })->count();
         $dailyMedications = $medications->filter(function ($med) {
             $frequency = strtolower($med->frequency ?? '');
             return \Illuminate\Support\Str::contains($frequency, 'day');
@@ -56,7 +52,7 @@ class MedicationController extends Controller
             return \Illuminate\Support\Str::title($freq);
         })->unique()->values()->all();
         if (empty($frequencyOptions)) {
-            $frequencyOptions = ['Daily', 'Weekly', 'As Needed'];
+            $frequencyOptions = ['1 Time Daily', '2 Times Daily', '1 Time Weekly'];
         }
         array_unshift($frequencyOptions, 'All');
 
@@ -69,19 +65,13 @@ class MedicationController extends Controller
             'All' => 'fa-layer-group text-gray-500'
         ];
 
-        $frequencyFilterStyles = [
-            'Daily' => 'text-blue-500',
-            'Weekly' => 'text-purple-500',
-            'Monthly' => 'text-indigo-500',
-            'As Needed' => 'text-amber-500',
-            'All' => 'text-gray-500'
-        ];
+        // Generic frequency filter styles - will match any frequency string
+        $frequencyFilterStyles = [];
 
         // Process each medication with styling data
-        $processedMedications = $medications->map(function ($medication) use ($today) {
+        $processedMedications = $medications->map(function ($medication) {
             $status = $medication->status ?? 'Not set';
             $lastUpdated = $medication->updated_at ?? $medication->start_date ?? $medication->created_at;
-            $refillDueSoon = $medication->end_date && $medication->end_date->between($today, $today->copy()->addDays(7), true);
 
             return [
                 'data' => $medication,
@@ -100,12 +90,11 @@ class MedicationController extends Controller
                     default => 'fas fa-circle',
                 },
                 'frequency' => $medication->frequency ? \Illuminate\Support\Str::title($medication->frequency) : 'Not specified',
-                'dosage' => $medication->dosage ?? 'No dosage recorded',
+                'dosage' => $medication->formatted_dosage, // Uses accessor to format as "X mg"
                 'notes' => $medication->notes ?? 'No notes added yet.',
                 'startDateLabel' => $medication->start_date ? $medication->start_date->format('M d, Y') : 'Not scheduled',
                 'endDateLabel' => $medication->end_date ? $medication->end_date->format('M d, Y') : 'No end date',
                 'lastUpdatedLabel' => $lastUpdated ? \Illuminate\Support\Carbon::parse($lastUpdated)->diffForHumans() : 'No recent updates',
-                'refillDueSoon' => $refillDueSoon,
                 'dataStatus' => \Illuminate\Support\Str::slug(strtolower($status)),
                 'dataFrequency' => \Illuminate\Support\Str::slug(strtolower($medication->frequency ?? 'unknown')),
             ];
@@ -138,7 +127,6 @@ class MedicationController extends Controller
             'timelineMedications' => $timelineMedications,
             'totalMedications' => $totalMedications,
             'activeMedications' => $activeMedications,
-            'upcomingRefills' => $upcomingRefills,
             'dailyMedications' => $dailyMedications,
             'lastUpdatedLabel' => $lastUpdatedLabel,
             'statusOptions' => $statusOptions,
@@ -158,7 +146,6 @@ class MedicationController extends Controller
         }
 
         // Process styling data for the medication
-        $today = \Illuminate\Support\Carbon::today();
         $status = $medication->status ?? 'Not set';
 
         $statusBadgeStyles = match ($status) {
@@ -186,12 +173,11 @@ class MedicationController extends Controller
         };
 
         $frequency = $medication->frequency ? \Illuminate\Support\Str::title($medication->frequency) : 'Not specified';
-        $dosage = $medication->dosage ?? 'No dosage recorded';
+        $dosage = $medication->formatted_dosage; // Uses accessor to format as "X mg"
         $startDateLabel = $medication->start_date ? $medication->start_date->format('F d, Y') : 'Not scheduled';
         $endDateLabel = $medication->end_date ? $medication->end_date->format('F d, Y') : 'No end date';
         $createdLabel = $medication->created_at ? $medication->created_at->format('F d, Y') : 'Unknown';
         $updatedLabel = $medication->updated_at ? $medication->updated_at->diffForHumans() : 'Never';
-        $refillDueSoon = $medication->end_date && $medication->end_date->between($today, $today->copy()->addDays(7), true);
 
         return view('patient.modules.medication.moreInfo', [
             'medication' => $medication,
@@ -204,7 +190,21 @@ class MedicationController extends Controller
             'endDateLabel' => $endDateLabel,
             'createdLabel' => $createdLabel,
             'updatedLabel' => $updatedLabel,
-            'refillDueSoon' => $refillDueSoon,
+        ]);
+    }
+
+    // Get medication data as JSON for edit form
+    public function getJson(Medication $medication) {
+        // Get authenticated patient id
+        $patientId = Auth::guard('patient')->id() ?? Auth::id();
+        
+        // Verify the medication belongs to the authenticated patient
+        if ($medication->patient_id !== $patientId) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return response()->json([
+            'medication' => $medication
         ]);
     }
 }

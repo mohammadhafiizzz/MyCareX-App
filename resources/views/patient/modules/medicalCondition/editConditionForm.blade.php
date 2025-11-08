@@ -63,7 +63,7 @@
                         type="date" 
                         name="diagnosis_date" 
                         id="edit_diagnosis_date" 
-                        class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                         value="" {{-- Value must be populated by JavaScript --}}
                     >
                 </div>
@@ -73,7 +73,7 @@
                     <select 
                         id="edit_severity" 
                         name="severity" 
-                        class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                     >
                         {{-- JavaScript will need to set the 'selected' attribute on the correct option --}}
                         <option value="">Select severity</option>
@@ -89,7 +89,7 @@
                 <select 
                     id="edit_status" 
                     name="status" 
-                    class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 >
                     {{-- JavaScript will need to set the 'selected' attribute on the correct option --}}
                     <option value="" selected>Select status</option>
@@ -101,7 +101,7 @@
             </div>
         </form>
 
-        <div class="pt-6 mt-6 border-t border-gray-200 flex justify-end gap-3">
+        <div class="pt-6 mt-6 flex justify-end gap-3">
             <button 
                 type="button" 
                 id="edit-modal-cancel-button"
