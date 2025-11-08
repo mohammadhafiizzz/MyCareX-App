@@ -37,50 +37,6 @@
 
         @include('patient.components.recordNav')
 
-        @php
-            $today = \Illuminate\Support\Carbon::today();
-            $totalMedications = $medications->count();
-            $activeMedications = $medications->where('status', 'Active')->count();
-            $refillWindowEnd = $today->copy()->addDays(7);
-            $upcomingRefills = $medications->filter(function ($med) use ($today, $refillWindowEnd) {
-                return $med->end_date && $med->end_date->between($today, $refillWindowEnd, true);
-            })->count();
-            $dailyMedications = $medications->filter(function ($med) {
-                $frequency = strtolower($med->frequency ?? '');
-                return \Illuminate\Support\Str::contains($frequency, 'day');
-            })->count();
-            $lastUpdatedMedication = $medications->sortByDesc(function ($med) {
-                return $med->updated_at ?? $med->start_date ?? $med->created_at;
-            })->first();
-            $lastUpdatedLabel = $lastUpdatedMedication ? \Illuminate\Support\Carbon::parse($lastUpdatedMedication->updated_at ?? $lastUpdatedMedication->start_date ?? $lastUpdatedMedication->created_at)->format('M d, Y') : 'Not recorded';
-            $statusOptions = $medications->pluck('status')->filter()->unique()->values()->all();
-            if (empty($statusOptions)) {
-                $statusOptions = ['Active', 'On Hold', 'Completed'];
-            }
-            array_unshift($statusOptions, 'All');
-            $frequencyOptions = $medications->pluck('frequency')->filter()->map(function ($freq) {
-                return \Illuminate\Support\Str::title($freq);
-            })->unique()->values()->all();
-            if (empty($frequencyOptions)) {
-                $frequencyOptions = ['Daily', 'Weekly', 'As Needed'];
-            }
-            array_unshift($frequencyOptions, 'All');
-            $statusFilterStyles = [
-                'Active' => 'fa-circle-dot text-emerald-500',
-                'On Hold' => 'fa-pause-circle text-amber-500',
-                'Completed' => 'fa-check-circle text-blue-500',
-                'Discontinued' => 'fa-ban text-red-500',
-                'All' => 'fa-layer-group text-gray-500'
-            ];
-            $frequencyFilterStyles = [
-                'Daily' => 'text-blue-500',
-                'Weekly' => 'text-purple-500',
-                'Monthly' => 'text-indigo-500',
-                'As Needed' => 'text-amber-500',
-                'All' => 'text-gray-500'
-            ];
-        @endphp
-
         {{-- Filters & Quick Actions --}}
         <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="medications-controls-heading">
             <div class="p-6 space-y-6">
@@ -95,11 +51,7 @@
                             id="show-add-medication-modal"
                             class="inline-flex justify-center items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                             <i class="fas fa-plus" aria-hidden="true"></i>
-                            Add medication
-                        </button>
-                        <button type="button" class="inline-flex justify-center items-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2">
-                            <i class="fas fa-file-export" aria-hidden="true"></i>
-                            Export list
+                            Add New
                         </button>
                     </div>
                 </div>
@@ -135,13 +87,13 @@
                         <span>Tip: Mark a medication as completed when treatment ends to keep active reminders clean.</span>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 text-sm font-medium hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2">
-                            <i class="fas fa-bell" aria-hidden="true"></i>
-                            Set daily reminder
+                        <button type="button" id="reset-all-filters" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 text-sm font-medium hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2">
+                            <i class="fas fa-redo" aria-hidden="true"></i>
+                            Reset filters
                         </button>
                         <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
                             <i class="fas fa-share-alt" aria-hidden="true"></i>
-                            Share with caregiver
+                            Share
                         </button>
                     </div>
                 </div>
@@ -163,36 +115,8 @@
                 </div>
 
                 @forelse ($medications as $medication)
-                    @php
-                        $status = $medication->status ?? 'Not set';
-                        $statusBadgeStyles = match ($status) {
-                            'Active' => 'bg-emerald-100 text-emerald-700 border border-emerald-200',
-                            'On Hold' => 'bg-amber-100 text-amber-700 border border-amber-200',
-                            'Completed' => 'bg-blue-100 text-blue-700 border border-blue-200',
-                            'Discontinued' => 'bg-red-100 text-red-700 border border-red-200',
-                            default => 'bg-gray-100 text-gray-600 border border-gray-200',
-                        };
-                        $statusIcon = match ($status) {
-                            'Active' => 'fas fa-circle-dot',
-                            'On Hold' => 'fas fa-pause-circle',
-                            'Completed' => 'fas fa-check-circle',
-                            'Discontinued' => 'fas fa-ban',
-                            default => 'fas fa-circle',
-                        };
-                        $frequency = $medication->frequency ? \Illuminate\Support\Str::title($medication->frequency) : 'Not specified';
-                        $dosage = $medication->dosage ?? 'No dosage recorded';
-                        $notes = $medication->notes ?? 'No notes added yet.';
-                        $startDateLabel = $medication->start_date ? $medication->start_date->format('M d, Y') : 'Not scheduled';
-                        $endDateLabel = $medication->end_date ? $medication->end_date->format('M d, Y') : 'No end date';
-                        $lastUpdated = $medication->updated_at ?? $medication->start_date ?? $medication->created_at;
-                        $lastUpdatedLabel = $lastUpdated ? \Illuminate\Support\Carbon::parse($lastUpdated)->diffForHumans() : 'No recent updates';
-                        $refillDueSoon = $medication->end_date && $medication->end_date->between($today, $today->copy()->addDays(7), true);
-                        $dataStatus = \Illuminate\Support\Str::slug(strtolower($status));
-                        $dataFrequency = \Illuminate\Support\Str::slug(strtolower($medication->frequency ?? 'unknown'));
-                    @endphp
-
-                    <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-status="{{ $dataStatus }}" data-frequency="{{ $dataFrequency }}">
-                        <span class="absolute inset-y-0 left-0 w-1 {{ $refillDueSoon ? 'bg-amber-500' : 'bg-blue-500' }}" aria-hidden="true"></span>
+                    <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-status="{{ $medication['dataStatus'] }}" data-frequency="{{ $medication['dataFrequency'] }}">
+                        <span class="absolute inset-y-0 left-0 w-1 {{ $medication['refillDueSoon'] ? 'bg-amber-500' : 'bg-blue-500' }}" aria-hidden="true"></span>
                         <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                             <div class="flex-1">
                                 <div class="flex flex-col sm:flex-row sm:items-start sm:gap-4">
@@ -200,64 +124,60 @@
                                         <i class="fas fa-capsules text-xl" aria-hidden="true"></i>
                                     </div>
                                     <div class="mt-4 sm:mt-0">
-                                        <h3 class="text-lg font-semibold text-gray-900">{{ $medication->medication_name }}</h3>
+                                        <h3 class="text-lg font-semibold text-gray-900">{{ $medication['data']->medication_name }}</h3>
                                         <p class="mt-2 text-sm text-gray-600 flex items-center gap-2">
                                             <i class="fas fa-prescription" aria-hidden="true"></i>
-                                            <span><strong class="text-gray-800">Dosage:</strong> {{ $dosage }}</span>
+                                            <span><strong class="text-gray-800">Dosage:</strong> {{ $medication['dosage'] }}</span>
                                         </p>
                                         <p class="mt-2 text-sm text-gray-600 flex items-center gap-2">
                                             <i class="fas fa-clock" aria-hidden="true"></i>
-                                            <span><strong class="text-gray-800">Frequency:</strong> {{ $frequency }}</span>
+                                            <span><strong class="text-gray-800">Frequency:</strong> {{ $medication['frequency'] }}</span>
                                         </p>
                                         <p class="mt-2 text-sm text-gray-600 flex items-center gap-2">
                                             <i class="far fa-calendar-alt" aria-hidden="true"></i>
-                                            <span><strong class="text-gray-800">Start:</strong> {{ $startDateLabel }} &bull; <strong class="text-gray-800">End:</strong> {{ $endDateLabel }}</span>
+                                            <span><strong class="text-gray-800">Start:</strong> {{ $medication['startDateLabel'] }} &bull; <strong class="text-gray-800">End:</strong> {{ $medication['endDateLabel'] }}</span>
                                         </p>
                                         <p class="mt-2 text-sm text-gray-500 flex items-center gap-2">
                                             <i class="far fa-clock" aria-hidden="true"></i>
-                                            <span>Last updated {{ $lastUpdatedLabel }}</span>
+                                            <span>Last updated {{ $medication['lastUpdatedLabel'] }}</span>
                                         </p>
                                     </div>
                                 </div>
 
-                                @if ($notes)
+                                @if ($medication['notes'])
                                     <p class="mt-4 text-sm text-gray-700 leading-relaxed">
-                                        {{ $notes }}
+                                        {{ $medication['notes'] }}
                                     </p>
                                 @endif
 
                                 <div class="mt-4 flex flex-wrap gap-2">
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $statusBadgeStyles }}" role="status">
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $medication['statusBadgeStyles'] }}" role="status">
                                         <span class="sr-only">Status:</span>
-                                        <i class="{{ $statusIcon }}" aria-hidden="true"></i>
-                                        {{ $status }}
+                                        <i class="{{ $medication['statusIcon'] }}" aria-hidden="true"></i>
+                                        {{ $medication['data']->status ?? 'Not set' }}
                                     </span>
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200" role="status">
                                         <span class="sr-only">Frequency:</span>
                                         <i class="fas fa-clock" aria-hidden="true"></i>
-                                        {{ $frequency }}
+                                        {{ $medication['frequency'] }}
                                     </span>
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200" role="status">
                                         <span class="sr-only">Refill status:</span>
-                                        <i class="fas {{ $refillDueSoon ? 'fa-hourglass-half text-amber-500' : 'fa-check text-emerald-500' }}" aria-hidden="true"></i>
-                                        {{ $refillDueSoon ? 'Refill soon' : 'Refill on track' }}
+                                        <i class="fas {{ $medication['refillDueSoon'] ? 'fa-hourglass-half text-amber-500' : 'fa-check text-emerald-500' }}" aria-hidden="true"></i>
+                                        {{ $medication['refillDueSoon'] ? 'Refill soon' : 'Refill on track' }}
                                     </span>
                                 </div>
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">
                                 <button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2">
-                                    <i class="fas fa-notes-medical" aria-hidden="true"></i>
-                                    Log dose
-                                </button>
-                                <button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-semibold rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
-                                    <i class="fas fa-pen-to-square" aria-hidden="true"></i>
-                                    Edit medication
-                                </button>
-                                <button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-semibold rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
                                     <i class="fas fa-bell" aria-hidden="true"></i>
-                                    Reminder options
+                                    Set Reminder
                                 </button>
+                                <a href="{{ route('patient.medication.info', $medication['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                    <i class="fas fa-info-circle" aria-hidden="true"></i>
+                                    More info
+                                </a>
                             </div>
                         </div>
                     </article>
@@ -322,22 +242,7 @@
                     <div class="relative mt-6">
                         <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-200" aria-hidden="true"></div>
                         <div class="space-y-6">
-                            @foreach ($medications->sortByDesc(function ($med) {
-                                return $med->updated_at ?? $med->start_date ?? $med->created_at;
-                            })->take(6) as $timelineMedication)
-                                @php
-                                    $timelineStatus = $timelineMedication->status ?? 'Not set';
-                                    $timelineStatusBadge = match ($timelineStatus) {
-                                        'Active' => 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-                                        'On Hold' => 'bg-amber-50 text-amber-700 border border-amber-200',
-                                        'Completed' => 'bg-blue-50 text-blue-700 border border-blue-200',
-                                        'Discontinued' => 'bg-red-50 text-red-700 border border-red-200',
-                                        default => 'bg-gray-50 text-gray-600 border border-gray-200',
-                                    };
-                                    $timelineDate = $timelineMedication->updated_at ?? $timelineMedication->start_date ?? $timelineMedication->created_at;
-                                    $timelineDateLabel = $timelineDate ? \Illuminate\Support\Carbon::parse($timelineDate)->format('M d, Y') : 'Date unavailable';
-                                    $timelineFrequency = $timelineMedication->frequency ? \Illuminate\Support\Str::title($timelineMedication->frequency) : 'Not specified';
-                                @endphp
+                            @foreach ($timelineMedications as $timelineMedication)
                                 <div class="relative flex gap-4">
                                     <div class="flex-shrink-0 w-12 h-12 bg-white rounded-full border-4 border-white shadow flex items-center justify-center">
                                         <span class="w-3 h-3 rounded-full bg-blue-500" aria-hidden="true"></span>
@@ -346,26 +251,26 @@
                                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                                             <div class="flex items-center gap-3">
                                                 <i class="fas fa-capsules text-blue-500" aria-hidden="true"></i>
-                                                <h3 class="text-base font-semibold text-gray-900">{{ $timelineMedication->medication_name }}</h3>
+                                                <h3 class="text-base font-semibold text-gray-900">{{ $timelineMedication['data']->medication_name }}</h3>
                                             </div>
                                             <span class="inline-flex items-center gap-2 text-xs font-medium text-gray-500">
                                                 <i class="far fa-calendar-alt" aria-hidden="true"></i>
-                                                {{ $timelineDateLabel }}
+                                                {{ $timelineMedication['dateLabel'] }}
                                             </span>
                                         </div>
-                                        @if ($timelineMedication->notes)
+                                        @if ($timelineMedication['data']->notes)
                                             <p class="mt-3 text-sm text-gray-600">
-                                                {{ \Illuminate\Support\Str::limit($timelineMedication->notes, 160, '…') }}
+                                                {{ \Illuminate\Support\Str::limit($timelineMedication['data']->notes, 160, '…') }}
                                             </p>
                                         @endif
                                         <div class="mt-3 flex flex-wrap gap-2">
-                                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {{ $timelineStatusBadge }}" role="status">
+                                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {{ $timelineMedication['statusBadge'] }}" role="status">
                                                 <span class="sr-only">Status:</span>
-                                                {{ $timelineStatus }}
+                                                {{ $timelineMedication['data']->status ?? 'Not set' }}
                                             </span>
                                             <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border border-gray-200 text-gray-600 bg-white" role="status">
                                                 <span class="sr-only">Frequency:</span>
-                                                {{ $timelineFrequency }}
+                                                {{ $timelineMedication['frequency'] }}
                                             </span>
                                         </div>
                                     </div>

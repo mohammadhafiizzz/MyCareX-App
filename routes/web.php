@@ -131,6 +131,10 @@ Route::prefix('patient')->group(function () {
                 Route::post('/add', [Modules\Medication\AddMedicationController::class, 'add'])
                     ->name('patient.medication.add');
 
+                // Medication More Info
+                Route::get('/{medication}', [Modules\Medication\MedicationController::class, 'moreInfo'])
+                    ->name('patient.medication.info');
+
             });
         });
     });

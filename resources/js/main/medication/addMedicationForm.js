@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Validate file type - only images
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
         if (!allowedTypes.includes(file.type)) {
-            showAddError('Invalid file type. Please select a JPG or PNG image.');
+            showAddError('Invalid file type. Please select a JPG, JPEG, or PNG image.');
             addFileInput.value = '';
             return;
         }

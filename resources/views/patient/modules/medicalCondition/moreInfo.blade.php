@@ -35,61 +35,6 @@
             </ol>
         </nav>
 
-        @php
-            $severityBorderClass = match ($condition->severity) {
-                'Severe' => 'bg-red-500',
-                'Moderate' => 'bg-amber-500',
-                'Mild' => 'bg-green-500',
-                default => 'bg-gray-300',
-            };
-
-            $severityIconWrapper = match ($condition->severity) {
-                'Severe' => 'bg-red-100 text-red-600',
-                'Moderate' => 'bg-amber-100 text-amber-600',
-                'Mild' => 'bg-green-100 text-green-600',
-                default => 'bg-gray-100 text-gray-500',
-            };
-
-            $severityGradient = match ($condition->severity) {
-                'Severe' => 'from-red-600 to-rose-500',
-                'Moderate' => 'from-amber-500 to-orange-500',
-                'Mild' => 'from-green-500 to-emerald-500',
-                default => 'from-gray-500 to-gray-400',
-            };
-
-            $severityBadgeStyles = match ($condition->severity) {
-                'Severe' => 'bg-red-50 text-red-700 border border-red-200',
-                'Moderate' => 'bg-amber-50 text-amber-700 border border-amber-200',
-                'Mild' => 'bg-green-50 text-green-700 border border-green-200',
-                default => 'bg-gray-50 text-gray-600 border border-gray-200',
-            };
-
-            $severityBadgeIcon = match ($condition->severity) {
-                'Severe' => 'fas fa-exclamation-triangle',
-                'Moderate' => 'fas fa-info-circle',
-                'Mild' => 'fas fa-shield-check',
-                default => 'fas fa-circle',
-            };
-
-            $statusBadgeStyles = match ($condition->status) {
-                'Active' => 'bg-red-100 text-red-700 border border-red-200',
-                'Chronic' => 'bg-amber-100 text-amber-700 border border-amber-200',
-                'Resolved' => 'bg-green-100 text-green-700 border border-green-200',
-                default => 'bg-gray-100 text-gray-600 border border-gray-200',
-            };
-
-            $statusIcon = match ($condition->status) {
-                'Active' => 'fas fa-circle-dot',
-                'Chronic' => 'fas fa-clock',
-                'Resolved' => 'fas fa-check-circle',
-                default => 'fas fa-circle',
-            };
-
-            $diagnosisLabel = $condition->diagnosis_date ? \Illuminate\Support\Carbon::parse($condition->diagnosis_date)->format('F d, Y') : 'Not recorded';
-            $createdLabel = $condition->created_at ? \Illuminate\Support\Carbon::parse($condition->created_at)->format('F d, Y') : 'Unknown';
-            $updatedLabel = $condition->updated_at ? \Illuminate\Support\Carbon::parse($condition->updated_at)->diffForHumans() : 'Never';
-        @endphp
-
         {{-- Header Card --}}
         <section class="relative overflow-hidden bg-gradient-to-br {{ $severityGradient }} text-white rounded-xl p-8 mb-8 shadow-lg">
             <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-12 -mt-12"></div>
@@ -162,8 +107,8 @@
                 {{-- Medical Details Section --}}
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-stethoscope text-purple-600" aria-hidden="true"></i>
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-stethoscope text-blue-600" aria-hidden="true"></i>
                         </div>
                         <h2 class="text-xl font-semibold text-gray-900">Medical Details</h2>
                     </div>
@@ -209,8 +154,8 @@
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-paperclip text-green-600" aria-hidden="true"></i>
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-paperclip text-blue-600" aria-hidden="true"></i>
                             </div>
                             <h2 class="text-xl font-semibold text-gray-900">Attachments</h2>
                         </div>

@@ -207,7 +207,7 @@
                                                 @break
                                             @case('Mild')
                                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                                                    <i class="fas fa-shield-check"></i> Mild
+                                                    <i class="fas fa-heart-circle-check"></i> Mild
                                                 </span>
                                                 @break
                                         @endswitch
