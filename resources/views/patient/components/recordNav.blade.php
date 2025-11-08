@@ -25,82 +25,77 @@
                 </div>
             </a>
 
-        {{-- Conditions --}}
-        <a href="{{ route('patient.medicalCondition') }}" 
-            aria-label="Medical conditions{{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? ' - current page' : '' }}"
-            {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'aria-current="page"' : '' }}
-            class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 transition-all {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-blue-100 shadow-md' : 'border-gray-200 bg-white' }}">
-            <div class="p-4 text-center">
-                <div class="w-12 h-12 mx-auto mb-2 rounded-lg flex items-center justify-center transition-transform group-active:scale-95 {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'bg-blue-600' : 'bg-gray-100' }}">
-                    <i class="fas fa-file-medical-alt text-lg {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
-                </div>
-                <span class="block text-xs font-semibold {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-blue-900' : 'text-gray-700' }}">
-                    Conditions
-                </span>
-                @if($conditions->count() > 0)
-                    <span class="absolute top-1 right-1 w-6 h-6 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">
-                        {{ $conditions->count() }}
+            {{-- Conditions --}}
+            <a href="{{ route('patient.medicalCondition') }}" 
+                aria-label="Medical conditions{{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? ' - current page' : '' }}"
+                {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'aria-current="page"' : '' }}
+                class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 transition-all {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-blue-100 shadow-md' : 'border-gray-200 bg-white' }}">
+                <div class="p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 rounded-lg flex items-center justify-center transition-transform group-active:scale-95 {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'bg-blue-600' : 'bg-gray-100' }}">
+                        <i class="fas fa-file-medical-alt text-lg {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
+                    </div>
+                    <span class="block text-xs font-semibold {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-blue-900' : 'text-gray-700' }}">
+                        Conditions
                     </span>
-                @endif
-            </div>
-        </a>
-
-        {{-- Medication --}}
-        <a href="{{ route('patient.medication') }}" 
-            aria-label="Medications{{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? ' - current page' : '' }}"
-            {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'aria-current="page"' : '' }}
-            class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 transition-all {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-blue-100 shadow-md' : 'border-gray-200 bg-white' }}">
-            <div class="p-4 text-center">
-                <div class="w-12 h-12 mx-auto mb-2 rounded-lg flex items-center justify-center transition-transform group-active:scale-95 {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'bg-blue-600' : 'bg-gray-100' }}">
-                    <i class="fas fa-pills text-lg {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
                 </div>
-                <span class="block text-xs font-semibold {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'text-blue-900' : 'text-gray-700' }}">
-                    Medication
-                </span>
-            </div>
-        </a>
+            </a>
 
-        {{-- Lab Results --}}
-        <a href="#" 
-            aria-label="Lab results (coming soon)"
-            class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 border-gray-200 bg-white transition-all">
-            <div class="p-4 text-center">
-                <div class="w-12 h-12 mx-auto mb-2 rounded-lg bg-gray-100 flex items-center justify-center transition-transform group-active:scale-95">
-                    <i class="fas fa-flask text-lg text-blue-600" aria-hidden="true"></i>
+            {{-- Medication --}}
+            <a href="{{ route('patient.medication') }}" 
+                aria-label="Medications{{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? ' - current page' : '' }}"
+                {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'aria-current="page"' : '' }}
+                class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 transition-all {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-blue-100 shadow-md' : 'border-gray-200 bg-white' }}">
+                <div class="p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 rounded-lg flex items-center justify-center transition-transform group-active:scale-95 {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'bg-blue-600' : 'bg-gray-100' }}">
+                        <i class="fas fa-pills text-lg {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
+                    </div>
+                    <span class="block text-xs font-semibold {{ request()->routeIs('patient.medication') || request()->routeIs('patient.medication.*') ? 'text-blue-900' : 'text-gray-700' }}">
+                        Medication
+                    </span>
                 </div>
-                <span class="block text-xs font-semibold text-gray-700">
-                    Lab Results
-                </span>
-            </div>
-        </a>
+            </a>
 
-        {{-- Vaccination --}}
-        <a href="#" 
-            aria-label="Vaccinations (coming soon)"
-            class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 border-gray-200 bg-white transition-all">
-            <div class="p-4 text-center">
-                <div class="w-12 h-12 mx-auto mb-2 rounded-lg bg-gray-100 flex items-center justify-center transition-transform group-active:scale-95">
-                    <i class="fas fa-syringe text-lg text-blue-600" aria-hidden="true"></i>
+            {{-- Allergy --}}
+            <a href="#" 
+                aria-label="Allergies (coming soon)"
+                class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 border-gray-200 bg-white transition-all">
+                <div class="p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 rounded-lg bg-gray-100 flex items-center justify-center transition-transform group-active:scale-95">
+                        <i class="fas fa-exclamation-triangle text-lg text-blue-600" aria-hidden="true"></i>
+                    </div>
+                    <span class="block text-xs font-semibold text-gray-700">
+                        Allergy
+                    </span>
                 </div>
-                <span class="block text-xs font-semibold text-gray-700">
-                    Vaccination
-                </span>
-            </div>
-        </a>
+            </a>
 
-        {{-- Allergy --}}
-        <a href="#" 
-            aria-label="Allergies (coming soon)"
-            class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 border-gray-200 bg-white transition-all">
-            <div class="p-4 text-center">
-                <div class="w-12 h-12 mx-auto mb-2 rounded-lg bg-gray-100 flex items-center justify-center transition-transform group-active:scale-95">
-                    <i class="fas fa-exclamation-triangle text-lg text-blue-600" aria-hidden="true"></i>
+            {{-- Vaccination --}}
+            <a href="#" 
+                aria-label="Vaccinations (coming soon)"
+                class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 border-gray-200 bg-white transition-all">
+                <div class="p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 rounded-lg bg-gray-100 flex items-center justify-center transition-transform group-active:scale-95">
+                        <i class="fas fa-syringe text-lg text-blue-600" aria-hidden="true"></i>
+                    </div>
+                    <span class="block text-xs font-semibold text-gray-700">
+                        Vaccination
+                    </span>
                 </div>
-                <span class="block text-xs font-semibold text-gray-700">
-                    Allergy
-                </span>
-            </div>
-        </a>
+            </a>
+
+            {{-- Lab Results --}}
+            <a href="#" 
+                aria-label="Lab results (coming soon)"
+                class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 border-gray-200 bg-white transition-all">
+                <div class="p-4 text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 rounded-lg bg-gray-100 flex items-center justify-center transition-transform group-active:scale-95">
+                        <i class="fas fa-flask text-lg text-blue-600" aria-hidden="true"></i>
+                    </div>
+                    <span class="block text-xs font-semibold text-gray-700">
+                        Lab Results
+                    </span>
+                </div>
+            </a>
         </div>
     </div>
 
@@ -133,11 +128,6 @@
                 <span class="block text-sm font-semibold {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-blue-900' : 'text-gray-700' }}">
                     Conditions
                 </span>
-                @if($conditions->count() > 0)
-                    <span class="absolute top-2 right-2 w-7 h-7 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg">
-                        {{ $conditions->count() }}
-                    </span>
-                @endif
             </div>
         </a>
 
@@ -156,16 +146,16 @@
             </div>
         </a>
 
-        {{-- Lab Results --}}
+        {{-- Allergy --}}
         <a href="#" 
-            aria-label="Lab results (coming soon)"
+            aria-label="Allergies (coming soon)"
             class="group relative overflow-hidden rounded-xl border-2 border-gray-200 bg-white hover:border-blue-300 transition-all hover:shadow-lg">
             <div class="p-6 text-center">
                 <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gray-100 flex items-center justify-center transition-transform group-hover:scale-110">
-                    <i class="fas fa-flask text-xl text-blue-600" aria-hidden="true"></i>
+                    <i class="fas fa-exclamation-triangle text-xl text-blue-600" aria-hidden="true"></i>
                 </div>
                 <span class="block text-sm font-semibold text-gray-700">
-                    Lab Results
+                    Allergy
                 </span>
             </div>
         </a>
@@ -184,16 +174,16 @@
             </div>
         </a>
 
-        {{-- Allergy --}}
+        {{-- Lab Results --}}
         <a href="#" 
-            aria-label="Allergies (coming soon)"
+            aria-label="Lab results (coming soon)"
             class="group relative overflow-hidden rounded-xl border-2 border-gray-200 bg-white hover:border-blue-300 transition-all hover:shadow-lg">
             <div class="p-6 text-center">
                 <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gray-100 flex items-center justify-center transition-transform group-hover:scale-110">
-                    <i class="fas fa-exclamation-triangle text-xl text-blue-600" aria-hidden="true"></i>
+                    <i class="fas fa-flask text-xl text-blue-600" aria-hidden="true"></i>
                 </div>
                 <span class="block text-sm font-semibold text-gray-700">
-                    Allergy
+                    Lab Results
                 </span>
             </div>
         </a>
