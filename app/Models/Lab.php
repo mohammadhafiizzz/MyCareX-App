@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Condition extends Model
+class Lab extends Model
 {
     // primary key
     protected $primaryKey = 'id';
@@ -12,15 +12,17 @@ class Condition extends Model
     // fillable fields
     protected $fillable = [
         'patient_id',
-        'condition_name',
-        'diagnosis_date',
-        'description',
-        'severity',
-        'status'
+        'test_name',
+        'test_date',
+        'file_attachment_url',
+        'test_category',
+        'facility_name',
+        'verification_status',
+        'notes'
     ];
 
     // casts fields
     protected $casts = [
-        'diagnosis_date' => 'date:Y-m-d',
+        'test_date' => 'date:Y-m-d',
     ];
 }

@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('allergies', function (Blueprint $table) {
+        Schema::create('immunisations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->string('allergen', 150);
-            $table->string('allergy_type', 150);
-            $table->enum('severity', ['Mild', 'Moderate', 'Severe', 'Life-threatening'])->default('Mild');
-            $table->text('reaction_desc')->nullable();
-            $table->enum('status', ['Active', 'Inactive', 'Resolved', 'Suspected'])->default('Active');
+            $table->string('vaccine_name');
+            $table->string('dose_details', 100)->nullable();
+            $table->date('vaccination_date');
+            $table->string('administered_by')->nullable();
+            $table->string('vaccine_lot_number', 100)->nullable();
             $table->enum('verification_status', ['Unverified', 'Provider Confirmed', 'Patient Reported'])->default('Unverified');
-            $table->date('first_observed_date');
+            $table->string('certificate_url')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('allergies');
+        Schema::dropIfExists('immunisations');
     }
 };

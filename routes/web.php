@@ -156,6 +156,72 @@ Route::prefix('patient')->group(function () {
                     ->name('patient.medication.info');
 
             });
+
+            // Allergies (CRUD)
+            Route::prefix('/allergies')->group(function () {
+
+                // Allergies Page
+                Route::get('/', [Modules\Allergy\AllergyController::class, 'index'])
+                    ->name('patient.allergy');
+
+                // Add Allergy
+                Route::post('/add', [Modules\Allergy\AllergyController::class, 'store'])
+                    ->name('patient.allergy.add');
+
+                // Get Allergy JSON (for edit form)
+                Route::get('/allergy/{allergy}/json', [Modules\Allergy\AllergyController::class, 'getAllergyJson'])
+                    ->name('patient.allergy.json');
+
+                // Update Allergy
+                Route::put('/{allergy}', [Modules\Allergy\AllergyController::class, 'update'])
+                    ->name('patient.allergy.update');
+
+                // Delete Allergy
+                Route::delete('/{allergy}', [Modules\Allergy\AllergyController::class, 'destroy'])
+                    ->name('patient.allergy.delete');
+
+                // Allergy More Info
+                Route::get('/{allergy}', [Modules\Allergy\AllergyController::class, 'show'])
+                    ->name('patient.allergy.info');
+
+            });
+
+            // Immunisation (CRUD)
+            Route::prefix('/immunisation')->group(function () {
+
+                // Immunisation Page
+                Route::get('/', [Modules\Immunisation\ImmunisationController::class, 'index'])
+                    ->name('patient.immunisation');
+
+                // Add Vaccination
+                Route::post('/add', [Modules\Immunisation\ImmunisationController::class, 'store'])
+                    ->name('patient.immunisation.add');
+
+                // Get Immunisation JSON (for edit form)
+                Route::get('/immunisation/{immunisation}/json', [Modules\Immunisation\ImmunisationController::class, 'getImmunisationJson'])
+                    ->name('patient.immunisation.json');
+
+                // Upload Certificate for Immunisation
+                Route::post('/{immunisation}/upload-certificate', [Modules\Immunisation\ImmunisationController::class, 'uploadCertificate'])
+                    ->name('patient.immunisation.upload.certificate');
+
+                // Delete Certificate for Immunisation
+                Route::delete('/{immunisation}/delete-certificate', [Modules\Immunisation\ImmunisationController::class, 'deleteCertificate'])
+                    ->name('patient.immunisation.delete.certificate');
+
+                // Update Immunisation
+                Route::put('/{immunisation}', [Modules\Immunisation\ImmunisationController::class, 'update'])
+                    ->name('patient.immunisation.update');
+
+                // Delete Immunisation
+                Route::delete('/{immunisation}', [Modules\Immunisation\ImmunisationController::class, 'destroy'])
+                    ->name('patient.immunisation.delete');
+
+                // Immunisation More Info
+                Route::get('/{immunisation}', [Modules\Immunisation\ImmunisationController::class, 'show'])
+                    ->name('patient.immunisation.info');
+
+            });
         });
     });
 });

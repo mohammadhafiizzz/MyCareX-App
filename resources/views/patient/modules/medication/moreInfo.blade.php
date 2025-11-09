@@ -51,7 +51,7 @@
         </nav>
 
         {{-- Header Card --}}
-        <section class="relative overflow-hidden bg-gradient-to-br {{ $statusGradient }} text-white rounded-xl p-8 mb-8 shadow-lg">
+        <section class="relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl p-8 mb-8 shadow-lg">
             <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-12 -mt-12"></div>
             <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -ml-16 -mb-16"></div>
             
@@ -104,7 +104,7 @@
                     {{-- Reason for Medication --}}
                     <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
                         <h3 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                            Reason for Medication
+                            Reason for Medication:
                         </h3>
                         @if ($medication->reason_for_med)
                             <p class="text-sm text-gray-700 leading-relaxed">{{ $medication->reason_for_med }}</p>
@@ -164,8 +164,8 @@
                     {{-- Additional Notes --}}
                     <div>
                         <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                            <i class="fas fa-sticky-note text-gray-600" aria-hidden="true"></i>
-                            Additional Notes
+                            <i class="fas fa-notes-medical text-gray-600" aria-hidden="true"></i>
+                            Description / Notes:
                         </h3>
                         @if ($medication->notes)
                             <div class="prose prose-sm max-w-none">
@@ -197,21 +197,21 @@
 
                     <dl class="space-y-4">
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Dosage</dt>
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Dosage:</dt>
                             <dd class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                                 <i class="fas fa-pills text-gray-400" aria-hidden="true"></i>
                                 {{ $dosage }}
                             </dd>
                         </div>
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Frequency</dt>
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Frequency:</dt>
                             <dd class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                                 <i class="fas fa-clock text-gray-400" aria-hidden="true"></i>
                                 {{ $frequency }}
                             </dd>
                         </div>
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Current Status</dt>
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Current Status:</dt>
                             <dd class="text-sm">
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-semibold {{ $statusBadgeStyles }}">
                                     <i class="{{ $statusIcon }}" aria-hidden="true"></i>
@@ -220,25 +220,25 @@
                             </dd>
                         </div>
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Start Date</dt>
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Start Date:</dt>
                             <dd class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                                 <i class="far fa-calendar-alt text-gray-400" aria-hidden="true"></i>
                                 {{ $startDateLabel }}
                             </dd>
                         </div>
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">End Date</dt>
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">End Date:</dt>
                             <dd class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                                 <i class="far fa-calendar-alt text-gray-400" aria-hidden="true"></i>
                                 {{ $endDateLabel }}
                             </dd>
                         </div>
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Record Created</dt>
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Record Created:</dt>
                             <dd class="text-sm text-gray-900">{{ $createdLabel }}</dd>
                         </div>
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3">
-                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Last Updated</dt>
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Last Updated:</dt>
                             <dd class="text-sm text-gray-900">{{ $updatedLabel }}</dd>
                         </div>
                     </dl>

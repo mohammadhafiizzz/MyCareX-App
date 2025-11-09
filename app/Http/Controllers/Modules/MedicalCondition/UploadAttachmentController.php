@@ -49,7 +49,7 @@ class UploadAttachmentController extends Controller
             $file->move($destinationPath, $filename);
 
             // Build the public URL to store in DB
-            $publicUrl = asset('images/medicalCondition/' . $filename);
+            $publicUrl = asset('files/medicalCondition/' . $filename);
 
             // Update the condition with attachment URL
             $condition->doc_attachments_url = $publicUrl;
@@ -83,7 +83,7 @@ class UploadAttachmentController extends Controller
             if ($condition->doc_attachments_url) {
                 // Extract filename from URL
                 $filename = basename($condition->doc_attachments_url);
-                $filePath = public_path('images/medicalCondition/' . $filename);
+                $filePath = public_path('files/medicalCondition/' . $filename);
 
                 // Delete the file if it exists
                 if (File::exists($filePath)) {

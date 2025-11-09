@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - {{ $condition->condition_name }} Details</title>
+    <title>MyCareX - {{ $allergy->allergen }} Details</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -37,50 +37,54 @@
         <nav class="flex mb-8" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
-                    <a href="{{ route('patient.medicalCondition') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
-                        Medical Conditions
+                    <a href="{{ route('patient.allergy') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+                        Allergies
                     </a>
                 </li>
                 <li aria-current="page">
                     <div class="flex items-center">
                         <i class="fas fa-chevron-right text-gray-400 text-xs mx-2" aria-hidden="true"></i>
-                        <span class="text-sm font-medium text-gray-500">Condition Details</span>
+                        <span class="text-sm font-medium text-gray-500">Allergy Details</span>
                     </div>
                 </li>
             </ol>
         </nav>
 
         {{-- Header Card --}}
-        <section class="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-8 mb-8 shadow-lg">
+        <section class="relative overflow-hidden bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl p-8 mb-8 shadow-lg">
             <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-12 -mt-12"></div>
             <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -ml-16 -mb-16"></div>
             
             <div class="relative flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                 <div class="flex items-start gap-6">
                     <div class="flex-shrink-0 w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                        <i class="fas fa-heartbeat text-3xl" aria-hidden="true"></i>
+                        <i class="fas fa-allergies text-3xl" aria-hidden="true"></i>
                     </div>
                     <div>
-                        <h1 class="text-3xl font-bold mb-3">{{ $condition->condition_name }}</h1>
+                        <h1 class="text-3xl font-bold mb-3">{{ $allergy->allergen }}</h1>
                         <div class="flex flex-wrap gap-3">
                             <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
                                 <i class="{{ $severityBadgeIcon }}" aria-hidden="true"></i>
-                                {{ $condition->severity ?? 'Undefined' }} Severity
+                                {{ $allergy->severity ?? 'Undefined' }} Severity
                             </span>
                             <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
                                 <i class="{{ $statusIcon }}" aria-hidden="true"></i>
-                                {{ $condition->status ?? 'Not set' }}
+                                {{ $allergy->status ?? 'Not set' }}
+                            </span>
+                            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
+                                <i class="{{ $verificationIcon }}" aria-hidden="true"></i>
+                                {{ $allergy->verification_status ?? 'Unverified' }}
                             </span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="flex flex-wrap gap-2">
-                    <a href="{{ route('patient.medicalCondition') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm text-white text-sm font-semibold rounded-lg border border-white/30 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2">
+                    <a href="{{ route('patient.allergy') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm text-white text-sm font-semibold rounded-lg border border-white/30 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2">
                         <i class="fas fa-arrow-left" aria-hidden="true"></i>
                         Back to List
                     </a>
-                    <button type="button" class="edit-condition-btn inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 text-sm font-semibold rounded-lg shadow-sm hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2" data-id="{{ $condition->id }}">
+                    <button type="button" class="edit-allergy-btn inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 text-sm font-semibold rounded-lg shadow-sm hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2" data-id="{{ $allergy->id }}">
                         <i class="fas fa-pen-to-square" aria-hidden="true"></i>
                         Edit
                     </button>
@@ -92,118 +96,56 @@
             {{-- Main Content --}}
             <div class="lg:col-span-2 space-y-8">
                 
-                {{-- Condition Information Section --}}
+                {{-- Overview Section --}}
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                             <i class="fas fa-file-medical-alt text-blue-600" aria-hidden="true"></i>
                         </div>
-                        <h2 class="text-xl font-semibold text-gray-900">Condition Information</h2>
+                        <h2 class="text-xl font-semibold text-gray-900">Reaction Description</h2>
                     </div>
 
-                    {{-- Description --}}
-                    @if ($condition->description)
-                        <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-                            <h3 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                                <i class="fas fa-notes-medical text-blue-600" aria-hidden="true"></i>
-                                Description / Notes:
-                            </h3>
-                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $condition->description }}</p>
-                        </div>
-                    @endif
-
-                    {{-- Attachment Information --}}
-                    @if ($condition->doc_attachments_url)
-                        <div class="mb-6">
-                            <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                                <i class="fas fa-paperclip text-gray-600" aria-hidden="true"></i>
-                                Medical Document:
-                            </h3>
-                            <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <i class="fas fa-file-pdf text-red-600 text-xl" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900 truncate">Medical Document</p>
-                                        <p class="text-xs text-gray-500 mt-1">Document available</p>
-                                    </div>
-                                    <a href="{{ $condition->doc_attachments_url }}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                        View
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="mt-3 flex gap-2">
-                                <button type="button" id="uploadAttachmentBtn" class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
-                                    <i class="fas fa-upload" aria-hidden="true"></i>
-                                    Replace Document
-                                </button>
-                                <form method="POST" action="{{ route('patient.condition.delete.attachment', $condition->id) }}" class="flex-1" onsubmit="return confirm('Are you sure you want to delete this attachment? This action cannot be undone.');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
-                                        <i class="fas fa-trash" aria-hidden="true"></i>
-                                        Delete Document
-                                    </button>
-                                </form>
-                            </div>
+                    @if ($allergy->reaction_desc)
+                        <div class="prose prose-sm max-w-none">
+                            <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $allergy->reaction_desc }}</p>
                         </div>
                     @else
-                        <div class="mb-6">
-                            <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                                <i class="fas fa-paperclip text-gray-600" aria-hidden="true"></i>
-                                Medical Document:
-                            </h3>
-                            <div class="rounded-lg border border-gray-200 bg-gray-50 flex flex-col items-center justify-center py-12">
-                                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-3">
-                                    <i class="fas fa-file-pdf text-gray-400 text-2xl" aria-hidden="true"></i>
-                                </div>
-                                <p class="text-sm text-gray-500 mb-2">No document uploaded</p>
-                                <button type="button" id="uploadAttachmentBtnEmpty" class="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium">
-                                    <i class="fas fa-upload" aria-hidden="true"></i>
-                                    Upload document
-                                </button>
+                        <div class="text-center py-8">
+                            <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-3">
+                                <i class="fas fa-file-alt text-gray-400 text-2xl" aria-hidden="true"></i>
                             </div>
-                        </div>
-                    @endif
-
-                    {{-- Additional Information --}}
-                    @if (!$condition->description)
-                        <div>
-                            <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                                <i class="fas fa-notes-medical text-gray-600" aria-hidden="true"></i>
-                                Description / Notes:
-                            </h3>
-                            <div class="text-center py-6">
-                                <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-2">
-                                    <i class="fas fa-file-alt text-gray-400 text-lg" aria-hidden="true"></i>
-                                </div>
-                                <p class="text-sm text-gray-500 mb-2">No description or notes available.</p>
-                                <button type="button" class="edit-condition-btn inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium" data-id="{{ $condition->id }}">
-                                    <i class="fas fa-plus-circle" aria-hidden="true"></i>
-                                    Add description
-                                </button>
-                            </div>
+                            <p class="text-sm text-gray-500">No reaction description available for this allergy.</p>
+                            <button type="button" class="edit-allergy-btn mt-3 inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium" data-id="{{ $allergy->id }}">
+                                <i class="fas fa-plus-circle" aria-hidden="true"></i>
+                                Add description
+                            </button>
                         </div>
                     @endif
                 </section>
 
-                {{-- Medical Details Section --}}
+                {{-- Allergy Details Section --}}
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                             <i class="fas fa-stethoscope text-blue-600" aria-hidden="true"></i>
                         </div>
-                        <h2 class="text-xl font-semibold text-gray-900">Medical Details</h2>
+                        <h2 class="text-xl font-semibold text-gray-900">Allergy Details</h2>
                     </div>
 
                     <dl class="space-y-4">
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Diagnosis Date:</dt>
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Allergen:</dt>
+                            <dd class="text-sm font-semibold text-gray-900">{{ $allergy->allergen }}</dd>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Allergy Type:</dt>
+                            <dd class="text-sm font-semibold text-gray-900">{{ $allergy->allergy_type }}</dd>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">First Observed Date:</dt>
                             <dd class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                                 <i class="far fa-calendar-alt text-gray-400" aria-hidden="true"></i>
-                                {{ $diagnosisLabel }}
+                                {{ $observedLabel }}
                             </dd>
                         </div>
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
@@ -211,7 +153,7 @@
                             <dd class="text-sm">
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-semibold {{ $severityBadgeStyles }}">
                                     <i class="{{ $severityBadgeIcon }}" aria-hidden="true"></i>
-                                    {{ $condition->severity ?? 'Undefined' }}
+                                    {{ $allergy->severity ?? 'Undefined' }}
                                 </span>
                             </dd>
                         </div>
@@ -220,7 +162,16 @@
                             <dd class="text-sm">
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-semibold {{ $statusBadgeStyles }}">
                                     <i class="{{ $statusIcon }}" aria-hidden="true"></i>
-                                    {{ $condition->status ?? 'Not set' }}
+                                    {{ $allergy->status ?? 'Not set' }}
+                                </span>
+                            </dd>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
+                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Verification Status:</dt>
+                            <dd class="text-sm">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-semibold {{ $verificationBadgeStyles }}">
+                                    <i class="{{ $verificationIcon }}" aria-hidden="true"></i>
+                                    {{ $allergy->verification_status ?? 'Unverified' }}
                                 </span>
                             </dd>
                         </div>
@@ -243,20 +194,20 @@
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
                     <div class="space-y-2">
-                        <button type="button" class="edit-condition-btn w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" data-id="{{ $condition->id }}">
+                        <button type="button" class="edit-allergy-btn w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" data-id="{{ $allergy->id }}">
                             <i class="fas fa-pen-to-square" aria-hidden="true"></i>
-                            Edit Condition
+                            Edit Allergy
                         </button>
                         <button type="button" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
                             <i class="fas fa-share-alt" aria-hidden="true"></i>
                             Share with Doctor
                         </button>
-                        <form method="POST" action="{{ route('patient.condition.delete', $condition->id) }}" class="inline-block w-full" onsubmit="return confirm('Are you sure you want to delete this condition? This action cannot be undone.');">
+                        <form method="POST" action="{{ route('patient.allergy.delete', $allergy->id) }}" class="inline-block w-full" onsubmit="return confirm('Are you sure you want to delete this allergy? This action cannot be undone.');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
                                 <i class="fas fa-trash" aria-hidden="true"></i>
-                                Delete Condition
+                                Delete Allergy
                             </button>
                         </form>
                     </div>
@@ -271,23 +222,23 @@
                             <div class="flex gap-3">
                                 <div class="flex-shrink-0 w-6 h-6 bg-blue-600 rounded-full border-4 border-white shadow-sm z-10"></div>
                                 <div class="flex-1 pb-4">
-                                    <p class="text-sm font-semibold text-gray-900">Status: {{ $condition->status }}</p>
+                                    <p class="text-sm font-semibold text-gray-900">Status: {{ $allergy->status }}</p>
                                     <p class="text-xs text-gray-500 mt-1">{{ $updatedLabel }}</p>
                                 </div>
                             </div>
                             <div class="flex gap-3">
                                 <div class="flex-shrink-0 w-6 h-6 bg-gray-300 rounded-full border-4 border-white shadow-sm z-10"></div>
                                 <div class="flex-1 pb-4">
-                                    <p class="text-sm font-semibold text-gray-900">Condition Added</p>
+                                    <p class="text-sm font-semibold text-gray-900">Allergy Added</p>
                                     <p class="text-xs text-gray-500 mt-1">{{ $createdLabel }}</p>
                                 </div>
                             </div>
-                            @if ($condition->diagnosis_date)
+                            @if ($allergy->first_observed_date)
                             <div class="flex gap-3">
                                 <div class="flex-shrink-0 w-6 h-6 bg-gray-300 rounded-full border-4 border-white shadow-sm z-10"></div>
                                 <div class="flex-1">
-                                    <p class="text-sm font-semibold text-gray-900">Diagnosed</p>
-                                    <p class="text-xs text-gray-500 mt-1">{{ $diagnosisLabel }}</p>
+                                    <p class="text-sm font-semibold text-gray-900">First Observed</p>
+                                    <p class="text-xs text-gray-500 mt-1">{{ $observedLabel }}</p>
                                 </div>
                             </div>
                             @endif
@@ -306,7 +257,7 @@
                         </div>
                     </div>
                     <p class="text-sm text-gray-700 leading-relaxed">
-                        Keep your medical records up to date. Regular updates help your healthcare team provide better care and track your progress over time.
+                        Keep your allergy records up to date and share them with all healthcare providers. This helps prevent dangerous reactions and ensures you receive safe treatments.
                     </p>
                 </section>
 
@@ -314,14 +265,12 @@
         </div>
     </div>
 
-    <!-- Edit Condition Form -->
-    @include('patient.modules.medicalCondition.editConditionForm')
-    @include('patient.modules.medicalCondition.uploadConditionForm')
+    <!-- Edit Allergy Form -->
+    @include('patient.modules.allergy.editAllergyForm')
 
     <!-- Javascript and Footer -->
     @vite(['resources/js/main/patient/header.js'])
-    @vite(['resources/js/main/medicalCondition/editConditionForm.js'])
-    @vite(['resources/js/main/medicalCondition/uploadAttachment.js'])
+    @vite(['resources/js/main/allergy/editAllergy.js'])
     @include('patient.components.footer')
 
 </body>
