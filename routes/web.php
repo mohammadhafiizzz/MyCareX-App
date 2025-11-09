@@ -222,6 +222,39 @@ Route::prefix('patient')->group(function () {
                     ->name('patient.immunisation.info');
 
             });
+
+            // Lab Tests (CRUD)
+            Route::prefix('/lab-tests')->group(function () {
+
+                // Lab Tests Page
+                Route::get('/', [Modules\Lab\LabTestController::class, 'index'])
+                    ->name('patient.lab');
+
+                // Add Lab Test
+                Route::post('/add', [Modules\Lab\LabTestController::class, 'store'])
+                    ->name('patient.lab.add');
+
+                // Get Lab Test JSON (for edit form)
+                Route::get('/test/{labTest}/json', [Modules\Lab\LabTestController::class, 'getLabTestJson'])
+                    ->name('patient.lab.json');
+
+                // Upload Attachment for Lab Test
+                Route::post('/{labTest}/upload-attachment', [Modules\Lab\LabTestController::class, 'uploadAttachment'])
+                    ->name('patient.lab.upload.attachment');
+
+                // Update Lab Test
+                Route::put('/{labTest}', [Modules\Lab\LabTestController::class, 'update'])
+                    ->name('patient.lab.update');
+
+                // Delete Lab Test
+                Route::delete('/{labTest}', [Modules\Lab\LabTestController::class, 'destroy'])
+                    ->name('patient.lab.delete');
+
+                // Lab Test More Info
+                Route::get('/{labTest}', [Modules\Lab\LabTestController::class, 'show'])
+                    ->name('patient.lab.info');
+
+            });
         });
     });
 });
