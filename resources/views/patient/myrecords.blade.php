@@ -16,592 +16,488 @@
 
     @include('patient.components.navbar')
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">
-                My Records
-            </h1>
-            <p class="mt-1 text-lg text-gray-700">Manage your own medical records.</p>
+    <!-- Banner -->
+    <section class="relative h-80 bg-gray-900 overflow-hidden">
+        {{-- Background Image with Overlay --}}
+        <div class="absolute inset-0">
+            <img src="{{ asset('images/my_records.png') }}" 
+                alt="" 
+                class="w-full h-full object-cover opacity-60">
+            <div class="absolute inset-0 bg-gray-900/40"></div>
         </div>
+        
+        <div class="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">
+                    My Records
+                </h1>
+                <p class="text-lg md:text-xl text-gray-200">
+                    Manage your own medical records
+                </p>
+            </div>
+        </div>
+    </section>
+
+    {{-- Main Content --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-4 lg:px-8 py-8">
 
         @include('patient.components.recordNav')
 
+        <div class="mb-8">
+            <h1 class="text-2xl font-semibold text-gray-700">
+                Total Records Overview:
+            </h1>
+        </div>
+
         {{-- Health Stats Dashboard --}}
-        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8" aria-label="Health statistics summary cards">
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8" aria-label="Health statistics summary cards">
             
             {{-- Conditions Stats Card --}}
-            <article class="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-xl p-6 shadow-md">
+            <article class="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl p-6 shadow-md">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-white/15 rounded-full -mr-10 -mt-10"></div>
                 <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-12 mb-4"></div>
                 <div class="relative flex flex-col gap-4">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm uppercase tracking-wide text-white/80">Active Conditions</p>
-                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $conditions->count() }}</p>
+                            <p class="text-sm uppercase tracking-wide text-white/80">Conditions</p>
+                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $totalConditions }}</p>
                         </div>
                         <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-file-medical-alt text-2xl" aria-hidden="true"></i>
+                            <i class="fas fa-heartbeat text-2xl" aria-hidden="true"></i>
                         </div>
                     </div>
                     <p class="text-xs text-white/80">
-                        @if($conditions->where('severity', 'Severe')->count() > 0)
-                            {{ $conditions->where('severity', 'Severe')->count() }} conditions need immediate attention
+                        @if($severeConditions > 0)
+                            {{ $severeConditions }} {{ Str::plural('condition', $severeConditions) }} need immediate attention
                         @else
                             All conditions are being monitored appropriately
                         @endif
                     </p>
-                    <a href="#conditions-list" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600 transition" aria-label="View all conditions">
-                        <i class="fas fa-list" aria-hidden="true"></i>
-                        View details
-                    </a>
                 </div>
             </article>
 
             {{-- Medications Card --}}
-            <article class="relative overflow-hidden bg-gradient-to-br from-purple-600 to-purple-500 text-white rounded-xl p-6 shadow-md">
+            <article class="relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl p-6 shadow-md">
                 <div class="absolute top-0 right-0 w-16 h-16 bg-white/15 rounded-full -mr-6 -mt-6"></div>
                 <div class="relative flex flex-col gap-4">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm uppercase tracking-wide text-white/85">Current Medications</p>
-                            <p class="text-4xl font-bold mt-2" aria-live="polite">8</p>
+                            <p class="text-sm uppercase tracking-wide text-white/85">Medications</p>
+                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $totalMedications }}</p>
                         </div>
                         <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
                             <i class="fas fa-pills text-2xl" aria-hidden="true"></i>
                         </div>
                     </div>
-                    <p class="text-xs text-white/80">Stay on schedule with your prescriptions and refills.</p>
-                    <button type="button" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 transition" aria-label="View medication schedule">
-                        <i class="fas fa-bell" aria-hidden="true"></i>
-                        2 due today
-                    </button>
+                    <p class="text-xs text-white/80">
+                        @if($totalMedications > 0)
+                            Stay on schedule with your prescriptions and refills
+                        @else
+                            No medications currently tracked
+                        @endif
+                    </p>
+                </div>
+            </article>
+
+            {{-- Allergies Card --}}
+            <article class="relative overflow-hidden bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl p-6 shadow-md">
+                <div class="absolute top-0 right-0 w-20 h-20 bg-white/15 rounded-full -mr-8 -mt-8"></div>
+                <div class="relative flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm uppercase tracking-wide text-white/80">Allergies</p>
+                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $totalAllergies }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-allergies text-2xl" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-white/80">
+                        @if($severeAllergies > 0)
+                            Severe reactions: <span class="font-semibold">{{ $severeAllergies }}</span>. Always inform your healthcare providers
+                        @elseif($totalAllergies > 0)
+                            Keep your healthcare providers informed about your allergies
+                        @else
+                            No allergies recorded
+                        @endif
+                    </p>
+                </div>
+            </article>
+
+            {{-- Vaccinations Card --}}
+            <article class="relative overflow-hidden bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-xl p-6 shadow-md">
+                <div class="absolute top-0 right-0 w-20 h-20 bg-white/15 rounded-full -mr-8 -mt-8"></div>
+                <div class="relative flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm uppercase tracking-wide text-white/80">Vaccinations</p>
+                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $totalVaccinations }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-syringe text-2xl" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-white/80">
+                        @if($totalVaccinations > 0)
+                            Stay up to date with your immunizations
+                        @else
+                            No vaccinations recorded yet
+                        @endif
+                    </p>
                 </div>
             </article>
 
             {{-- Lab Results Card --}}
-            <article class="relative overflow-hidden bg-gradient-to-br from-green-600 to-green-500 text-white rounded-xl p-6 shadow-md">
+            <article class="relative overflow-hidden bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-xl p-6 shadow-md">
                 <div class="absolute top-0 right-0 w-20 h-20 bg-white/25 rounded-full -mr-8 -mt-8"></div>
                 <div class="relative flex flex-col gap-4">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm uppercase tracking-wide text-white/80">Lab Results</p>
-                            <p class="text-4xl font-bold mt-2" aria-live="polite">4</p>
+                            <p class="text-sm uppercase tracking-wide text-white/80">Lab Tests</p>
+                            <p class="text-4xl font-bold mt-2" aria-live="polite">{{ $totalLabTests }}</p>
                         </div>
                         <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
                             <i class="fas fa-flask text-2xl" aria-hidden="true"></i>
                         </div>
                     </div>
-                    <p class="text-xs text-white/80">All results within normal range. Keep tracking your health metrics.</p>
-                    <a href="#lab-results" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600 transition" aria-label="View lab results history">
-                        <i class="fas fa-chart-line" aria-hidden="true"></i>
-                        View history
-                    </a>
-                </div>
-            </article>
-
-            {{-- Allergies Card --}}
-            <article class="relative overflow-hidden bg-gradient-to-br from-red-600 to-red-500 text-white rounded-xl p-6 shadow-md">
-                <div class="absolute top-0 right-0 w-20 h-20 bg-white/15 rounded-full -mr-8 -mt-8"></div>
-                <div class="relative flex flex-col gap-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm uppercase tracking-wide text-white/80">Active Allergies</p>
-                            <p class="text-4xl font-bold mt-2" aria-live="polite">3</p>
-                        </div>
-                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-exclamation-triangle text-2xl" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                    <p class="text-xs text-white/80">Severe reactions: <span class="font-semibold">2</span>. Always inform your healthcare providers.</p>
-                    <button type="button" class="inline-flex items-center gap-2 self-start px-4 py-2 text-sm font-semibold bg-white/15 rounded-lg border border-white/25 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-red-600 transition" aria-label="Manage allergy information">
-                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
-                        Manage allergies
-                    </button>
+                    <p class="text-xs text-white/80">
+                        @if($totalLabTests > 0)
+                            Keep tracking your health metrics and test results
+                        @else
+                            No lab tests recorded yet
+                        @endif
+                    </p>
                 </div>
             </article>
         </section>
 
+        {{-- 3-Row Responsive Grid Layout --}}
         <div class="space-y-6">
 
-            {{-- Recent Medical Conditions - Card Layout --}}
-            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="condition-heading">
+            {{-- Medical Conditions Card --}}
+            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="conditions-heading">
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 id="condition-heading" class="text-xl font-semibold text-gray-900 flex items-center gap-2">
-                            <i class="fas fa-heartbeat text-blue-600"></i>
+                        <h2 id="conditions-heading" class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                            <i class="fas fa-heartbeat text-blue-600" aria-hidden="true"></i>
                             Recent Medical Conditions
                         </h2>
                         <a href="{{ route('patient.medicalCondition') }}" 
                            aria-label="View all medical conditions"
                            class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
-                            View all <i class="fas fa-arrow-right ml-1"></i>
+                            See All <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
 
-                    @forelse ($conditions as $condition)
-                        <div class="group relative bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-5 mb-4 hover:shadow-md transition-all duration-200 hover:border-blue-300">
-                            {{-- Severity Indicator Bar --}}
-                            <div class="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl 
-                                 bg-blue-500" aria-hidden="true">
-                            </div>
-
+                    @forelse ($recentConditions as $condition)
+                        <div class="group bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-5 mb-4 hover:shadow-md transition-all duration-200">
                             <div class="flex items-start justify-between">
-                                <div class="flex-1 ml-4">
-                                    {{-- Condition Icon + Name --}}
-                                    <div class="flex items-center gap-3 mb-3">
-                                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                                            <i class="fas fa-heartbeat text-blue-600 text-xl"></i>
-                                        </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
                                         <div>
-                                            <h3 class="text-lg font-semibold text-gray-900">
-                                                {{ $condition->condition_name }}
-                                            </h3>
-                                            <p class="text-sm text-gray-500">
-                                                <i class="far fa-calendar mr-1"></i>
+                                            <h3 class="text-base font-semibold text-gray-900">{{ $condition->condition_name }}</h3>
+                                            <p class="text-xs text-gray-500">
                                                 Diagnosed: {{ $condition->diagnosis_date ? $condition->diagnosis_date->format('M d, Y') : 'N/A' }}
                                             </p>
                                         </div>
                                     </div>
-
-                                    {{-- Description --}}
                                     @if($condition->description)
                                         <p class="text-sm text-gray-600 mb-3 line-clamp-2">
                                             {{ $condition->description }}
                                         </p>
                                     @endif
 
-                                    {{-- Status & Severity Badges --}}
                                     <div class="flex flex-wrap gap-2">
                                         {{-- Status Badge --}}
-                                        @switch($condition->status)
-                                            @case('Active')
-                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700 border border-red-200">
-                                                    <i class="fas fa-circle-dot"></i> Active
-                                                </span>
-                                                @break
-                                            @case('Chronic')
-                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 border border-yellow-200">
-                                                    <i class="fas fa-clock"></i> Chronic
-                                                </span>
-                                                @break
-                                            @case('Resolved')
-                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 border border-green-200">
-                                                    <i class="fas fa-check-circle"></i> Resolved
-                                                </span>
-                                                @break
-                                        @endswitch
+                                        @php
+                                            $statusColors = [
+                                                'Active' => 'bg-green-100 text-green-800',
+                                                'Inactive' => 'bg-gray-100 text-gray-800',
+                                                'Resolved' => 'bg-blue-100 text-blue-800',
+                                                'Chronic' => 'bg-orange-100 text-orange-800',
+                                            ];
+                                            $statusColor = $statusColors[$condition->status] ?? 'bg-gray-100 text-gray-800';
+                                        @endphp
+                                        <span class="inline-flex px-2 py-1 rounded-full text-xs font-medium {{ $statusColor }}">
+                                            {{ $condition->status }}
+                                        </span>
 
                                         {{-- Severity Badge --}}
-                                        @switch($condition->severity)
-                                            @case('Severe')
-                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200">
-                                                    <i class="fas fa-exclamation-triangle"></i> High Risk
-                                                </span>
-                                                @break
-                                            @case('Moderate')
-                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-200">
-                                                    <i class="fas fa-info-circle"></i> Moderate
-                                                </span>
-                                                @break
-                                            @case('Mild')
-                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                                                    <i class="fas fa-heart-circle-check"></i> Mild
-                                                </span>
-                                                @break
-                                        @endswitch
+                                        @php
+                                            $severityColors = [
+                                                'Mild' => 'bg-yellow-100 text-yellow-800',
+                                                'Moderate' => 'bg-orange-100 text-orange-800',
+                                                'Severe' => 'bg-red-100 text-red-800',
+                                            ];
+                                            $severityColor = $severityColors[$condition->severity] ?? 'bg-gray-100 text-gray-800';
+                                        @endphp
+                                        <span class="inline-flex px-2 py-1 rounded-full text-xs font-medium {{ $severityColor }}">
+                                            {{ $condition->severity }}
+                                        </span>
                                     </div>
                                 </div>
 
-                                {{-- Quick Action --}}
+                                {{-- More Info Button --}}
                                 <div class="ml-4">
-                                    <a href="{{ route('patient.medicalCondition') }}" 
-                                       class="text-gray-400 hover:text-blue-600 transition-colors">
-                                        <i class="fas fa-chevron-right text-lg"></i>
+                                    <a href="{{ route('patient.condition.info', $condition->id) }}" 
+                                       class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                        <i class="fas fa-info-circle" aria-hidden="true"></i>
+                                        More info
                                     </a>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        {{-- Empty State with Illustration --}}
-                        <div class="text-center py-16">
-                            <div class="relative inline-block mb-6">
-                                <div class="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-file-medical text-blue-600 text-5xl" aria-hidden="true"></i>
-                                </div>
-                                
+                        <div class="text-center py-12 bg-gray-50 rounded-lg">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-file-medical text-blue-600 text-2xl" aria-hidden="true"></i>
                             </div>
-
-                            <h3 class="text-2xl font-bold text-gray-900 mb-3">No medical conditions tracked yet</h3>
-                            <p class="max-w-xl mx-auto text-base text-gray-600 mb-8">
-                                Tracking your conditions helps your care team respond faster, personalise treatments, and monitor progress over time.
-                            </p>
-
-                            <div class="max-w-lg mx-auto mb-8 text-left bg-blue-50 rounded-xl p-6 border border-blue-200">
-                                <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                                    <i class="fas fa-lightbulb text-yellow-500" aria-hidden="true"></i>
-                                    Why start tracking?
-                                </h4>
-                                <ul class="space-y-2 text-sm text-gray-700">
-                                    <li class="flex items-start gap-2">
-                                        <i class="fas fa-check-circle text-green-600 mt-0.5" aria-hidden="true"></i>
-                                        <span>Spot warning signs early and share updates with your doctor.</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fas fa-check-circle text-green-600 mt-0.5" aria-hidden="true"></i>
-                                        <span>Keep medication and treatment plans aligned across appointments.</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fas fa-check-circle text-green-600 mt-0.5" aria-hidden="true"></i>
-                                        <span>Celebrate progress with clear, shareable health milestones.</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <a href="{{ route('patient.medicalCondition') }}" 
-                               class="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-lg text-base font-semibold hover:bg-blue-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
-                                <i class="fas fa-plus-circle"></i>
-                                Add Your First Condition
-                            </a>
-                    </div>
+                            <p class="text-gray-600 font-medium">No recent medical conditions found.</p>
+                            <p class="text-sm text-gray-500 mt-1">Start tracking your health conditions to see them here.</p>
+                        </div>
                     @endforelse
                 </div>
             </section>
 
-            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="meds-heading">
-                <div class="p-6">
-                    <div class="flex items-center justify-between">
-                        <h2 id="meds-heading" class="text-xl font-semibold text-gray-900">
-                            Current Medications
-                        </h2>
-                        <a href="{{ route('patient.medication') }}" 
-                           aria-label="Manage medications"
-                           class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
-                            Manage
-                        </a>
-                    </div>
-                    <div class="mt-4 flow-root">
-                        {{-- Desktop Table View --}}
-                        <div class="hidden md:block overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Medication</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Dosage</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Frequency</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Notes</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-4 py-4 text-sm font-medium text-gray-900">Medication Name</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Dosage</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Frequency</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                            <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
-                                        </td>
-                                        <td class="px-4 py-4 text-sm text-gray-600">Notes</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            {{-- Medication Card & Allergy Card --}}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                {{-- Medication Card --}}
+                <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="medications-heading">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 id="medications-heading" class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                                <i class="fas fa-pills text-blue-600" aria-hidden="true"></i>
+                                Current Medications
+                            </h2>
+                            <a href="{{ route('patient.medication') }}" 
+                               aria-label="View all medications"
+                               class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
+                                See All <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
                         </div>
 
-                        {{-- Mobile List View --}}
-                        <div class="md:hidden space-y-3">
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                <div class="flex items-start justify-between mb-3">
-                                    <h3 class="font-semibold text-gray-900 text-base">Medication Name</h3>
-                                    <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                        @forelse ($recentMedications as $medication)
+                            <div class="bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-4 mb-3 hover:shadow-md transition-all duration-200">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center mb-2">
+                                            <h3 class="text-base font-semibold text-gray-900">{{ $medication->medication_name }}</h3>
+                                        </div>
+                                        
+                                        <div class="space-y-1">
+                                            <p class="text-sm text-gray-600">
+                                                <span class="font-medium">Dosage:</span> {{ $medication->formatted_dosage }}
+                                            </p>
+                                            <p class="text-sm text-gray-600">
+                                                <span class="font-medium">Frequency:</span> {{ $medication->frequency ?? 'N/A' }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {{-- More Info Button --}}
+                                    <div class="ml-3">
+                                        <a href="{{ route('patient.medication.info', $medication->id) }}" 
+                                           class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                                            More info
+                                        </a>
+                                    </div>
                                 </div>
-                                <dl class="space-y-2 text-sm">
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Dosage:</dt>
-                                        <dd class="text-gray-900 font-medium">Dosage</dd>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Frequency:</dt>
-                                        <dd class="text-gray-900 font-medium">Frequency</dd>
-                                    </div>
-                                    <div>
-                                        <dt class="text-gray-600 mb-1">Notes:</dt>
-                                        <dd class="text-gray-900">Notes</dd>
-                                    </div>
-                                </dl>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="labs-heading">
-                <div class="p-6">
-                    <div class="flex items-center justify-between">
-                        <h2 id="labs-heading" class="text-xl font-semibold text-gray-900">
-                            Recent Lab Results
-                        </h2>
-                        <a href="#" 
-                           aria-label="View all lab results"
-                           class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
-                            View all
-                        </a>
-                    </div>
-                    <div class="mt-4 flow-root">
-                        {{-- Desktop Table View --}}
-                        <div class="hidden md:block overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Test Name</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-4 py-4 text-sm font-medium text-gray-900">Complete Blood Count (CBC)</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                            <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Action Required</span>
-                                        </td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Oct 18, 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-4 text-sm font-medium text-gray-900">Lipid Panel</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                            <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">In Range</span>
-                                        </td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Oct 18, 2025</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {{-- Mobile List View --}}
-                        <div class="md:hidden space-y-3">
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                <div class="flex items-start justify-between mb-3">
-                                    <h3 class="font-semibold text-gray-900 text-base">Complete Blood Count (CBC)</h3>
-                                    <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Action Required</span>
+                        @empty
+                            <div class="text-center py-12 bg-gray-50 rounded-lg">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-pills text-blue-600 text-2xl" aria-hidden="true"></i>
                                 </div>
-                                <dl class="space-y-2 text-sm">
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Date:</dt>
-                                        <dd class="text-gray-900 font-medium">Oct 18, 2025</dd>
-                                    </div>
-                                </dl>
+                                <p class="text-gray-600 font-medium">No recent medications found.</p>
+                                <p class="text-sm text-gray-500 mt-1">Add your medications to track them here.</p>
                             </div>
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                <div class="flex items-start justify-between mb-3">
-                                    <h3 class="font-semibold text-gray-900 text-base">Lipid Panel</h3>
-                                    <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">In Range</span>
+                        @endforelse
+                    </div>
+                </section>
+
+                {{-- Allergy Card --}}
+                <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="allergies-heading">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 id="allergies-heading" class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                                <i class="fas fa-allergies text-blue-600" aria-hidden="true"></i>
+                                Active Allergies
+                            </h2>
+                            <a href="{{ route('patient.allergy') }}" 
+                               aria-label="View all allergies"
+                               class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
+                                See All <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+
+                        @forelse ($recentAllergies as $allergy)
+                            <div class="bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-4 mb-3 hover:shadow-md transition-all duration-200">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center mb-2">
+                                            <h3 class="text-base font-semibold text-gray-900">{{ $allergy->allergen }}</h3>
+                                        </div>
+                                        
+                                        <div class="space-y-1">
+                                            <p class="text-sm text-gray-600">
+                                                <span class="font-medium">Type:</span> {{ $allergy->allergy_type ?? 'N/A' }}
+                                            </p>
+                                            <div class="flex gap-2 mt-2">
+                                                @php
+                                                    $severityColors = [
+                                                        'Mild' => 'bg-yellow-100 text-yellow-800',
+                                                        'Moderate' => 'bg-amber-100 text-amber-800',
+                                                        'Severe' => 'bg-red-100 text-red-800',
+                                                    ];
+                                                    $severityColor = $severityColors[$allergy->severity] ?? 'bg-gray-100 text-gray-800';
+                                                @endphp
+                                                <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium {{ $severityColor }}">
+                                                    {{ $allergy->severity }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- More Info Button --}}
+                                    <div class="ml-3">
+                                        <a href="{{ route('patient.allergy.info', $allergy->id) }}" 
+                                           class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                                            More info
+                                        </a>
+                                    </div>
                                 </div>
-                                <dl class="space-y-2 text-sm">
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Date:</dt>
-                                        <dd class="text-gray-900 font-medium">Oct 18, 2025</dd>
-                                    </div>
-                                </dl>
                             </div>
-                        </div>
+                        @empty
+                            <div class="text-center py-12 bg-gray-50 rounded-lg">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-allergies text-blue-600 text-2xl" aria-hidden="true"></i>
+                                </div>
+                                <p class="text-gray-600 font-medium">No active allergies found.</p>
+                                <p class="text-sm text-gray-500 mt-1">Record your allergies to keep track of them.</p>
+                            </div>
+                        @endforelse
                     </div>
-                </div>
-            </section>
-            
-            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="vax-heading">
-                <div class="p-6">
-                    <div class="flex items-center justify-between">
-                        <h2 id="vax-heading" class="text-xl font-semibold text-gray-900">
-                            Recent Vaccinations
-                        </h2>
-                        <a href="#" 
-                           aria-label="View all vaccinations"
-                           class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
-                            View all
-                        </a>
-                    </div>
-                    <div class="mt-4 flow-root">
-                        {{-- Desktop Table View --}}
-                        <div class="hidden md:block overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Vaccine</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Dose</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-4 py-4 text-sm font-medium text-gray-900">COVID-19 (Moderna)</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Booster</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Sep 30, 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-4 text-sm font-medium text-gray-900">Influenza (Flu Shot)</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Annual</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-600">Sep 30, 2025</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                </section>
+
+            </div>
+
+            {{-- Vaccination Card & Lab Test Card --}}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                {{-- Vaccination Card --}}
+                <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="vaccinations-heading">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 id="vaccinations-heading" class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                                <i class="fas fa-syringe text-blue-600" aria-hidden="true"></i>
+                                Recent Vaccinations
+                            </h2>
+                            <a href="{{ route('patient.immunisation') }}" 
+                               aria-label="View all vaccinations"
+                               class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
+                                See All <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
                         </div>
 
-                        {{-- Mobile List View --}}
-                        <div class="md:hidden space-y-3">
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                <h3 class="font-semibold text-gray-900 text-base mb-3">COVID-19 (Moderna)</h3>
-                                <dl class="space-y-2 text-sm">
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Dose:</dt>
-                                        <dd class="text-gray-900 font-medium">Booster</dd>
+                        @forelse ($recentVaccinations as $vaccination)
+                            <div class="bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-4 mb-3 hover:shadow-md transition-all duration-200">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center mb-2">
+                                            <h3 class="text-base font-semibold text-gray-900">{{ $vaccination->vaccine_name }}</h3>
+                                        </div>
+                                        
+                                        <div class="space-y-1">
+                                            <p class="text-sm text-gray-600">
+                                                <span class="font-medium">Dose:</span> {{ $vaccination->dose_details ?? 'N/A' }}
+                                            </p>
+                                            <p class="text-sm text-gray-600">
+                                                <span class="font-medium">Date:</span> {{ $vaccination->vaccination_date ? $vaccination->vaccination_date->format('M d, Y') : 'N/A' }}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Date:</dt>
-                                        <dd class="text-gray-900 font-medium">Sep 30, 2025</dd>
-                                    </div>
-                                </dl>
-                            </div>
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                <h3 class="font-semibold text-gray-900 text-base mb-3">Influenza (Flu Shot)</h3>
-                                <dl class="space-y-2 text-sm">
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Dose:</dt>
-                                        <dd class="text-gray-900 font-medium">Annual</dd>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Date:</dt>
-                                        <dd class="text-gray-900 font-medium">Sep 30, 2025</dd>
-                                    </div>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="allergy-heading">
-                <div class="p-6">
-                    <div class="flex items-center justify-between">
-                        <h2 id="allergy-heading" class="text-xl font-semibold text-gray-900">
-                            Active Allergies
-                        </h2>
-                        <a href="#" 
-                           aria-label="Manage allergies"
-                           class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
-                            Manage
-                        </a>
+                                    {{-- More Info Button --}}
+                                    <div class="ml-3">
+                                        <a href="{{ route('patient.immunisation.info', $vaccination->id) }}" 
+                                           class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                                            More info
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="text-center py-12 bg-gray-50 rounded-lg">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-syringe text-blue-600 text-2xl" aria-hidden="true"></i>
+                                </div>
+                                <p class="text-gray-600 font-medium">No recent vaccinations found.</p>
+                                <p class="text-sm text-gray-500 mt-1">Keep track of your immunization records here.</p>
+                            </div>
+                        @endforelse
                     </div>
-                    <div class="mt-4 flow-root">
-                        {{-- Desktop Table View --}}
-                        <div class="hidden md:block overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Allergen</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Reaction</th>
-                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Severity</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-4 py-4 text-sm font-medium text-gray-900">Penicillin</td>
-                                        <td class="px-4 py-4 text-sm text-gray-600">Anaphylaxis</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                            <span class="inline-flex items-center font-medium text-red-700" role="status">
-                                                <i class="fas fa-circle-exclamation mr-1.5" aria-hidden="true"></i>
-                                                <span class="sr-only">High severity:</span>
-                                                Severe
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-4 text-sm font-medium text-gray-900">Peanuts</td>
-                                        <td class="px-4 py-4 text-sm text-gray-600">Hives, Swelling</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                            <span class="inline-flex items-center font-medium text-red-700" role="status">
-                                                <i class="fas fa-circle-exclamation mr-1.5" aria-hidden="true"></i>
-                                                <span class="sr-only">High severity:</span>
-                                                Severe
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-4 py-4 text-sm font-medium text-gray-900">Pollen</td>
-                                        <td class="px-4 py-4 text-sm text-gray-600">Itchy Eyes, Sneezing</td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm">
-                                            <span class="inline-flex items-center font-medium text-yellow-700" role="status">
-                                                <i class="fas fa-triangle-exclamation mr-1.5" aria-hidden="true"></i>
-                                                <span class="sr-only">Medium severity:</span>
-                                                Moderate
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                </section>
+
+                {{-- Lab Test Card --}}
+                <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="lab-tests-heading">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 id="lab-tests-heading" class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                                <i class="fas fa-flask text-blue-600" aria-hidden="true"></i>
+                                Recent Lab Tests
+                            </h2>
+                            <a href="{{ route('patient.lab') }}" 
+                               aria-label="View all lab tests"
+                               class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
+                                See All <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
                         </div>
 
-                        {{-- Mobile List View --}}
-                        <div class="md:hidden space-y-3">
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                <h3 class="font-semibold text-gray-900 text-base mb-3">Penicillin</h3>
-                                <dl class="space-y-2 text-sm">
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Reaction:</dt>
-                                        <dd class="text-gray-900 font-medium">Anaphylaxis</dd>
+                        @forelse ($recentLabTests as $labTest)
+                            <div class="bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-4 mb-3 hover:shadow-md transition-all duration-200">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center mb-2">
+                                            <h3 class="text-base font-semibold text-gray-900">{{ $labTest->test_name }}</h3>
+                                        </div>
+                                        
+                                        <div class="space-y-1">
+                                            <p class="text-sm text-gray-600">
+                                                <span class="font-medium">Category:</span> {{ $labTest->test_category ?? 'N/A' }}
+                                            </p>
+                                            <p class="text-sm text-gray-600">
+                                                <span class="font-medium">Date:</span> {{ $labTest->test_date ? $labTest->test_date->format('M d, Y') : 'N/A' }}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Severity:</dt>
-                                        <dd>
-                                            <span class="inline-flex items-center font-medium text-red-700" role="status">
-                                                <i class="fas fa-circle-exclamation mr-1.5" aria-hidden="true"></i>
-                                                <span class="sr-only">High severity:</span>
-                                                Severe
-                                            </span>
-                                        </dd>
+
+                                    {{-- More Info Button --}}
+                                    <div class="ml-3">
+                                        <a href="{{ route('patient.lab.info', $labTest->id) }}" 
+                                           class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                                            More info
+                                        </a>
                                     </div>
-                                </dl>
+                                </div>
                             </div>
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                <h3 class="font-semibold text-gray-900 text-base mb-3">Peanuts</h3>
-                                <dl class="space-y-2 text-sm">
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Reaction:</dt>
-                                        <dd class="text-gray-900 font-medium">Hives, Swelling</dd>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Severity:</dt>
-                                        <dd>
-                                            <span class="inline-flex items-center font-medium text-red-700" role="status">
-                                                <i class="fas fa-circle-exclamation mr-1.5" aria-hidden="true"></i>
-                                                <span class="sr-only">High severity:</span>
-                                                Severe
-                                            </span>
-                                        </dd>
-                                    </div>
-                                </dl>
+                        @empty
+                            <div class="text-center py-12 bg-gray-50 rounded-lg">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-flask text-blue-600 text-2xl" aria-hidden="true"></i>
+                                </div>
+                                <p class="text-gray-600 font-medium">No recent lab tests found.</p>
+                                <p class="text-sm text-gray-500 mt-1">Add your lab test results to monitor your health.</p>
                             </div>
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                <h3 class="font-semibold text-gray-900 text-base mb-3">Pollen</h3>
-                                <dl class="space-y-2 text-sm">
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Reaction:</dt>
-                                        <dd class="text-gray-900 font-medium">Itchy Eyes, Sneezing</dd>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <dt class="text-gray-600">Severity:</dt>
-                                        <dd>
-                                            <span class="inline-flex items-center font-medium text-yellow-700" role="status">
-                                                <i class="fas fa-triangle-exclamation mr-1.5" aria-hidden="true"></i>
-                                                <span class="sr-only">Medium severity:</span>
-                                                Moderate
-                                            </span>
-                                        </dd>
-                                    </div>
-                                </dl>
-                            </div>
-                        </div>
+                        @endforelse
                     </div>
-                </div>
-            </section>
+                </section>
+
+            </div>
 
         </div>
     </div>

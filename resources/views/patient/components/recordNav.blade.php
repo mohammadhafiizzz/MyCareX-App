@@ -32,7 +32,7 @@
                 class="group relative flex-shrink-0 w-32 snap-start overflow-hidden rounded-xl border-2 transition-all {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-blue-100 shadow-md' : 'border-gray-200 bg-white' }}">
                 <div class="p-4 text-center">
                     <div class="w-12 h-12 mx-auto mb-2 rounded-lg flex items-center justify-center transition-transform group-active:scale-95 {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'bg-blue-600' : 'bg-gray-100' }}">
-                        <i class="fas fa-file-medical-alt text-lg {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
+                        <i class="fas fa-heartbeat text-lg {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
                     </div>
                     <span class="block text-xs font-semibold {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-blue-900' : 'text-gray-700' }}">
                         Conditions
@@ -126,7 +126,7 @@
             class="group relative overflow-hidden rounded-xl border-2 transition-all hover:shadow-lg {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-blue-100' : 'border-gray-200 bg-white hover:border-blue-300' }}">
             <div class="p-6 text-center">
                 <div class="w-14 h-14 mx-auto mb-3 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'bg-blue-600' : 'bg-gray-100' }}">
-                    <i class="fas fa-file-medical-alt text-xl {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
+                    <i class="fas fa-heartbeat text-xl {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
                 </div>
                 <span class="block text-sm font-semibold {{ request()->routeIs('patient.medicalCondition') || request()->routeIs('patient.condition.*') ? 'text-blue-900' : 'text-gray-700' }}">
                     Conditions

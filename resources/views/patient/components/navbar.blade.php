@@ -12,7 +12,7 @@
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                         <i class="fas fa-file-medical-alt  mr-2"></i>My Records
                     </a>
-                    <a href="#"
+                    <a href="{{ route('patient.permission') }}"
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                         <i class="fas fa-shield-halved  mr-2"></i>Access & Permissions
                     </a>

@@ -51,7 +51,7 @@
         </nav>
 
         {{-- Header Card --}}
-        <section class="relative overflow-hidden bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-xl p-8 mb-8 shadow-lg">
+        <section class="relative overflow-hidden bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-xl p-8 mb-8 shadow-lg">
             <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-12 -mt-12"></div>
             <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -ml-16 -mb-16"></div>
             

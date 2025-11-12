@@ -29,7 +29,7 @@
                             class="text-gray-300 hover:text-white transition-colors text-sm">Dashboard</a></li>
                     <li><a href="{{ route('patient.myrecords') }}" class="text-gray-300 hover:text-white transition-colors text-sm">My Records</a>
                     </li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Access & Permissions</a>
+                    <li><a href="{{ route('patient.permission') }}" class="text-gray-300 hover:text-white transition-colors text-sm">Access & Permissions</a>
                     </li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Help Center</a>
                     </li>
@@ -87,12 +87,6 @@
             class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div class="text-gray-400 text-sm">
                 &copy; {{ date('Y') }} MyCareX. All rights reserved.
-            </div>
-
-            <div class="flex flex-wrap gap-4 text-sm">
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">PDPA Compliance</a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">Security</a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">Sitemap</a>
             </div>
         </div>
     </div>

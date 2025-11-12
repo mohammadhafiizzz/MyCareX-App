@@ -25,4 +25,12 @@ class Lab extends Model
     protected $casts = [
         'test_date' => 'date:Y-m-d',
     ];
+
+    /**
+     * Get the patient that owns the lab test.
+     */
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
 }

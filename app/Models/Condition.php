@@ -23,4 +23,12 @@ class Condition extends Model
     protected $casts = [
         'diagnosis_date' => 'date:Y-m-d',
     ];
+
+    /**
+     * Get the patient that owns the conditions.
+     */
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
 }

@@ -42,13 +42,13 @@
         </a>
 
         <!-- User Growth - Superadmin only -->
-        @if(Auth::guard('admin')->user()->role === 'superadmin')
+        <!-- @if(Auth::guard('admin')->user()->role === 'superadmin')
             <a href="#"
                 class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                 <i class="fas fa-chart-line text-gray-400 group-hover:text-gray-600 mr-3 text-lg"></i>
                 User Growth
             </a>
-        @endif
+        @endif -->
 
         <!-- Reports -->
         <a href="#"
@@ -58,18 +58,18 @@
         </a>
 
         <!-- System Logs - Superadmin only -->
-        @if(Auth::guard('admin')->user()->role === 'superadmin')
+        <!-- @if(Auth::guard('admin')->user()->role === 'superadmin')
             <a href="#"
                 class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                 <i class="fas fa-clipboard-list text-gray-400 group-hover:text-gray-600 mr-3 text-lg"></i>
                 System Logs
             </a>
-        @endif
+        @endif -->
 
         <!-- Settings -->
         <a href="#"
             class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-            <i class="fas fa-cogs text-gray-400 group-hover:text-gray-600 mr-3 text-lg"></i>
+            <i class="fas fa-cog text-gray-400 group-hover:text-gray-600 mr-3 text-lg"></i>
             Settings
         </a>
     </nav>

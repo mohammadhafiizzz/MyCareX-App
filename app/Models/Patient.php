@@ -84,4 +84,30 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
     public function setPasswordAttribute($value) {
         $this->attributes['password'] = bcrypt($value);
     }
+
+    /*--- RELATIONSHIPS ---*/
+    public function medications()
+    {
+        return $this->hasMany(Medication::class);
+    }
+
+    public function allergies()
+    {
+        return $this->hasMany(Allergy::class);
+    }
+
+    public function labs()
+    {
+        return $this->hasMany(Lab::class);
+    }
+
+    public function immunisations()
+    {
+        return $this->hasMany(Immunisation::class);
+    }
+
+    public function conditions()
+    {
+        return $this->hasMany(Condition::class);
+    }
 }

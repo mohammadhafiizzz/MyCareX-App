@@ -30,6 +30,14 @@ class Medication extends Model
     ];
 
     /**
+     * Get the patient that owns the medications.
+     */
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
+
+    /**
      * Get formatted dosage with unit
      */
     public function getFormattedDosageAttribute()

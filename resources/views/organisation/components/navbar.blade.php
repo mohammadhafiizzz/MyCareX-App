@@ -14,15 +14,11 @@
                     </a>
                     <a href="#"
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-calendar-alt text-gray-400 group-hover:text-gray-600 mr-2"></i>Appointments
+                        <i class="fas fa-shield-halved text-gray-400 group-hover:text-gray-600 mr-2"></i>Request Access
                     </a>
                     <a href="#"
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                         <i class="fas fa-chart-bar text-gray-400 group-hover:text-gray-600 mr-2"></i>Reports
-                    </a>
-                    <a href="#"
-                        class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-cog text-gray-400 group-hover:text-gray-600 mr-2"></i>Settings
                     </a>
                 </div>
             </div>

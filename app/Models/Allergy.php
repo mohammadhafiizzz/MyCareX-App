@@ -25,4 +25,12 @@ class Allergy extends Model
     protected $casts = [
         'first_observed_date' => 'date:Y-m-d',
     ];
+
+    /**
+     * Get the patient that owns the allergies.
+     */
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
 }

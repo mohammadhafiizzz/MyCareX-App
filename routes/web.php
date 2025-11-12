@@ -82,7 +82,7 @@ Route::prefix('patient')->group(function () {
         // My Records
         Route::prefix('/my-records')->group(function () {
             // My Records Main Page
-            Route::get('/', [Patient\DashboardController::class, 'myRecords'])
+            Route::get('/', [Patient\MyRecordsController::class, 'index'])
                 ->name('patient.myrecords');
 
             // Medical Conditions (CRUD)
@@ -254,6 +254,26 @@ Route::prefix('patient')->group(function () {
                 Route::get('/{labTest}', [Modules\Lab\LabTestController::class, 'show'])
                     ->name('patient.lab.info');
 
+            });
+
+            // Permission Routes (CRUD)
+            Route::prefix('/permissions')->group(function () {
+
+                // Permission Page
+                Route::get('/', [Modules\Permission\PermissionController::class, 'index'])
+                    ->name('patient.permission');
+
+                // Authorized Providers List
+                Route::get('/providers', [Modules\Permission\PermissionController::class, 'providers'])
+                    ->name('patient.permission.providers');
+
+                // Pending Requests List
+                Route::get('/requests', [Modules\Permission\PermissionController::class, 'requests'])
+                    ->name('patient.permission.requests');
+
+                // Activity History
+                Route::get('/activity', [Modules\Permission\PermissionController::class, 'activity'])
+                    ->name('patient.permission.activity');
             });
         });
     });
