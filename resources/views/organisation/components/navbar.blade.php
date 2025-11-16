@@ -14,7 +14,7 @@
                     </a>
                     <a href="#"
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <i class="fas fa-shield-halved text-gray-400 group-hover:text-gray-600 mr-2"></i>Request Access
+                        <i class="fas fa-shield-halved text-gray-400 group-hover:text-gray-600 mr-2"></i>Access & Permissions
                     </a>
                     <a href="#"
                         class="text-gray-700 hover:bg-gray-100 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
@@ -25,6 +25,25 @@
 
             <!-- Right Side -->
             <div class="flex items-center space-x-4">
+                <!-- Verification Status -->
+                @php
+                    $organisation = auth()->guard('organisation')->user();
+                    $isVerified = $organisation && $organisation->verification_status === 'Approved';
+                @endphp
+                <div class="flex items-center">
+                    @if($isVerified)
+                        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-semibold bg-green-100 text-green-800 border border-green-200">
+                            <i class="fas fa-check-circle"></i>
+                            Verified
+                        </span>
+                    @else
+                        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                            <i class="fas fa-clock"></i>
+                            Unverified
+                        </span>
+                    @endif
+                </div>
+
                 <!-- Logout -->
                 <form action="{{ route('organisation.logout') }}" method="POST" class="hidden md:block">
                     @csrf

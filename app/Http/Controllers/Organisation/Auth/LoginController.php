@@ -15,6 +15,7 @@ class LoginController extends Controller
     }
 
     // Organisation Login Action
+
     public function login(Request $request) {
         $this->checkTooManyFailedAttempts($request);
 
@@ -29,9 +30,24 @@ class LoginController extends Controller
 
         // Login attempt
         if (auth()->guard('organisation')->attempt($credentials, $remember)) {
+            $organisation = auth()->guard('organisation')->user();
+            
+            // Check email verification if using MustVerifyEmail
+            if ($organisation instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$organisation->hasVerifiedEmail()) {
+                auth()->guard('organisation')->logout();
+                RateLimiter::hit($this->throttleKey($request));
+                
+                return redirect()->route('organisation.verification.notice')
+                    ->with('login_error', 'Please verify your email address before logging in.');
+            }
+            
             // Clear login attempts
             RateLimiter::clear($this->throttleKey($request));
             $request->session()->regenerate();
+
+            // Update last login timestamp
+            $organisation->last_login = now();
+            $organisation->save();
 
             // Redirect to dashboard
             return redirect()->intended(route('organisation.dashboard'));
@@ -40,8 +56,8 @@ class LoginController extends Controller
         // Failed login
         RateLimiter::hit($this->throttleKey($request));
         return back()
-            ->withInput($request->only('id', 'remember'))
-            ->with('login_error', 'Invalid ID or Password.');
+            ->withInput($request->only('email', 'remember'))
+            ->with('login_error', 'Invalid email or Password.');
     }
     
     // Throttle login attempts
@@ -58,5 +74,15 @@ class LoginController extends Controller
     // Generate throttle key
     protected function throttleKey(Request $request) {
         return 'login.' . $request->input('id') . '|' . $request->ip();
+    }
+
+    // Organisation Logout
+    public function logout(Request $request) {
+        auth()->guard('organisation')->logout();
+        
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        
+        return redirect()->route('organisation.index');
     }
 }

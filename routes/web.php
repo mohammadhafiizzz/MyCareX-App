@@ -297,11 +297,13 @@ Route::prefix('organisation')->group(function () {
     Route::post('/register', [Organisation\Auth\RegistrationController::class, 'register'])->name('organisation.register');
 
     // Email verification
-    Route::get('/email/verify', [Organisation\Auth\RegistrationController::class, 'showEmailVerificationNotice'])->name('organisation.verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [Organisation\Auth\RegistrationController::class, 'verify'])->name('organisation.verification.verify');
-    Route::post('/email/verification-notification', [Organisation\Auth\RegistrationController::class, 'resend'])->name('organisation.verification.resend');
-    Route::get('/email/verified', [Organisation\Auth\RegistrationController::class, 'showEmailVerified'])->name('organisation.verification.success');
-
+    Route::prefix('/email')->group(function () {
+        Route::get('/verify', [Organisation\Auth\RegistrationController::class, 'showEmailVerificationNotice'])->name('organisation.verification.notice');
+        Route::get('/verify/{id}/{hash}', [Organisation\Auth\RegistrationController::class, 'verify'])->name('organisation.verification.verify');
+        Route::post('/verification-notification', [Organisation\Auth\RegistrationController::class, 'resend'])->name('organisation.verification.resend');
+        Route::get('/verified', [Organisation\Auth\RegistrationController::class, 'showEmailVerified'])->name('organisation.verification.success');
+    });
+    
     // Authenticated Organisation Routes (Protected)
     Route::middleware(['auth:organisation', 'verified'])->group(function () {
         // Organisation Dashboard

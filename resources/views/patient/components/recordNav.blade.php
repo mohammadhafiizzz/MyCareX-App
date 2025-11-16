@@ -95,7 +95,7 @@
                         <i class="fas fa-flask text-lg {{ request()->routeIs('patient.lab') || request()->routeIs('patient.lab.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
                     </div>
                     <span class="block text-xs font-semibold {{ request()->routeIs('patient.lab') || request()->routeIs('patient.lab.*') ? 'text-blue-900' : 'text-gray-700' }}">
-                        Lab Results
+                        Lab Test
                     </span>
                 </div>
             </a>
@@ -189,7 +189,7 @@
                     <i class="fas fa-flask text-xl {{ request()->routeIs('patient.lab') || request()->routeIs('patient.lab.*') ? 'text-white' : 'text-blue-600' }}" aria-hidden="true"></i>
                 </div>
                 <span class="block text-sm font-semibold {{ request()->routeIs('patient.lab') || request()->routeIs('patient.lab.*') ? 'text-blue-900' : 'text-gray-700' }}">
-                    Lab Results
+                    Lab Test
                 </span>
             </div>
         </a>
