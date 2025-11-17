@@ -1,8 +1,8 @@
 <!-- Sidebar -->
-<aside id="sidebar" class="fixed inset-y-0 left-0 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 w-64 pt-[68px] lg:pt-0">
+<aside id="sidebar" class="fixed inset-y-0 left-0 bg-white shadow-lg transform transition-transform z-30 duration-300 ease-in-out w-68 pt-[68px] lg:pt-0">
     <div class="flex flex-col h-full">
         <!-- Sidebar Header -->
-        <div class="flex items-center justify-between p-4 border-b border-gray-200">
+        <div class="flex items-center justify-center p-4 border-b bg-blue-100 border-gray-200">
             <a href="{{ route('organisation.dashboard') }}" class="flex items-center space-x-3">
                 <img src="{{ asset('images/MyCareX_Logo.png') }}" alt="MyCareX Logo" class="w-10 h-10 rounded-lg">
                 <div class="flex flex-col">

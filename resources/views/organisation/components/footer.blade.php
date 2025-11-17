@@ -1,6 +1,6 @@
 <!-- Footer -->
-<footer class="bg-sky-950 text-white lg:ml-64 transition-all duration-300">
-    <div class="px-4 sm:px-6 lg:px-8 py-12">
+<footer class="bg-sky-950 text-white lg:ml-68 transition-all duration-300">
+    <div class="px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- About MyCareX -->
             <div class="space-y-4">
