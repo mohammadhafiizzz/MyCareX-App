@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/main/organisation/login.js'])
     <title>Provider Login - MyCareX</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
@@ -59,7 +59,7 @@
                         <!-- Email Address -->
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                                Email address
+                                <i class="fas fa-envelope text-gray-600 mr-2"></i> Email address
                             </label>
                             <input type="email" id="email" name="email" required 
                                 value="{{ old('email') }}"
@@ -71,7 +71,7 @@
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <label for="password" class="block text-sm font-medium text-gray-700">
-                                    Password
+                                    <i class="fas fa-lock text-gray-600 mr-2"></i> Password
                                 </label>
                                 <a href="#" 
                                    class="text-sm text-blue-600 hover:text-blue-500 transition-colors">
@@ -192,35 +192,6 @@
             </div>
         </div>
     </div>
-
-    <!-- JavaScript for Password Toggle -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordInput = document.getElementById('password');
-            const toggleButton = document.getElementById('togglePassword');
-            const passwordIcon = document.getElementById('passwordIcon');
-
-            toggleButton.addEventListener('click', function() {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                
-                if (type === 'password') {
-                    passwordIcon.className = 'fas fa-eye text-gray-400 hover:text-gray-600 transition-colors';
-                } else {
-                    passwordIcon.className = 'fas fa-eye-slash text-gray-400 hover:text-gray-600 transition-colors';
-                }
-            });
-
-            // Auto-hide error messages after 5 seconds
-            const errorAlert = document.querySelector('.bg-red-50');
-            if (errorAlert) {
-                setTimeout(() => {
-                    errorAlert.style.opacity = '0';
-                    setTimeout(() => errorAlert.remove(), 300);
-                }, 5000);
-            }
-        });
-    </script>
 </body>
 
 </html>

@@ -9,6 +9,9 @@ class DashboardController extends Controller
 {
     // Show Organisation Dashboard
     public function index() {
-        return view('organisation.dashboard');
+        $organisation = auth()->guard('organisation')->user();
+        $isVerified = $organisation && $organisation->verification_status === 'Approved';
+
+        return view('organisation.dashboard', compact('organisation', 'isVerified'));
     }
 }

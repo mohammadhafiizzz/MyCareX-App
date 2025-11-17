@@ -24,6 +24,7 @@ Route::prefix('patient')->group(function () {
     Route::get('/email/verified', [Patient\Auth\RegistrationController::class, 'showEmailVerified'])->name('verification.success');
 
     // Patient Login
+    Route::get('/login', [Patient\Auth\LoginController::class, 'showLoginForm'])->name('patient.login.form');
     Route::post('/login', [Patient\Auth\LoginController::class, 'login'])->name('patient.login');
 
     // Patient Logout

@@ -44,8 +44,8 @@
                         class="px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                         About Us
                     </a>
-                    <a href="#"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 login-modal-btn">
+                    <a href="{{ route('patient.login.form') }}"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                         Sign In</i>
                     </a>
                 </div>
@@ -54,22 +54,21 @@
             <!-- Mobile Menu -->
             <div class="lg:hidden hidden" id="mobileMenu">
                 <div class="px-2 pt-2 pb-3 space-y-1 border-t text-[15px] border-gray-200">
-                    <a href="{{ route('organisation.index') }}" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
+                    <a href="{{ route('organisation.index') }}"
+                        class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
                         Organisation Portal
                     </a>
                     <a href="#" class="block px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">About Us</a>
-                    <a href="#"
-                        class="block px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 login-modal-btn">
+                    <a href="{{ route('patient.login.form') }}"
+                        class="block px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Sign In</i></a>
                 </div>
             </div>
         </div>
     </nav>
 
-    @include('patient.auth.patientLoginForm')
-
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-23 lg:py-27">
+    <section class="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-23 lg:py-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
@@ -81,12 +80,11 @@
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="{{ route('patient.register.form') }}"
-                        class="inline-flex items-center px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
+                        class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 rounded-2xl font-semibold shadow-lg hover:bg-white/90 hover:backdrop-blur-xl transition-all duration-300">
                         Get Started
-                        <i class="fas fa-arrow-right ml-2"></i>
                     </a>
                     <a href="#features"
-                        class="inline-flex items-center px-6 py-3 border border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-200">
+                        class="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white rounded-2xl font-semibold backdrop-blur-xl border border-white/20 shadow-lg hover:bg-white/20 hover:border-white/30 transition-all duration-300">
                         Learn More
                         <i class="fas fa-arrow-right ml-2"></i>
                     </a>
@@ -98,44 +96,82 @@
     <!-- Features Section -->
     <section class="py-15 bg-gray-50" id="features">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-file-medical text-red-600 text-xl"></i>
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-3xl font-bold text-gray-900 mb-4">
+                    Why Choose MyCareX?
+                </h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Enhance your healthcare experience with MyCareX's features designed to put you in control of your
+                    personal health records.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-screen text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Medical Records</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Store and manage all your medical records in one secure place
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Web-App</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Access your records on-the-go with our responsive web platform optimised for tablets and
+                        smartphones.
                     </p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-hand-holding-medical text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Safety Guaranteed</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Control who can access your health information with granular permissions
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Complete Control</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        You own your medical records. Decide who can access them and manage permissions easily.
                     </p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-globe text-blue-600 text-xl"></i>
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-heart-circle-exclamation text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Access Anywhere</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Access it anywhere and everywhere. Responsive web platform for all devices
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Emergency</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Access critical health information instantly during emergencies to ensure accurate and effective
+                        care.
                     </p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-users text-purple-600 text-xl"></i>
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-handshake text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Interoperability</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Share information with doctors with full control
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Easy Sharing</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Allow you to easily change healthcare providers and share your health records securely.
+                    </p>
+                </div>
+
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-clock text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Real-time Tracking</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Monitor who accessed your records with activities and notifications for enhanced transparency.
+                    </p>
+                </div>
+
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Security+</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Advanced security mechanisms to protect your personal health information and ensure privacy.
                     </p>
                 </div>
             </div>

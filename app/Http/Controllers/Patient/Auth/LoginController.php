@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    // Show Login Form
+    public function showLoginForm() {
+        return view('patient.auth.login');
+    }
+
     // Handle Login
     public function login(Request $request) {
         $this->checkTooManyFailedAttempts($request);

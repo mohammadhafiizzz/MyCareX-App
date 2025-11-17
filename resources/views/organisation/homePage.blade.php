@@ -86,17 +86,18 @@
                         Enhanced Patient Care Through Digital Records
                     </h1>
                     <p class="text-lg md:text-xl text-green-100 mb-8 max-w-2xl leading-relaxed">
-                        Join Malaysia’s leading healthcare interoperability platform designed to give you secure access to complete patient records,
+                        Join Malaysia’s leading healthcare interoperability platform designed to give you secure access
+                        to complete patient records,
                         optimize workflows, and enhance care coordination across the entire healthcare ecosystem.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
                         <a href="#register-provider"
-                            class="inline-flex items-center px-8 py-4 bg-white text-blue-700 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 text-center">
+                            class="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 rounded-2xl font-semibold shadow-lg hover:bg-white/90 hover:backdrop-blur-xl transition-all duration-300">
                             Join as Provider
                             <i class="fas fa-hospital ml-2"></i>
                         </a>
                         <a href="#features"
-                            class="inline-flex items-center px-8 py-4 border border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-700 transition-colors duration-200 text-center">
+                            class="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white rounded-2xl font-semibold backdrop-blur-xl border border-white/20 shadow-lg hover:bg-white/20 hover:border-white/30 transition-all duration-300 text-center">
                             Learn More
                             <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -131,75 +132,88 @@
     </section>
 
     <!-- Features Section -->
-    <section class="py-20 bg-gray-50" id="features">
+    <section class="py-16 bg-gray-50" id="features">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                <h2 class="text-3xl md:text-3xl font-bold text-gray-900 mb-4">
                     Why Choose MyCareX?
                 </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Empower your healthcare practice with cutting-edge technology designed for Malaysian healthcare providers
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Enhance your healthcare practice with cutting-edge technology designed for Malaysian healthcare
+                    providers
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-database text-blue-600 text-2xl"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Comprehensive Records Access</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Patients</h3>
                     <p class="text-gray-600 leading-relaxed">
-                        Access complete patient medical histories, medications, allergies, and treatment plans in real-time across your network.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse turpis magna, vestibulum ut arcu non, iaculis bibendum ligula.
                     </p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-network-wired text-green-600 text-2xl"></i>
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-hand-holding-medical text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Seamless Interoperability</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Records Access</h3>
                     <p class="text-gray-600 leading-relaxed">
-                        Connect with hospitals, clinics, and specialists across Malaysia. Share information securely with patient consent.
+                        Access complete patient medical histories, medications, allergies, and treatment
+                        plans in real-time across your network.
                     </p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-shield-alt text-purple-600 text-2xl"></i>
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-heart-circle-check text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Enterprise Security</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Real-time Data</h3>
                     <p class="text-gray-600 leading-relaxed">
-                        Bank-level encryption, HIPAA compliance, and granular access controls protect sensitive patient data.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse turpis magna, vestibulum ut arcu non, iaculis bibendum ligula.
                     </p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-clock text-red-600 text-2xl"></i>
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-handshake text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Real-Time Updates</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Interoperability</h3>
                     <p class="text-gray-600 leading-relaxed">
-                        Get instant notifications when patients update their records or when critical information is shared.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse turpis magna, vestibulum ut arcu non, iaculis bibendum ligula.
                     </p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-chart-line text-yellow-600 text-2xl"></i>
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-universal-access text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Analytics & Reporting</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Access & Permissions</h3>
                     <p class="text-gray-600 leading-relaxed">
-                        Generate insights from patient data, track treatment outcomes, and improve care quality with advanced analytics.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse turpis magna, vestibulum ut arcu non, iaculis bibendum ligula.
                     </p>
                 </div>
 
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-mobile-alt text-indigo-600 text-2xl"></i>
+                <div
+                    class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Mobile Access</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Security+</h3>
                     <p class="text-gray-600 leading-relaxed">
-                        Access patient records on-the-go with our responsive web platform optimized for tablets and smartphones.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Suspendisse turpis magna, vestibulum ut arcu non, iaculis bibendum ligula.
                     </p>
                 </div>
             </div>
@@ -214,7 +228,8 @@
                     Ready to Join MyCareX?
                 </h2>
                 <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                    Connect your healthcare organisation to Malaysia's leading patient record platform and enhance care coordination today.
+                    Connect your healthcare organisation to Malaysia's leading patient record platform and enhance care
+                    coordination today.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="{{  route('organisation.register.form') }}"

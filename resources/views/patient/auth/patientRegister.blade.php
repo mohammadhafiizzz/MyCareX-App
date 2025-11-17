@@ -24,7 +24,7 @@
                 </a>
                 <div class="text-[15px] font-medium flex items-center space-x-4">
                     <span class="text-gray-600">Already have an account?</span>
-                    <a href="{{ route('index') }}"
+                    <a href="{{ route('patient.login.form') }}"
                         class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white hover:border-whitetransition-colors duration-200">
                         Sign In
                     </a>

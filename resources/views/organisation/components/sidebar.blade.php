@@ -31,10 +31,7 @@
                     <p class="text-xs text-gray-500 truncate">
                         {{ Auth::guard('organisation')->user()->organisation_type ?? 'Healthcare Provider' }}
                     </p>
-                    @php
-                        $organisation = auth()->guard('organisation')->user();
-                        $isVerified = $organisation && $organisation->verification_status === 'Approved';
-                    @endphp
+
                     @if($isVerified)
                         <span
                             class="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -74,7 +71,8 @@
                 </a>
             </div>
 
-            <!-- Patients Section -->
+            @if ($isVerified)  
+            <!-- Patients Section - Verified providers -->
             <div class="pt-2">
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Patients</p>
 
@@ -99,7 +97,37 @@
                 </a>
             </div>
 
-            <!-- Access & Permissions -->
+            @else
+            <!-- Patients Section - Unverified providers -->
+            <div class="pt-2">
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Patients
+                    <i class="fas fa-lock"></i>
+                </p>
+
+                <a href="#"
+                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-search w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">Search</span>
+                </a>
+
+                <a href="#"
+                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-users w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">All Patients</span>
+                    <span
+                        class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
+                </a>
+
+                <a href="#"
+                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-file-medical w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">Medical Records</span>
+                </a>
+            </div>
+            @endif
+
+            @if ($isVerified)
+            <!-- Access & Permissions - Verified providers -->
             <div class="pt-2">
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Access & Permissions
                 </p>
@@ -122,6 +150,33 @@
                     <span class="ml-3">Activity Log</span>
                 </a>
             </div>
+
+            @else
+            <!-- Access & Permissions - Unverified providers -->
+            <div class="pt-2">
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Access & Permissions
+                    <i class="fas fa-lock"></i>
+                </p>
+
+                <a href="#"
+                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-shield-halved w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">Permissions</span>
+                </a>
+
+                <a href="#"
+                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-key w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">Request Access</span>
+                </a>
+
+                <a href="#"
+                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-history w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">Activity Log</span>
+                </a>
+            </div>
+            @endif
 
             <!-- Settings -->
             <div class="pt-2">
