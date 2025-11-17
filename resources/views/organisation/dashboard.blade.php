@@ -24,36 +24,25 @@
 
     <!-- Main Content -->
     <div class="lg:ml-68 transition-all duration-300 pt-[75px]" id="mainContent">
-        <div class="min-h-screen bg-gray-100">
+        <div class="bg-gray-100">
             <!-- Page Content -->
             <div class="py-6 px-4 sm:px-6 lg:px-8">
-                <!-- Breadcrumb -->
-                <nav class="flex mb-6" aria-label="Breadcrumb">
-                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                        <li class="inline-flex items-center">
-                            <a href="{{ route('organisation.dashboard') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
-                                <i class="fas fa-home mr-2"></i>
-                                Dashboard
-                            </a>
-                        </li>
-                    </ol>
-                </nav>
 
                 <!-- Dashboard Content -->
                 <div class="mb-6">
                     <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-                    <p class="mt-1 text-sm text-gray-600">Welcome back! Here's what's happening with your organisation.</p>
+                    <p class="mt-1 text-sm text-gray-600">Welcome back! Here's what's happening with your current status.</p>
                 </div>
 
                 <!-- Stats Grid -->
-                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-6">
                     <!-- Total Patients -->
                     <div class="bg-white overflow-hidden shadow rounded-lg">
                         <div class="p-5">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                                    <div class="rounded-md bg-blue-500 p-3">
-                                        <i class="fas fa-users text-white text-xl"></i>
+                                    <div class="rounded-md bg-blue-100 p-3">
+                                        <i class="fas fa-users text-blue-600 text-xl"></i>
                                     </div>
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
@@ -73,8 +62,8 @@
                         <div class="p-5">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                                    <div class="rounded-md bg-green-500 p-3">
-                                        <i class="fas fa-file-medical text-white text-xl"></i>
+                                    <div class="rounded-md bg-blue-100 p-3">
+                                        <i class="fas fa-file-medical text-blue-600 text-xl"></i>
                                     </div>
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
@@ -94,34 +83,13 @@
                         <div class="p-5">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                                    <div class="rounded-md bg-amber-500 p-3">
-                                        <i class="fas fa-clock text-white text-xl"></i>
+                                    <div class="rounded-md bg-blue-100 p-3">
+                                        <i class="fas fa-clock text-blue-600 text-xl"></i>
                                     </div>
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
                                     <dl>
                                         <dt class="text-sm font-medium text-gray-500 truncate">Pending Requests</dt>
-                                        <dd class="flex items-baseline">
-                                            <div class="text-2xl font-semibold text-gray-900">0</div>
-                                        </dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Reports Generated -->
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                        <div class="p-5">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                                    <div class="rounded-md bg-purple-500 p-3">
-                                        <i class="fas fa-chart-line text-white text-xl"></i>
-                                    </div>
-                                </div>
-                                <div class="ml-5 w-0 flex-1">
-                                    <dl>
-                                        <dt class="text-sm font-medium text-gray-500 truncate">Reports (Month)</dt>
                                         <dd class="flex items-baseline">
                                             <div class="text-2xl font-semibold text-gray-900">0</div>
                                         </dd>

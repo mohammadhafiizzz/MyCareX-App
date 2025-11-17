@@ -15,31 +15,18 @@
 </head>
 
 <body class="font-[Inter] bg-gray-100">
-    <div class="flex h-screen bg-gray-100">
-        
-        <!-- Sidebar -->
-        @include('admin.components.sidebar')
 
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            
-            <!-- Top Header -->
-            <header class="bg-white shadow-sm border-b h-20 border-gray-200">
-                <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                    <div class="flex items-center justify-between">
-                        <h1 class="text-2xl font-semibold text-gray-900">Healthcare Provider Management</h1>
-                        <div class="flex items-center space-x-4">
-                            <span class="text-sm text-gray-500">
-                                {{ now()->format('F j, Y') }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </header>
+    <!-- Header -->
+    @include('admin.components.header')
 
-            <!-- Main Content Area -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <!-- Sidebar -->
+    @include('admin.components.sidebar')
+
+    <!-- Main Content -->
+    <div class="lg:ml-68 transition-all duration-300 pt-[75px]" id="mainContent">
+        <div class="bg-gray-100">
+            <!-- Page Content -->
+            <div class="py-6 px-4 sm:px-6 lg:px-8">
 
                     <!-- Page Header -->
                     <div class="md:flex md:items-center md:justify-between mb-6">
@@ -61,7 +48,9 @@
                             <div class="p-6">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
-                                        <i class="fas fa-hospital text-gray-600 text-2xl"></i>
+                                        <div class="rounded-md bg-blue-100 p-3">
+                                            <i class="fas fa-hospital text-blue-600 text-2xl"></i>
+                                        </div>
                                     </div>
                                     <div class="ml-4">
                                         <p class="text-sm font-medium text-gray-500 truncate">Providers</p>
@@ -76,14 +65,16 @@
                             <div class="p-6">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
-                                        <i class="fas fa-hand-holding-medical text-gray-600 text-2xl"></i>
+                                        <div class="rounded-md bg-blue-100 p-3">
+                                            <i class="fas fa-hand-holding-medical text-blue-600 text-2xl"></i>
+                                        </div>
                                     </div>
                                     <div class="ml-4">
                                         <p class="text-sm font-medium text-gray-500 truncate">New Requests</p>
                                         <p class="text-2xl font-semibold text-gray-900">{{ $requestCount }}</p>
-                                        <a href="{{ route('organisation.providerVerification') }}" class="text-xs font-medium text-blue-500 hover:underline cursor-pointer truncate">View Request</a>
                                     </div>
                                 </div>
+                                <a href="{{ route('organisation.providerVerification') }}" class="text-xs font-medium px-18 text-blue-500 hover:underline cursor-pointer truncate">View Request</a>
                             </div>
                         </div>
                     </div>
@@ -183,15 +174,13 @@
                             </table>
                         </div>
                     </div>
-                </div>
-            </main>
+            </div>
         </div>
     </div>
 
-    <!-- Mobile Sidebar Overlay -->
-    <div class="lg:hidden fixed inset-0 z-40 bg-gray-600 bg-opacity-75 hidden" id="sidebar-overlay"></div>
-
     <!-- Javascript and Footer -->
+
+    @include('admin.components.footer')
     
 </body>
 

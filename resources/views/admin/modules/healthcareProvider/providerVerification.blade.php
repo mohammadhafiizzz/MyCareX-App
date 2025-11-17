@@ -12,31 +12,18 @@
 </head>
 
 <body class="font-[Inter] bg-gray-100">
-    <div class="flex h-screen bg-gray-100">
 
-        <!-- Sidebar -->
-        @include('admin.components.sidebar')
+    <!-- Header -->
+    @include('admin.components.header')
 
-        <!-- Main Content -->
-        <div class="flex-1 w-max flex flex-col overflow-hidden">
+    <!-- Sidebar -->
+    @include('admin.components.sidebar')
 
-            <!-- Top Header -->
-            <header class="bg-white shadow-sm border-b h-20 border-gray-200">
-                <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                    <div class="flex items-center justify-between">
-                        <h1 class="text-2xl font-semibold text-gray-900">Healthcare Provider Management</h1>
-                        <div class="flex items-center space-x-4">
-                            <span class="text-sm text-gray-500">
-                                {{ now()->format('F j, Y') }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Main Content Area -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <!-- Main Content -->
+    <div class="lg:ml-68 transition-all duration-300 pt-[75px]" id="mainContent">
+        <div class="bg-gray-100">
+            <!-- Page Content -->
+            <div class="py-6 px-4 sm:px-6 lg:px-8">
 
                     <!-- Page Header -->
                     <div class="md:flex md:items-center md:justify-between mb-6">
@@ -62,7 +49,9 @@
                             <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
-                                        <i class="fas fa-clock text-yellow-400 text-xl"></i>
+                                        <div class="rounded-md bg-amber-100 p-3">
+                                            <i class="fas fa-clock text-amber-600 text-md"></i>
+                                        </div>
                                     </div>
                                     <div class="ml-3">
                                         <p class="text-sm font-medium text-gray-500">Pending</p>
@@ -76,7 +65,9 @@
                             <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
-                                        <i class="fas fa-check-circle text-green-400 text-xl"></i>
+                                        <div class="rounded-md bg-green-100 p-3">
+                                            <i class="fas fa-check-circle text-green-600 text-md"></i>
+                                        </div>
                                     </div>
                                     <div class="ml-3">
                                         <p class="text-sm font-medium text-gray-500">Approved</p>
@@ -90,7 +81,9 @@
                             <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
-                                        <i class="fas fa-times-circle text-red-400 text-xl"></i>
+                                        <div class="rounded-md bg-red-100 p-3">
+                                            <i class="fas fa-times-circle text-red-600 text-md"></i>
+                                        </div>
                                     </div>
                                     <div class="ml-3">
                                         <p class="text-sm font-medium text-gray-500">Rejected</p>
@@ -208,13 +201,13 @@
                             </table>
                         </div>
                     </div>
-                </div>
-            </main>
+            </div>
         </div>
     </div>
 
-    <!-- Mobile Sidebar Overlay -->
-    <div class="lg:hidden fixed inset-0 z-40 bg-gray-600 bg-opacity-75 hidden" id="sidebarOverlay"></div>
+    <!-- Javascript and Footer -->
+
+    @include('admin.components.footer')
 
     <!-- Confirmation Modal -->
     <div class="fixed inset-0 bg-gray-950/50 overflow-y-auto h-full w-full hidden" id="confirmationModal">
