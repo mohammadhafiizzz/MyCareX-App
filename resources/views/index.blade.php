@@ -121,8 +121,8 @@
 
                 <div
                     class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
-                        <i class="fas fa-hand-holding-medical text-blue-600 text-xl"></i>
+                    <div class="w-12 h-12 bg-green-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-hand-holding-medical text-green-600 text-xl"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Complete Control</h3>
                     <p class="text-gray-600 leading-relaxed">
@@ -132,8 +132,8 @@
 
                 <div
                     class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
-                        <i class="fas fa-heart-circle-exclamation text-blue-600 text-xl"></i>
+                    <div class="w-12 h-12 bg-rose-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-heart-circle-exclamation text-rose-600 text-xl"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Emergency</h3>
                     <p class="text-gray-600 leading-relaxed">
@@ -144,8 +144,8 @@
 
                 <div
                     class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
-                        <i class="fas fa-handshake text-blue-600 text-xl"></i>
+                    <div class="w-12 h-12 bg-cyan-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-handshake text-cyan-600 text-xl"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Easy Sharing</h3>
                     <p class="text-gray-600 leading-relaxed">
@@ -155,8 +155,8 @@
 
                 <div
                     class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
-                        <i class="fas fa-clock text-blue-600 text-xl"></i>
+                    <div class="w-12 h-12 bg-amber-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-clock text-amber-600 text-xl"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Real-time Tracking</h3>
                     <p class="text-gray-600 leading-relaxed">
@@ -166,8 +166,8 @@
 
                 <div
                     class="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100">
-                    <div class="w-12 h-12 bg-blue-100 rounded-md flex items-center justify-center mb-6">
-                        <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-md flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-indigo-600 text-xl"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Security+</h3>
                     <p class="text-gray-600 leading-relaxed">
