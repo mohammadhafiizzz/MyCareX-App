@@ -5,6 +5,7 @@ use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\Admin as Admin;
 use App\Http\Controllers\Patient as Patient;
 use App\Http\Controllers\Organisation as Organisation;
+use App\Http\Controllers\Doctor as Doctor;
 use App\Http\Controllers\Modules as Modules;
 
 // MyCareX Home Page
@@ -311,6 +312,13 @@ Route::prefix('organisation')->group(function () {
         Route::get('/dashboard', [Organisation\DashboardController::class, 'index'])
             ->name('organisation.dashboard');
     });
+});
+
+// Doctor Routes
+Route::prefix('doctor')->group(function () {
+    // Doctor Dashboard
+    Route::get('/dashboard', [Doctor\DashboardController::class, 'index'])
+        ->name('doctor.dashboard');
 });
 
 // Admin Routes

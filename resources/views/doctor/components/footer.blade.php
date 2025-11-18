@@ -26,9 +26,9 @@
                 <h3 class="text-lg font-semibold">Quick Links</h3>
                 <ul class="space-y-2">
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Dashboard</a></li>
-                    @if ($isVerified)
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Doctors</a></li>
-                    @endif
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Patients</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Access & Permissions</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Reports</a></li>
                 </ul>
             </div>
 

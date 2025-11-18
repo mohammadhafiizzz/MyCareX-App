@@ -48,18 +48,18 @@
                 @if ($isVerified)
                     <!-- Stats Grid -->
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-6">
-                        <!-- Total Patients -->
+                        <!-- Total Doctors -->
                         <div class="bg-white overflow-hidden shadow rounded-lg">
                             <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
                                         <div class="rounded-md bg-blue-100 p-3">
-                                            <i class="fas fa-users text-blue-600 text-xl"></i>
+                                            <i class="fas fa-user-doctor text-blue-600 text-xl"></i>
                                         </div>
                                     </div>
                                     <div class="ml-5 w-0 flex-1">
                                         <dl>
-                                            <dt class="text-sm font-medium text-gray-500 truncate">Total Patients</dt>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">Total Doctors</dt>
                                             <dd class="flex items-baseline">
                                                 <div class="text-2xl font-semibold text-gray-900">0</div>
                                             </dd>
@@ -69,18 +69,18 @@
                             </div>
                         </div>
 
-                        <!-- Active Records -->
+                        <!-- Active Doctors -->
                         <div class="bg-white overflow-hidden shadow rounded-lg">
                             <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
                                         <div class="rounded-md bg-blue-100 p-3">
-                                            <i class="fas fa-file-medical text-blue-600 text-xl"></i>
+                                            <i class="fas fa-user-check text-blue-600 text-xl"></i>
                                         </div>
                                     </div>
                                     <div class="ml-5 w-0 flex-1">
                                         <dl>
-                                            <dt class="text-sm font-medium text-gray-500 truncate">Active Records</dt>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">Active Doctors</dt>
                                             <dd class="flex items-baseline">
                                                 <div class="text-2xl font-semibold text-gray-900">0</div>
                                             </dd>
@@ -90,18 +90,18 @@
                             </div>
                         </div>
 
-                        <!-- Pending Requests -->
+                        <!-- Inactive Doctors -->
                         <div class="bg-white overflow-hidden shadow rounded-lg">
                             <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
                                         <div class="rounded-md bg-blue-100 p-3">
-                                            <i class="fas fa-clock text-blue-600 text-xl"></i>
+                                            <i class="fas fa-user-clock text-blue-600 text-xl"></i>
                                         </div>
                                     </div>
                                     <div class="ml-5 w-0 flex-1">
                                         <dl>
-                                            <dt class="text-sm font-medium text-gray-500 truncate">Pending Requests</dt>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">Inactive Doctors</dt>
                                             <dd class="flex items-baseline">
                                                 <div class="text-2xl font-semibold text-gray-900">0</div>
                                             </dd>

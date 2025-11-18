@@ -4,11 +4,11 @@
     <div class="flex flex-col h-full">
         <!-- Sidebar Header -->
         <div class="flex items-center justify-center p-4 border-b bg-blue-100 border-gray-200">
-            <a href="{{ route('organisation.dashboard') }}" class="flex items-center space-x-3">
+            <a href="{{ route('doctor.dashboard') }}" class="flex items-center space-x-3">
                 <img src="{{ asset('images/MyCareX_Logo.png') }}" alt="MyCareX Logo" class="w-10 h-10 rounded-lg">
                 <div class="flex flex-col">
                     <span class="text-lg font-semibold text-gray-900">MyCareX</span>
-                    <small class="text-[10px] font-normal text-gray-500">Provider Portal</small>
+                    <small class="text-[10px] font-normal text-gray-500">Doctor Portal</small>
                 </div>
             </a>
             <button id="sidebarCloseBtn" class="lg:hidden text-gray-500 hover:text-gray-700">
@@ -16,35 +16,27 @@
             </button>
         </div>
 
-        <!-- Organisation Info -->
+        <!-- Doctor Info -->
         <div class="p-4 border-b border-gray-200 bg-gray-50">
             <div class="flex items-start space-x-3">
                 <div class="flex-shrink-0">
                     <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                        <i class="fas fa-hospital text-blue-600 text-lg"></i>
+                        <i class="fas fa-user-doctor text-blue-600 text-lg"></i>
                     </div>
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-semibold text-gray-900 truncate">
-                        {{ Auth::guard('organisation')->user()->organisation_name ?? 'Organisation' }}
+                        Name
                     </p>
                     <p class="text-xs text-gray-500 truncate">
-                        {{ Auth::guard('organisation')->user()->organisation_type ?? 'Healthcare Provider' }}
+                        Healthcare Provider
                     </p>
 
-                    @if($isVerified)
-                        <span
-                            class="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            <i class="fas fa-check-circle text-[10px]"></i>
-                            Verified
-                        </span>
-                    @else
-                        <span
-                            class="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                            <i class="fas fa-clock text-[10px]"></i>
-                            Unverified
-                        </span>
-                    @endif
+                    <span
+                        class="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <i class="fas fa-user-doctor text-[10px]"></i>
+                        Specialist
+                    </span>
                 </div>
             </div>
         </div>
@@ -71,10 +63,9 @@
                 </a>
             </div>
 
-            @if ($isVerified)  
-            <!-- Doctors Section - Unverified providers -->
+            <!-- Patients Section -->
             <div class="pt-2">
-                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Doctors</p>
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Patients</p>
 
                 <a href="#"
                     class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
@@ -84,47 +75,42 @@
 
                 <a href="#"
                     class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-user-doctor w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">All Doctors</span>
+                    <i class="fas fa-users w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">All Patients</span>
                     <span
                         class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
                 </a>
 
                 <a href="#"
                     class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-plus w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Add Doctor</span>
+                    <i class="fas fa-file-medical w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">Medical Records</span>
                 </a>
             </div>
 
-            @else
-            <!-- Doctors Section - Unverified providers -->
+            <!-- Access & Permissions -->
             <div class="pt-2">
-                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Doctors
-                    <i class="fas fa-lock"></i>
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Access & Permissions
                 </p>
 
                 <a href="#"
-                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-search w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Search</span>
+                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-shield-halved w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">Permissions</span>
                 </a>
 
                 <a href="#"
-                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-user-doctor w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">All Doctors</span>
-                    <span
-                        class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
+                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-key w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">Request Access</span>
                 </a>
 
                 <a href="#"
-                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-plus w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Add Doctor</span>
+                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-history w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">Activity Log</span>
                 </a>
             </div>
-            @endif
 
             <!-- Settings -->
             <div class="pt-2">
@@ -132,8 +118,8 @@
 
                 <a href="#"
                     class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-building w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Organisation Profile</span>
+                    <i class="fas fa-user-doctor w-5 text-gray-400 group-hover:text-gray-600"></i>
+                    <span class="ml-3">My Profile</span>
                 </a>
 
                 <a href="#"
@@ -168,4 +154,4 @@
 <!-- Sidebar Overlay (for mobile) -->
 <div id="sidebarOverlay" class="fixed inset-0 bg-gray-950/50 z-40 hidden"></div>
 
-@vite('resources/js/main/organisation/sidebar.js')
+@vite('resources/js/main/doctor/sidebar.js')
