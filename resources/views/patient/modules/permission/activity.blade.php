@@ -55,7 +55,7 @@
                 </div>
 
                 <p class="text-sm text-gray-600 mb-6">
-                    This table shows all modifications made to your medical records by healthcare providers. Activities are tracked in real-time and displayed with the most recent changes first.
+                    This table shows all modifications made to your medical records by doctors. Activities are tracked in real-time and displayed with the most recent changes first.
                 </p>
 
                 @if (count($activities) > 0)
@@ -68,7 +68,7 @@
                                         Date & Time
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Provider
+                                        Doctor
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Action
@@ -98,7 +98,7 @@
                                                 </div>
                                                 <div class="ml-3">
                                                     <p class="text-sm font-medium text-gray-900">
-                                                        {{ $activity->provider_name ?? 'N/A' }}
+                                                        {{ $activity->doctor_name ?? 'N/A' }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -154,7 +154,7 @@
                         </div>
                         <p class="text-gray-600 font-medium text-lg">No activity history available</p>
                         <p class="text-sm text-gray-500 mt-2 max-w-md mx-auto">
-                            Activity tracking is not yet implemented. Once the modification tracking tables are created, all changes made by healthcare providers to your records will be displayed here.
+                            Activity tracking is not yet implemented. Once the modification tracking tables are created, all changes made by doctors to your records will be displayed here.
                         </p>
                         <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg max-w-2xl mx-auto">
                             <p class="text-sm text-blue-800">

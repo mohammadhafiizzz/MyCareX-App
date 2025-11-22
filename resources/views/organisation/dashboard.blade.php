@@ -23,7 +23,7 @@
     @include('organisation.components.sidebar')
 
     <!-- Main Content -->
-    <div class="lg:ml-68 transition-all duration-300 pt-[75px]" id="mainContent">
+    <div class="lg:ml-68 transition-all duration-300 mt-20" id="mainContent">
         <div class="bg-gray-100">
             <!-- Page Content -->
             <div class="py-6 px-4 sm:px-6 lg:px-8">

@@ -265,9 +265,9 @@ Route::prefix('patient')->group(function () {
                 Route::get('/', [Modules\Permission\PermissionController::class, 'index'])
                     ->name('patient.permission');
 
-                // Authorized Providers List
-                Route::get('/providers', [Modules\Permission\PermissionController::class, 'providers'])
-                    ->name('patient.permission.providers');
+                // Authorized Doctors List
+                Route::get('/doctors', [Modules\Permission\PermissionController::class, 'doctors'])
+                    ->name('patient.permission.doctors');
 
                 // Pending Requests List
                 Route::get('/requests', [Modules\Permission\PermissionController::class, 'requests'])
@@ -311,6 +311,13 @@ Route::prefix('organisation')->group(function () {
         // Organisation Dashboard
         Route::get('/dashboard', [Organisation\DashboardController::class, 'index'])
             ->name('organisation.dashboard');
+
+        // Doctor Management Routes
+        Route::prefix('/doctors')->group(function () {
+            // Doctor Management Page
+            Route::get('/', [Organisation\DashboardController::class, 'addDoctor'])
+                ->name('organisation.addDoctor');
+        });
     });
 });
 

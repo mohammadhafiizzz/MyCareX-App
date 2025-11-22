@@ -32,7 +32,7 @@
                 <li aria-current="page">
                     <div class="flex items-center">
                         <i class="fas fa-chevron-right text-gray-400 text-xs mx-2" aria-hidden="true"></i>
-                        <span class="text-sm font-medium text-gray-500">Authorised Providers</span>
+                        <span class="text-sm font-medium text-gray-500">Authorised Doctors</span>
                     </div>
                 </li>
             </ol>
@@ -53,7 +53,7 @@
             <h1 class="text-3xl font-bold text-gray-900">
                 Access Requests
             </h1>
-            <p class="mt-1 text-lg text-gray-700">Manage Review pending requests from healthcare providers.</p>
+            <p class="mt-1 text-lg text-gray-700">Manage Review pending requests from doctors.</p>
         </div>
 
         <!-- Requests List -->
@@ -72,7 +72,7 @@
                     <div class="bg-gradient-to-r from-amber-50 to-white border-2 border-amber-200 rounded-xl p-6 mb-4 hover:shadow-md transition-all duration-200">
                         <div class="flex items-start justify-between">
                             <div class="flex items-start gap-4 flex-1">
-                                <!-- Provider Avatar -->
+                                <!-- Doctor Avatar -->
                                 <div class="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
                                     <i class="fas fa-user-md text-amber-600 text-xl"></i>
                                 </div>
@@ -81,7 +81,7 @@
                                 <div class="flex-1">
                                     <div class="flex items-center gap-3 mb-2">
                                         <h3 class="text-lg font-semibold text-gray-900">
-                                            {{ $permission->provider->name ?? 'N/A' }}
+                                            {{ $permission->doctor->name ?? 'N/A' }}
                                         </h3>
                                         <span class="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">
                                             Pending Review
@@ -89,14 +89,14 @@
                                     </div>
 
                                     <p class="text-sm text-gray-600 mb-3">
-                                        {{ $permission->provider->specialty ?? 'Healthcare Provider' }}
+                                        {{ $permission->doctor->specialty ?? 'Healthcare Provider' }}
                                     </p>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                         <div class="text-sm">
                                             <span class="text-gray-500">Facility:</span>
                                             <span class="font-medium text-gray-900 ml-1">
-                                                {{ $permission->provider->facility_name ?? 'N/A' }}
+                                                {{ $permission->doctor->facility_name ?? 'N/A' }}
                                             </span>
                                         </div>
                                         <div class="text-sm">

@@ -45,34 +45,34 @@
             <p class="mt-1 text-lg text-gray-700">Manage healthcare providers with access to your medical records.</p>
         </div>
 
-        <!-- Providers List -->
+        <!-- Doctors List -->
         <section class="bg-white rounded-xl shadow-sm border border-gray-200">
             <div class="p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-2xl font-semibold text-gray-900">
-                        All Authorized Providers
+                        All Authorized Doctors
                     </h2>
                     <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-lg font-medium">
-                        {{ $providers->total() }} {{ Str::plural('Provider', $providers->total()) }}
+                        {{ $doctors->total() }} {{ Str::plural('Doctor', $doctors->total()) }}
                     </span>
                 </div>
 
-                @forelse ($providers as $permission)
+                @forelse ($doctors as $permission)
                     <div class="bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-6 mb-4 hover:shadow-md transition-all duration-200">
                         <div class="flex items-start justify-between">
                             <div class="flex items-start gap-4 flex-1">
-                                <!-- Provider Avatar -->
+                                <!-- Doctor Avatar -->
                                 <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                                     <i class="fas fa-user-md text-blue-600 text-xl"></i>
                                 </div>
 
-                                <!-- Provider Info -->
+                                <!-- Doctor Info -->
                                 <div class="flex-1">
                                     <h3 class="text-lg font-semibold text-gray-900 mb-1">
-                                        {{ $permission->provider->name ?? 'N/A' }}
+                                        {{ $permission->doctor->name ?? 'N/A' }}
                                     </h3>
                                     <p class="text-sm text-gray-600 mb-3">
-                                        {{ $permission->provider->specialty ?? 'Healthcare Provider' }}
+                                        {{ $permission->doctor->specialty ?? 'Healthcare Provider' }}
                                     </p>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
@@ -133,19 +133,19 @@
                 @empty
                     <div class="text-center py-16 bg-gray-50 rounded-lg">
                         <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-user-check text-blue-600 text-3xl"></i>
+                            <i class="fas fa-user-doctor text-blue-600 text-3xl"></i>
                         </div>
-                        <p class="text-gray-600 font-medium text-lg">No authorized providers found</p>
+                        <p class="text-gray-600 font-medium text-lg">No authorized doctors found</p>
                         <p class="text-sm text-gray-500 mt-2">
-                            No healthcare providers currently have access to your records
+                            No doctors currently have access to your records
                         </p>
                     </div>
                 @endforelse
 
                 <!-- Pagination -->
-                @if ($providers->hasPages())
+                @if ($doctors->hasPages())
                     <div class="mt-6 pt-6 border-t border-gray-200">
-                        {{ $providers->links() }}
+                        {{ $doctors->links() }}
                     </div>
                 @endif
             </div>

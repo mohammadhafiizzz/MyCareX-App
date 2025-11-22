@@ -90,7 +90,7 @@
                         class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
                 </a>
 
-                <a href="#"
+                <a href="{{ route('organisation.addDoctor') }}"
                     class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
                     <i class="fas fa-plus w-5 text-gray-400 group-hover:text-gray-600"></i>
                     <span class="ml-3">Add Doctor</span>

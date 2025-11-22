@@ -34,16 +34,16 @@ class PermissionController extends Controller
     }
     
     // Show all providers with access
-    public function providers() {
+    public function doctors() {
         $patient = Auth::guard('patient')->user();
         
-        $providers = Permission::where('patient_id', $patient->id)
+        $doctors = Permission::where('patient_id', $patient->id)
             ->where('status', 'Active')
-            ->with('provider')
+            ->with('doctors')
             ->orderBy('granted_at', 'desc')
             ->paginate(10);
         
-        return view('patient.modules.permission.providers', compact('providers'));
+        return view('patient.modules.permission.doctors', compact('doctors'));
     }
     
     // Show pending access requests
