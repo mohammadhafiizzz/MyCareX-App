@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
+            $table->morphs('user');
+            $table->nullableMorphs('record');
+            $table->enum('action', ['created', 'updated', 'deleted', 'viewed']);
+            $table->json('changes_made')->nullable();
             $table->timestamps();
         });
     }
