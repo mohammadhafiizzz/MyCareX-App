@@ -77,11 +77,11 @@
                 <a href="{{ route('patient.myrecords') }}" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
                     <i class="fas fa-file-medical-alt mr-3"></i>My Records
                 </a>
+                <a href="#" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
+                    <i class="fas fa-book-medical mr-3"></i>Medical History
+                </a>
                 <a href="{{ route('patient.permission') }}" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
                     <i class="fas fa-shield-halved mr-3"></i>Access & Permissions
-                </a>
-                <a href="#" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
-                    <i class="fas fa-life-ring mr-3"></i>Help
                 </a>
                 
                 <!-- Mobile Notifications -->
