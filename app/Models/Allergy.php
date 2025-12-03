@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Allergy extends Model
 {
-    // primary key
-    protected $primaryKey = 'id';
-
     // fillable fields
     protected $fillable = [
         'patient_id',
+        'doctor_id',
         'allergen',
         'allergy_type',
         'severity',
@@ -27,10 +26,18 @@ class Allergy extends Model
     ];
 
     /**
-     * Get the patient that owns the allergies.
+     * Get the patient that owns the allergy.
      */
-    public function patient()
+    public function patient(): BelongsTo
     {
-        return $this->belongsTo(Patient::class, 'patient_id', 'id');
+        return $this->belongsTo(Patient::class);
+    }
+
+    /**
+     * Get the doctor that diagnosed the allergy.
+     */
+    public function doctor(): BelongsTo
+    {
+        return $this->belongsTo(Doctor::class);
     }
 }

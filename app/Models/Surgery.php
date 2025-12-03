@@ -3,14 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Surgery extends Model
 {
-    // primary key
-    protected $primaryKey = 'id';
-
     // fillable fields
-    protected $fillable =[
+    protected $fillable = [
         'patient_id',
         'doctor_id',
         'procedure_name',
@@ -22,13 +20,11 @@ class Surgery extends Model
     ];
 
     // relationships
-    public function patient()
-    {
+    public function patient(): BelongsTo {
         return $this->belongsTo(Patient::class, 'patient_id');
     }
 
-    public function doctor()
-    {
+    public function doctor(): BelongsTo {
         return $this->belongsTo(Doctor::class, 'doctor_id');
     }
 }
