@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Surgery extends Model
 {
@@ -19,12 +18,13 @@ class Surgery extends Model
         'verification_status',
     ];
 
-    // relationships
-    public function patient(): BelongsTo {
+    // Get the patient that owns the condition.
+    public function patient() {
         return $this->belongsTo(Patient::class, 'patient_id');
     }
 
-    public function doctor(): BelongsTo {
+    // Get the doctor that diagnosed the condition.
+    public function doctor() {
         return $this->belongsTo(Doctor::class, 'doctor_id');
     }
 }

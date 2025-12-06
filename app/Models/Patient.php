@@ -86,28 +86,38 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
     }
 
     /*--- RELATIONSHIPS ---*/
-    public function medications()
-    {
+    // 1. Medications
+    public function medications() {
         return $this->hasMany(Medication::class);
     }
 
-    public function allergies()
-    {
+    // 2. Allergies
+    public function allergies() {
         return $this->hasMany(Allergy::class);
     }
 
-    public function labs()
-    {
+    // 3. Labs
+    public function labs() {
         return $this->hasMany(Lab::class);
     }
 
-    public function immunisations()
-    {
+    // 4. Immunisations
+    public function immunisations() {
         return $this->hasMany(Immunisation::class);
     }
 
-    public function conditions()
-    {
+    // 5. Conditions
+    public function conditions() {
         return $this->hasMany(Condition::class);
+    }
+
+    // 6. Surgeries
+    public function surgeries() {
+        return $this->hasMany(Surgery::class);
+    }
+
+    // 7. Hospitalisations
+    public function hospitalisations() {
+        return $this->hasMany(Hospitalisation::class);
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Emergency extends Model
 {
@@ -19,12 +17,12 @@ class Emergency extends Model
     ];
 
     // relationships
-    public function patient(): BelongsTo {
+    public function patient() {
         return $this->belongsTo(Patient::class, 'patient_id');
     }
 
     // morph to record
-    public function record(): MorphTo {
+    public function record() {
         return $this->morphTo();
     }
 }

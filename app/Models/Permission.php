@@ -24,14 +24,13 @@ class Permission extends Model
         'expiry_date' => 'date',
     ];
 
-    // Relationships
-    public function patient()
-    {
-        return $this->belongsTo(Patient::class);
+    // Get the patient that owns the condition.
+    public function patient() {
+        return $this->belongsTo(Patient::class, 'patient_id');
     }
 
-    public function provider()
-    {
-        return $this->belongsTo(HealthcareProvider::class, 'provider_id');
+    // Get the doctor that diagnosed the condition.
+    public function doctor() {
+        return $this->belongsTo(Doctor::class, 'doctor_id');
     }
 }

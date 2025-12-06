@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Activity extends Model
 {
@@ -29,11 +28,11 @@ class Activity extends Model
     public $timestamps = true;
 
     // relationships
-    public function user(): MorphTo {
+    public function user() {
         return $this->morphTo();
     }
 
-    public function record(): MorphTo {
+    public function record() {
         return $this->morphTo();
     }
 }

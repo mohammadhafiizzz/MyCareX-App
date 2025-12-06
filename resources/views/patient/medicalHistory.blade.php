@@ -60,10 +60,6 @@
                         </a>
                     </div>
 
-                    @php
-                        $recentSurgeries = [];
-                    @endphp
-
                     @forelse ($recentSurgeries as $surgery)
                         <div class="group bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-5 mb-4 hover:shadow-md transition-all duration-200">
                             <div class="flex items-start justify-between">
@@ -127,10 +123,6 @@
                             See All <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
-
-                    @php
-                        $recentHospitalisations = [];
-                    @endphp
 
                     @forelse ($recentHospitalisations as $hospitalisation)
                         <div class="group bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-5 mb-4 hover:shadow-md transition-all duration-200">

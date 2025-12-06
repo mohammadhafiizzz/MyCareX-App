@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Condition extends Model
 {
@@ -23,19 +22,13 @@ class Condition extends Model
         'diagnosis_date' => 'date:Y-m-d',
     ];
 
-    /**
-     * Get the patient that owns the condition.
-     */
-    public function patient(): BelongsTo
-    {
-        return $this->belongsTo(Patient::class);
+    // Get the patient that owns the condition.
+    public function patient() {
+        return $this->belongsTo(Patient::class, 'patient_id');
     }
 
-    /**
-     * Get the doctor that diagnosed the condition.
-     */
-    public function doctor(): BelongsTo
-    {
-        return $this->belongsTo(Doctor::class);
+    // Get the doctor that diagnosed the condition.
+    public function doctor() {
+        return $this->belongsTo(Doctor::class, 'doctor_id');
     }
 }
