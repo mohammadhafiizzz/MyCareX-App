@@ -257,26 +257,33 @@ Route::prefix('patient')->group(function () {
                     ->name('patient.lab.info');
 
             });
+        });
 
-            // Permission Routes (CRUD)
-            Route::prefix('/permissions')->group(function () {
+        // Medical History
+        Route::prefix('/medical-history')->group(function () {
+            // Medical History Page
+            Route::get('/', [Patient\DashboardController::class, 'medicalHistory'])
+                ->name('patient.medicalHistory');
+        });
 
-                // Permission Page
-                Route::get('/', [Modules\Permission\PermissionController::class, 'index'])
-                    ->name('patient.permission');
+        // Permission Routes
+        Route::prefix('/permissions')->group(function () {
 
-                // Authorized Doctors List
-                Route::get('/doctors', [Modules\Permission\PermissionController::class, 'doctors'])
-                    ->name('patient.permission.doctors');
+            // Permission Page
+            Route::get('/', [Modules\Permission\PermissionController::class, 'index'])
+                ->name('patient.permission');
 
-                // Pending Requests List
-                Route::get('/requests', [Modules\Permission\PermissionController::class, 'requests'])
-                    ->name('patient.permission.requests');
+            // Authorized Doctors List
+            Route::get('/doctors', [Modules\Permission\PermissionController::class, 'doctors'])
+                ->name('patient.permission.doctors');
 
-                // Activity History
-                Route::get('/activity', [Modules\Permission\PermissionController::class, 'activity'])
-                    ->name('patient.permission.activity');
-            });
+            // Pending Requests List
+            Route::get('/requests', [Modules\Permission\PermissionController::class, 'requests'])
+                ->name('patient.permission.requests');
+
+            // Activity History
+            Route::get('/activity', [Modules\Permission\PermissionController::class, 'activity'])
+                ->name('patient.permission.activity');
         });
     });
 });
