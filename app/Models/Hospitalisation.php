@@ -18,6 +18,12 @@ class Hospitalisation extends Model
         'verification_status',
     ];
 
+    // casts fields
+    protected $casts = [
+        'admission_date' => 'date:Y-m-d',
+        'discharge_date' => 'date:Y-m-d',
+    ];
+
     // Get the patient that owns the condition.
     public function patient() {
         return $this->belongsTo(Patient::class, 'patient_id');

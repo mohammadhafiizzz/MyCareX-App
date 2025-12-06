@@ -18,6 +18,11 @@ class Surgery extends Model
         'verification_status',
     ];
 
+    // casts fields
+    protected $casts = [
+        'procedure_date' => 'date:Y-m-d',
+    ];
+
     // Get the patient that owns the condition.
     public function patient() {
         return $this->belongsTo(Patient::class, 'patient_id');
