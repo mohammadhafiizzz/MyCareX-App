@@ -264,6 +264,33 @@ Route::prefix('patient')->group(function () {
             // Medical History Page
             Route::get('/', [Patient\DashboardController::class, 'medicalHistory'])
                 ->name('patient.medicalHistory');
+
+            // Surgery History Page
+            Route::prefix('/surgery')->group(function () {
+                // Surgery History Page
+                Route::get('/', [Modules\Surgery\SurgeryController::class, 'index'])
+                    ->name('patient.surgery');
+
+                // Add Surgery
+                Route::post('/add', [Modules\Surgery\AddSurgeryController::class, 'add'])
+                    ->name('patient.surgery.add');
+
+                // Get Surgery JSON (for edit form)
+                Route::get('/{surgery}/json', [Modules\Surgery\SurgeryController::class, 'getSurgeryJson'])
+                    ->name('patient.surgery.json');
+
+                // Update Surgery
+                Route::put('/{surgery}', [Modules\Surgery\UpdateSurgeryController::class, 'update'])
+                    ->name('patient.surgery.update');
+
+                // Delete Surgery
+                Route::delete('/{surgery}', [Modules\Surgery\DeleteSurgeryController::class, 'delete'])
+                    ->name('patient.surgery.delete');
+
+                // Surgery More Info (placeholder for future)
+                // Route::get('/{surgery}', [Modules\Surgery\SurgeryController::class, 'moreInfo'])
+                //     ->name('patient.surgery.info');
+            });
         });
 
         // Permission Routes

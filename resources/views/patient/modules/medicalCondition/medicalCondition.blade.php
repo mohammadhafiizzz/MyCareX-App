@@ -113,7 +113,7 @@
 
                 @forelse ($conditions as $condition)
                     <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-severity="{{ $condition['severityData'] }}" data-status="{{ $condition['statusData'] }}">
-                        <span class="absolute inset-y-0 left-0 w-1 bg-blue-500" aria-hidden="true"></span>
+                        <span class="absolute inset-y-0 left-0 w-1" aria-hidden="true"></span>
                         <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                             <div class="flex-1">
                                 <div class="flex flex-col sm:flex-row sm:items-start sm:gap-4">
@@ -209,6 +209,7 @@
             </div>
         </section>
 
+        <!-- TODO: combine with the above (all records) for UX enhancements -->
         @if ($totalConditions > 0)
             {{-- Timeline View --}}
             <section class="bg-white rounded-xl shadow-sm border border-gray-200" id="conditions-timeline" aria-labelledby="conditions-timeline-heading">
