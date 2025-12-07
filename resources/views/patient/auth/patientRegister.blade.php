@@ -42,7 +42,7 @@
         @endif
 
         <!-- Registration Form -->
-        <div class="bg-white rounded-lg sm:rounded-xl shadow-md p-6 sm:p-8 lg:p-12">
+        <div class="border border-gray-200 bg-white rounded-md sm:rounded-xl shadow-md p-6 sm:p-8 lg:p-12">
             <div class="text-center mb-6 sm:mb-8">
                 <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Sign Up for MyCareX</h1>
                 <p class="text-sm sm:text-base text-gray-600 mt-2">Create an account or <a href="{{ route('patient.login') }}" class="text-blue-600 hover:underline">log in</a></p>
