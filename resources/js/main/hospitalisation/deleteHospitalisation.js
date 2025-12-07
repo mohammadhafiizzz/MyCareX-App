@@ -1,14 +1,14 @@
 /**
- * Delete Surgery Handler
+ * Delete Hospitalisation Handler
  * 
- * Handles surgery deletion with permission checks.
+ * Handles hospitalisation deletion with permission checks.
  * Prevents deletion of provider-created records.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
 
     // Attach listeners to all delete buttons
-    const deleteButtons = document.querySelectorAll('.delete-surgery-btn');
+    const deleteButtons = document.querySelectorAll('.delete-hospitalisation-btn');
 
     deleteButtons.forEach(button => {
         button.addEventListener('click', async (e) => {
@@ -20,12 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            const surgeryId = button.dataset.id;
-            const procedureName = button.dataset.procedure || 'this surgery';
+            const hospitalisationId = button.dataset.id;
+            const reason = button.dataset.reason || 'this hospitalisation';
             
             // Show confirmation dialog
             const confirmed = confirm(
-                `Are you sure you want to delete "${procedureName}"?\n\n` +
+                `Are you sure you want to delete "${reason}"?\n\n` +
                 'This action cannot be undone.'
             );
             
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
             try {
-                const response = await fetch(`/patient/medical-history/surgery/${surgeryId}`, {
+                const response = await fetch(`/patient/medical-history/hospitalisation/${hospitalisationId}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken,
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 // Check if response is a redirect (Laravel returns HTML for redirects)
-                if (response.redirected || response.url.includes('/patient/medical-history/surgery')) {
+                if (response.redirected || response.url.includes('/patient/medical-history/hospitalisation')) {
                     // Follow the redirect
                     window.location.href = response.url;
                     return;
@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Success - redirect to surgery page
-                    window.location.href = '/patient/medical-history/surgery';
+                    // Success - redirect to hospitalisation page
+                    window.location.href = '/patient/medical-history/hospitalisation';
                 } else {
                     // Handle errors
-                    let errorMessage = 'Failed to delete surgery.';
+                    let errorMessage = 'Failed to delete hospitalisation.';
                     
                     if (data.message) {
                         errorMessage = data.message;
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     button.innerHTML = originalButtonContent;
                 }
             } catch (error) {
-                console.error('Error deleting surgery:', error);
+                console.error('Error deleting hospitalisation:', error);
                 alert('A network error occurred. Please check your connection and try again.');
                 
                 // Restore button state
@@ -94,28 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    /**
-     * Show success toast notification
-     */
-    function showSuccessToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'fixed top-20 right-4 bg-green-50 border border-green-200 text-green-800 px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3 animate-slide-in';
-        toast.innerHTML = `
-            <i class="fas fa-check-circle text-green-600"></i>
-            <p class="font-semibold">${message}</p>
-            <button class="ml-4 text-green-600 hover:text-green-800" onclick="this.parentElement.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-        `;
-        
-        document.body.appendChild(toast);
-        
-        // Auto remove after 5 seconds
-        setTimeout(() => {
-            toast.remove();
-        }, 5000);
-    }
 
     /**
      * Show permission denied toast notification

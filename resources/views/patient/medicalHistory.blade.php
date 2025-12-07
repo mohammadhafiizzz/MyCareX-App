@@ -53,7 +53,7 @@
                             <i class="fas fa-procedures text-blue-600" aria-hidden="true"></i>
                             Recent Surgeries
                         </h2>
-                        <a href="#" 
+                        <a href="{{ route('patient.surgery') }}" 
                            aria-label="View all surgeries"
                            class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
                             See All <i class="fas fa-arrow-right ml-1"></i>
@@ -117,7 +117,7 @@
                             <i class="fas fa-hospital text-blue-600" aria-hidden="true"></i>
                             Recent Hospitalisations
                         </h2>
-                        <a href="#" 
+                        <a href="{{ route('patient.hospitalisation') }}" 
                            aria-label="View all hospitalisations"
                            class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
                             See All <i class="fas fa-arrow-right ml-1"></i>

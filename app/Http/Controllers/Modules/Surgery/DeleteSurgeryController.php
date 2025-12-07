@@ -39,10 +39,7 @@ class DeleteSurgeryController extends Controller
         // Delete the surgery
         $surgery->delete();
 
-        // Return JSON response
-        return response()->json([
-            'success' => true,
-            'message' => 'Surgery record deleted successfully'
-        ], 200);
+        // Redirect to surgery page with success message
+        return redirect()->route('patient.surgery')->with('message', 'Surgery record deleted successfully');
     }
 }

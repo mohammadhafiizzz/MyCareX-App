@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>MyCareX - Surgery</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
@@ -57,7 +58,7 @@
                         data-surgery-id="{{ $surgery->id }}"
                         data-provider-created="{{ $surgery->doctor_id !== null ? 'true' : 'false' }}"
                         data-doctor-id="{{ $surgery->doctor_id }}">
-                        <span class="absolute inset-y-0 left-0 w-1 bg-blue-500" aria-hidden="true"></span>
+                        <span class="absolute inset-y-0 left-0 w-1" aria-hidden="true"></span>
                         <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                             <div class="flex-1">
                                 <div class="flex flex-col sm:flex-row sm:items-start sm:gap-4">
@@ -105,22 +106,7 @@
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">
-                                <button 
-                                    type="button" 
-                                    class="edit-surgery-btn inline-flex gap-2 items-center justify-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 text-sm font-medium hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-                                    data-id="{{ $surgery->id }}">
-                                    <i class="fas fa-pen-to-square" aria-hidden="true"></i>
-                                    Edit
-                                </button>
-                                <button 
-                                    type="button" 
-                                    class="delete-surgery-btn inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-red-600 rounded-lg border border-red-200 text-sm font-medium hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2"
-                                    data-id="{{ $surgery->id }}"
-                                    data-procedure="{{ $surgery->procedure_name }}">
-                                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
-                                    Delete
-                                </button>
-                                <a href="#" class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                <a href="{{ route('patient.surgery.info', $surgery->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
                                     <i class="fas fa-info-circle" aria-hidden="true"></i>
                                     More info
                                 </a>

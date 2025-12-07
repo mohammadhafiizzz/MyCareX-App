@@ -287,9 +287,36 @@ Route::prefix('patient')->group(function () {
                 Route::delete('/{surgery}', [Modules\Surgery\DeleteSurgeryController::class, 'delete'])
                     ->name('patient.surgery.delete');
 
-                // Surgery More Info (placeholder for future)
-                // Route::get('/{surgery}', [Modules\Surgery\SurgeryController::class, 'moreInfo'])
-                //     ->name('patient.surgery.info');
+                // Surgery More Info
+                Route::get('/{surgery}', [Modules\Surgery\SurgeryController::class, 'moreInfo'])
+                    ->name('patient.surgery.info');
+            });
+
+            // Hospitalisation History Page
+            Route::prefix('/hospitalisation')->group(function () {
+                // Hospitalisation History Page
+                Route::get('/', [Modules\Hospitalisation\HospitalisationController::class, 'index'])
+                    ->name('patient.hospitalisation');
+
+                // Add Hospitalisation
+                Route::post('/add', [Modules\Hospitalisation\AddHospitalisationController::class, 'add'])
+                    ->name('patient.hospitalisation.add');
+
+                // Get Hospitalisation JSON (for edit form)
+                Route::get('/{hospitalisation}/json', [Modules\Hospitalisation\HospitalisationController::class, 'getHospitalisationJson'])
+                    ->name('patient.hospitalisation.json');
+
+                // Update Hospitalisation
+                Route::put('/{hospitalisation}', [Modules\Hospitalisation\UpdateHospitalisationController::class, 'update'])
+                    ->name('patient.hospitalisation.update');
+
+                // Delete Hospitalisation
+                Route::delete('/{hospitalisation}', [Modules\Hospitalisation\DeleteHospitalisationController::class, 'delete'])
+                    ->name('patient.hospitalisation.delete');
+
+                // Hospitalisation More Info
+                Route::get('/{hospitalisation}', [Modules\Hospitalisation\HospitalisationController::class, 'moreInfo'])
+                    ->name('patient.hospitalisation.info');
             });
         });
 
