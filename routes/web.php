@@ -339,6 +339,30 @@ Route::prefix('patient')->group(function () {
             Route::get('/activity', [Modules\Permission\PermissionController::class, 'activity'])
                 ->name('patient.permission.activity');
         });
+
+        // Emergency Kit
+        Route::prefix('/emergency-kit')->group(function () {
+
+            // Emergency Kit Main Page
+            Route::get('/', [Modules\EmergencyKit\EmergencyKitController::class, 'index'])
+            ->name('patient.emergency-kit.index');
+
+            // Create Emergency Kit Item Page
+            Route::get('/create', [Modules\EmergencyKit\EmergencyKitController::class, 'create'])
+            ->name('patient.emergency-kit.create');
+
+            // Store Emergency Kit Item
+            Route::post('/', [Modules\EmergencyKit\EmergencyKitController::class, 'store'])
+            ->name('patient.emergency-kit.store');
+
+            // Delete Emergency Kit Item
+            Route::delete('/{id}', [Modules\EmergencyKit\EmergencyKitController::class, 'destroy'])
+            ->name('patient.emergency-kit.destroy');
+
+            // Fetch Records for Emergency Kit
+            Route::get('/fetch-records', [Modules\EmergencyKit\EmergencyKitController::class, 'fetchRecords'])
+            ->name('patient.emergency-kit.fetch-records');
+        });
     });
 });
 

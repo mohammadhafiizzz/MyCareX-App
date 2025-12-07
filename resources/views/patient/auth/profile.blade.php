@@ -361,6 +361,9 @@
     <!-- Javascript -->
     @vite(['resources/js/main/patient/patientProfile.js'])
     @vite(['resources/js/main/patient/header.js'])
+
+    <!-- Emergency Kit Floating Action Button -->
+    @include('patient.components.emergencyFab')
 </body>
 
 </html>

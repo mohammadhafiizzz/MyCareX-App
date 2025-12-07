@@ -30,14 +30,14 @@ class LoginController extends Controller
         if (Auth::guard('patient')->attempt($credentials, $remember)) {
             $patient = Auth::guard('patient')->user();
             
-            // Check email verification if using MustVerifyEmail
-            if ($patient instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$patient->hasVerifiedEmail()) {
+            // Check email verification
+            if (!$patient->hasVerifiedEmail()) {
                 Auth::guard('patient')->logout();
                 RateLimiter::hit($this->throttleKey($request));
                 
                 return back()
                     ->withInput($request->only('ic_number'))
-                    ->with('login_error', 'Please verify your email address before logging in.');
+                    ->with('error', 'Please verify your email address before logging in');
             }
 
             RateLimiter::clear($this->throttleKey($request));
@@ -55,7 +55,7 @@ class LoginController extends Controller
 
         return back()
             ->withInput($request->only('ic_number'))
-            ->with('login_error', 'The IC number or password is incorrect.');
+            ->with('error', 'The IC number or password is incorrect');
     }
 
     // Handle Logout

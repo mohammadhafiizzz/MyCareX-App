@@ -504,6 +504,9 @@
 
     @vite(['resources/js/main/patient/header.js'])
     @include('patient.components.footer')
+
+    <!-- Emergency Kit Floating Action Button -->
+    @include('patient.components.emergencyFab')
 </body>
 
 </html>
