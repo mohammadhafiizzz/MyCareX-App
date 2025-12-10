@@ -121,7 +121,7 @@
     </main>
 
     <!-- Copyright footer -->
-    <footer class="text-center mt-6 sm:mt-8 mb-6 sm:mb-10 pb-4 px-4">
+    <footer class="text-center mt-5 sm:mt-6 mb-6 sm:mb-10 pb-4 px-4">
         <p class="text-xs text-gray-500">&copy; {{ date('Y') }} MyCareX. All rights reserved.</p>
     </footer>
 
