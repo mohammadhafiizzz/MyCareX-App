@@ -34,85 +34,134 @@
 
         @include('patient.components.recordNav')
 
-        @if ($totalConditions > 0)
-        {{-- Filters & Quick Actions --}}
-        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="conditions-controls-heading">
-            <div class="p-6 space-y-6">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        {{-- Medical Conditions List with Integrated Filters --}}
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="conditions-heading">
+            <div class="p-6">
+                {{-- Header with Actions --}}
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                     <div>
-                        <h2 id="conditions-controls-heading" class="text-xl font-semibold text-gray-900">Manage Medical Conditions</h2>
-                        <p class="mt-1 text-sm text-gray-600">Filter and organise your records to focus on what needs attention today.</p>
+                        <h2 id="conditions-heading" class="text-xl font-semibold text-gray-900">Medical Conditions</h2>
+                        <p class="mt-1 text-sm text-gray-600">Filter and manage your health records with ease.</p>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-2">
+                    <div class="flex flex-wrap gap-2">
+                        @if ($totalConditions > 0)
+                            <button 
+                                type="button" 
+                                id="toggle-filters-btn"
+                                class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
+                                <i class="fas fa-filter" aria-hidden="true"></i>
+                                <span>Filters</span>
+                            </button>
+                            <a href="{{ route('patient.condition.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all conditions as PDF" title="Export your complete condition history as PDF">
+                                <i class="fas fa-download" aria-hidden="true"></i>
+                                <span class="hidden sm:inline">Export</span>
+                            </a>
+                        @endif
                         <button 
                             type="button" 
                             id="show-add-condition-modal"
-                            class="inline-flex justify-center items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                            class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                             Add New
                         </button>
                     </div>
                 </div>
 
-                <div class="space-y-5">
-                    <div>
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500">Severity</h3>
-                        <div class="mt-2 flex flex-wrap gap-2" role="list">
-                            @foreach ($severityOptions as $option)
-                                <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border {{ $loop->first ? 'bg-blue-50 border-blue-400 text-blue-800' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50' }} text-sm font-medium transition" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-label="Filter by {{ $option }} severity">
-                                    <i class="fas fa-circle text-xs {{ $severityFilterColors[$option] ?? 'text-blue-500' }}" aria-hidden="true"></i>
-                                    {{ $option }}
-                                </button>
-                            @endforeach
+                @if ($totalConditions > 0)
+                    {{-- Search Bar --}}
+                    <div class="mb-4">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400" aria-hidden="true"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="condition-search"
+                                placeholder="Search by condition name..."
+                                class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-md text-sm leading-4 text-gray-700 bg-white hover:bg-gray-50"
+                                aria-label="Search conditions"
+                            >
+                            <button 
+                                type="button" 
+                                id="clear-search"
+                                class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded-full transition-all duration-200"
+                                aria-label="Clear search">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
-                    <div>
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500">Status</h3>
-                        <div class="mt-2 flex flex-wrap gap-2" role="list">
-                            @foreach ($statusOptions as $option)
-                                <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border {{ $loop->first ? 'bg-blue-50 border-blue-400 text-blue-800' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50' }} text-sm font-medium transition" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-label="Filter by {{ $option }} status">
-                                    <i class="fas {{ $statusFilterIcons[$option] ?? 'fa-circle text-blue-500' }}" aria-hidden="true"></i>
-                                    {{ $option }}
+
+                    {{-- Filters Section (Hidden by default) --}}
+                    <div id="filters-section" class="hidden mb-6 pb-6 border-b border-gray-200">
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Severity</h3>
+                                <div class="flex flex-wrap gap-2" role="list">
+                                    @foreach ($severityOptions as $option)
+                                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border {{ $loop->first ? 'bg-blue-500/10 backdrop-blur-sm border-blue-400/30 text-blue-700 shadow-sm' : 'bg-gray-100/60 backdrop-blur-sm border-white/20 text-gray-700 hover:bg-gray-200/80 hover:shadow-md' }} text-sm font-medium transition-all duration-200" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-label="Filter by {{ $option }} severity">
+                                            {{ $option }}
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Status</h3>
+                                <div class="flex flex-wrap gap-2" role="list">
+                                    @foreach ($statusOptions as $option)
+                                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border {{ $loop->first ? 'bg-blue-500/10 backdrop-blur-sm border-blue-400/30 text-blue-700 shadow-sm' : 'bg-gray-100/60 backdrop-blur-sm border-white/20 text-gray-700 hover:bg-gray-200/80 hover:shadow-md' }} text-sm font-medium transition-all duration-200" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-label="Filter by {{ $option }} status">
+                                            {{ $option }}
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs text-gray-500 flex items-center gap-2">
+                                    <i class="fas fa-lightbulb text-gray-500" aria-hidden="true"></i>
+                                    <span>Combine filters to find specific conditions</span>
+                                </p>
+                                <button type="button" id="reset-all-filters" class="inline-flex items-center gap-2 px-3 py-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50/50 backdrop-blur-sm rounded-lg text-sm font-medium transition-all duration-200">
+                                    <i class="fas fa-redo text-xs" aria-hidden="true"></i>
+                                    Reset
                                 </button>
-                            @endforeach
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <div class="flex items-center gap-3 text-sm text-gray-600">
-                        <i class="fas fa-filter text-blue-500" aria-hidden="true"></i>
-                        <span>Tip: Combine filters to target conditions that need urgent attention.</span>
+                    {{-- Conditions List Header with Pagination --}}
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                        <p class="text-sm text-gray-500" id="conditions-count">
+                            Showing <span class="font-medium text-gray-900">{{ count($conditions) }}</span> condition{{ count($conditions) !== 1 ? 's' : '' }}
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-2 text-xs text-gray-500">
+                                <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                                <span class="hidden sm:inline">Most recent first</span>
+                            </div>
+                            <div id="pagination-controls" class="flex items-center gap-2">
+                                <button 
+                                    type="button" 
+                                    id="prev-page"
+                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                    disabled>
+                                    <i class="fas fa-chevron-left text-xs" aria-hidden="true"></i>
+                                    <span class="hidden sm:inline">Previous</span>
+                                </button>
+                                <span class="text-sm text-gray-600 px-3 py-1.5 bg-gray-100/50 backdrop-blur-sm rounded-lg font-medium" id="page-info">Page 1 of 1</span>
+                                <button 
+                                    type="button" 
+                                    id="next-page"
+                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                    disabled>
+                                    <span class="hidden sm:inline">Next</span>
+                                    <i class="fas fa-chevron-right text-xs" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex flex-wrap gap-2">
-                        <button type="button" id="reset-all-filters" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 text-sm font-medium hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2">
-                            <i class="fas fa-redo" aria-hidden="true"></i>
-                            Reset filters
-                        </button>
-                        <a href="{{ route('patient.condition.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2" aria-label="Download all conditions as PDF" title="Export your complete condition history as PDF">
-                            <i class="fas fa-download" aria-hidden="true"></i>
-                            <span class="hidden sm:inline">Export PDF</span>
-                            <span class="sm:hidden">Export</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        @endif
+                @endif
 
-        {{-- Medical Conditions List --}}
-        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="conditions-heading">
-            <div class="p-6" id="conditions-list">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                    <div>
-                        <h2 id="conditions-heading" class="text-xl font-semibold text-gray-900">Medical Conditions</h2>
-                        <p class="mt-1 text-sm text-gray-600">Highlights severity, status, and the latest updates for quick review.</p>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm text-gray-500">
-                        <i class="fas fa-info-circle text-blue-500" aria-hidden="true"></i>
-                        <span>Sorted by most recent activity</span>
-                    </div>
-                </div>
+                {{-- Conditions List --}}
+                <div id="conditions-list">
 
                 @forelse ($conditions as $condition)
                     <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-severity="{{ $condition['severityData'] }}" data-status="{{ $condition['statusData'] }}">
@@ -161,9 +210,63 @@
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">
-                                <a href="{{ route('patient.condition.info', $condition['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                <a href="{{ route('patient.condition.info', $condition['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                                     <i class="fas fa-info-circle" aria-hidden="true"></i>
                                     More info
+                                </a>
+                                <button type="button" 
+                                    onclick="toggleActivity({{ $condition['data']->id }})"
+                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                                    <span class="activity-toggle-text">Show activity</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Recent Activity Section (collapsed by default) --}}
+                        <div id="activity-{{ $condition['data']->id }}" class="hidden mt-6 pt-6 border-t border-gray-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                                    <i class="fas fa-clock-rotate-left text-blue-500" aria-hidden="true"></i>
+                                    Recent Activity
+                                </h4>
+                                <span class="text-xs text-gray-500">Last 5 updates</span>
+                            </div>
+                            
+                            {{-- Activity Timeline --}}
+                            <div class="space-y-3">
+                                {{-- Example activity items - You'll need to pass actual activity data from controller --}}
+                                @if(isset($condition['recentActivity']) && count($condition['recentActivity']) > 0)
+                                    @foreach($condition['recentActivity'] as $activity)
+                                        <div class="flex gap-3 text-sm">
+                                            <div class="flex-shrink-0 mt-0.5">
+                                                <div class="w-2 h-2 rounded-full {{ $activity['dotColor'] ?? 'bg-blue-500' }}"></div>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-gray-900">
+                                                    <span class="font-medium">{{ $activity['action'] }}</span>
+                                                    @if(isset($activity['details']))
+                                                        <span class="text-gray-600"> – {{ $activity['details'] }}</span>
+                                                    @endif
+                                                </p>
+                                                <p class="text-gray-500 text-xs mt-0.5">{{ $activity['timestamp'] }}</p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="text-center py-6 text-gray-500">
+                                        <i class="fas fa-inbox text-2xl mb-2 text-gray-400" aria-hidden="true"></i>
+                                        <p class="text-sm">No recent activity to display</p>
+                                        <p class="text-xs mt-1">Updates will appear here when any modifications are made to this record</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{-- View Full History Link --}}
+                            <div class="mt-4 pt-4 border-t border-gray-100">
+                                <a href="#" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700">
+                                    <span>View full activity history</span>
+                                    <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </div>
@@ -203,80 +306,39 @@
                             </ul>
                         </div>
 
-                        <button type="button" onclick="document.getElementById('add-condition-modal')?.classList.remove('hidden'); document.getElementById('add-condition-modal')?.classList.add('flex'); document.body.classList.add('overflow-hidden');" class="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-lg text-base font-semibold hover:bg-blue-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
+                        <button type="button" onclick="document.getElementById('add-condition-modal')?.classList.remove('hidden'); document.getElementById('add-condition-modal')?.classList.add('flex'); document.body.classList.add('overflow-hidden');" class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white rounded-2xl text-base font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
                             <i class="fas fa-plus-circle" aria-hidden="true"></i>
                             Add your first condition
                         </button>
                     </div>
                 @endforelse
+                
+                {{-- No Results After Filtering --}}
+                <div id="no-filter-results" class="hidden text-center py-12">
+                    <i class="fas fa-filter text-gray-300 text-5xl mb-4" aria-hidden="true"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">No conditions match your filters</h3>
+                    <p class="text-sm text-gray-600 mb-4">Try adjusting or resetting your filter selections</p>
+                    <button type="button" id="reset-filters-from-empty" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200">
+                        <i class="fas fa-redo" aria-hidden="true"></i>
+                        Reset filters
+                    </button>
+                </div>
+                
+                {{-- No Results After Search --}}
+                <div id="no-search-results" class="hidden text-center py-12">
+                    <i class="fas fa-search text-gray-300 text-5xl mb-4" aria-hidden="true"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">No conditions found</h3>
+                    <p class="text-sm text-gray-600 mb-4">We couldn't find any conditions matching your search</p>
+                    <button type="button" onclick="document.getElementById('condition-search').value = ''; document.getElementById('clear-search').click();" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                        Clear search
+                    </button>
+                </div>
+                </div>
             </div>
         </section>
 
-        <!-- TODO: combine with the above (all records) for UX enhancements -->
-        @if ($totalConditions > 0)
-            {{-- Timeline View --}}
-            <section class="bg-white rounded-xl shadow-sm border border-gray-200" id="conditions-timeline" aria-labelledby="conditions-timeline-heading">
-                <div class="p-6">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                        <div>
-                            <h2 id="conditions-timeline-heading" class="text-xl font-semibold text-gray-900">Health Timeline</h2>
-                            <p class="mt-1 text-sm text-gray-600">Review significant updates in chronological order to spot trends and progress.</p>
-                        </div>
-                        <div class="flex items-center gap-2 text-sm text-gray-500">
-                            <i class="fas fa-stream text-blue-500" aria-hidden="true"></i>
-                            <span>Showing latest 6 updates</span>
-                        </div>
-                    </div>
 
-                    <div class="relative mt-6">
-                        <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-200" aria-hidden="true"></div>
-                        <div class="space-y-6">
-                            @foreach ($timelineConditions as $timelineCondition)
-                                <div class="relative flex gap-4">
-                                    <div class="flex-shrink-0 w-12 h-12 bg-white rounded-full border-4 border-white shadow flex items-center justify-center">
-                                        <span class="w-3 h-3 rounded-full {{ $timelineCondition['severityBorder'] }}" aria-hidden="true"></span>
-                                    </div>
-                                    <div class="flex-1 bg-gray-50 rounded-xl border border-gray-200 p-5">
-                                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                                            <div class="flex items-center gap-3">
-                                                <i class="fas fa-heartbeat {{ $timelineCondition['severityIcon'] }}" aria-hidden="true"></i>
-                                                <h3 class="text-base font-semibold text-gray-900">{{ $timelineCondition['data']->condition_name }}</h3>
-                                            </div>
-                                            <span class="inline-flex items-center gap-2 text-xs font-medium text-gray-500">
-                                                <i class="far fa-calendar-alt" aria-hidden="true"></i>
-                                                {{ $timelineCondition['dateLabel'] }}
-                                            </span>
-                                        </div>
-                                        @if ($timelineCondition['data']->description)
-                                            <p class="mt-3 text-sm text-gray-600">
-                                                {{ \Illuminate\Support\Str::limit($timelineCondition['data']->description, 160, '…') }}
-                                            </p>
-                                        @endif
-                                        <div class="mt-3 flex flex-wrap gap-2">
-                                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {{ $timelineCondition['statusBadge'] }}" role="status">
-                                                <span class="sr-only">Status:</span>
-                                                {{ $timelineCondition['data']->status ?? 'Not set' }}
-                                            </span>
-                                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border border-gray-200 text-gray-600 bg-white" role="status">
-                                                <span class="sr-only">Severity:</span>
-                                                {{ $timelineCondition['data']->severity ?? 'Undefined' }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <div class="mt-6 text-center">
-                        <a href="#conditions-list" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
-                            <i class="fas fa-arrow-up" aria-hidden="true"></i>
-                            Back to conditions list
-                        </a>
-                    </div>
-                </div>
-            </section>
-        @endif
     </div>
 
     <!-- Add Condition Form -->
@@ -287,6 +349,10 @@
     @vite(['resources/js/main/medicalCondition/addConditionForm.js'])
     @vite(['resources/js/main/medicalCondition/editConditionForm.js'])
     @vite(['resources/js/main/medicalCondition/conditionFilter.js'])
+    @vite(['resources/js/main/medicalCondition/activityToggle.js'])
+    @vite(['resources/js/main/medicalCondition/filterToggle.js'])
+    @vite(['resources/js/main/medicalCondition/conditionPagination.js'])
+
     @include('patient.components.footer')
 
     <!-- Emergency Kit Floating Action Button -->

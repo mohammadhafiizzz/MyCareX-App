@@ -18,7 +18,11 @@ class MedicalConditionController extends Controller
         }
 
         // Condition model to find all records for this patient
-        $conditions = Condition::where('patient_id', $patientId)->get();
+        // Sort by updated_at DESC to show most recently edited/updated records first
+        // This ensures that any record with recent activity appears at the top
+        $conditions = Condition::where('patient_id', $patientId)
+            ->orderByRaw('updated_at DESC, created_at DESC')
+            ->get();
 
         // Process each condition with styling data
         $processedConditions = $conditions->map(function ($condition) {
