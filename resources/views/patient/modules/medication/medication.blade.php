@@ -291,6 +291,9 @@
     <!-- Javascript and Footer -->
     @vite(['resources/js/main/patient/header.js', 'resources/js/main/medication/addMedicationForm.js'])
     @include('patient.components.footer')
+
+    <!-- Emergency Kit Floating Action Button -->
+    @include('patient.components.emergencyFab')
 </body>
 
 </html>

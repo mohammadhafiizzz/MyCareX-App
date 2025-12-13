@@ -55,7 +55,7 @@
             
             <!-- Patient Summary Card -->
             <div class="lg:col-span-1">
-                <div class="bg-white overflow-hidden shadow rounded-lg border-t-4 border-red-600">
+                <div class="bg-white overflow-hidden shadow rounded-lg">
                     <div class="px-4 py-5 sm:p-6">
                         <div class="flex items-center space-x-5">
                             <div class="flex-shrink-0">
@@ -108,7 +108,7 @@
                 <div class="bg-white shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                         <h3 class="text-base font-semibold leading-6 text-gray-900">
-                            <i class="fas fa-heart-pulse text-red-500 mr-2"></i> Critical Conditions
+                            <i class="fas fa-heart-pulse text-blue-600 mr-2"></i> Critical Conditions
                         </h3>
                     </div>
                     <ul role="list" class="divide-y divide-gray-200">
@@ -136,7 +136,7 @@
                 <div class="bg-white shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                         <h3 class="text-base font-semibold leading-6 text-gray-900">
-                            <i class="fas fa-pills text-blue-500 mr-2"></i> Current Medications
+                            <i class="fas fa-pills text-blue-600 mr-2"></i> Current Medications
                         </h3>
                     </div>
                     <ul role="list" class="divide-y divide-gray-200">
@@ -164,7 +164,7 @@
                 <div class="bg-white shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                         <h3 class="text-base font-semibold leading-6 text-gray-900">
-                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i> Allergies
+                            <i class="fas fa-allergies text-blue-600 mr-2"></i> Allergies
                         </h3>
                     </div>
                     <ul role="list" class="divide-y divide-gray-200">

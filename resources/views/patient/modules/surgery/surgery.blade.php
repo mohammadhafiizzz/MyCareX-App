@@ -173,5 +173,8 @@
     @vite(['resources/js/main/surgery/surgeryPermissions.js'])
     @include('patient.components.footer')
 
+    <!-- Emergency Kit Floating Action Button -->
+    @include('patient.components.emergencyFab')
+
 </body>
 </html>

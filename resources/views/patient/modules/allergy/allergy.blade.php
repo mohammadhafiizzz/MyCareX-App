@@ -291,5 +291,8 @@
     @vite(['resources/js/main/allergy/allergyFilter.js'])
     @include('patient.components.footer')
 
+    <!-- Emergency Kit Floating Action Button -->
+    @include('patient.components.emergencyFab')
+
 </body>
 </html>
