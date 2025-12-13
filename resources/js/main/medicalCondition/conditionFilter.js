@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateButtonStates(buttons, activeIndex) {
         buttons.forEach((btn, index) => {
             if (index === activeIndex) {
-                btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
-                btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-600', 'hover:bg-gray-50');
+                btn.classList.add('bg-blue-50', 'border-blue-400', 'text-blue-800');
+                btn.classList.remove('bg-white', 'border-gray-300', 'text-gray-700', 'hover:bg-gray-50');
                 btn.setAttribute('aria-pressed', 'true');
             } else {
-                btn.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
-                btn.classList.add('bg-white', 'border-gray-200', 'text-gray-600', 'hover:bg-gray-50');
+                btn.classList.remove('bg-blue-50', 'border-blue-400', 'text-blue-800');
+                btn.classList.add('bg-white', 'border-gray-300', 'text-gray-700', 'hover:bg-gray-50');
                 btn.setAttribute('aria-pressed', 'false');
             }
         });
@@ -67,11 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 noResultsDiv.className = 'text-center py-12';
                 noResultsDiv.innerHTML = `
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-                        <i class="fas fa-search text-gray-400 text-2xl" aria-hidden="true"></i>
+                        <i class="fas fa-search text-gray-600 text-2xl" aria-hidden="true"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 mb-2">No conditions match your filters</h3>
                     <p class="text-sm text-gray-600 mb-4">Try adjusting your severity or status filters to see more results.</p>
-                    <button type="button" id="reset-filters-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                    <button type="button" id="reset-filters-btn" class="min-h-11 inline-flex items-center gap-3 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                         <i class="fas fa-redo" aria-hidden="true"></i>
                         Reset filters
                     </button>

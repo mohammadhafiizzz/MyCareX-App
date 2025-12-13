@@ -34,6 +34,7 @@
 
         @include('patient.components.recordNav')
 
+        @if ($totalConditions > 0)
         {{-- Filters & Quick Actions --}}
         <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="conditions-controls-heading">
             <div class="p-6 space-y-6">
@@ -58,7 +59,7 @@
                         <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500">Severity</h3>
                         <div class="mt-2 flex flex-wrap gap-2" role="list">
                             @foreach ($severityOptions as $option)
-                                <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border {{ $loop->first ? 'bg-blue-50 border-blue-300 text-blue-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' }} text-sm font-medium transition" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">
+                                <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border {{ $loop->first ? 'bg-blue-50 border-blue-400 text-blue-800' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50' }} text-sm font-medium transition" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-label="Filter by {{ $option }} severity">
                                     <i class="fas fa-circle text-xs {{ $severityFilterColors[$option] ?? 'text-blue-500' }}" aria-hidden="true"></i>
                                     {{ $option }}
                                 </button>
@@ -69,7 +70,7 @@
                         <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500">Status</h3>
                         <div class="mt-2 flex flex-wrap gap-2" role="list">
                             @foreach ($statusOptions as $option)
-                                <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border {{ $loop->first ? 'bg-blue-50 border-blue-300 text-blue-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' }} text-sm font-medium transition" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">
+                                <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border {{ $loop->first ? 'bg-blue-50 border-blue-400 text-blue-800' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50' }} text-sm font-medium transition" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-label="Filter by {{ $option }} status">
                                     <i class="fas {{ $statusFilterIcons[$option] ?? 'fa-circle text-blue-500' }}" aria-hidden="true"></i>
                                     {{ $option }}
                                 </button>
@@ -88,14 +89,16 @@
                             <i class="fas fa-redo" aria-hidden="true"></i>
                             Reset filters
                         </button>
-                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
-                            <i class="fas fa-share-alt" aria-hidden="true"></i>
-                            Share
-                        </button>
+                        <a href="{{ route('patient.condition.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2" aria-label="Download all conditions as PDF" title="Export your complete condition history as PDF">
+                            <i class="fas fa-download" aria-hidden="true"></i>
+                            <span class="hidden sm:inline">Export PDF</span>
+                            <span class="sm:hidden">Export</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
+        @endif
 
         {{-- Medical Conditions List --}}
         <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="conditions-heading">
@@ -200,7 +203,7 @@
                             </ul>
                         </div>
 
-                        <button type="button" onclick="document.getElementById('show-add-condition-modal')?.click()" class="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-lg text-base font-semibold hover:bg-blue-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
+                        <button type="button" onclick="document.getElementById('add-condition-modal')?.classList.remove('hidden'); document.getElementById('add-condition-modal')?.classList.add('flex'); document.body.classList.add('overflow-hidden');" class="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-lg text-base font-semibold hover:bg-blue-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
                             <i class="fas fa-plus-circle" aria-hidden="true"></i>
                             Add your first condition
                         </button>
