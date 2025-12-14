@@ -15,7 +15,6 @@ class Immunisation extends Model
         'vaccination_date',
         'administered_by',
         'vaccine_lot_number',
-        'verification_status',
         'certificate_url',
         'notes'
     ];

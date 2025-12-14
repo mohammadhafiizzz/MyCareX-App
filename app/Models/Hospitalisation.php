@@ -15,7 +15,6 @@ class Hospitalisation extends Model
         'reason_for_admission',
         'provider_name',
         'notes',
-        'verification_status',
     ];
 
     // casts fields

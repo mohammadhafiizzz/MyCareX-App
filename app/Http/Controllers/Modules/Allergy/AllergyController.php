@@ -11,6 +11,7 @@ class AllergyController extends Controller
 {
     // Show Allergy Main Page
     public function index() {
+        
         // Get authenticated patient id
         $patientId = Auth::guard('patient')->id() ?? Auth::id();
         if (!$patientId) {

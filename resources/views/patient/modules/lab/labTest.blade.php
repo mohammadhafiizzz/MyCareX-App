@@ -34,71 +34,125 @@
 
         @include('patient.components.recordNav')
 
-        {{-- Filters & Quick Actions --}}
-        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="lab-tests-controls-heading">
-            <div class="p-6 space-y-6">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        {{-- Lab Tests List with Integrated Filters --}}
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="lab-tests-heading">
+            <div class="p-6">
+                {{-- Header with Actions --}}
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                     <div>
-                        <h2 id="lab-tests-controls-heading" class="text-xl font-semibold text-gray-900">Manage Lab Tests</h2>
-                        <p class="mt-1 text-sm text-gray-600">Filter and organise your laboratory test records for easy access and sharing.</p>
+                        <h2 id="lab-tests-heading" class="text-xl font-semibold text-gray-900">Lab Test Records</h2>
+                        <p class="mt-1 text-sm text-gray-600">Filter and manage your laboratory test records with ease.</p>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-2">
+                    <div class="flex flex-wrap gap-2">
+                        @if ($totalLabTests > 0)
+                            <button 
+                                type="button" 
+                                id="toggle-filters-btn"
+                                class="inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
+                                <i class="fas fa-filter" aria-hidden="true"></i>
+                                <span>Filters</span>
+                            </button>
+                            <a href="{{ route('patient.lab.export') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all lab tests as PDF" title="Export your complete lab test history as PDF">
+                                <i class="fas fa-download" aria-hidden="true"></i>
+                                <span class="hidden sm:inline">Export</span>
+                            </a>
+                        @endif
                         <button 
                             type="button" 
                             id="show-add-test-modal"
-                            class="inline-flex justify-center items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                            class="inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                             Add New
                         </button>
                     </div>
                 </div>
 
-                <div class="space-y-5">
-                    <div>
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500">Verification Status</h3>
-                        <div class="mt-2 flex flex-wrap gap-2" role="list">
-                            @foreach ($verificationOptions as $option)
-                                <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border {{ $loop->first ? 'bg-blue-50 border-blue-300 text-blue-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' }} text-sm font-medium transition" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">
-                                    <i class="fas {{ $verificationFilterIcons[$option] ?? 'fa-circle text-blue-500' }}" aria-hidden="true"></i>
-                                    {{ $option }}
-                                </button>
-                            @endforeach
+                @if ($totalLabTests > 0)
+                    {{-- Search Bar --}}
+                    <div class="mb-4">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="labtest-search" 
+                                placeholder="Search by test name..." 
+                                class="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                aria-label="Search lab tests"
+                            >
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400" aria-hidden="true"></i>
+                            </div>
+                            <button 
+                                type="button" 
+                                id="clear-search" 
+                                class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                                aria-label="Clear search"
+                            >
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
-                </div>
 
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <div class="flex items-center gap-3 text-sm text-gray-600">
-                        <i class="fas fa-filter text-blue-500" aria-hidden="true"></i>
-                        <span>Tip: Keep your lab test records current for accurate health tracking.</span>
+                    {{-- Filters Section (Hidden by default) --}}
+                    <div id="filters-section" class="hidden mb-6 pb-6 border-b border-gray-200">
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Verification Status</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach ($verificationOptions as $option)
+                                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border {{ $loop->first ? 'bg-blue-500/10 backdrop-blur-sm border-blue-400/30 text-blue-700 shadow-sm' : 'bg-gray-100/60 backdrop-blur-sm border-white/20 text-gray-700 hover:bg-gray-200/80 hover:shadow-md' }} text-sm font-medium transition-all duration-200" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-label="Filter by {{ $option }} verification">
+                                            {{ $option }}
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs text-gray-500 flex items-center gap-2">
+                                    <i class="fas fa-lightbulb text-gray-500" aria-hidden="true"></i>
+                                    <span>Combine filters to find specific lab tests</span>
+                                </p>
+                                <button type="button" id="reset-all-filters" class="inline-flex items-center gap-2 px-3 py-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50/50 backdrop-blur-sm rounded-lg text-sm font-medium transition-all duration-200">
+                                    <i class="fas fa-redo text-xs" aria-hidden="true"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex flex-wrap gap-2">
-                        <button type="button" id="reset-all-filters" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 text-sm font-medium hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2">
-                            <i class="fas fa-redo" aria-hidden="true"></i>
-                            Reset filters
-                        </button>
-                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
-                            <i class="fas fa-share-alt" aria-hidden="true"></i>
-                            Share
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        {{-- Lab Tests List --}}
-        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="lab-tests-heading">
-            <div class="p-6" id="lab-tests-list">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                    <div>
-                        <h2 id="lab-tests-heading" class="text-xl font-semibold text-gray-900">Lab Test Records</h2>
-                        <p class="mt-1 text-sm text-gray-600">View test details, dates, and verification status at a glance.</p>
+                    {{-- Lab Tests List Header with Pagination --}}
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                        <p class="text-sm text-gray-500" id="labtests-count">
+                            Showing <span class="font-medium text-gray-900">{{ $totalLabTests }}</span> test{{ $totalLabTests !== 1 ? 's' : '' }}
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-2 text-xs text-gray-500">
+                                <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                                <span class="hidden sm:inline">Most recent first</span>
+                            </div>
+                            <div id="pagination-controls" class="flex items-center gap-2">
+                                <button 
+                                    type="button" 
+                                    id="prev-page"
+                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                    disabled>
+                                    <i class="fas fa-chevron-left text-xs" aria-hidden="true"></i>
+                                    <span class="hidden sm:inline">Previous</span>
+                                </button>
+                                <span class="text-sm text-gray-600 px-3 py-1.5 bg-gray-100/50 backdrop-blur-sm rounded-lg font-medium" id="page-info">Page 1 of 1</span>
+                                <button 
+                                    type="button" 
+                                    id="next-page"
+                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                    disabled>
+                                    <span class="hidden sm:inline">Next</span>
+                                    <i class="fas fa-chevron-right text-xs" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2 text-sm text-gray-500">
-                        <i class="fas fa-info-circle text-blue-500" aria-hidden="true"></i>
-                        <span>Sorted by most recent activity</span>
-                    </div>
-                </div>
+                @endif
+
+                {{-- Lab Tests List --}}
+                <div id="labtests-list">
 
                 @forelse ($labTests as $labTest)
                     <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-verification="{{ $labTest['verificationData'] }}">
@@ -109,7 +163,7 @@
                                     <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-blue-100 text-blue-500 flex-shrink-0">
                                         <i class="fas fa-flask text-xl" aria-hidden="true"></i>
                                     </div>
-                                    <div class="mt-4 sm:mt-0">
+                                    <div class="mt-4 sm:mt-0 flex-1">
                                         <h3 class="text-lg font-semibold text-gray-900">{{ $labTest['data']->test_name }}</h3>
                                         @if ($labTest['data']->test_category)
                                             <p class="mt-1 text-sm text-gray-600">{{ $labTest['data']->test_category }}</p>
@@ -158,10 +212,57 @@
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">
-                                <a href="{{ route('patient.lab.info', $labTest['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 text-sm font-medium hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
+                                <a href="{{ route('patient.lab.info', $labTest['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                                     <i class="fas fa-info-circle" aria-hidden="true"></i>
                                     More info
                                 </a>
+                                <button type="button" 
+                                    onclick="toggleActivity({{ $labTest['data']->id }})"
+                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                                    <span class="activity-toggle-text">Show activity</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Recent Activity Section (collapsed by default) --}}
+                        <div id="activity-{{ $labTest['data']->id }}" class="hidden mt-6 pt-6 border-t border-gray-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-sm font-semibold text-gray-900">Recent Activity</h4>
+                                <span class="text-xs text-gray-500">Last 5 updates</span>
+                            </div>
+                            <div class="space-y-3">
+                                {{-- Activity: Created --}}
+                                <div class="flex gap-3">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                        <i class="fas fa-plus text-blue-600 text-xs" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm text-gray-900">
+                                            <span class="font-medium">Lab test added</span>
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-0.5">
+                                            {{ \Carbon\Carbon::parse($labTest['data']->created_at)->format('M d, Y') }} at {{ \Carbon\Carbon::parse($labTest['data']->created_at)->format('h:i A') }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {{-- Activity: Last Updated --}}
+                                @if ($labTest['data']->updated_at != $labTest['data']->created_at)
+                                <div class="flex gap-3">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+                                        <i class="fas fa-edit text-amber-600 text-xs" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm text-gray-900">
+                                            <span class="font-medium">Record updated</span>
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-0.5">
+                                            {{ \Carbon\Carbon::parse($labTest['data']->updated_at)->format('M d, Y') }} at {{ \Carbon\Carbon::parse($labTest['data']->updated_at)->format('h:i A') }}
+                                        </p>
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </article>
@@ -171,7 +272,6 @@
                             <div class="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center">
                                 <i class="fas fa-flask text-blue-600 text-5xl" aria-hidden="true"></i>
                             </div>
-                            
                         </div>
 
                         <h3 class="text-2xl font-bold text-gray-900 mb-3">No lab tests tracked yet</h3>
@@ -204,81 +304,38 @@
                             </ul>
                         </div>
 
-                        <button type="button" onclick="document.getElementById('show-add-test-modal')?.click()" class="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-lg text-base font-semibold hover:bg-blue-700 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition">
+                        <button type="button" onclick="document.getElementById('add-test-modal')?.classList.remove('hidden'); document.getElementById('add-test-modal')?.classList.add('flex'); document.body.classList.add('overflow-hidden');" class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white rounded-2xl text-base font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
                             <i class="fas fa-plus-circle" aria-hidden="true"></i>
                             Add your first lab test
                         </button>
                     </div>
                 @endforelse
+                
+                {{-- No Results After Filtering --}}
+                <div id="no-filter-results" class="hidden text-center py-12">
+                    <i class="fas fa-filter text-gray-300 text-5xl mb-4" aria-hidden="true"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">No lab tests match your filters</h3>
+                    <p class="text-sm text-gray-600 mb-4">Try adjusting or resetting your filter selections</p>
+                    <button type="button" id="reset-filters-from-empty" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200">
+                        <i class="fas fa-redo" aria-hidden="true"></i>
+                        Reset filters
+                    </button>
+                </div>
+                
+                {{-- No Results After Search --}}
+                <div id="no-search-results" class="hidden text-center py-12">
+                    <i class="fas fa-search text-gray-300 text-5xl mb-4" aria-hidden="true"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">No lab tests found</h3>
+                    <p class="text-sm text-gray-600 mb-4">We couldn't find any lab tests matching your search</p>
+                    <button type="button" onclick="document.getElementById('labtest-search').value = ''; document.getElementById('clear-search').click();" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                        Clear search
+                    </button>
+                </div>
+                </div>
             </div>
         </section>
 
-        @if ($totalLabTests > 0)
-            {{-- Timeline View --}}
-            <section class="bg-white rounded-xl shadow-sm border border-gray-200" id="lab-tests-timeline" aria-labelledby="lab-tests-timeline-heading">
-                <div class="p-6">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                        <div>
-                            <h2 id="lab-tests-timeline-heading" class="text-xl font-semibold text-gray-900">Lab Test Timeline</h2>
-                            <p class="mt-1 text-sm text-gray-600">Review lab test history in chronological order to track your health progress.</p>
-                        </div>
-                        <div class="flex items-center gap-2 text-sm text-gray-500">
-                            <i class="fas fa-stream text-blue-500" aria-hidden="true"></i>
-                            <span>Showing latest 6 updates</span>
-                        </div>
-                    </div>
-
-                    <div class="relative mt-6">
-                        <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-200" aria-hidden="true"></div>
-                        <div class="space-y-6">
-                            @foreach ($timelineLabTests as $timelineLabTest)
-                                <div class="relative flex gap-4">
-                                    <div class="flex-shrink-0 w-12 h-12 bg-white rounded-full border-4 border-white shadow flex items-center justify-center">
-                                        <span class="w-3 h-3 rounded-full {{ $timelineLabTest['verificationBorder'] }}" aria-hidden="true"></span>
-                                    </div>
-                                    <div class="flex-1 bg-gray-50 rounded-xl border border-gray-200 p-5">
-                                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                                            <div class="flex items-center gap-3">
-                                                <i class="fas fa-flask {{ $timelineLabTest['verificationIcon'] }}" aria-hidden="true"></i>
-                                                <h3 class="text-base font-semibold text-gray-900">{{ $timelineLabTest['data']->test_name }}</h3>
-                                            </div>
-                                            <span class="inline-flex items-center gap-2 text-xs font-medium text-gray-500">
-                                                <i class="far fa-calendar-alt" aria-hidden="true"></i>
-                                                {{ $timelineLabTest['dateLabel'] }}
-                                            </span>
-                                        </div>
-                                        @if ($timelineLabTest['data']->notes)
-                                            <p class="mt-3 text-sm text-gray-600">
-                                                {{ \Illuminate\Support\Str::limit($timelineLabTest['data']->notes, 160, '…') }}
-                                            </p>
-                                        @endif
-                                        <div class="mt-3 flex flex-wrap gap-2">
-                                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {{ $timelineLabTest['verificationBadge'] }}" role="status">
-                                                <span class="sr-only">Verification:</span>
-                                                {{ $timelineLabTest['data']->verification_status ?? 'Unverified' }}
-                                            </span>
-                                            @if ($timelineLabTest['data']->test_category)
-                                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border border-gray-200 text-gray-600 bg-white" role="status">
-                                                    <span class="sr-only">Category:</span>
-                                                    {{ $timelineLabTest['data']->test_category }}
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <div class="mt-6 text-center">
-                        <a href="#lab-tests-list" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-700 text-sm font-semibold rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:ring-offset-2">
-                            <i class="fas fa-arrow-up" aria-hidden="true"></i>
-                            Back to lab test list
-                        </a>
-                    </div>
-                </div>
-            </section>
-        @endif
     </div>
 
     <!-- Add Test Form -->
@@ -289,6 +346,10 @@
     @vite(['resources/js/main/lab/addTestForm.js'])
     @vite(['resources/js/main/lab/editTest.js'])
     @vite(['resources/js/main/lab/labTestFilter.js'])
+    @vite(['resources/js/main/lab/labTestActivityToggle.js'])
+    @vite(['resources/js/main/lab/labTestFilterToggle.js'])
+    @vite(['resources/js/main/lab/labTestPagination.js'])
+
     @include('patient.components.footer')
 
     <!-- Emergency Kit Floating Action Button -->

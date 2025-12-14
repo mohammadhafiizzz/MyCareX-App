@@ -15,7 +15,6 @@ class Surgery extends Model
         'surgeon_name',
         'hospital_name',
         'notes',
-        'verification_status',
     ];
 
     // casts fields

@@ -15,7 +15,6 @@ class Lab extends Model
         'file_attachment_url',
         'test_category',
         'facility_name',
-        'verification_status',
         'notes'
     ];
 
