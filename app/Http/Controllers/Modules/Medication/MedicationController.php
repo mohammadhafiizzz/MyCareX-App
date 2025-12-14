@@ -41,20 +41,8 @@ class MedicationController extends Controller
             ? \Illuminate\Support\Carbon::parse($lastUpdatedMedication->updated_at ?? $lastUpdatedMedication->start_date ?? $lastUpdatedMedication->created_at)->format('M d, Y') 
             : 'Not recorded';
 
-        // Filter options
-        $statusOptions = $medications->pluck('status')->filter()->unique()->values()->all();
-        if (empty($statusOptions)) {
-            $statusOptions = ['Active', 'On Hold', 'Completed'];
-        }
-        array_unshift($statusOptions, 'All');
-
-        $frequencyOptions = $medications->pluck('frequency')->filter()->map(function ($freq) {
-            return \Illuminate\Support\Str::title($freq);
-        })->unique()->values()->all();
-        if (empty($frequencyOptions)) {
-            $frequencyOptions = ['1 Time Daily', '2 Times Daily', '1 Time Weekly'];
-        }
-        array_unshift($frequencyOptions, 'All');
+        // Filter options - static status options always available
+        $statusOptions = ['All', 'Active', 'On Hold', 'Completed', 'Discontinued'];
 
         // Filter styling mappings
         $statusFilterStyles = [
@@ -64,9 +52,6 @@ class MedicationController extends Controller
             'Discontinued' => 'fa-ban text-red-500',
             'All' => 'fa-layer-group text-gray-500'
         ];
-
-        // Generic frequency filter styles - will match any frequency string
-        $frequencyFilterStyles = [];
 
         // Process each medication with styling data
         $processedMedications = $medications->map(function ($medication) {
@@ -130,9 +115,7 @@ class MedicationController extends Controller
             'dailyMedications' => $dailyMedications,
             'lastUpdatedLabel' => $lastUpdatedLabel,
             'statusOptions' => $statusOptions,
-            'frequencyOptions' => $frequencyOptions,
             'statusFilterStyles' => $statusFilterStyles,
-            'frequencyFilterStyles' => $frequencyFilterStyles,
         ]);
     }
 

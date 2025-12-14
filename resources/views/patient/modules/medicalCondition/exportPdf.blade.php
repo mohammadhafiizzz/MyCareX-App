@@ -4,33 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Conditions Report - {{ $patient->first_name }} {{ $patient->last_name }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @media print {
-            body {
-                print-color-adjust: exact;
-                -webkit-print-color-adjust: exact;
-            }
-        }
-        .page-break-avoid {
-            page-break-inside: avoid;
-        }
-    </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white font-sans text-gray-900 p-8 max-w-7xl mx-auto">
     
 
     <div class="border-b-4 border-blue-600 pb-5 mb-8">
         <h1 class="text-4xl font-bold text-blue-900 mb-2">Medical Conditions Report</h1>
-        <p class="text-gray-600 text-sm">Personal Health Record Export</p>
+        <p class="text-gray-600 text-sm">Personal Health Record</p>
     </div>
     
-    <div class="bg-gray-100 rounded-lg p-6 mb-8 page-break-avoid">
+    <div class="bg-gray-100 rounded-lg p-6 mb-8">
         <h2 class="text-lg font-semibold text-gray-800 mb-4">Patient Information</h2>
         <div class="grid grid-cols-2 gap-6">
             <div class="flex flex-col">
                 <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Full Name</span>
-                <span class="text-sm text-gray-900 mt-1">{{ $patient->full_name }} {{ $patient->last_name }}</span>
+                <span class="text-sm text-gray-900 mt-1">{{ $patient->full_name }}</span>
             </div>
             <div class="flex flex-col">
                 <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</span>

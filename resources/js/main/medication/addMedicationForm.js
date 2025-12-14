@@ -90,6 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (frequencyTimes && frequencyPeriod) {
         frequencyTimes.addEventListener('input', updateFrequency);
         frequencyPeriod.addEventListener('change', updateFrequency);
+        // Initialize frequency from existing values (e.g., after validation errors)
+        updateFrequency();
     }
 
     // Format file size
@@ -207,6 +209,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (files.length > 0 && addFileInput) {
                 addFileInput.files = files;
                 handleAddFileSelect(files[0]);
+            }
+        });
+    }
+
+    // Ensure frequency is set before submitting
+    if (form) {
+        form.addEventListener('submit', function() {
+            if (frequencyHidden && (!frequencyHidden.value || frequencyHidden.value.trim() === '')) {
+                updateFrequency();
             }
         });
     }

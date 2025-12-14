@@ -133,6 +133,10 @@ Route::prefix('patient')->group(function () {
                 Route::get('/', [Modules\Medication\MedicationController::class, 'index'])
                     ->name('patient.medication');
 
+                // Export Medications as PDF
+                Route::get('/export-pdf', [Modules\Medication\ExportMedicationsController::class, 'exportPdf'])
+                    ->name('patient.medication.export.pdf');
+
                 // Add Medication
                 Route::post('/add', [Modules\Medication\AddMedicationController::class, 'add'])
                     ->name('patient.medication.add');
