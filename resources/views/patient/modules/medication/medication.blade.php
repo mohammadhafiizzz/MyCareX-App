@@ -40,7 +40,7 @@
                 {{-- Header with Actions --}}
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                     <div>
-                        <h2 id="medications-heading" class="text-xl font-semibold text-gray-900">Medication Schedule</h2>
+                        <h2 id="medications-heading" class="text-xl font-semibold text-gray-900">Medications</h2>
                         <p class="mt-1 text-sm text-gray-600">Filter and manage your medication records with ease.</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
