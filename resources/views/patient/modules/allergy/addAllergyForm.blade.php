@@ -110,22 +110,6 @@
                 </select>
             </div>
 
-            <div>
-                <label for="verification_status" class="block text-sm font-medium text-gray-700">Verification Status <span class="text-red-500">*</span></label>
-                <select 
-                    id="verification_status" 
-                    name="verification_status" 
-                    required
-                    class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                >
-                    <option value="" selected>Select verification status</option>
-                    <option value="Unverified">Unverified</option>
-                    <option value="Patient Reported">Patient Reported</option>
-                    <option value="Provider Confirmed">Provider Confirmed</option>
-                </select>
-                <p class="mt-1 text-xs text-gray-500">Indicate whether this allergy has been confirmed by a healthcare provider.</p>
-            </div>
-
             <div class="pt-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3">
                 <button 
                     type="button" 

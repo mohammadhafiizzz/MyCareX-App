@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allergies Report - {{ $patient->first_name }} {{ $patient->last_name }}</title>
+    <title>Allergies Report - {{ $patient->full_name }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white font-sans text-gray-900 p-8 max-w-7xl mx-auto">
@@ -78,20 +78,13 @@
                     
                     <div>
                         <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">First Observed</div>
-                        <div class="text-sm text-gray-800">{{ $allergy['first_observed'] }}</div>
+                        <div class="text-sm text-gray-800">{{ $allergy['first_observed_date'] }}</div>
                     </div>
                     
                     @if ($allergy['reaction_desc'] !== 'No reaction description')
                         <div>
                             <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Reaction Description</div>
                             <div class="text-sm text-gray-800 leading-relaxed">{{ $allergy['reaction_desc'] }}</div>
-                        </div>
-                    @endif
-                    
-                    @if ($allergy['notes'] !== 'No additional notes')
-                        <div>
-                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Additional Notes</div>
-                            <div class="text-sm text-gray-800 leading-relaxed">{{ $allergy['notes'] }}</div>
                         </div>
                     @endif
                 </div>

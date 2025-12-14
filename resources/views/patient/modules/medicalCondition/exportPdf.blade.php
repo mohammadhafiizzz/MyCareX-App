@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Conditions Report - {{ $patient->first_name }} {{ $patient->last_name }}</title>
+    <title>Medical Conditions Report - {{ $patient->full_name }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white font-sans text-gray-900 p-8 max-w-7xl mx-auto">

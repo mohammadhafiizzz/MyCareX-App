@@ -178,6 +178,10 @@ Route::prefix('patient')->group(function () {
                 Route::post('/add', [Modules\Allergy\AllergyController::class, 'store'])
                     ->name('patient.allergy.add');
 
+                // Export Allergies as PDF
+                Route::get('/export-pdf', [Modules\Allergy\AllergyController::class, 'exportPdf'])
+                    ->name('patient.allergy.export.pdf');
+
                 // Get Allergy JSON (for edit form)
                 Route::get('/allergy/{allergy}/json', [Modules\Allergy\AllergyController::class, 'getAllergyJson'])
                     ->name('patient.allergy.json');

@@ -52,7 +52,7 @@
                                 <i class="fas fa-filter" aria-hidden="true"></i>
                                 <span>Filters</span>
                             </button>
-                            <a href="{{ route('patient.allergy.export') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all allergies as PDF" title="Export your complete allergy history as PDF">
+                            <a href="{{ route('patient.allergy.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all allergies as PDF" title="Export your complete allergy history as PDF">
                                 <i class="fas fa-download" aria-hidden="true"></i>
                                 <span class="hidden sm:inline">Export</span>
                             </a>

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Allergy;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class AllergyController extends Controller
 {
@@ -67,13 +69,13 @@ class AllergyController extends Controller
                 },
                 'lastUpdated' => $allergy->updated_at ?? $allergy->first_observed_date ?? $allergy->created_at,
                 'lastUpdatedLabel' => ($allergy->updated_at ?? $allergy->first_observed_date ?? $allergy->created_at) 
-                    ? \Illuminate\Support\Carbon::parse($allergy->updated_at ?? $allergy->first_observed_date ?? $allergy->created_at)->diffForHumans() 
+                    ? Carbon::parse($allergy->updated_at ?? $allergy->first_observed_date ?? $allergy->created_at)->diffForHumans() 
                     : 'No recent updates',
                 'observedLabel' => $allergy->first_observed_date 
-                    ? \Illuminate\Support\Carbon::parse($allergy->first_observed_date)->format('M d, Y') 
+                    ? Carbon::parse($allergy->first_observed_date)->format('M d, Y') 
                     : 'Not recorded',
-                'severityData' => \Illuminate\Support\Str::lower($allergy->severity ?? 'unknown'),
-                'statusData' => \Illuminate\Support\Str::lower($allergy->status ?? 'unknown'),
+                'severityData' => Str::lower($allergy->severity ?? 'unknown'),
+                'statusData' => Str::lower($allergy->status ?? 'unknown'),
             ];
         });
 
@@ -107,7 +109,7 @@ class AllergyController extends Controller
                     default => 'bg-gray-50 text-gray-600 border border-gray-200',
                 },
                 'dateLabel' => $timelineDate 
-                    ? \Illuminate\Support\Carbon::parse($timelineDate)->format('M d, Y') 
+                    ? Carbon::parse($timelineDate)->format('M d, Y') 
                     : 'Date unavailable',
             ];
         });
@@ -128,7 +130,7 @@ class AllergyController extends Controller
             : null;
         
         $lastUpdatedLabel = $lastUpdatedAt 
-            ? \Illuminate\Support\Carbon::parse($lastUpdatedAt)->format('M d, Y') 
+            ? Carbon::parse($lastUpdatedAt)->format('M d, Y') 
             : 'Not recorded';
 
         // Filter options
@@ -240,15 +242,15 @@ class AllergyController extends Controller
         };
 
         $observedLabel = $allergy->first_observed_date 
-            ? \Illuminate\Support\Carbon::parse($allergy->first_observed_date)->format('F d, Y') 
+            ? Carbon::parse($allergy->first_observed_date)->format('F d, Y') 
             : 'Not recorded';
 
         $createdLabel = $allergy->created_at 
-            ? \Illuminate\Support\Carbon::parse($allergy->created_at)->format('F d, Y') 
+            ? Carbon::parse($allergy->created_at)->format('F d, Y') 
             : 'Unknown';
 
         $updatedLabel = $allergy->updated_at 
-            ? \Illuminate\Support\Carbon::parse($allergy->updated_at)->diffForHumans() 
+            ? Carbon::parse($allergy->updated_at)->diffForHumans() 
             : 'Never';
 
         return view('patient.modules.allergy.moreInfo', [
@@ -276,7 +278,6 @@ class AllergyController extends Controller
             'severity' => 'required|in:Mild,Moderate,Severe,Life-threatening',
             'reaction_desc' => 'nullable|string',
             'status' => 'required|in:Active,Inactive,Resolved,Suspected',
-            'verification_status' => 'required|in:Unverified,Provider Confirmed,Patient Reported',
             'first_observed_date' => 'required|date',
         ]);
 
@@ -338,5 +339,45 @@ class AllergyController extends Controller
 
         // Redirect to allergies page with a success message
         return redirect()->route('patient.allergy')->with('message', 'Allergy deleted successfully.');
+    }
+
+    /**
+     * Export all allergies as PDF
+     */
+    public function exportPdf() {
+        // Get authenticated patient id
+        $patientId = Auth::guard('patient')->id() ?? Auth::id();
+        if (!$patientId) {
+            return response()->json(['message' => 'Unauthenticated user'], 401);
+        }
+
+        // Get patient information
+        $patient = Auth::guard('patient')->user();
+
+        // Get all allergies for this patient
+        $allergies = Allergy::where('patient_id', $patientId)->get();
+
+        // Process allergies for display
+        $processedAllergies = $allergies->map(function ($allergy) {
+            return [
+                'allergen' => $allergy->allergen,
+                'allergy_type' => $allergy->allergy_type,
+                'severity' => $allergy->severity ? Str::title($allergy->severity) : 'Not specified',
+                'reaction_desc' => $allergy->reaction_desc ?? 'Not specified',
+                'status' => $allergy->status ?? 'Not specified',
+                'first_observed_date' => $allergy->first_observed_date 
+                    ? Carbon::parse($allergy->first_observed_date)->format('M d, Y') 
+                    : 'Not recorded',
+            ];
+        });
+
+        // Return view that will auto-trigger print dialog for PDF export
+        return view('patient.modules.allergy.exportPdf', [
+            'patient' => $patient,
+            'allergies' => $processedAllergies,
+            'exportDate' => Carbon::now()->format('F d, Y'),
+            'totalAllergies' => $allergies->count(),
+            'fileName' => 'Allergies_' . Carbon::now()->format('Y-m-d'),
+        ]);
     }
 }
