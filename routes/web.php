@@ -211,6 +211,10 @@ Route::prefix('patient')->group(function () {
                 Route::post('/add', [Modules\Immunisation\ImmunisationController::class, 'store'])
                     ->name('patient.immunisation.add');
 
+                // Export Immunisations as PDF
+                Route::get('/export-pdf', [Modules\Immunisation\ImmunisationController::class, 'exportPdf'])
+                    ->name('patient.immunisation.export.pdf');
+
                 // Get Immunisation JSON (for edit form)
                 Route::get('/immunisation/{immunisation}/json', [Modules\Immunisation\ImmunisationController::class, 'getImmunisationJson'])
                     ->name('patient.immunisation.json');

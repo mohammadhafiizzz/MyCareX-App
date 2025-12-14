@@ -45,14 +45,7 @@
                     </div>
                     <div class="flex flex-wrap gap-2">
                         @if ($totalImmunisations > 0)
-                            <button 
-                                type="button" 
-                                id="toggle-filters-btn"
-                                class="inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
-                                <i class="fas fa-filter" aria-hidden="true"></i>
-                                <span>Filters</span>
-                            </button>
-                            <a href="{{ route('patient.immunisation.export') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all immunisations as PDF" title="Export your complete immunisation history as PDF">
+                            <a href="{{ route('patient.immunisation.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all immunisations as PDF" title="Export your complete immunisation history as PDF">
                                 <i class="fas fa-download" aria-hidden="true"></i>
                                 <span class="hidden sm:inline">Export</span>
                             </a>
@@ -74,7 +67,7 @@
                             <input 
                                 type="text" 
                                 id="immunisation-search" 
-                                placeholder="Search by vaccine name..." 
+                                placeholder="Search by vaccination name..." 
                                 class="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 aria-label="Search immunisations"
                             >
@@ -92,36 +85,10 @@
                         </div>
                     </div>
 
-                    {{-- Filters Section (Hidden by default) --}}
-                    <div id="filters-section" class="hidden mb-6 pb-6 border-b border-gray-200">
-                        <div class="space-y-4">
-                            <div>
-                                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Verification Status</h3>
-                                <div class="flex flex-wrap gap-2">
-                                    @foreach ($verificationOptions as $option)
-                                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border {{ $loop->first ? 'bg-blue-500/10 backdrop-blur-sm border-blue-400/30 text-blue-700 shadow-sm' : 'bg-gray-100/60 backdrop-blur-sm border-white/20 text-gray-700 hover:bg-gray-200/80 hover:shadow-md' }} text-sm font-medium transition-all duration-200" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-label="Filter by {{ $option }} verification">
-                                            {{ $option }}
-                                        </button>
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <p class="text-xs text-gray-500 flex items-center gap-2">
-                                    <i class="fas fa-lightbulb text-gray-500" aria-hidden="true"></i>
-                                    <span>Combine filters to find specific immunisations</span>
-                                </p>
-                                <button type="button" id="reset-all-filters" class="inline-flex items-center gap-2 px-3 py-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50/50 backdrop-blur-sm rounded-lg text-sm font-medium transition-all duration-200">
-                                    <i class="fas fa-redo text-xs" aria-hidden="true"></i>
-                                    Reset
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                     {{-- Immunisations List Header with Pagination --}}
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                         <p class="text-sm text-gray-500" id="immunisations-count">
-                            Showing <span class="font-medium text-gray-900">{{ $totalImmunisations }}</span> vaccination{{ $totalImmunisations !== 1 ? 's' : '' }}
+                            Showing <span class="font-medium text-gray-900">{{ $totalImmunisations }}</span> vaccination {{ $totalImmunisations !== 1 ? 's' : '' }}
                         </p>
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-2 text-xs text-gray-500">
@@ -155,8 +122,8 @@
                 <div id="immunisations-list">
 
                 @forelse ($immunisations as $immunisation)
-                    <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-verification="{{ $immunisation['verificationData'] }}">
-                        <span class="absolute inset-y-0 left-0 w-1 bg-blue-500" aria-hidden="true"></span>
+                    <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-verification="{{ $immunisation['data']->verification_status ?? 'Unverified' }}">
+                        <span class="absolute inset-y-0 left-0 w-1" aria-hidden="true"></span>
                         <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                             <div class="flex-1">
                                 <div class="flex flex-col sm:flex-row sm:items-start sm:gap-4">
@@ -197,20 +164,13 @@
                                     </p>
                                 @endif
 
-                                <div class="mt-4 flex flex-wrap gap-2">
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $immunisation['verificationBadgeStyles'] }}" role="status">
-                                        <span class="sr-only">Verification:</span>
-                                        <i class="{{ $immunisation['verificationIcon'] }}" aria-hidden="true"></i>
-                                        {{ $immunisation['data']->verification_status ?? 'Unverified' }}
+                                @if ($immunisation['data']->vaccine_lot_number)
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200" role="status">
+                                        <span class="sr-only">Lot Number:</span>
+                                        <i class="fas fa-barcode" aria-hidden="true"></i>
+                                        Lot: {{ $immunisation['data']->vaccine_lot_number }}
                                     </span>
-                                    @if ($immunisation['data']->vaccine_lot_number)
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200" role="status">
-                                            <span class="sr-only">Lot Number:</span>
-                                            <i class="fas fa-barcode" aria-hidden="true"></i>
-                                            Lot: {{ $immunisation['data']->vaccine_lot_number }}
-                                        </span>
-                                    @endif
-                                </div>
+                                @endif
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">

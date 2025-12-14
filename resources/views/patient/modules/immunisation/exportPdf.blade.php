@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Immunisation Records - {{ $patient->first_name }} {{ $patient->last_name }}</title>
+    <title>Immunisation Records - {{ $patient->full_name }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white font-sans text-gray-900 p-8 max-w-7xl mx-auto">
@@ -47,18 +47,6 @@
             <div class="border border-gray-200 rounded-xl p-6 mb-6 bg-white page-break-avoid">
                 <div class="flex flex-wrap justify-between items-start gap-3 mb-4">
                     <h3 class="text-xl font-semibold text-gray-900">{{ $immunisation['vaccine_name'] }}</h3>
-                    <div class="flex flex-wrap gap-2">
-                        @php
-                            $verificationClass = match(strtolower($immunisation['verification_status'])) {
-                                'verified' => 'bg-green-50 text-green-700 border-green-200',
-                                'pending' => 'bg-amber-50 text-amber-700 border-amber-200',
-                                default => 'bg-gray-50 text-gray-700 border-gray-200'
-                            };
-                        @endphp
-                        <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide border {{ $verificationClass }}">
-                            {{ $immunisation['verification_status'] }}
-                        </span>
-                    </div>
                 </div>
                 
                 <div class="space-y-4">

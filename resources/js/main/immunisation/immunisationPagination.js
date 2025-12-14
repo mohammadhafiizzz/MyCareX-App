@@ -16,22 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const immunisationCards = Array.from(document.querySelectorAll('[data-verification]'));
     
     /**
-     * Get all visible cards based on current filters and search
+     * Get cards based on search only (filters removed)
      */
     function getVisibleCards() {
         return immunisationCards.filter(card => {
-            // Check if card is hidden by filters
-            if (card.style.display === 'none') {
-                return false;
-            }
-            
-            // Check search term
+            // Search by immunisation name
             if (searchInput && searchInput.value.trim()) {
                 const searchTerm = searchInput.value.toLowerCase();
                 const immunisationName = card.querySelector('h3')?.textContent.toLowerCase() || '';
                 return immunisationName.includes(searchTerm);
             }
-            
+
             return true;
         });
     }
@@ -108,49 +103,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     /**
-     * Check if we should show no results message
+     * Show no results message (filters removed, only search considered)
      */
     function checkNoResults() {
-        const noResultsDiv = document.getElementById('no-filter-results');
         const noSearchResults = document.getElementById('no-search-results');
-        
+        const paginationControls = document.getElementById('pagination-controls');
+
         if (filteredCards.length === 0 && immunisationCards.length > 0) {
-            // Hide pagination if no results
-            if (document.getElementById('pagination-controls')) {
-                document.getElementById('pagination-controls').classList.add('hidden');
-            }
-            
-            // Show appropriate no results message
-            if (searchInput && searchInput.value.trim()) {
-                // Search returned no results
-                if (noSearchResults) {
-                    noSearchResults.classList.remove('hidden');
-                }
-                if (noResultsDiv) {
-                    noResultsDiv.classList.add('hidden');
-                }
-            } else {
-                // Filters returned no results
-                if (noResultsDiv) {
-                    noResultsDiv.classList.remove('hidden');
-                }
-                if (noSearchResults) {
-                    noSearchResults.classList.add('hidden');
-                }
-            }
+            if (paginationControls) paginationControls.classList.add('hidden');
+            if (noSearchResults) noSearchResults.classList.remove('hidden');
         } else {
-            // Show pagination
-            if (document.getElementById('pagination-controls')) {
-                document.getElementById('pagination-controls').classList.remove('hidden');
-            }
-            
-            // Hide all no results messages
-            if (noResultsDiv) {
-                noResultsDiv.classList.add('hidden');
-            }
-            if (noSearchResults) {
-                noSearchResults.classList.add('hidden');
-            }
+            if (paginationControls) paginationControls.classList.remove('hidden');
+            if (noSearchResults) noSearchResults.classList.add('hidden');
         }
     }
     
@@ -214,18 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    /**
-     * Listen for filter changes from immunisationFilter.js
-     * This is triggered when filters are applied
-     */
-    document.addEventListener('filtersChanged', () => {
-        currentPage = 1;
-        updatePagination();
-    });
+    // Removed filter integration: no longer listening for filter changes
     
     // Initial pagination setup
     updatePagination();
     
-    // Make updatePagination available globally for filter integration
+    // Expose pagination update if needed elsewhere (optional)
     window.updateImmunisationPagination = updatePagination;
 });
