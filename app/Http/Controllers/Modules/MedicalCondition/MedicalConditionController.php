@@ -208,13 +208,6 @@ class MedicalConditionController extends Controller
             default => 'bg-gray-100 text-gray-600 border border-gray-200',
         };
 
-        $statusIcon = match ($condition->status) {
-            'Active' => 'fas fa-circle-dot',
-            'Chronic' => 'fas fa-clock',
-            'Resolved' => 'fas fa-check-circle',
-            default => 'fas fa-circle',
-        };
-
         $diagnosisLabel = $condition->diagnosis_date 
             ? \Illuminate\Support\Carbon::parse($condition->diagnosis_date)->format('F d, Y') 
             : 'Not recorded';
@@ -232,7 +225,6 @@ class MedicalConditionController extends Controller
             'severityBadgeStyles' => $severityBadgeStyles,
             'severityBadgeIcon' => $severityBadgeIcon,
             'statusBadgeStyles' => $statusBadgeStyles,
-            'statusIcon' => $statusIcon,
             'diagnosisLabel' => $diagnosisLabel,
             'createdLabel' => $createdLabel,
             'updatedLabel' => $updatedLabel,

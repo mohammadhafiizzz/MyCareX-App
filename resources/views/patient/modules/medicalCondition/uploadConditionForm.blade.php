@@ -26,12 +26,12 @@
                 
                 <!-- File Input Area -->
                 <div class="relative">
-                    <input type="file" id="attachment" name="attachment" accept=".pdf,application/pdf" required class="hidden">
+                    <input type="file" id="attachment" name="attachment" accept=".pdf,.png,.jpg,.jpeg" required class="hidden">
                     <div id="fileDropArea" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition">
                         <div id="fileDropContent">
-                            <i class="fas fa-file-pdf text-4xl text-red-500 mb-3" aria-hidden="true"></i>
+                            <i class="fas fa-cloud-arrow-up text-4xl text-gray-400 mb-3" aria-hidden="true"></i>
                             <p class="text-sm text-gray-600 font-medium mb-1">Click to browse or drag and drop</p>
-                            <p class="text-xs text-gray-500">PDF only (Max 10MB)</p>
+                            <p class="text-xs text-gray-500">PDF, PNG, JPG, and JPEG only (Max 10MB)</p>
                         </div>
                         <div id="filePreview" class="hidden">
                             <i class="fas fa-file-alt text-4xl text-blue-600 mb-3" aria-hidden="true"></i>

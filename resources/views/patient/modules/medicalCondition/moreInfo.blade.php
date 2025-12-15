@@ -68,7 +68,6 @@
                                 {{ $condition->severity ?? 'Undefined' }} Severity
                             </span>
                             <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
-                                <i class="{{ $statusIcon }}" aria-hidden="true"></i>
                                 {{ $condition->status ?? 'Not set' }}
                             </span>
                         </div>
@@ -114,26 +113,61 @@
 
                     {{-- Attachment Information --}}
                     @if ($condition->doc_attachments_url)
+                        @php
+                            $fileExtension = strtolower(pathinfo($condition->doc_attachments_url, PATHINFO_EXTENSION));
+                            $isImage = in_array($fileExtension, ['jpg', 'jpeg', 'png']);
+                        @endphp
                         <div class="mb-6">
                             <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
                                 <i class="fas fa-paperclip text-gray-600" aria-hidden="true"></i>
                                 Medical Document:
                             </h3>
-                            <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <i class="fas fa-file-pdf text-red-600 text-xl" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900 truncate">Medical Document</p>
-                                        <p class="text-xs text-gray-500 mt-1">Document available</p>
-                                    </div>
-                                    <a href="{{ $condition->doc_attachments_url }}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                        View
+                            
+                            @if ($isImage)
+                                {{-- Image Preview --}}
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                    <a href="{{ $condition->doc_attachments_url }}" target="_blank" class="block group">
+                                        <div class="relative">
+                                            <img src="{{ $condition->doc_attachments_url }}" alt="Medical Document" class="w-full h-auto max-h-96 object-contain bg-white">
+                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200 flex items-center justify-center">
+                                                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-4 py-2 bg-white rounded-lg shadow-lg text-sm font-medium text-gray-900 flex items-center gap-2">
+                                                    <i class="fas fa-expand-alt" aria-hidden="true"></i>
+                                                    Click to view full size
+                                                </span>
+                                            </div>
+                                        </div>
                                     </a>
+                                    <div class="p-4 bg-white border-t border-gray-200">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-image text-blue-600" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm font-medium text-gray-900 truncate">Medical Image</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">{{ strtoupper($fileExtension) }} File</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                {{-- PDF Document View --}}
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <i class="fas fa-file-pdf text-red-600 text-xl" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">Medical Document</p>
+                                            <p class="text-xs text-gray-500 mt-1">PDF Document</p>
+                                        </div>
+                                        <a href="{{ $condition->doc_attachments_url }}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
+                                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                            View
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+
                             <div class="mt-3 flex gap-2">
                                 <button type="button" id="uploadAttachmentBtn" class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
                                     <i class="fas fa-upload" aria-hidden="true"></i>
@@ -157,9 +191,9 @@
                             </h3>
                             <div class="rounded-lg border border-gray-200 bg-gray-50 flex flex-col items-center justify-center py-12">
                                 <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-3">
-                                    <i class="fas fa-file-pdf text-gray-400 text-2xl" aria-hidden="true"></i>
+                                    <i class="fas fa-file text-gray-400 text-2xl" aria-hidden="true"></i>
                                 </div>
-                                <p class="text-sm text-gray-500 mb-2">No document uploaded</p>
+                                <p class="text-sm text-gray-500 mb-2">No attachment uploaded</p>
                                 <button type="button" id="uploadAttachmentBtnEmpty" class="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium">
                                     <i class="fas fa-upload" aria-hidden="true"></i>
                                     Upload document
@@ -219,7 +253,6 @@
                             <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Current Status:</dt>
                             <dd class="text-sm">
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-semibold {{ $statusBadgeStyles }}">
-                                    <i class="{{ $statusIcon }}" aria-hidden="true"></i>
                                     {{ $condition->status ?? 'Not set' }}
                                 </span>
                             </dd>
@@ -241,22 +274,23 @@
                 
                 {{-- Quick Actions --}}
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
                     <div class="space-y-2">
                         <button type="button" class="edit-condition-btn w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" data-id="{{ $condition->id }}">
                             <i class="fas fa-pen-to-square" aria-hidden="true"></i>
-                            Edit Condition
+                            Edit
                         </button>
                         <button type="button" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
-                            <i class="fas fa-share-alt" aria-hidden="true"></i>
-                            Share with Doctor
+                            <i class="fas fa-download" aria-hidden="true"></i>
+                            Download
                         </button>
+                        <hr class="mt-4 mb-5 border-gray-300">
                         <form method="POST" action="{{ route('patient.condition.delete', $condition->id) }}" class="inline-block w-full" onsubmit="return confirm('Are you sure you want to delete this condition? This action cannot be undone.');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
                                 <i class="fas fa-trash" aria-hidden="true"></i>
-                                Delete Condition
+                                Delete
                             </button>
                         </form>
                     </div>
@@ -323,6 +357,9 @@
     @vite(['resources/js/main/medicalCondition/editConditionForm.js'])
     @vite(['resources/js/main/medicalCondition/uploadAttachment.js'])
     @include('patient.components.footer')
+
+    <!-- Emergency Kit Floating Action Button -->
+    @include('patient.components.emergencyFab')
 
 </body>
 </html>

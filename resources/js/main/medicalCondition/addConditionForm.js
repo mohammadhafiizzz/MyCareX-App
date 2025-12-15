@@ -10,8 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const showModal = () => {
         if (modal) {
             modal.classList.remove('hidden');
-            modal.classList.add('flex'); // Use flex for centering
-            document.body.classList.add('overflow-hidden'); // Prevent background scrolling
+
+            // Use flex for centering
+            modal.classList.add('flex');
+
+            // Prevent background scrolling
+            document.body.classList.add('overflow-hidden');
         }
     };
 
@@ -19,7 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal) {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            document.body.classList.remove('overflow-hidden'); // Restore background scrolling
+
+            // Restore background scrolling
+            document.body.classList.remove('overflow-hidden');
         }
     };
 
