@@ -272,7 +272,7 @@
             {{-- Sidebar --}}
             <div class="space-y-6">
                 
-                {{-- Quick Actions --}}
+                {{-- Actions --}}
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
                     <div class="space-y-2">

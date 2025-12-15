@@ -109,10 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Validate file type (PDF only)
-        const allowedTypes = ['application/pdf'];
+        // Validate file type
+        const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
         if (!allowedTypes.includes(file.type)) {
-            showAddError('Invalid file type. Please select a PDF file.');
+            showAddError('Invalid file type. Please select a PDF, JPG, JPEG, or PNG file.');
             addFileInput.value = '';
             return;
         }

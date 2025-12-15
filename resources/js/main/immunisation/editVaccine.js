@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fieldAdministeredBy.value = immunisation.administered_by || '';
         fieldVaccineLotNumber.value = immunisation.vaccine_lot_number || '';
-        fieldVerificationStatus.value = immunisation.verification_status || '';
         fieldNotes.value = immunisation.notes || '';
     }
 });

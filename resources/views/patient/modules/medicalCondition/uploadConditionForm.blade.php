@@ -47,7 +47,7 @@
 
                 <p class="mt-2 text-xs text-gray-500">
                     <i class="fas fa-info-circle" aria-hidden="true"></i>
-                    Supported format: PDF only. Maximum file size: 10MB
+                    Maximum file size: 10MB
                 </p>
             </div>
 

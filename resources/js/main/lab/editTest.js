@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         fieldFacilityName.value = labTest.facility_name || '';
-        fieldVerificationStatus.value = labTest.verification_status || '';
         fieldNotes.value = labTest.notes || '';
     }
 });

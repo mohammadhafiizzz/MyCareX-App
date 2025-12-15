@@ -58,33 +58,16 @@
                 <p class="mt-1 text-xs text-gray-500">Specify the type or category of lab test.</p>
             </div>
 
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div>
-                    <label for="edit_test_date" class="block text-sm font-medium text-gray-700">Test Date <span class="text-red-500">*</span></label>
-                    <input 
-                        type="date" 
-                        name="test_date" 
-                        id="edit_test_date" 
-                        required
-                        class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        value=""
-                    >
-                </div>
-
-                <div>
-                    <label for="edit_verification_status" class="block text-sm font-medium text-gray-700">Verification Status <span class="text-red-500">*</span></label>
-                    <select 
-                        id="edit_verification_status" 
-                        name="verification_status"
-                        required
-                        class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    >
-                        <option value="">Select status</option>
-                        <option value="Unverified">Unverified</option>
-                        <option value="Patient Reported">Patient Reported</option>
-                        <option value="Provider Confirmed">Provider Confirmed</option>
-                    </select>
-                </div>
+            <div>
+                <label for="edit_test_date" class="block text-sm font-medium text-gray-700">Test Date <span class="text-red-500">*</span></label>
+                <input 
+                    type="date" 
+                    name="test_date" 
+                    id="edit_test_date" 
+                    required
+                    class="mt-1 p-3 block w-full rounded-md border border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    value=""
+                >
             </div>
 
             <div>

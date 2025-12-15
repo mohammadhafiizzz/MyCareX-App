@@ -219,14 +219,6 @@ class AllergyController extends Controller
             default => 'bg-gray-100 text-gray-600 border border-gray-200',
         };
 
-        $statusIcon = match ($allergy->status) {
-            'Active' => 'fas fa-circle-dot',
-            'Suspected' => 'fas fa-question-circle',
-            'Resolved' => 'fas fa-check-circle',
-            'Inactive' => 'fas fa-circle-pause',
-            default => 'fas fa-circle',
-        };
-
         $verificationBadgeStyles = match ($allergy->verification_status) {
             'Provider Confirmed' => 'bg-blue-100 text-blue-700 border border-blue-200',
             'Patient Reported' => 'bg-purple-100 text-purple-700 border border-purple-200',
@@ -258,7 +250,6 @@ class AllergyController extends Controller
             'severityBadgeStyles' => $severityBadgeStyles,
             'severityBadgeIcon' => $severityBadgeIcon,
             'statusBadgeStyles' => $statusBadgeStyles,
-            'statusIcon' => $statusIcon,
             'verificationBadgeStyles' => $verificationBadgeStyles,
             'verificationIcon' => $verificationIcon,
             'observedLabel' => $observedLabel,
@@ -313,7 +304,6 @@ class AllergyController extends Controller
             'severity' => 'required|in:Mild,Moderate,Severe,Life-threatening',
             'reaction_desc' => 'nullable|string',
             'status' => 'required|in:Active,Inactive,Resolved,Suspected',
-            'verification_status' => 'required|in:Unverified,Provider Confirmed,Patient Reported',
             'first_observed_date' => 'required|date',
         ]);
 

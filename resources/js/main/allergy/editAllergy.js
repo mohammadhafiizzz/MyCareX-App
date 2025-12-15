@@ -91,6 +91,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fieldSeverity.value = allergy.severity;
         fieldStatus.value = allergy.status;
-        fieldVerificationStatus.value = allergy.verification_status;
     }
 });

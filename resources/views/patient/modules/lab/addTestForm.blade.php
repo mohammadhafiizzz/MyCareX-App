@@ -84,7 +84,7 @@
                         type="file" 
                         id="add_file_attachment" 
                         name="file_attachment" 
-                        accept=".pdf"
+                        accept=".pdf, .png, .jpg, .jpeg"
                         required
                         class="hidden"
                     >
@@ -92,7 +92,7 @@
                         <div id="add_fileDropContent">
                             <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2" aria-hidden="true"></i>
                             <p class="text-sm text-gray-600 font-medium mb-1">Click to browse or drag and drop</p>
-                            <p class="text-xs text-gray-500">PDF only (Max 10MB)</p>
+                            <p class="text-xs text-gray-500">PDF, PNG, JPG, and JPEG only (Max 10MB)</p>
                         </div>
                         <div id="add_filePreview" class="hidden">
                             <i class="fas fa-file-pdf text-3xl text-blue-600 mb-2" aria-hidden="true"></i>

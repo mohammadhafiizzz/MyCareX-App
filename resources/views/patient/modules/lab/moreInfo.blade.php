@@ -64,12 +64,10 @@
                         <h1 class="text-3xl font-bold mb-3">{{ $labTest->test_name }}</h1>
                         <div class="flex flex-wrap gap-3">
                             <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
-                                <i class="{{ $verificationIcon }}" aria-hidden="true"></i>
-                                {{ $labTest->verification_status ?? 'Unverified' }}
+                                Unverified
                             </span>
                             @if ($labTest->test_category)
                                 <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
-                                    <i class="fas fa-tag" aria-hidden="true"></i>
                                     {{ $labTest->test_category }}
                                 </span>
                             @endif
@@ -115,47 +113,82 @@
                     @endif
 
                     {{-- File Attachment Information --}}
-                    <div class="mb-6">
-                        <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                            <i class="fas fa-paperclip text-gray-600" aria-hidden="true"></i>
-                            Test Attachment:
-                        </h3>
-                        @if ($labTest->file_attachment_url)
-                            <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <i class="fas fa-file-pdf text-red-600 text-xl" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900 truncate">Lab Test Attachment</p>
-                                        <p class="text-xs text-gray-500 mt-1">Attachment available</p>
-                                    </div>
-                                    <a href="{{ $labTest->file_attachment_url }}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                        View
+                    @if ($labTest->file_attachment_url)
+                        @php
+                            $fileExtension = strtolower(pathinfo($labTest->file_attachment_url, PATHINFO_EXTENSION));
+                            $isImage = in_array($fileExtension, ['jpg', 'jpeg', 'png']);
+                        @endphp
+                        <div class="mb-6">
+                            <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                                <i class="fas fa-paperclip text-gray-600" aria-hidden="true"></i>
+                                Vaccination Certificate:
+                            </h3>
+                            
+                            @if ($isImage)
+                                {{-- Image Preview --}}
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                    <a href="{{ $labTest->file_attachment_url }}" target="_blank" class="block group">
+                                        <div class="relative">
+                                            <img src="{{ $labTest->file_attachment_url }}" alt="Vaccination Certificate" class="w-full h-auto max-h-96 object-contain bg-white">
+                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200 flex items-center justify-center">
+                                                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-4 py-2 bg-white rounded-lg shadow-lg text-sm font-medium text-gray-900 flex items-center gap-2">
+                                                    <i class="fas fa-expand-alt" aria-hidden="true"></i>
+                                                    Click to view full size
+                                                </span>
+                                            </div>
+                                        </div>
                                     </a>
+                                    <div class="p-4 bg-white border-t border-gray-200">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-image text-emerald-600" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm font-medium text-gray-900 truncate">Vaccination Certificate</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">{{ strtoupper($fileExtension) }} Image</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                {{-- PDF Document View --}}
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <i class="fas fa-file-pdf text-red-600 text-xl" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">Vaccination Certificate</p>
+                                            <p class="text-xs text-gray-500 mt-1">PDF Document</p>
+                                        </div>
+                                        <a href="{{ $labTest->file_attachment_url }}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
+                                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                            View
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="mt-3">
                                 <button type="button" id="uploadAttachmentBtn" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
                                     <i class="fas fa-upload" aria-hidden="true"></i>
                                     Replace Attachment
                                 </button>
                             </div>
-                        @else
-                            <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <i class="fas fa-file-pdf text-gray-400 text-xl" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900">No attachment found</p>
-                                        <p class="text-xs text-gray-500 mt-1">This lab test record doesn't have an attachment</p>
-                                    </div>
+                        </div>
+
+                    @else
+                        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-file-pdf text-gray-400 text-xl" aria-hidden="true"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900">No attachment found</p>
+                                    <p class="text-xs text-gray-500 mt-1">This lab test record doesn't have an attachment</p>
                                 </div>
                             </div>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
 
                     {{-- Additional Notes --}}
                     <div>
@@ -163,7 +196,7 @@
                             Description / Notes:
                         </h3>
                         @if ($labTest->notes)
-                            <div class="prose prose-sm max-w-none">
+                            <div class="text-sm max-w-none">
                                 <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $labTest->notes }}</p>
                             </div>
                         @else
@@ -221,15 +254,6 @@
                             </div>
                         @endif
                         <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Verification Status:</dt>
-                            <dd class="text-sm">
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-semibold {{ $verificationBadgeStyles }}">
-                                    <i class="{{ $verificationIcon }}" aria-hidden="true"></i>
-                                    {{ $labTest->verification_status ?? 'Unverified' }}
-                                </span>
-                            </dd>
-                        </div>
-                        <div class="flex flex-col sm:flex-row sm:justify-between py-3 border-b border-gray-100">
                             <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Record Created:</dt>
                             <dd class="text-sm text-gray-900">{{ $createdLabel }}</dd>
                         </div>
@@ -244,24 +268,25 @@
             {{-- Sidebar --}}
             <div class="space-y-6">
                 
-                {{-- Quick Actions --}}
+                {{-- Actions --}}
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
                     <div class="space-y-2">
                         <button type="button" class="edit-test-btn w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" data-id="{{ $labTest->id }}">
                             <i class="fas fa-pen-to-square" aria-hidden="true"></i>
-                            Edit Lab Test
+                            Edit
                         </button>
                         <button type="button" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
-                            <i class="fas fa-share-alt" aria-hidden="true"></i>
-                            Share with Doctor
+                            <i class="fas fa-download" aria-hidden="true"></i>
+                            Download
                         </button>
+                        <hr class="mt-4 mb-5 border-gray-300">
                         <form method="POST" action="{{ route('patient.lab.delete', $labTest->id) }}" class="inline-block w-full" onsubmit="return confirm('Are you sure you want to delete this lab test record? This action cannot be undone.');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
                                 <i class="fas fa-trash" aria-hidden="true"></i>
-                                Delete Record
+                                Delete
                             </button>
                         </form>
                     </div>

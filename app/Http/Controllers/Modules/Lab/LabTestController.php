@@ -215,7 +215,6 @@ class LabTestController extends Controller
             'test_date' => 'required|date',
             'test_category' => 'required|string|max:100',
             'facility_name' => 'nullable|string|max:255',
-            'verification_status' => 'required|in:Unverified,Provider Confirmed,Patient Reported',
             'notes' => 'nullable|string',
         ]);
 
@@ -261,7 +260,7 @@ class LabTestController extends Controller
 
         // Validate the uploaded file
         $request->validate([
-            'file_attachment' => 'required|file|mimes:pdf|max:10240', // Max 10MB, PDF only
+            'file_attachment' => 'required|file|mimes:pdf,png,jpg,jpeg|max:10240', // Max 10MB, PDF and images only
         ]);
 
         try {

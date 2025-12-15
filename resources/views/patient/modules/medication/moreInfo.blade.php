@@ -64,7 +64,6 @@
                         <h1 class="text-3xl font-bold mb-3">{{ $medication->medication_name }}</h1>
                         <div class="flex flex-wrap gap-3">
                             <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
-                                <i class="{{ $statusIcon }}" aria-hidden="true"></i>
                                 {{ $medication->status ?? 'Not set' }}
                             </span>
                             <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
@@ -113,10 +112,11 @@
                         @endif
                     </div>
 
-                    {{-- Medication Image --}}
+                    {{-- Medication Attachment --}}
                     <div class="mb-6">
                         <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                            Medication Image:
+                            <i class="fas fa-paperclip text-gray-600" aria-hidden="true"></i>
+                            Medication Attachment:
                         </h3>
                         @if ($medication->med_image_url)
                             <div class="rounded-lg overflow-hidden border border-gray-200 bg-white">
@@ -214,7 +214,6 @@
                             <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Current Status:</dt>
                             <dd class="text-sm">
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-semibold {{ $statusBadgeStyles }}">
-                                    <i class="{{ $statusIcon }}" aria-hidden="true"></i>
                                     {{ $medication->status ?? 'Not set' }}
                                 </span>
                             </dd>
@@ -248,31 +247,27 @@
             {{-- Sidebar --}}
             <div class="space-y-6">
                 
-                {{-- Quick Actions --}}
+                {{-- Actions --}}
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
                     <div class="space-y-2">
                         <button type="button" class="edit-medication-btn w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" data-id="{{ $medication->id }}">
                             <i class="fas fa-pen-to-square" aria-hidden="true"></i>
-                            Edit Medication
+                            Edit
                         </button>
                         <button type="button" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
-                            <i class="fas fa-share-alt" aria-hidden="true"></i>
-                            Share with Doctor
+                            <i class="fas fa-download" aria-hidden="true"></i>
+                            Download
                         </button>
+                        <hr class="mt-4 mb-5 border-gray-300">
                         <form method="POST" action="{{ route('patient.medication.delete', $medication->id) }}" class="inline-block w-full" onsubmit="return confirm('Are you sure you want to delete this medication? This action cannot be undone.');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
                                 <i class="fas fa-trash" aria-hidden="true"></i>
-                                Delete Medication
+                                Delete
                             </button>
                         </form>
-                        <hr class="mt-4 mb-5 border-gray-300">
-                        <button type="button" id="setReminderAction" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
-                            <i class="fas fa-bell" aria-hidden="true"></i>
-                            Set Reminder
-                        </button>
                     </div>
                 </section>
 

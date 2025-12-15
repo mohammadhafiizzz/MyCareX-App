@@ -115,13 +115,6 @@ class ImmunisationController extends Controller
             default => 'bg-gray-100 text-gray-600 border border-gray-200',
         };
 
-        $verificationIcon = match ($immunisation->verification_status) {
-            'Provider Confirmed' => 'fas fa-user-doctor',
-            'Patient Reported' => 'fas fa-user',
-            'Unverified' => 'fas fa-circle-question',
-            default => 'fas fa-circle',
-        };
-
         $vaccinationLabel = $immunisation->vaccination_date 
             ? Carbon::parse($immunisation->vaccination_date)->format('F d, Y') 
             : 'Not recorded';
@@ -137,7 +130,6 @@ class ImmunisationController extends Controller
         return view('patient.modules.immunisation.moreInfo', [
             'immunisation' => $immunisation,
             'verificationBadgeStyles' => $verificationBadgeStyles,
-            'verificationIcon' => $verificationIcon,
             'vaccinationLabel' => $vaccinationLabel,
             'createdLabel' => $createdLabel,
             'updatedLabel' => $updatedLabel,
@@ -225,7 +217,6 @@ class ImmunisationController extends Controller
             'vaccination_date' => 'required|date',
             'administered_by' => 'nullable|string|max:255',
             'vaccine_lot_number' => 'nullable|string|max:100',
-            'verification_status' => 'required|in:Unverified,Provider Confirmed,Patient Reported',
             'notes' => 'nullable|string',
         ]);
 
@@ -271,7 +262,7 @@ class ImmunisationController extends Controller
 
         // Validate the uploaded file
         $request->validate([
-            'certificate' => 'required|file|mimes:pdf|max:10240', // Max 10MB, PDF only
+            'certificate' => 'required|file|mimes:pdf,png,jpg,jpeg|max:10240', // Max 10MB, PDF, PNG, JPG, and JPEG only
         ]);
 
         try {

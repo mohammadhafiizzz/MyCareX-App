@@ -139,14 +139,6 @@ class MedicationController extends Controller
             default => 'bg-gray-100 text-gray-600 border border-gray-200',
         };
 
-        $statusIcon = match ($status) {
-            'Active' => 'fas fa-circle-dot',
-            'On Hold' => 'fas fa-pause-circle',
-            'Completed' => 'fas fa-check-circle',
-            'Discontinued' => 'fas fa-ban',
-            default => 'fas fa-circle',
-        };
-
         $frequency = $medication->frequency ? \Illuminate\Support\Str::title($medication->frequency) : 'Not specified';
         $dosage = $medication->formatted_dosage; // Uses accessor to format as "X mg"
         $startDateLabel = $medication->start_date ? $medication->start_date->format('F d, Y') : 'Not scheduled';
@@ -157,7 +149,6 @@ class MedicationController extends Controller
         return view('patient.modules.medication.moreInfo', [
             'medication' => $medication,
             'statusBadgeStyles' => $statusBadgeStyles,
-            'statusIcon' => $statusIcon,
             'frequency' => $frequency,
             'dosage' => $dosage,
             'startDateLabel' => $startDateLabel,
