@@ -359,7 +359,7 @@ class ImmunisationController extends Controller
     }
 
     /**
-     * Export all allergies as PDF
+     * Export all immunisations as PDF
      */
     public function exportPdf() {
         // Get authenticated patient id
@@ -371,10 +371,10 @@ class ImmunisationController extends Controller
         // Get patient information
         $patient = Auth::guard('patient')->user();
 
-        // Get all allergies for this patient
+        // Get all immunisations for this patient
         $immunisations = Immunisation::where('patient_id', $patientId)->get();
 
-        // Process allergies for display
+        // Process immunisations for display
         $processedImmunisations = $immunisations->map(function ($immunisation) {
             return [
                 'vaccine_name' => $immunisation->vaccine_name,

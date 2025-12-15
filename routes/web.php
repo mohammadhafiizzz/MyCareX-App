@@ -212,8 +212,8 @@ Route::prefix('patient')->group(function () {
                     ->name('patient.immunisation.add');
 
                 // Export Immunisations as PDF
-                Route::get('/export-pdf', [Modules\Immunisation\ImmunisationController::class, 'exportPdf'])
-                    ->name('patient.immunisation.export.pdf');
+                Route::get('/export', [Modules\Immunisation\ImmunisationController::class, 'exportPdf'])
+                    ->name('patient.immunisation.export');
 
                 // Get Immunisation JSON (for edit form)
                 Route::get('/immunisation/{immunisation}/json', [Modules\Immunisation\ImmunisationController::class, 'getImmunisationJson'])
@@ -251,6 +251,10 @@ Route::prefix('patient')->group(function () {
                 // Add Lab Test
                 Route::post('/add', [Modules\Lab\LabTestController::class, 'store'])
                     ->name('patient.lab.add');
+
+                // Export Lab Tests as PDF
+                Route::get('/export', [Modules\Lab\LabTestController::class, 'exportPdf'])
+                    ->name('patient.lab.export');
 
                 // Get Lab Test JSON (for edit form)
                 Route::get('/test/{labTest}/json', [Modules\Lab\LabTestController::class, 'getLabTestJson'])

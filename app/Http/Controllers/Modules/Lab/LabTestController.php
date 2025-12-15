@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Lab;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Carbon;
 
 class LabTestController extends Controller
 {
@@ -27,67 +28,35 @@ class LabTestController extends Controller
         $processedLabTests = $labTests->map(function ($labTest) {
             return [
                 'data' => $labTest,
-                'verificationBadgeStyles' => match ($labTest->verification_status) {
-                    'Provider Confirmed' => 'bg-blue-100 text-blue-700 border border-blue-200',
-                    'Patient Reported' => 'bg-purple-100 text-purple-700 border border-purple-200',
-                    'Unverified' => 'bg-gray-100 text-gray-700 border border-gray-200',
-                    default => 'bg-gray-100 text-gray-600 border border-gray-200',
-                },
-                'verificationIcon' => match ($labTest->verification_status) {
-                    'Provider Confirmed' => 'fas fa-user-doctor',
-                    'Patient Reported' => 'fas fa-user',
-                    'Unverified' => 'fas fa-circle-question',
-                    default => 'fas fa-circle',
-                },
                 'lastUpdated' => $labTest->updated_at ?? $labTest->test_date ?? $labTest->created_at,
                 'lastUpdatedLabel' => ($labTest->updated_at ?? $labTest->test_date ?? $labTest->created_at) 
-                    ? \Illuminate\Support\Carbon::parse($labTest->updated_at ?? $labTest->test_date ?? $labTest->created_at)->diffForHumans() 
+                    ? Carbon::parse($labTest->updated_at ?? $labTest->test_date ?? $labTest->created_at)->diffForHumans() 
                     : 'No recent updates',
                 'testLabel' => $labTest->test_date 
-                    ? \Illuminate\Support\Carbon::parse($labTest->test_date)->format('M d, Y') 
+                    ? Carbon::parse($labTest->test_date)->format('M d, Y') 
                     : 'Not recorded',
-                'verificationData' => \Illuminate\Support\Str::lower($labTest->verification_status ?? 'unknown'),
             ];
         });
 
-        // Process timeline lab tests (top 6 most recent)
+        // Process timeline lab tests (top 5 most recent)
         $timelineLabTests = $labTests->sortByDesc(function ($labTest) {
             return $labTest->updated_at ?? $labTest->test_date ?? $labTest->created_at;
-        })->take(6)->map(function ($labTest) {
+        })->take(5)->map(function ($labTest) {
             $timelineDate = $labTest->updated_at ?? $labTest->test_date ?? $labTest->created_at;
             
             return [
                 'data' => $labTest,
-                'verificationBorder' => match ($labTest->verification_status) {
-                    'Provider Confirmed' => 'bg-blue-600',
-                    'Patient Reported' => 'bg-purple-600',
-                    'Unverified' => 'bg-gray-400',
-                    default => 'bg-gray-300',
-                },
-                'verificationIcon' => match ($labTest->verification_status) {
-                    'Provider Confirmed' => 'text-blue-700',
-                    'Patient Reported' => 'text-purple-700',
-                    'Unverified' => 'text-gray-600',
-                    default => 'text-gray-500',
-                },
-                'verificationBadge' => match ($labTest->verification_status) {
-                    'Provider Confirmed' => 'bg-blue-50 text-blue-700 border border-blue-200',
-                    'Patient Reported' => 'bg-purple-50 text-purple-700 border border-purple-200',
-                    'Unverified' => 'bg-gray-50 text-gray-700 border border-gray-200',
-                    default => 'bg-gray-50 text-gray-600 border border-gray-200',
-                },
                 'dateLabel' => $timelineDate 
-                    ? \Illuminate\Support\Carbon::parse($timelineDate)->format('M d, Y') 
+                    ? Carbon::parse($timelineDate)->format('M d, Y') 
                     : 'Date unavailable',
             ];
         });
 
         // Calculate statistics
         $totalLabTests = $labTests->count();
-        $confirmedLabTests = $labTests->where('verification_status', 'Provider Confirmed')->count();
         $thisYearLabTests = $labTests->filter(function ($labTest) {
             return $labTest->test_date && 
-                   \Illuminate\Support\Carbon::parse($labTest->test_date)->isCurrentYear();
+                   Carbon::parse($labTest->test_date)->isCurrentYear();
         })->count();
 
         // Get last updated lab test
@@ -100,37 +69,22 @@ class LabTestController extends Controller
             : null;
         
         $lastUpdatedLabel = $lastUpdatedAt 
-            ? \Illuminate\Support\Carbon::parse($lastUpdatedAt)->format('M d, Y') 
+            ? Carbon::parse($lastUpdatedAt)->format('M d, Y') 
             : 'Not recorded';
-
-        // Filter options
-        $verificationOptions = ['All', 'Provider Confirmed', 'Patient Reported', 'Unverified'];
-        
-        // Filter icon mappings
-        $verificationFilterIcons = [
-            'Provider Confirmed' => 'fa-user-doctor text-blue-500',
-            'Patient Reported' => 'fa-user text-purple-500',
-            'Unverified' => 'fa-circle-question text-gray-500',
-            'All' => 'fa-layer-group text-blue-500',
-        ];
 
         return view('patient.modules.lab.labTest', [
             'labTests' => $processedLabTests,
             'timelineLabTests' => $timelineLabTests,
             'totalLabTests' => $totalLabTests,
-            'confirmedLabTests' => $confirmedLabTests,
             'thisYearLabTests' => $thisYearLabTests,
             'lastUpdatedLabel' => $lastUpdatedLabel,
-            'verificationOptions' => $verificationOptions,
-            'verificationFilterIcons' => $verificationFilterIcons,
         ]);
     }
 
     /**
      * Get a specific lab test as JSON for the edit modal.
      */
-    public function getLabTestJson(Lab $labTest)
-    {
+    public function getLabTestJson(Lab $labTest) {
         // Policy/Gate check: Ensure this lab test belongs to the authenticated patient
         if ($labTest->patient_id !== Auth::guard('patient')->id()) {
             return response()->json(['message' => 'Forbidden'], 403);
@@ -151,37 +105,20 @@ class LabTestController extends Controller
             return redirect()->route('patient.lab')->with('error', 'Unauthorized access to lab test.');
         }
 
-        // Process styling data for the lab test
-        $verificationBadgeStyles = match ($labTest->verification_status) {
-            'Provider Confirmed' => 'bg-blue-100 text-blue-700 border border-blue-200',
-            'Patient Reported' => 'bg-purple-100 text-purple-700 border border-purple-200',
-            'Unverified' => 'bg-gray-100 text-gray-700 border border-gray-200',
-            default => 'bg-gray-100 text-gray-600 border border-gray-200',
-        };
-
-        $verificationIcon = match ($labTest->verification_status) {
-            'Provider Confirmed' => 'fas fa-user-doctor',
-            'Patient Reported' => 'fas fa-user',
-            'Unverified' => 'fas fa-circle-question',
-            default => 'fas fa-circle',
-        };
-
         $testLabel = $labTest->test_date 
-            ? \Illuminate\Support\Carbon::parse($labTest->test_date)->format('F d, Y') 
+            ? Carbon::parse($labTest->test_date)->format('F d, Y') 
             : 'Not recorded';
 
         $createdLabel = $labTest->created_at 
-            ? \Illuminate\Support\Carbon::parse($labTest->created_at)->format('F d, Y') 
+            ? Carbon::parse($labTest->created_at)->format('F d, Y') 
             : 'Unknown';
 
         $updatedLabel = $labTest->updated_at 
-            ? \Illuminate\Support\Carbon::parse($labTest->updated_at)->diffForHumans() 
+            ? Carbon::parse($labTest->updated_at)->diffForHumans() 
             : 'Never';
 
         return view('patient.modules.lab.moreInfo', [
             'labTest' => $labTest,
-            'verificationBadgeStyles' => $verificationBadgeStyles,
-            'verificationIcon' => $verificationIcon,
             'testLabel' => $testLabel,
             'createdLabel' => $createdLabel,
             'updatedLabel' => $updatedLabel,
@@ -198,8 +135,7 @@ class LabTestController extends Controller
             'test_date' => 'required|date',
             'test_category' => 'required|string|max:100',
             'facility_name' => 'nullable|string|max:255',
-            'verification_status' => 'required|in:Unverified,Provider Confirmed,Patient Reported',
-            'file_attachment' => 'required|file|mimes:pdf|max:10240', // REQUIRED attachment, PDF only, max 10MB
+            'file_attachment' => 'required|file|mimes:pdf,png,jpg,jpeg|max:10240', // REQUIRED attachment, PDF, PNG, JPG, and JPEG only, max 10MB
             'notes' => 'nullable|string',
         ]);
 
@@ -363,5 +299,43 @@ class LabTestController extends Controller
                 ->back()
                 ->with('error', 'Failed to upload attachment. Please try again.');
         }
+    }
+
+    /**
+     * Export all lab tests as PDF
+     */
+    public function exportPdf() {
+        // Get authenticated patient id
+        $patientId = Auth::guard('patient')->id() ?? Auth::id();
+        if (!$patientId) {
+            return response()->json(['message' => 'Unauthenticated user'], 401);
+        }
+
+        // Get patient information
+        $patient = Auth::guard('patient')->user();
+
+        // Get all lab tests for this patient
+        $labTests = Lab::where('patient_id', $patientId)->get();
+
+        // Process lab tests for display
+        $processedLabTests = $labTests->map(function ($labTest) {
+            return [
+                'test_name' => $labTest->test_name,
+                'test_date' => $labTest->test_date 
+                    ? Carbon::parse($labTest->test_date)->format('M d, Y') : 'Not recorded',
+                'test_category' => $labTest->test_category,
+                'facility_name' => $labTest->facility_name ?? 'Not specified',
+                'notes' => $labTest->notes ?? 'No additional notes',
+            ];
+        });
+
+        // Return view that will auto-trigger print dialog for PDF export
+        return view('patient.modules.lab.exportPdf', [
+            'patient' => $patient,
+            'labTests' => $processedLabTests,
+            'exportDate' => Carbon::now()->format('F d, Y'),
+            'totalLabTests' => $labTests->count(),
+            'fileName' => 'LabTests_' . Carbon::now()->format('Y-m-d'),
+        ]);
     }
 }

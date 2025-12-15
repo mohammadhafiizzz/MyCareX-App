@@ -45,13 +45,6 @@
                     </div>
                     <div class="flex flex-wrap gap-2">
                         @if ($totalLabTests > 0)
-                            <button 
-                                type="button" 
-                                id="toggle-filters-btn"
-                                class="inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
-                                <i class="fas fa-filter" aria-hidden="true"></i>
-                                <span>Filters</span>
-                            </button>
                             <a href="{{ route('patient.lab.export') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all lab tests as PDF" title="Export your complete lab test history as PDF">
                                 <i class="fas fa-download" aria-hidden="true"></i>
                                 <span class="hidden sm:inline">Export</span>
@@ -92,32 +85,6 @@
                         </div>
                     </div>
 
-                    {{-- Filters Section (Hidden by default) --}}
-                    <div id="filters-section" class="hidden mb-6 pb-6 border-b border-gray-200">
-                        <div class="space-y-4">
-                            <div>
-                                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Verification Status</h3>
-                                <div class="flex flex-wrap gap-2">
-                                    @foreach ($verificationOptions as $option)
-                                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border {{ $loop->first ? 'bg-blue-500/10 backdrop-blur-sm border-blue-400/30 text-blue-700 shadow-sm' : 'bg-gray-100/60 backdrop-blur-sm border-white/20 text-gray-700 hover:bg-gray-200/80 hover:shadow-md' }} text-sm font-medium transition-all duration-200" aria-pressed="{{ $loop->first ? 'true' : 'false' }}" aria-label="Filter by {{ $option }} verification">
-                                            {{ $option }}
-                                        </button>
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <p class="text-xs text-gray-500 flex items-center gap-2">
-                                    <i class="fas fa-lightbulb text-gray-500" aria-hidden="true"></i>
-                                    <span>Combine filters to find specific lab tests</span>
-                                </p>
-                                <button type="button" id="reset-all-filters" class="inline-flex items-center gap-2 px-3 py-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50/50 backdrop-blur-sm rounded-lg text-sm font-medium transition-all duration-200">
-                                    <i class="fas fa-redo text-xs" aria-hidden="true"></i>
-                                    Reset
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                     {{-- Lab Tests List Header with Pagination --}}
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                         <p class="text-sm text-gray-500" id="labtests-count">
@@ -155,8 +122,8 @@
                 <div id="labtests-list">
 
                 @forelse ($labTests as $labTest)
-                    <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-verification="{{ $labTest['verificationData'] }}">
-                        <span class="absolute inset-y-0 left-0 w-1 bg-blue-500" aria-hidden="true"></span>
+                    <article class="group relative overflow-hidden border border-gray-200 rounded-2xl p-6 mb-5 shadow-sm hover:shadow-md transition" data-verification="{{ $labTest['data']->verification_status ?? 'Unverified' }}">
+                        <span class="absolute inset-y-0 left-0 w-1" aria-hidden="true"></span>
                         <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                             <div class="flex-1">
                                 <div class="flex flex-col sm:flex-row sm:items-start sm:gap-4">
@@ -188,6 +155,13 @@
                                                 Last updated <span class="sr-only">relative time</span> {{ $labTest['lastUpdatedLabel'] }}
                                             </span>
                                         </p>
+                                        <p class="mt-2 text-sm flex items-center gap-2">
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200" role="status">
+                                                <span class="sr-only">Attachment:</span>
+                                                <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                                Attachment Available
+                                            </span>
+                                        </p>
                                     </div>
                                 </div>
 
@@ -196,19 +170,6 @@
                                         {{ $labTest['data']->notes }}
                                     </p>
                                 @endif
-
-                                <div class="mt-4 flex flex-wrap gap-2">
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $labTest['verificationBadgeStyles'] }}" role="status">
-                                        <span class="sr-only">Verification:</span>
-                                        <i class="{{ $labTest['verificationIcon'] }}" aria-hidden="true"></i>
-                                        {{ $labTest['data']->verification_status ?? 'Unverified' }}
-                                    </span>
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200" role="status">
-                                        <span class="sr-only">Attachment:</span>
-                                        <i class="fas fa-file-pdf" aria-hidden="true"></i>
-                                        Attachment Available
-                                    </span>
-                                </div>
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">
