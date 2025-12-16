@@ -16,32 +16,15 @@
     <!-- Header -->
     @include('patient.components.header')
 
-    <!-- Navbar -->
-    @include('patient.components.navbar')
-
     <!-- Main Content -->
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+    
+        <a href="{{ route('patient.emergency-kit.index') }}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 mb-4">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+
         <div class="mb-8">
-            <nav class="flex" aria-label="Breadcrumb">
-                <ol role="list" class="flex items-center space-x-4">
-                    <li>
-                        <div>
-                            <a href="{{ route('patient.emergency-kit.index') }}" class="text-gray-400 hover:text-gray-500">
-                                <i class="fas fa-kit-medical flex-shrink-0 h-5 w-5" aria-hidden="true"></i>
-                                <span class="sr-only">Emergency Kit</span>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <i class="fas fa-chevron-right flex-shrink-0 h-5 w-5 text-gray-300" aria-hidden="true"></i>
-                            <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700" aria-current="page">Add Item</a>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
-            <h2 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+            <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
                 Add Item to Emergency Kit
             </h2>
         </div>

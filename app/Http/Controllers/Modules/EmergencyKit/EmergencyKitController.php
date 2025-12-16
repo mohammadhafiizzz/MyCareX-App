@@ -21,7 +21,22 @@ class EmergencyKitController extends Controller
             ->with('record')
             ->get();
 
-        return view('patient.modules.emergencyKit.index', compact('patient', 'emergencyItems'));
+        // Check if emergency kit is empty
+        $isEmpty = $emergencyItems->isEmpty();
+
+        // Group items by type for cleaner view logic
+        $conditions = $emergencyItems->where('record_type', Condition::class);
+        $medications = $emergencyItems->where('record_type', Medication::class);
+        $allergies = $emergencyItems->where('record_type', Allergy::class);
+
+        return view('patient.modules.emergencyKit.index', compact(
+            'patient', 
+            'emergencyItems', 
+            'isEmpty',
+            'conditions',
+            'medications',
+            'allergies'
+        ));
     }
 
     public function create()
