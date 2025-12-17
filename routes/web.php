@@ -422,6 +422,10 @@ Route::prefix('organisation')->group(function () {
             // Doctor Management Page
             Route::get('/', [Organisation\DashboardController::class, 'addDoctor'])
                 ->name('organisation.addDoctor');
+
+            // Store New Doctor
+            Route::post('/store', [Doctor\DoctorManagementController::class, 'addDoctor'])
+                ->name('organisation.doctor.store');
         });
     });
 });
@@ -432,7 +436,17 @@ Route::prefix('doctor')->group(function () {
     Route::get('/dashboard', [Doctor\DoctorController::class, 'index'])
         ->name('doctor.dashboard');
 
-    Route::get('/login', [Doctor\Auth\AuthController::class, 'index'])->name('doctor.login');
+    // Doctor Login Page
+    Route::get('/login', [Doctor\Auth\AuthController::class, 'index'])
+        ->name('doctor.login');
+
+    // Doctor Login Process
+    Route::post('/login', [Doctor\Auth\AuthController::class, 'login'])
+        ->name('doctor.login.submit');
+
+    // Doctor Logout
+    Route::post('/logout', [Doctor\Auth\AuthController::class, 'logout'])
+        ->name('doctor.logout');
 });
 
 // Admin Routes

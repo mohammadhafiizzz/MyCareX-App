@@ -58,6 +58,12 @@ return [
             'driver' => 'session',
             'provider' => 'organisations',
         ],
+
+        // Doctor guard configuration
+        'doctor' => [
+            'driver' => 'session',
+            'provider' => 'doctors',
+        ],
     ],
 
     /*
@@ -99,6 +105,12 @@ return [
         'organisations' => [
             'driver' => 'eloquent',
             'model' => App\Models\HealthcareProvider::class,
+        ],
+
+        // Doctor provider configuration
+        'doctors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Doctor::class,
         ],
 
         // 'users' => [
@@ -153,6 +165,14 @@ return [
         // Healthcare Provider password reset configuration
         'organisations' => [
             'provider' => 'organisations',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        // Doctor password reset configuration
+        'doctors' => [
+            'provider' => 'doctors',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

@@ -139,7 +139,7 @@
                     <span class="ml-3">Help & Support</span>
                 </a>
             </div>
-            <form action="{{ route('organisation.logout') }}" method="POST">
+            <form action="{{ route('doctor.logout') }}" method="POST">
                 @csrf
                 <button type="submit"
                     class="flex items-center w-full px-4 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 transition-colors duration-200">

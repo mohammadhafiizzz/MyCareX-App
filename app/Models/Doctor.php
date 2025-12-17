@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
-class Doctor extends Model
+class Doctor extends Model implements Authenticatable
 {
+    use AuthenticatableTrait;
     // primary key
     protected $primaryKey = 'id';
 

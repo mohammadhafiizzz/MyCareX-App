@@ -33,7 +33,7 @@
 
             <!-- Form Card -->
             <div class="bg-white rounded-md shadow-xl max-w-5xl mx-auto p-6">
-                <form id="add-doctor-form" method="POST" action="#" enctype="multipart/form-data" class="space-y-6">
+                <form id="add-doctor-form" method="POST" action="{{ route('organisation.doctor.store') }}" enctype="multipart/form-data" class="space-y-6">
                     @csrf
 
                     <!-- Error Message -->
