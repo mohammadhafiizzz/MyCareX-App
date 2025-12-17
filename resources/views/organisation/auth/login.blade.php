@@ -14,7 +14,7 @@
 <body class="font-[Inter] bg-gray-50 min-h-screen">
     <div class="min-h-screen flex">
         <!-- Left Side - Login Form -->
-        <div class="w-full lg:w-6/12 flex flex-col justify-center py-12 px-2 sm:px-4 lg:flex-none lg:px-16 xl:px-20">
+        <div class="w-full flex flex-col justify-center py-12 px-2 sm:px-4 lg:flex-none lg:px-16 xl:px-20">
             <div class="mx-auto w-full max-w-lg lg:w-130">
                 <!-- Logo -->
                 <div class="flex items-center justify-center mb-8">
@@ -27,7 +27,7 @@
 
                 <div class="border border-gray-200 p-8 rounded-lg shadow-sm bg-white">
                     <div class="mb-6 text-center">
-                        <h2 class="text-2xl font-semibold text-gray-900">Login to your account</h2>
+                        <h2 class="text-2xl font-semibold text-gray-900">Login as Provider</h2>
                         <p class="text-sm text-gray-600 mb-8">Access your healthcare provider dashboard</p>
                     </div>
 
@@ -75,7 +75,7 @@
                                 </label>
                                 <a href="#" 
                                    class="text-sm text-blue-600 hover:text-blue-500 transition-colors">
-                                    I forgot password
+                                    forgot password?
                                 </a>
                             </div>
                             <div class="relative">
@@ -107,6 +107,15 @@
                             </button>
                         </div>
 
+                        <!-- Sign Up Link -->
+                        <div class="text-center">
+                            <span class="text-sm text-gray-600">Don't have account yet? </span>
+                            <a href="{{ route('organisation.register.form') }}" 
+                               class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                                Register here
+                            </a>
+                        </div>
+
                         <!-- Divider -->
                         <div class="relative my-4">
                             <div class="absolute inset-0 flex items-center">
@@ -117,12 +126,12 @@
                             </div>
                         </div>
 
-                        <!-- Sign Up Link -->
-                        <div class="text-center mt-4">
-                            <span class="text-sm text-gray-600">Don't have account yet? </span>
-                            <a href="{{ route('organisation.register.form') }}" 
-                               class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
-                                Sign up
+
+                        <!-- Doctors Login -->
+                        <div>
+                            <a href="{{ route('doctor.login') }}"
+                                class="cursor-pointer w-full flex justify-center py-3 px-4 border border-blue-300 rounded-lg shadow-sm text-sm font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                                <i class="fas fa-user-doctor mr-2 mt-0.5"></i>Login as Doctor
                             </a>
                         </div>
                     </form>
@@ -135,59 +144,6 @@
                         <i class="fas fa-arrow-left mr-1"></i>
                         Back to main site
                     </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Side - Illustration -->
-        <div class="hidden lg:block relative lg:w-6/12">
-            <div class="absolute inset-0 h-full w-full bg-gradient-to-br from-blue-600 to-blue-800">
-                <div class="flex items-center justify-center h-full p-12">
-                    <div class="text-center">
-                        <!-- Healthcare Illustration -->
-                        <div class="mb-8">
-                            <div class="relative mx-auto w-80 h-80">
-                                <!-- Medical Cross Background -->
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-hospital text-6xl text-white"></i>
-                                    </div>
-                                </div>
-                                
-                                <!-- Floating Elements -->
-                                <div class="absolute top-8 left-8 w-16 h-16 bg-white/30 rounded-full flex items-center justify-center animate-pulse">
-                                    <i class="fas fa-user-md text-2xl text-white"></i>
-                                </div>
-                                
-                                <div class="absolute top-16 right-12 w-12 h-12 bg-white/30 rounded-full flex items-center justify-center animate-pulse delay-150">
-                                    <i class="fas fa-heartbeat text-xl text-white"></i>
-                                </div>
-                                
-                                <div class="absolute bottom-16 left-12 w-14 h-14 bg-white/30 rounded-full flex items-center justify-center animate-pulse delay-300">
-                                    <i class="fas fa-pills text-xl text-white"></i>
-                                </div>
-                                
-                                <div class="absolute bottom-8 right-8 w-16 h-16 bg-white/30 rounded-full flex items-center justify-center animate-pulse delay-500">
-                                    <i class="fas fa-stethoscope text-2xl text-white"></i>
-                                </div>
-
-                                <!-- Central Figure -->
-                                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2">
-                                    <div class="w-24 h-32 bg-white/40 rounded-t-full flex items-end justify-center pb-2">
-                                        <i class="fas fa-user-tie text-3xl text-white"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Text Content -->
-                        <div class="text-white">
-                            <h2 class="text-3xl font-bold mb-4">Welcome to MyCareX</h2>
-                            <p class="text-xl text-blue-100 mb-6 max-w-md mx-auto">
-                                Secure access to Malaysia's leading healthcare interoperability platform
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

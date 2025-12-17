@@ -48,7 +48,7 @@
                         class="px-4 py-2 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                         Contact
                     </a>
-                    <a href="{{ route('organisation.login.form') }}"
+                    <a href="{{ route('doctor.login') }}"
                         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                         Sign In</i>
                     </a>

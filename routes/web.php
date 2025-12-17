@@ -429,8 +429,10 @@ Route::prefix('organisation')->group(function () {
 // Doctor Routes
 Route::prefix('doctor')->group(function () {
     // Doctor Dashboard
-    Route::get('/dashboard', [Doctor\DashboardController::class, 'index'])
+    Route::get('/dashboard', [Doctor\DoctorController::class, 'index'])
         ->name('doctor.dashboard');
+
+    Route::get('/login', [Doctor\Auth\AuthController::class, 'index'])->name('doctor.login');
 });
 
 // Admin Routes

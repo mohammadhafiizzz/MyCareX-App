@@ -31,6 +31,7 @@ class DoctorManagementController extends Controller
 
         $validated['provider_id'] = $organisation;
 
-
+        $doctor = Doctor::create($validated);
+        return response()->json(['message' => 'Doctor added successfully', 'doctor' => $doctor], 201);
     }
 }
