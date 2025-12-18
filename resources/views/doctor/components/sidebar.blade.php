@@ -68,8 +68,8 @@
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Patients</p>
 
                 <a href="{{ route('doctor.patient.search') }}"
-                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.patient.search') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-search w-5 {{ request()->routeIs('doctor.patient.search') ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600' }}"></i>
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.patient.search*', 'doctor.patient.view.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-search w-5 {{ request()->routeIs('doctor.patient.search*', 'doctor.patient.view.*') ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600' }}"></i>
                     <span class="ml-3">Search</span>
                 </a>
 

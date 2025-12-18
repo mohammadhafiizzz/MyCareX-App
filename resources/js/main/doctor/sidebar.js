@@ -78,7 +78,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebarLinks = document.querySelectorAll('.sidebar-link');
     
     sidebarLinks.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
+        const linkHref = link.getAttribute('href');
+        let isActive = false;
+        
+        // Exact match
+        if (linkHref === currentPath) {
+            isActive = true;
+        }
+        // Path starts with link href (for parent/child routes)
+        else if (linkHref !== '#' && currentPath.startsWith(linkHref) && currentPath.charAt(linkHref.length) === '/') {
+            isActive = true;
+        }
+        // Special case: patient search should be active for view routes too
+        else if (linkHref.includes('/patient/search') && currentPath.includes('/patient/view')) {
+            isActive = true;
+        }
+        
+        if (isActive) {
             link.classList.add('bg-blue-50', 'text-blue-700');
             link.classList.remove('text-gray-700', 'hover:bg-gray-100');
             

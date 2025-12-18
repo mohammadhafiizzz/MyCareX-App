@@ -450,9 +450,29 @@ Route::prefix('doctor')->group(function () {
 
     // Patient
     Route::prefix('/patient')->group(function () {
-        // Search Patient Page
-        Route::get('/search', [Doctor\DoctorController::class, 'searchPatient'])
-            ->name('doctor.patient.search');
+
+        // Search
+        Route::prefix('/search')->group(function () {
+            // Search Patient Page
+            Route::get('/', [Doctor\DoctorController::class, 'searchPatient'])
+                ->name('doctor.patient.search');
+
+            // Search Patient Result Page
+            Route::get('/results', [Doctor\DoctorController::class, 'searchPatientResult'])
+                ->name('doctor.patient.search.results');
+
+            // View Patient Profile Page
+            Route::get('/view/{patientId}', [Doctor\DoctorController::class, 'viewPatientProfile'])
+                ->name('doctor.patient.view.profile');
+
+        });
+    });
+
+    // Permission Routes
+    Route::prefix('/permission')->group(function () {
+        // Request Access to Patient Records
+        Route::post('/request', [Modules\Permission\RequestPermissionController::class, 'requestAccess'])
+            ->name('doctor.permission.request');
     });
 });
 

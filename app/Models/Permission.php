@@ -9,6 +9,7 @@ class Permission extends Model
     protected $fillable = [
         'patient_id',
         'provider_id',
+        'doctor_id',
         'requested_at',
         'granted_at',
         'status',
@@ -27,6 +28,11 @@ class Permission extends Model
     // Get the patient that owns the condition.
     public function patient() {
         return $this->belongsTo(Patient::class, 'patient_id');
+    }
+
+    // Get the provider that is granted the permission.
+    public function provider() {
+        return $this->belongsTo(HealthcareProvider::class, 'provider_id');
     }
 
     // Get the doctor that diagnosed the condition.
