@@ -436,10 +436,6 @@ Route::prefix('organisation')->group(function () {
 
 // Doctor Routes
 Route::prefix('doctor')->group(function () {
-    // Doctor Dashboard
-    Route::get('/dashboard', [Doctor\DoctorController::class, 'index'])
-        ->name('doctor.dashboard');
-
     // Doctor Login Page
     Route::get('/login', [Doctor\Auth\AuthController::class, 'index'])
         ->name('doctor.login');
@@ -452,35 +448,65 @@ Route::prefix('doctor')->group(function () {
     Route::post('/logout', [Doctor\Auth\AuthController::class, 'logout'])
         ->name('doctor.logout');
 
-    // Patient
-    Route::prefix('/patient')->group(function () {
+    // Authenticated Doctor Routes (Protected)
+    Route::middleware('auth:doctor')->group(function () {
+        // Doctor Dashboard
+        Route::get('/dashboard', [Doctor\DoctorController::class, 'index'])
+            ->name('doctor.dashboard');
 
-        // Search
-        Route::prefix('/search')->group(function () {
-            // Search Patient Page
-            Route::get('/', [Doctor\DoctorController::class, 'searchPatient'])
-                ->name('doctor.patient.search');
+        // Patient
+        Route::prefix('/patient')->group(function () {
 
-            // Search Patient Result Page
-            Route::get('/results', [Doctor\DoctorController::class, 'searchPatientResult'])
-                ->name('doctor.patient.search.results');
+            // Search
+            Route::prefix('/search')->group(function () {
+                // Search Patient Page
+                Route::get('/', [Doctor\DoctorController::class, 'searchPatient'])
+                    ->name('doctor.patient.search');
 
-            // View Patient Profile Page
-            Route::get('/view/{patientId}', [Doctor\DoctorController::class, 'viewPatientProfile'])
-                ->name('doctor.patient.view.profile');
+                // Search Patient Result Page
+                Route::get('/results', [Doctor\DoctorController::class, 'searchPatientResult'])
+                    ->name('doctor.patient.search.results');
 
+                // View Patient Profile Page
+                Route::get('/view/{patientId}', [Doctor\DoctorController::class, 'viewPatientProfile'])
+                    ->name('doctor.patient.view.profile');
+
+            });
         });
-    });
 
-    // Permission Routes
-    Route::prefix('/permission')->group(function () {
-        // View All Permission Requests
-        Route::get('/requests', [Modules\Permission\RequestPermissionController::class, 'index'])
-            ->name('doctor.permission.requests');
+        // Permission Routes
+        Route::prefix('/permission')->group(function () {
+            // View All Permission Requests
+            Route::get('/requests', [Modules\Permission\RequestPermissionController::class, 'index'])
+                ->name('doctor.permission.requests');
 
-        // Request Access to Patient Records
-        Route::post('/request', [Modules\Permission\RequestPermissionController::class, 'requestAccess'])
-            ->name('doctor.permission.request');
+            // Request Access to Patient Records
+            Route::post('/request', [Modules\Permission\RequestPermissionController::class, 'requestAccess'])
+                ->name('doctor.permission.request');
+        });
+
+        // Medical Records Routes
+        Route::prefix('/medical-records')->group(function () {
+            // View All Medical Records (with permissions)
+            Route::get('/', [Doctor\PatientRecordController::class, 'index'])
+                ->name('doctor.medical.records');
+
+            // View Specific Record Details
+            Route::get('/condition/{id}', [Doctor\PatientRecordController::class, 'showCondition'])
+                ->name('doctor.medical.records.condition');
+
+            Route::get('/medication/{id}', [Doctor\PatientRecordController::class, 'showMedication'])
+                ->name('doctor.medical.records.medication');
+
+            Route::get('/allergy/{id}', [Doctor\PatientRecordController::class, 'showAllergy'])
+                ->name('doctor.medical.records.allergy');
+
+            Route::get('/immunisation/{id}', [Doctor\PatientRecordController::class, 'showImmunisation'])
+                ->name('doctor.medical.records.immunisation');
+
+            Route::get('/lab/{id}', [Doctor\PatientRecordController::class, 'showLab'])
+                ->name('doctor.medical.records.lab');
+        });
     });
 });
 
