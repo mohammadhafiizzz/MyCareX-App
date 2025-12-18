@@ -102,12 +102,12 @@
             <div class="flex items-center p-4 bg-amber-50 border border-amber-200 rounded-xl" role="alert">
                 <div class="flex-shrink-0">
                     <div class="flex items-center justify-center h-10 w-10 rounded-full bg-amber-100">
-                        <i class="fas fa-user-shield text-amber-600" aria-hidden="true"></i>
+                        <i class="fas fa-user-doctor text-amber-600" aria-hidden="true"></i>
                     </div>
                 </div>
                 <div class="ml-4 flex-1">
                     <h3 class="text-sm font-semibold text-amber-800">{{ $pendingPermissions }} Pending Access Request{{ $pendingPermissions > 1 ? 's' : '' }}</h3>
-                    <p class="text-sm text-amber-700">Healthcare providers are requesting access to your records</p>
+                    <p class="text-sm text-amber-700">Doctors are requesting access to your records</p>
                 </div>
                 <a href="{{ route('patient.permission') }}" class="ml-4 inline-flex items-center px-3 py-1.5 text-sm font-medium text-amber-700 bg-amber-100 rounded-lg hover:bg-amber-200 transition-colors">
                     Review

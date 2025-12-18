@@ -358,6 +358,10 @@ Route::prefix('patient')->group(function () {
             // Activity History
             Route::get('/activity', [Modules\Permission\PermissionController::class, 'activity'])
                 ->name('patient.permission.activity');
+
+            // Approve Permission Request
+            Route::post('/approve/{id}', [Modules\Permission\PermissionController::class, 'approve'])
+                ->name('patient.permission.approve');
         });
 
         // Emergency Kit
@@ -470,6 +474,10 @@ Route::prefix('doctor')->group(function () {
 
     // Permission Routes
     Route::prefix('/permission')->group(function () {
+        // View All Permission Requests
+        Route::get('/requests', [Modules\Permission\RequestPermissionController::class, 'index'])
+            ->name('doctor.permission.requests');
+
         // Request Access to Patient Records
         Route::post('/request', [Modules\Permission\RequestPermissionController::class, 'requestAccess'])
             ->name('doctor.permission.request');

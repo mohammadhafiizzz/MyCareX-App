@@ -99,16 +99,10 @@
                     <span class="ml-3">Permissions</span>
                 </a>
 
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-key w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Request Access</span>
-                </a>
-
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-history w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Activity Log</span>
+                <a href="{{ route('doctor.permission.requests') }}"
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.permission.requests') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-key w-5 {{ request()->routeIs('doctor.permission.requests') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                    <span class="ml-3">Access Requests</span>
                 </a>
             </div>
 
@@ -120,12 +114,6 @@
                     class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
                     <i class="fas fa-user-doctor w-5 text-gray-400 group-hover:text-gray-600"></i>
                     <span class="ml-3">My Profile</span>
-                </a>
-
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-cog w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Settings</span>
                 </a>
             </div>
         </nav>

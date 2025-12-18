@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - Patient</title>
+    <title>MyCareX - Access & Permissions</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="font-[Inter] bg-gray-100">
+<body class="font-[Inter] bg-gray-50">
 
     <!-- Header -->
     @include('patient.components.header')
@@ -55,7 +56,7 @@
                     <div class="flex items-start justify-between mb-6">
                         <div>
                             <p class="text-sm uppercase tracking-wide text-white/90 mb-2">Doctors with Access</p>
-                            <p class="text-5xl font-bold mb-2" aria-live="polite">{{ $totalDoctorsWithAccess ?? 0 }}</p>
+                            <p class="text-5xl font-bold mb-2" aria-live="polite">{{ $totalProvidersWithAccess ?? 0 }}</p>
                             <p class="text-sm text-white/80">
                                 Doctors currently accessing your records
                             </p>
@@ -127,7 +128,7 @@
                     Track the latest changes made to your medical records by doctors
                 </p>
 
-                @forelse ($recentActivities ?? [] as $index => $activity)
+                @forelse (($recentActivities ?? []) as $index => $activity)
                     <div class="relative {{ !$loop->last ? 'pb-8' : '' }}">
                         {{-- Timeline Line --}}
                         @if (!$loop->last)
@@ -137,18 +138,23 @@
                         <div class="relative flex items-start space-x-4">
                             {{-- Timeline Icon --}}
                             <div class="relative flex items-center justify-center">
-                                <div class="h-10 w-10 rounded-full flex items-center justify-center
-                                    {{ $activity->action_type === 'created' ? 'bg-green-100' : '' }}
-                                    {{ $activity->action_type === 'updated' ? 'bg-blue-100' : '' }}
-                                    {{ $activity->action_type === 'deleted' ? 'bg-red-100' : '' }}
-                                    {{ !in_array($activity->action_type, ['created', 'updated', 'deleted']) ? 'bg-gray-100' : '' }}">
-                                    <i class="
-                                        {{ $activity->action_type === 'created' ? 'fas fa-plus text-green-600' : '' }}
-                                        {{ $activity->action_type === 'updated' ? 'fas fa-edit text-blue-600' : '' }}
-                                        {{ $activity->action_type === 'deleted' ? 'fas fa-trash text-red-600' : '' }}
-                                        {{ !in_array($activity->action_type, ['created', 'updated', 'deleted']) ? 'fas fa-file-medical text-gray-600' : '' }}"
-                                        aria-hidden="true">
-                                    </i>
+                                @php
+                                    $actionType = $activity->action_type ?? 'unknown';
+                                    $bgClass = match($actionType) {
+                                        'created' => 'bg-green-100',
+                                        'updated' => 'bg-blue-100',
+                                        'deleted' => 'bg-red-100',
+                                        default => 'bg-gray-100'
+                                    };
+                                    $iconClass = match($actionType) {
+                                        'created' => 'fas fa-plus text-green-600',
+                                        'updated' => 'fas fa-edit text-blue-600',
+                                        'deleted' => 'fas fa-trash text-red-600',
+                                        default => 'fas fa-file-medical text-gray-600'
+                                    };
+                                @endphp
+                                <div class="h-10 w-10 rounded-full flex items-center justify-center {{ $bgClass }}">
+                                    <i class="{{ $iconClass }}" aria-hidden="true"></i>
                                 </div>
                             </div>
 
@@ -160,12 +166,17 @@
                                             <h3 class="text-base font-semibold text-gray-900">
                                                 {{ $activity->doctor_name ?? 'Unknown Doctor' }}
                                             </h3>
-                                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                {{ $activity->action_type === 'created' ? 'bg-green-100 text-green-800' : '' }}
-                                                {{ $activity->action_type === 'updated' ? 'bg-blue-100 text-blue-800' : '' }}
-                                                {{ $activity->action_type === 'deleted' ? 'bg-red-100 text-red-800' : '' }}
-                                                {{ !in_array($activity->action_type, ['created', 'updated', 'deleted']) ? 'bg-gray-100 text-gray-800' : '' }}">
-                                                {{ ucfirst($activity->action_type ?? 'modified') }}
+                                            @php
+                                                $actionType = $activity->action_type ?? 'modified';
+                                                $badgeClass = match($actionType) {
+                                                    'created' => 'bg-green-100 text-green-800',
+                                                    'updated' => 'bg-blue-100 text-blue-800',
+                                                    'deleted' => 'bg-red-100 text-red-800',
+                                                    default => 'bg-gray-100 text-gray-800'
+                                                };
+                                            @endphp
+                                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium {{ $badgeClass }}">
+                                                {{ ucfirst($actionType) }}
                                             </span>
                                         </div>
 
@@ -207,7 +218,7 @@
                     </div>
                 @endforelse
 
-                @if (isset($recentActivities) && count($recentActivities) > 0)
+                @if (!empty($recentActivities) && count($recentActivities) > 0)
                     <div class="mt-6 pt-6 border-t border-gray-200 text-center">
                         <a href="{{ route('patient.permission.activity') }}" 
                            class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">

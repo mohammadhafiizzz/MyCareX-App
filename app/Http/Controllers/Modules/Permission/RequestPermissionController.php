@@ -11,6 +11,37 @@ use Illuminate\Support\Facades\Validator;
 class RequestPermissionController extends Controller
 {
     /**
+     * Show all permission requests made by the authenticated doctor
+     */
+    public function index(Request $request)
+    {
+        $doctor = Auth::guard('doctor')->user();
+        $query = trim($request->input('query', ''));
+
+        // Build the base query
+        $permissionsQuery = Permission::where('doctor_id', $doctor->id)
+            ->with(['patient', 'provider']);
+
+        // Apply search filter if query is provided
+        if ($query !== '') {
+            $permissionsQuery->whereHas('patient', function($q) use ($query) {
+                $q->where('full_name', 'like', '%' . $query . '%')
+                  ->orWhere('ic_number', 'like', '%' . $query . '%');
+            });
+        }
+
+        // Get paginated results
+        $permissions = $permissionsQuery->orderBy('requested_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('doctor.modules.permission.requestAccess', [
+            'permissions' => $permissions,
+            'query' => $query,
+        ]);
+    }
+
+    /**
      * Request access to patient's medical records
      */
     public function requestAccess(Request $request)

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>MyCareX - Access Requests</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
@@ -69,34 +70,34 @@
                 </div>
 
                 @forelse ($requests as $permission)
-                    <div class="bg-gradient-to-r from-amber-50 to-white border-2 border-amber-200 rounded-xl p-6 mb-4 hover:shadow-md transition-all duration-200">
+                    <div class="bg-gradient-to-r border border-gray-200 rounded-xl p-6 mb-4 hover:shadow-md transition-all duration-200">
                         <div class="flex items-start justify-between">
                             <div class="flex items-start gap-4 flex-1">
                                 <!-- Doctor Avatar -->
-                                <div class="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-user-md text-amber-600 text-xl"></i>
+                                <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-user-md text-blue-600 text-xl"></i>
                                 </div>
 
                                 <!-- Request Info -->
                                 <div class="flex-1">
                                     <div class="flex items-center gap-3 mb-2">
                                         <h3 class="text-lg font-semibold text-gray-900">
-                                            {{ $permission->doctor->name ?? 'N/A' }}
+                                            {{ $permission->doctor->full_name ?? 'N/A' }}
                                         </h3>
                                         <span class="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">
-                                            Pending Review
+                                            Pending
                                         </span>
                                     </div>
 
                                     <p class="text-sm text-gray-600 mb-3">
-                                        {{ $permission->doctor->specialty ?? 'Healthcare Provider' }}
+                                        {{ $permission->doctor->specialisation ?? 'Healthcare Provider' }}
                                     </p>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                         <div class="text-sm">
                                             <span class="text-gray-500">Facility:</span>
                                             <span class="font-medium text-gray-900 ml-1">
-                                                {{ $permission->doctor->facility_name ?? 'N/A' }}
+                                                {{ $permission->doctor->provider->organisation_name ?? 'N/A' }}
                                             </span>
                                         </div>
                                         <div class="text-sm">
@@ -120,10 +121,10 @@
                                     </div>
 
                                     @if ($permission->notes)
-                                        <div class="mt-3 p-3 bg-white border border-amber-200 rounded-lg">
+                                        <div class="mt-3 p-3 bg-white border border-blue-200 rounded-lg">
                                             <p class="text-sm text-gray-700">
-                                                <i class="fas fa-comment-alt text-amber-500 mr-2"></i>
-                                                <span class="font-medium">Reason:</span> {{ $permission->notes }}
+                                                <i class="fas fa-comment-alt text-blue-500 mr-2"></i>
+                                                <span class="font-medium">Notes:</span> {{ $permission->notes }}
                                             </p>
                                         </div>
                                     @endif
@@ -132,15 +133,15 @@
 
                             <!-- Actions -->
                             <div class="flex flex-col gap-2 ml-4">
-                                <button class="px-5 py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2">
-                                    <i class="fas fa-check mr-1"></i>
-                                    Approve
+                                <button 
+                                    data-permission-id="{{ $permission->id }}"
+                                    data-doctor-name="{{ $permission->doctor->full_name ?? 'N/A' }}"
+                                    data-provider-name="{{ $permission->doctor->provider->organisation_name ?? 'N/A' }}"
+                                    data-access-scope="{{ json_encode($permission->permission_scope ?? []) }}"
+                                    class="confirm-access-btn flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
+                                    Confirm
                                 </button>
-                                <button class="px-5 py-2.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2">
-                                    <i class="fas fa-times mr-1"></i>
-                                    Deny
-                                </button>
-                                <button class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2">
+                                <button class="flex items-center justify-center px-5 py-2.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2">
                                     <i class="fas fa-info-circle mr-1"></i>
                                     Details
                                 </button>
@@ -170,8 +171,11 @@
 
     </div>
 
+    <!-- Confirm Access Modal -->
+    @include('patient.modules.permission.confirmAccessModal')
+
     <!-- Javascript and Footer -->
-    @vite(['resources/js/main/patient/header.js'])
+    @vite(['resources/js/main/patient/header.js', 'resources/js/main/permission/permissionRequests.js'])
     @include('patient.components.footer')
 </body>
 

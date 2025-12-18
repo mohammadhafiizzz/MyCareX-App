@@ -69,17 +69,17 @@
                                 <!-- Doctor Info -->
                                 <div class="flex-1">
                                     <h3 class="text-lg font-semibold text-gray-900 mb-1">
-                                        {{ $permission->doctor->name ?? 'N/A' }}
+                                        {{ $permission->doctor->full_name ?? 'N/A' }}
                                     </h3>
                                     <p class="text-sm text-gray-600 mb-3">
-                                        {{ $permission->doctor->specialty ?? 'Healthcare Provider' }}
+                                        {{ $permission->doctor->specialisation ?? 'Healthcare Provider' }}
                                     </p>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                         <div class="text-sm">
                                             <span class="text-gray-500">Facility:</span>
                                             <span class="font-medium text-gray-900 ml-1">
-                                                {{ $permission->provider->facility_name ?? 'N/A' }}
+                                                {{ $permission->provider->organisation_name ?? 'N/A' }}
                                             </span>
                                         </div>
                                         <div class="text-sm">
