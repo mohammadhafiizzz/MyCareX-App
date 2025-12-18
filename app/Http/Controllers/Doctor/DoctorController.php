@@ -11,4 +11,9 @@ class DoctorController extends Controller
     public function index() {
         return view('doctor.dashboard');
     }
+
+    // search patient page
+    public function searchPatient() {
+        return view('doctor.modules.patient.searchPatient');
+    }
 }

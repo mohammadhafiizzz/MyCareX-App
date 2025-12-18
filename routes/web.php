@@ -447,6 +447,13 @@ Route::prefix('doctor')->group(function () {
     // Doctor Logout
     Route::post('/logout', [Doctor\Auth\AuthController::class, 'logout'])
         ->name('doctor.logout');
+
+    // Patient
+    Route::prefix('/patient')->group(function () {
+        // Search Patient Page
+        Route::get('/search', [Doctor\DoctorController::class, 'searchPatient'])
+            ->name('doctor.patient.search');
+    });
 });
 
 // Admin Routes

@@ -26,16 +26,16 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-semibold text-gray-900 truncate">
-                        Name
+                        {{ Auth::guard('doctor')->user()->full_name ?? 'Name' }}
                     </p>
                     <p class="text-xs text-gray-500 truncate">
-                        Healthcare Provider
+                        {{ Auth::guard('doctor')->user()->provider->organisation_name ?? 'Provider' }}
                     </p>
 
                     <span
                         class="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                         <i class="fas fa-user-doctor text-[10px]"></i>
-                        Specialist
+                        {{ Auth::guard('doctor')->user()->specialisation ?? 'Specialisation' }}
                     </span>
                 </div>
             </div>
@@ -47,10 +47,10 @@
             <div>
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Home</p>
 
-                <a href="{{ route('organisation.dashboard') }}"
-                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('organisation.dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                <a href="{{ route('doctor.dashboard') }}"
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
                     <i
-                        class="fas fa-home w-5 {{ request()->routeIs('organisation.dashboard') ? 'text-blue-600' : 'text-gray-400' }}"></i>
+                        class="fas fa-home w-5 {{ request()->routeIs('doctor.dashboard') ? 'text-blue-600' : 'text-gray-400' }}"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
 
@@ -67,9 +67,9 @@
             <div class="pt-2">
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Patients</p>
 
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-search w-5 text-gray-400 group-hover:text-gray-600"></i>
+                <a href="{{ route('doctor.patient.search') }}"
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.patient.search') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-search w-5 {{ request()->routeIs('doctor.patient.search') ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600' }}"></i>
                     <span class="ml-3">Search</span>
                 </a>
 
