@@ -12,7 +12,7 @@ class RegistrationController extends Controller
 
     // Show the patient registration form
     public function showRegistrationForm() {
-        return view('patient.auth.patientRegister');
+        return view('patient.auth.registration');
     }
 
     // Show email verification notice
@@ -30,42 +30,9 @@ class RegistrationController extends Controller
         $validatedData = $request->validate([
             'full_name' => 'required|string|max:100',
             'ic_number' => 'required|string|max:20|unique:patients,ic_number',
-            'phone_number' => 'required|string|max:15',
             'email' => 'required|email|max:100|unique:patients,email',
             'password' => 'required|min:8|confirmed',
-            'date_of_birth' => 'required|date',
-            'gender' => 'required|in:Male,Female',
-            'blood_type' => 'required|string|max:10',
-            'race' => 'required|string|max:20',
-            'height' => 'nullable|numeric|between:1,999.99',
-            'weight' => 'nullable|numeric|between:1,999.99',
-            'address' => 'required|string',
-            'postal_code' => 'required|string|size:5',
-            'state' => 'required|in:Johor,Kedah,Kelantan,Malacca,Negeri Sembilan,Pahang,Penang,Perak,Perlis,Sabah,Sarawak,Selangor,Terengganu,Kuala Lumpur,Labuan,Putrajaya',
-            'emergency_contact_number' => 'required|string|max:15',
-            'emergency_contact_name' => 'required|string|max:100',
-            'emergency_contact_ic_number' => 'required|string|max:20',
-            'emergency_contact_relationship' => 'required|string|max:30',
-            'profile_image_url' => 'nullable|string',
-
-            // "Other" fields
-            'other_race' => 'required_if:race,Other|string|max:20|nullable',
-            'other_relationship' => 'required_if:emergency_contact_relationship,Other|string|max:30|nullable'
         ]);
-
-        // Handle other race input
-        if ($request->race === 'Other') {
-            $validatedData['race'] = $request->other_race;
-        }
-
-        // Handle other relationship input
-        if ($request->emergency_contact_relationship === 'Other') {
-            $validatedData['emergency_contact_relationship'] = $request->other_relationship;
-        }
-
-        // Remove the 'other_race' and 'other_relationship' fields
-        unset($validatedData['other_race']);
-        unset($validatedData['other_relationship']);
 
         // Create the patient
         $patient = Patient::create($validatedData);

@@ -37,7 +37,7 @@ class LoginController extends Controller
 
         // Field validation
         $credentials = $request->validate([
-            'ic_number' => 'required|string|size:14',
+            'ic_number' => 'required|string|max:14',
             'password' => 'required|string'
         ]);
 

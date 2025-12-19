@@ -136,7 +136,7 @@
                             <input type="text" id="icNumber" name="ic_number" required maxlength="14"
                                 value="{{ old('ic_number') }}"
                                 class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                placeholder="Enter your IC number without dashes">
+                                placeholder="Enter your IC number">
                         </div>
 
                         <!-- Password -->

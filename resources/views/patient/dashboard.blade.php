@@ -10,33 +10,6 @@
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
 
-@php
-    $patient = Auth::guard('patient')->user();
-    $hour = now()->hour;
-    $greeting = $hour < 12 ? 'Good morning' : ($hour < 17 ? 'Good afternoon' : 'Good evening');
-    
-    // Get patient data counts (replace with actual queries in controller)
-    $activeMedications = $patient->medications()->where('status', 'active')->count();
-    $activeConditions = $patient->conditions()->where('status', 'active')->count();
-    // Labs are stored results, so count total lab records
-    $labRecordsCount = $patient->labs()->count();
-    $allergiesCount = $patient->allergies()->count();
-    $severeAllergies = $patient->allergies()->where('severity', 'severe')->get();
-    $pendingPermissions = \App\Models\Permission::where('patient_id', $patient->id)->where('status', 'pending')->count();
-    
-    // Recent medications for today's schedule
-    $todayMedications = $patient->medications()->where('status', 'active')->latest()->take(4)->get();
-    
-    // Recent medical history (conditions, surgeries, hospitalisations)
-    $recentConditions = $patient->conditions()->latest()->take(3)->get();
-    
-    // Recent labs
-    $recentLabs = $patient->labs()->latest()->take(3)->get();
-    
-    // Upcoming immunisations (if any are overdue or due soon)
-    $immunisations = $patient->immunisations()->latest()->take(2)->get();
-@endphp
-
 <body class="font-[Inter] bg-gray-50">
 
     <!-- Header -->
@@ -111,6 +84,28 @@
                 </div>
                 <a href="{{ route('patient.permission') }}" class="ml-4 inline-flex items-center px-3 py-1.5 text-sm font-medium text-amber-700 bg-amber-100 rounded-lg hover:bg-amber-200 transition-colors">
                     Review
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+        @endif
+
+        @if($needsProfileCompletion)
+        <div class="mb-6">
+            <div class="flex items-start p-4 bg-amber-50 border border-amber-100 rounded-xl" role="alert">
+                <div class="flex-shrink-0">
+                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-amber-100">
+                        <i class="fas fa-user text-amber-600" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <h3 class="text-sm font-semibold text-amber-800">Complete your profile for a richer experience</h3>
+                    <p class="text-sm text-amber-700 mt-1">
+                        Fill them in so doctors, medications, and notifications stay tailored to you.
+                    </p>
+                </div>
+                <a href="{{ route('patient.auth.profile') }}" class="ml-4 inline-flex items-center px-3 py-1.5 text-sm font-medium text-amber-600 bg-white border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors">
+                    Update profile
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
@@ -331,16 +326,6 @@
                     </div>
                     
                     <div class="p-5">
-                        @php
-                            $recentPermissions = \App\Models\Permission::where('patient_id', $patient->id)
-                                ->latest()
-                                ->take(3)
-                                ->get();
-                            $activeProviders = \App\Models\Permission::where('patient_id', $patient->id)
-                                ->where('status', 'granted')
-                                ->count();
-                        @endphp
-                        
                         @if($recentPermissions->count() > 0)
                         <div class="space-y-3">
                             @foreach($recentPermissions as $permission)
@@ -435,21 +420,6 @@
                             <i class="fas fa-heart-circle-check text-blue-200"></i>
                             <h2 id="tips-heading" class="text-sm font-semibold text-blue-100">Health Tip of the Day</h2>
                         </div>
-                        
-                        @php
-                            $tips = [
-                                ['icon' => 'fa-pills', 'text' => 'Take your medications at the same time each day to help build a routine and improve adherence.'],
-                                ['icon' => 'fa-glass-water', 'text' => 'Stay hydrated! Aim for 8 glasses of water daily to support your overall health and medication effectiveness.'],
-                                ['icon' => 'fa-heart-pulse', 'text' => 'Regular check-ups are essential. Schedule your next appointment to keep your health conditions monitored.'],
-                                ['icon' => 'fa-utensils', 'text' => 'A balanced diet rich in fruits, vegetables, and whole grains can help manage chronic conditions effectively.'],
-                                ['icon' => 'fa-person-walking', 'text' => 'Even 30 minutes of light exercise daily can significantly improve your health outcomes and energy levels.'],
-                                ['icon' => 'fa-bed', 'text' => 'Quality sleep is crucial for healing. Aim for 7-9 hours of consistent sleep each night.'],
-                                ['icon' => 'fa-shield-virus', 'text' => 'Keep your immunizations up to date to protect yourself from preventable diseases.'],
-                                ['icon' => 'fa-notes-medical', 'text' => 'Keep track of any new symptoms and discuss them with your healthcare provider during your next visit.'],
-                            ];
-                            
-                            $todayTip = $tips[now()->dayOfYear % count($tips)];
-                        @endphp
                         
                         <div class="flex items-start space-x-3">
                             <div class="flex-shrink-0 mt-1">
