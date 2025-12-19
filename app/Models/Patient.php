@@ -119,4 +119,9 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
     public function hospitalisations() {
         return $this->hasMany(Hospitalisation::class);
     }
+
+    // 8. Permissions
+    public function permissions() {
+        return $this->hasMany(Permission::class);
+    }
 }

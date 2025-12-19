@@ -73,12 +73,10 @@
                     <span class="ml-3">Search</span>
                 </a>
 
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-users w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Patients</span>
-                    <span
-                        class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
+                <a href="{{ route('doctor.patients') }}"
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.patients', 'doctor.patient.details') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-users w-5 {{ request()->routeIs('doctor.patients', 'doctor.patient.details') ? 'text-blue-600' : 'text-gray-400' }}"></i>
+                    <span class="ml-3">My Patients</span>
                 </a>
 
                 <a href="{{ route('doctor.medical.records') }}"

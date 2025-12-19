@@ -454,6 +454,14 @@ Route::prefix('doctor')->group(function () {
         Route::get('/dashboard', [Doctor\DoctorController::class, 'index'])
             ->name('doctor.dashboard');
 
+        // My Patients - List all patients with granted access
+        Route::get('/patients', [Doctor\DoctorController::class, 'patients'])
+            ->name('doctor.patients');
+
+        // Patient Details - View detailed patient information
+        Route::get('/patients/{patientId}', [Doctor\DoctorController::class, 'viewPatientDetails'])
+            ->name('doctor.patient.details');
+
         // Patient
         Route::prefix('/patient')->group(function () {
 
