@@ -73,7 +73,7 @@ class AuthController extends Controller
     public function logout(Request $request) {
         auth()->guard('doctor')->logout();
 
-        $request->session()->invalidate();
+        $request->session()->regenerate();
         $request->session()->regenerateToken();
 
         return redirect()->route('organisation.index');

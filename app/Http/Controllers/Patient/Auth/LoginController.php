@@ -15,6 +15,22 @@ class LoginController extends Controller
         return view('patient.auth.login');
     }
 
+    // Throttle login attempts
+    protected function checkTooManyFailedAttempts(Request $request) {
+        if (RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
+            $seconds = RateLimiter::availableIn($this->throttleKey($request));
+            
+            throw ValidationException::withMessages([
+                'ic_number' => "Too many login attempts. Please try again in {$seconds} seconds.",
+            ]);
+        }
+    }
+
+    // Generate throttle key
+    protected function throttleKey(Request $request) {
+        return 'login.' . $request->input('ic_number') . '|' . $request->ip();
+    }
+
     // Handle Login
     public function login(Request $request) {
         $this->checkTooManyFailedAttempts($request);
@@ -61,28 +77,11 @@ class LoginController extends Controller
     // Handle Logout
     public function logout(Request $request) {
         Auth::guard('patient')->logout();
-        // Regenerate session ID to prevent session fixation, but do NOT invalidate the whole session
-        // (invalidating clears other guards' data stored in the session)
+
         $request->session()->regenerate();
         $request->session()->regenerateToken();
 
         return redirect()->route('index')
             ->with('success', 'You have been logged out successfully.');
-    }
-
-    // Throttle login attempts
-    protected function checkTooManyFailedAttempts(Request $request) {
-        if (RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
-            $seconds = RateLimiter::availableIn($this->throttleKey($request));
-            
-            throw ValidationException::withMessages([
-                'ic_number' => "Too many login attempts. Please try again in {$seconds} seconds.",
-            ]);
-        }
-    }
-
-    // Generate throttle key
-    protected function throttleKey(Request $request) {
-        return 'login.' . $request->input('ic_number') . '|' . $request->ip();
     }
 }

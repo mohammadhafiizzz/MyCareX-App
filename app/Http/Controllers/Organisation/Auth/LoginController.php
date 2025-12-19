@@ -80,7 +80,7 @@ class LoginController extends Controller
     public function logout(Request $request) {
         auth()->guard('organisation')->logout();
         
-        $request->session()->invalidate();
+        $request->session()->regenerate();
         $request->session()->regenerateToken();
         
         return redirect()->route('organisation.index');

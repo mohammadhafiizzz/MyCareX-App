@@ -33,6 +33,20 @@
             <h1 class="text-3xl font-bold text-gray-800">Admin Portal<i class="fas fa-user text-blue-600"></i></h1>
         </div>
 
+        @if(session('session_expired'))
+            <div class="mb-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-lg shadow-sm" role="alert">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-clock text-amber-600 text-xl"></i>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <h3 class="text-sm font-semibold text-amber-800">Session Expired</h3>
+                        <p class="mt-1 text-sm text-amber-700">{{ session('session_expired') }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <form action="{{ route('admin.login.submit') }}" method="POST" id="adminLoginForm">
             @csrf
 
