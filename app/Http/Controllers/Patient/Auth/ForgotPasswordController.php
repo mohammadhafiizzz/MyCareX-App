@@ -11,13 +11,18 @@ use Illuminate\Support\Str;
 class ForgotPasswordController extends Controller
 {
     // Show the form to request a password reset link
-    public function showLinkRequestForm() {
-        return view('patient.auth.passwordEmailForm');
+    public function showForgotPasswordForm() {
+        return view('patient.auth.forgotPassword');
+    }
+
+    // Show the success request for password reset
+    public function showForgotPasswordSent(Request $request) {
+        return view('patient.auth.emailResetSent', ['email' => $request->query('email')]);
     }
 
     // Success page
     public function showSuccess() {
-        return view('patient.auth.passwordResetSuccess');
+        return view('patient.auth.resetSuccess');
     }
 
     // Handle sending of reset link email
@@ -29,8 +34,8 @@ class ForgotPasswordController extends Controller
         // Use the patients broker
         $status = Password::broker('patients')->sendResetLink($credentials);
 
-        // Always return a generic response for privacy
-        return back()->with('status', __($status));
+        // Redirect to the sent page with the email
+        return redirect()->route('patient.forgot.sent', ['email' => $request->email]);
     }
 
     // Show the reset form

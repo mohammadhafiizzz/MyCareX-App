@@ -158,6 +158,7 @@
                             </div>
                         </div>
                     @endif
+                    
                     <!-- Divider -->
                     <div class="relative mt-6 mb-6">
                         <div class="absolute inset-0 flex items-center">

@@ -33,8 +33,15 @@ Route::prefix('patient')->group(function () {
 
     // Password Reset
     Route::middleware('guest:patient')->group(function () {
-        Route::get('/forgot-password', [Patient\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])
-            ->name('patient.password.request');
+
+        // forgot password form
+        Route::get('/forgot-password', [Patient\Auth\ForgotPasswordController::class, 'showForgotPasswordForm'])
+            ->name('patient.forgot.form');
+
+        // forgot password sent page
+        Route::get('/forgot-password/sent', [Patient\Auth\ForgotPasswordController::class, 'showForgotPasswordSent'])
+            ->name('patient.forgot.sent');
+        
         Route::post('/forgot-password', [Patient\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])
             ->name('patient.password.email');
         Route::get('/reset-password/success', [Patient\Auth\ForgotPasswordController::class, 'showSuccess'])
