@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/main/registration.js'])
-    <title>MyCareX - Register Organisation</title>
+    <title>MyCareX - Reset Password</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -26,8 +26,9 @@
 
                 <div class="border border-gray-200 p-8 rounded-lg shadow-sm bg-white">
                     <div class="mb-6 text-center">
-                        <h2 class="text-2xl font-semibold text-gray-900">Sign Up for MyCareX</h2>
-                        <p class="text-sm text-gray-600 mb-8">Create a new organisation account</p>
+                        <i class="fas fa-lock text-blue-600 text-3xl mb-4"></i>
+                        <h2 class="text-2xl font-semibold text-gray-900">Reset Password</h2>
+                        <p class="text-sm text-gray-600 mb-8">Create your new password</p>
                     </div>
 
                     <!-- Error Messages -->
@@ -48,52 +49,12 @@
                         </div>
                     @endif
 
-                    <!-- Registration Form -->
-                    <form action="{{ route('organisation.register') }}" method="POST" class="space-y-6">
+                    <!-- Reset Password Form -->
+                    <form action="{{ route('admin.password.update') }}" method="POST" class="space-y-6">
                         @csrf
-                        
-                        <!-- Organisation Name -->
-                        <div>
-                            <label for="organisation_name" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-hospital text-gray-600 mr-2"></i>Organisation Name
-                            </label>
-                            <input type="text" id="organisation_name" name="organisation_name" data-uppercase="true" required 
-                                value="{{ old('organisation_name') }}"
-                                class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                placeholder="Enter your organisation name">
-                            @error('organisation_name') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
-                        </div>
 
-                        <!-- Registrant Name -->
-                        <div>
-                            <label for="contact_person_name" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-user text-gray-600 mr-2"></i>Registrant Name
-                            </label>
-                            <input type="text" id="contact_person_name" name="contact_person_name" data-uppercase="true" required 
-                                value="{{ old('contact_person_name') }}"
-                                class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                placeholder="Enter your full name">
-                            @error('contact_person_name') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <!-- Email Address -->
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-envelope text-gray-600 mr-2"></i>Email Address
-                            </label>
-                            <input type="email" id="email" name="email" required 
-                                value="{{ old('email') }}"
-                                class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                placeholder="Enter your organisation email address">
-                            @error('email') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="relative mb-12">
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="w-full border-t border-gray-300"></div>
-                            </div>
-                        </div>
+                        <input type="hidden" name="token" value="{{ $token }}" />
+                        <input type="hidden" name="email" value="{{ $email }}" />
 
                         <!-- Password -->
                         <div>
@@ -131,26 +92,12 @@
                             @error('password_confirmation') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                         </div>
 
-                        <!-- Terms and Conditions -->
-                        <div class="text-xs text-gray-600 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                            <p><i class="fas fa-info-circle mr-1 text-blue-500"></i> By creating an account, you agree to our <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline">Terms of Service</a> and have read and acknowledge our <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline">Privacy Policy</a>. You understand that your organisation's information will be stored securely and used only for healthcare purposes.</p>
-                        </div>
-
-                        <!-- Sign Up Button -->
+                        <!-- Reset Button -->
                         <div>
                             <button type="submit"
-                                class="cursor-pointer w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                                Sign Up
+                                class="cursor-pointer w-full mt-8 flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                                Reset
                             </button>
-                        </div>
-
-                        <!-- Login Link -->
-                        <div class="text-center">
-                            <span class="text-sm text-gray-600">Already have an account? </span>
-                            <a href="{{ route('organisation.login.form') }}" 
-                               class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
-                                Log in here
-                            </a>
                         </div>
                     </form>
                 </div>

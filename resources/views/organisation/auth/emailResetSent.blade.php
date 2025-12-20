@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - Registration Complete</title>
+    <title>MyCareX - Forgot Password</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -26,28 +26,16 @@
 
                 <div class="border border-gray-200 p-8 rounded-lg shadow-sm bg-white">
                     <div class="mb-6 text-center">
-                        <i class="fas fa-envelope text-blue-600 text-3xl mb-4"></i>
-                        <h2 class="text-2xl font-semibold text-gray-900">Verify your email</h2>
-                        <p class="mt-4 text-sm text-gray-600 mb-8">
-                            A verification link has been sent to your email address. 
-                            Please click the link to verify your account. 
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-100 p-4 rounded-lg mb-6">
-                        <p class="text-sm text-gray-700">
-                            <strong>Note:</strong> If you don't see the email, check your spam folder or
-                            <a href="{{ route('verification.resend') }}" class="text-blue-600 hover:underline">
-                                click here to resend
-                            </a>
-                        </p>
+                        <i class="fas fa-circle-check text-green-600 text-3xl mb-4"></i>
+                        <h2 class="text-2xl font-semibold text-gray-900">Email Sent</h2>
+                        <p class="mt-4 text-sm text-gray-600 mb-8">If {{ $email }} exists, a password reset link has been sent to your email address. Please check your inbox.</p>
                     </div>
 
                     <!-- Login Button -->
                     <div>
-                        <a href="{{ route('patient.login.form') }}"
+                        <a href="{{ route('organisation.login.form') }}"
                             class="cursor-pointer w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                            Login Now
+                            Back to Login
                         </a>
                     </div>
                 </div>

@@ -80,7 +80,7 @@
                                 <label for="password" class="block text-sm font-medium text-gray-700">
                                     <i class="fas fa-lock text-gray-600 mr-2"></i> Password
                                 </label>
-                                <a href="#" 
+                                <a href="{{ route('organisation.forgot.form') }}" 
                                    class="text-sm text-blue-600 hover:text-blue-500 transition-colors">
                                     forgot password?
                                 </a>
@@ -143,16 +143,12 @@
                         </div>
                     </form>
                 </div>
-
-                <!-- Back to Main Site -->
-                <div class="mt-8 text-center">
-                    <a href="{{ route('organisation.index') }}" 
-                       class="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-                        <i class="fas fa-arrow-left mr-1"></i>
-                        Back to main site
-                    </a>
-                </div>
             </div>
+
+            <!-- Copyright footer -->
+            <footer class="text-center mt-8 pb-4">
+                <p class="text-xs text-gray-500">&copy; {{ date('Y') }} MyCareX. All rights reserved.</p>
+            </footer>
         </div>
     </div>
 </body>

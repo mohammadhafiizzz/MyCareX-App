@@ -47,7 +47,7 @@ Route::prefix('patient')->group(function () {
         Route::get('/reset-password/success', [Patient\Auth\ForgotPasswordController::class, 'showSuccess'])
             ->name('password.reset.success');
         Route::get('/reset-password/{token}', [Patient\Auth\ForgotPasswordController::class, 'showResetForm'])
-            ->name('password.reset');
+            ->name('patient.password.reset');
         Route::post('/reset-password', [Patient\Auth\ForgotPasswordController::class, 'reset'])
             ->name('patient.password.update');
     });
@@ -421,6 +421,29 @@ Route::prefix('organisation')->group(function () {
         Route::post('/verification-notification', [Organisation\Auth\RegistrationController::class, 'resend'])->name('organisation.verification.resend');
         Route::get('/verified', [Organisation\Auth\RegistrationController::class, 'showEmailVerified'])->name('organisation.verification.success');
     });
+
+    // Password Reset
+    Route::middleware('guest:organisation')->group(function () {
+        // forgot password form
+        Route::get('/forgot-password', [Organisation\Auth\AuthController::class, 'showForgotPasswordForm'])
+            ->name('organisation.forgot.form');
+
+        // forgot password sent page
+        Route::get('/forgot-password/sent', [Organisation\Auth\AuthController::class, 'showForgotPasswordSent'])
+            ->name('organisation.forgot.sent');
+        
+        Route::post('/forgot-password', [Organisation\Auth\AuthController::class, 'sendResetLinkEmail'])
+            ->name('organisation.password.email');
+
+        Route::get('/reset-password/success', [Organisation\Auth\AuthController::class, 'showSuccess'])
+            ->name('organisation.password.reset.success');
+
+        Route::get('/reset-password/{token}', [Organisation\Auth\AuthController::class, 'showResetForm'])
+            ->name('organisation.password.reset');
+
+        Route::post('/reset-password', [Organisation\Auth\AuthController::class, 'reset'])
+            ->name('organisation.password.update');
+    });
     
     // Authenticated Organisation Routes (Protected)
     Route::middleware(['auth:organisation', 'verified'])->group(function () {
@@ -454,6 +477,29 @@ Route::prefix('doctor')->group(function () {
     // Doctor Logout
     Route::post('/logout', [Doctor\Auth\AuthController::class, 'logout'])
         ->name('doctor.logout');
+
+    // Password Reset
+    Route::middleware('guest:doctor')->group(function () {
+        // forgot password form
+        Route::get('/forgot-password', [Doctor\Auth\ForgotPasswordController::class, 'showForgotPasswordForm'])
+            ->name('doctor.forgot.form');
+
+        // forgot password sent page
+        Route::get('/forgot-password/sent', [Doctor\Auth\ForgotPasswordController::class, 'showForgotPasswordSent'])
+            ->name('doctor.forgot.sent');
+        
+        Route::post('/forgot-password', [Doctor\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])
+            ->name('doctor.password.email');
+
+        Route::get('/reset-password/success', [Doctor\Auth\ForgotPasswordController::class, 'showSuccess'])
+            ->name('doctor.password.reset.success');
+
+        Route::get('/reset-password/{token}', [Doctor\Auth\ForgotPasswordController::class, 'showResetForm'])
+            ->name('doctor.password.reset');
+
+        Route::post('/reset-password', [Doctor\Auth\ForgotPasswordController::class, 'reset'])
+            ->name('doctor.password.update');
+    });
 
     // Authenticated Doctor Routes (Protected)
     Route::middleware('auth:doctor')->group(function () {
@@ -534,6 +580,29 @@ Route::prefix('admin')->group(function () {
 
     // Admin Logout
     Route::post('/logout', [Admin\Auth\LoginController::class, 'logout'])->name('admin.logout');
+
+    // Password Reset
+    Route::middleware('guest:admin')->group(function () {
+        // forgot password form
+        Route::get('/forgot-password', [Admin\Auth\ForgotPasswordController::class, 'showForgotPasswordForm'])
+            ->name('admin.forgot.form');
+
+        // forgot password sent page
+        Route::get('/forgot-password/sent', [Admin\Auth\ForgotPasswordController::class, 'showForgotPasswordSent'])
+            ->name('admin.forgot.sent');
+        
+        Route::post('/forgot-password', [Admin\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])
+            ->name('admin.password.email');
+
+        Route::get('/reset-password/success', [Admin\Auth\ForgotPasswordController::class, 'showSuccess'])
+            ->name('admin.password.reset.success');
+
+        Route::get('/reset-password/{token}', [Admin\Auth\ForgotPasswordController::class, 'showResetForm'])
+            ->name('admin.password.reset');
+
+        Route::post('/reset-password', [Admin\Auth\ForgotPasswordController::class, 'reset'])
+            ->name('admin.password.update');
+    });
 
     // Admin Registration
     Route::get('/register', [Admin\Auth\RegistrationController::class, 'showRegistrationForm'])->name('admin.register.form');

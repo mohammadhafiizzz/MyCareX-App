@@ -109,7 +109,7 @@
                                     <label for="password" class="block text-sm font-medium text-gray-700">
                                         <i class="fas fa-lock text-gray-600 mr-2"></i> Password
                                     </label>
-                                    <a href="#" 
+                                    <a href="{{ route('doctor.forgot.form') }}" 
                                     class="text-sm text-blue-600 hover:text-blue-500 transition-colors">
                                         forgot password?
                                     </a>

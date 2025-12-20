@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Notifications\Notifiable;
 
-class Doctor extends Model implements Authenticatable
+class Doctor extends Model implements Authenticatable, CanResetPasswordContract
 {
-    use AuthenticatableTrait;
+    use AuthenticatableTrait, CanResetPassword, Notifiable;
     // primary key
     protected $primaryKey = 'id';
 
@@ -24,6 +27,11 @@ class Doctor extends Model implements Authenticatable
         'active_status',
         'profile_image_url',
         'last_login',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     // Relationship with HealthcareProvider
