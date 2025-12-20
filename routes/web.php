@@ -523,7 +523,7 @@ Route::prefix('admin')->group(function () {
 
     // Admin Login
     Route::get('/', [Admin\Auth\LoginController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [Admin\Auth\LoginController::class, 'login'])->name('admin.login.submit');
+    Route::post('/login', [Admin\Auth\LoginController::class, 'login'])->name('admin.login.action');
 
     // Admin Logout
     Route::post('/logout', [Admin\Auth\LoginController::class, 'logout'])->name('admin.logout');

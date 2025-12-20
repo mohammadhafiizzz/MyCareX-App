@@ -27,6 +27,41 @@ class RegistrationController extends Controller
 
     // Handle the patient registration
     public function register(Request $request) {
+        // ---------------------------------------------------------
+        // STEP 1: Handle "Zombie" Accounts (Unverified Logic)
+        // ---------------------------------------------------------
+        
+        // Check if a patient exists with this IC Number
+        $existingPatientByIC = Patient::where('ic_number', $request->ic_number)->first();
+
+        if ($existingPatientByIC) {
+            // If the patient exists and has verified their email
+            if ($existingPatientByIC->hasVerifiedEmail()) {
+                return back()->withErrors([
+                    'ic_number' => 'This IC number is already registered. Please login instead.'
+                ])->withInput();
+            }
+            // If unverified, delete the stale record
+            $existingPatientByIC->delete();
+        }
+
+        // Check if a patient exists with this Email Address
+        $existingPatientByEmail = Patient::where('email', $request->email)->first();
+
+        if ($existingPatientByEmail) {
+            // If the patient exists and has verified their email
+            if ($existingPatientByEmail->hasVerifiedEmail()) {
+                return back()->withErrors([
+                    'email' => 'This email address is already registered. Please use another email address.'
+                ])->withInput();
+            }
+            // If unverified, delete the stale record
+            $existingPatientByEmail->delete();
+        }
+
+        // ---------------------------------------------------------
+        // STEP 2: Standard Validation
+        // ---------------------------------------------------------
         $validatedData = $request->validate([
             'full_name' => 'required|string|max:100',
             'ic_number' => 'required|string|max:20|unique:patients,ic_number',
@@ -34,8 +69,12 @@ class RegistrationController extends Controller
             'password' => 'required|min:8|confirmed',
         ]);
 
+        // ---------------------------------------------------------
+        // STEP 3: Create & Verify
+        // ---------------------------------------------------------
+        
         // Create the patient
-        $patient = Patient::create($validatedData);
+        $patient = Patient::create( $validatedData );
 
         // Email verification
         $patient->sendEmailVerificationNotification();

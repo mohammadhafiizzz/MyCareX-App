@@ -55,7 +55,7 @@
                         <label for="edit_date_of_birth" class="block text-sm font-medium text-gray-700 mb-2">Date of
                             Birth</label>
                         <input type="date" id="edit_date_of_birth" name="date_of_birth"
-                            value="{{ Auth::guard('patient')->user()->date_of_birth->format('Y-m-d') }}"
+                            value="{{ Auth::guard('patient')->user()->date_of_birth ? Auth::guard('patient')->user()->date_of_birth->format('Y-m-d') : '' }}"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
                             required>
                     </div>
@@ -66,6 +66,7 @@
                         <select id="edit_gender" name="gender"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
                             required>
+                            <option value="" {{ !Auth::guard('patient')->user()->gender ? 'selected' : '' }}>Select Gender</option>
                             <option value="Male" {{ Auth::guard('patient')->user()->gender === 'Male' ? 'selected' : '' }}>Male</option>
                             <option value="Female" {{ Auth::guard('patient')->user()->gender === 'Female' ? 'selected' : '' }}>Female</option>
                         </select>
@@ -78,6 +79,7 @@
                         <select id="edit_blood_type" name="blood_type"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
                             required>
+                            <option value="" {{ !Auth::guard('patient')->user()->blood_type ? 'selected' : '' }}>Select Blood Type</option>
                             <option value="A+" {{ Auth::guard('patient')->user()->blood_type === 'A+' ? 'selected' : '' }}>A+</option>
                             <option value="A-" {{ Auth::guard('patient')->user()->blood_type === 'A-' ? 'selected' : '' }}>A-</option>
                             <option value="B+" {{ Auth::guard('patient')->user()->blood_type === 'B+' ? 'selected' : '' }}>B+</option>
@@ -99,8 +101,9 @@
                             @php
                                 $userRace = Auth::guard('patient')->user()->race;
                                 $predefinedRaces = ['Malay', 'Chinese', 'Indian'];
-                                $isOtherRace = !in_array($userRace, $predefinedRaces);
+                                $isOtherRace = $userRace && !in_array($userRace, $predefinedRaces);
                             @endphp
+                            <option value="" {{ !$userRace ? 'selected' : '' }}>Select Race</option>
                             <option value="Malay" {{ $userRace === 'Malay' ? 'selected' : '' }}>Malay</option>
                             <option value="Chinese" {{ $userRace === 'Chinese' ? 'selected' : '' }}>Chinese</option>
                             <option value="Indian" {{ $userRace === 'Indian' ? 'selected' : '' }}>Indian</option>

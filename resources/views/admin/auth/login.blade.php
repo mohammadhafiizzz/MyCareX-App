@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/main/login.js'])
-    <title>Provider Login - MyCareX</title>
+    <title>MyCareX - Admin</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -27,8 +27,8 @@
 
                 <div class="border border-gray-200 p-8 rounded-lg shadow-sm bg-white">
                     <div class="mb-6 text-center">
-                        <h2 class="text-2xl font-semibold text-gray-900">Login as Provider</h2>
-                        <p class="text-sm text-gray-600 mb-8">Access your healthcare provider dashboard</p>
+                        <h2 class="text-2xl font-semibold text-gray-900">Admin Portal</h2>
+                        <p class="text-sm text-gray-600 mb-8">Access your admin dashboard</p>
                     </div>
 
                     <!-- Error Messages -->
@@ -60,18 +60,18 @@
                     @endif
 
                     <!-- Login Form -->
-                    <form action="{{ route('organisation.login') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('admin.login.action') }}" method="POST" class="space-y-6">
                         @csrf
                         
                         <!-- Email Address -->
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-envelope text-gray-600 mr-2"></i> Email address
+                            <label for="staffId" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-user text-gray-600 mr-2"></i> Staff ID
                             </label>
-                            <input type="email" id="email" name="email" required 
-                                value="{{ old('email') }}"
+                            <input type="text" id="staffId" name="admin_id" required 
+                                value="{{ old('admin_id') }}"
                                 class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                placeholder="Enter your email address">
+                                placeholder="Enter your Staff ID">
                         </div>
 
                         <!-- Password -->
@@ -114,15 +114,6 @@
                             </button>
                         </div>
 
-                        <!-- Sign Up Link -->
-                        <div class="text-center">
-                            <span class="text-sm text-gray-600">Don't have account yet? </span>
-                            <a href="{{ route('organisation.register.form') }}" 
-                               class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
-                                Register here
-                            </a>
-                        </div>
-
                         <!-- Divider -->
                         <div class="relative my-4">
                             <div class="absolute inset-0 flex items-center">
@@ -133,24 +124,15 @@
                             </div>
                         </div>
 
-
-                        <!-- Doctors Login -->
-                        <div>
-                            <a href="{{ route('doctor.login') }}"
-                                class="cursor-pointer w-full flex justify-center py-3 px-4 border border-blue-300 rounded-lg shadow-sm text-sm font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                                <i class="fas fa-user-doctor mr-2 mt-0.5"></i>Login as Doctor
+                        <!-- Sign Up Link -->
+                        <div class="text-center">
+                            <span class="text-sm text-gray-600">Don't have account yet? </span>
+                            <a href="{{ route('admin.register.form') }}" 
+                               class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                                Register here
                             </a>
                         </div>
                     </form>
-                </div>
-
-                <!-- Back to Main Site -->
-                <div class="mt-8 text-center">
-                    <a href="{{ route('organisation.index') }}" 
-                       class="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-                        <i class="fas fa-arrow-left mr-1"></i>
-                        Back to main site
-                    </a>
                 </div>
             </div>
         </div>

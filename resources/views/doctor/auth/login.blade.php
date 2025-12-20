@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/main/doctor/login.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/main/login.js'])
     <title>Doctor Login - MyCareX</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
@@ -32,44 +32,65 @@
                     </div>
 
                     <!-- Error Messages -->
-                    @if ($errors->any())
+                    @if (session('error'))
                         <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
                             <div class="flex">
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-exclamation-circle text-red-400"></i>
                                 </div>
-                                <div class="ml-3">
-                                    <h3 class="text-sm font-medium text-red-800">Authentication failed</h3>
-                                    <div class="mt-2 text-sm text-red-700">
-                                        <ul class="list-disc list-inside space-y-1">
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
+                                <div class="ml-3 text-sm text-red-700">
+                                    <p>{{ session('error') }}</p>
                                 </div>
                             </div>
                         </div>
                     @endif
 
+                    {{-- Session Expired Alert --}}
                     @if(session('session_expired'))
-                        <div class="mb-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-lg shadow-sm" role="alert">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-clock text-amber-600 text-xl"></i>
-                                </div>
-                                <div class="ml-3 flex-1">
-                                    <h3 class="text-sm font-semibold text-amber-800">Session Expired</h3>
-                                    <p class="mt-1 text-sm text-amber-700">{{ session('session_expired') }}</p>
-                                </div>
+                    <div class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3" role="alert">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-clock text-amber-600"></i>
+                            </div>
+                            <div class="ml-3 text-sm text-amber-700">
+                                <p>{{ session('session_expired') }}</p>
                             </div>
                         </div>
+                    </div>
                     @endif
 
                     @if ($healthcareProviders->isNotEmpty())
                         <!-- Login Form -->
                         <form action="{{ route('doctor.login') }}" method="POST" class="space-y-6">
                             @csrf
+
+                            <!-- Healthcare Provider -->
+                            <div class="relative" id="provider-search-container">
+                                <label for="provider_search" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-hospital text-gray-600 mr-2"></i> Healthcare Institution
+                                </label>
+                                <div class="relative">
+                                    <input type="text" id="provider_search" 
+                                        class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        placeholder="Find your organisation" autocomplete="off">
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-chevron-down text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="provider_id" id="provider_id" value="{{ old('provider_id') }}" required>
+                                
+                                <!-- Dropdown List -->
+                                <div id="provider_list" class="absolute z-20 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm hidden">
+                                    @foreach ($healthcareProviders as $provider)
+                                        <div class="provider-option cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-blue-600 hover:text-white text-gray-900" 
+                                            data-id="{{ $provider->id }}" 
+                                            data-name="{{ $provider->organisation_name }}">
+                                            {{ $provider->organisation_name }}
+                                        </div>
+                                    @endforeach
+                                    <div id="no-provider-found" class="px-3 py-2 text-gray-500 hidden">No organisation found</div>
+                                </div>
+                            </div>
 
                             <!-- Email Address -->
                             <div>
@@ -79,7 +100,7 @@
                                 <input type="email" id="email" name="email" required 
                                     value="{{ old('email') }}"
                                     class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                    placeholder="your@email.com">
+                                    placeholder="Enter your email address">
                             </div>
 
                             <!-- Password -->
@@ -96,7 +117,7 @@
                                 <div class="relative">
                                     <input type="password" id="password" name="password" required
                                         class="w-full px-3 py-3 pr-10 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                        placeholder="Your password">
+                                        placeholder="Enter your password">
                                     <button type="button" 
                                         class="absolute inset-y-0 right-0 pr-3 flex items-center"
                                         id="togglePassword">

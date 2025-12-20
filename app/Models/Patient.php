@@ -61,6 +61,9 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
 
     // Get age from date_of_birth
     public function getAgeAttribute() {
+        if (!$this->date_of_birth) {
+            return null;
+        }
         return Carbon::parse($this->date_of_birth)->age;
     }
 
@@ -75,7 +78,12 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
 
     // Get full address
     public function getFullAddressAttribute() {
-        return $this->address . ', ' . $this->postal_code . ', ' . $this->state;
+        $parts = array_filter([
+            $this->address,
+            $this->postal_code,
+            $this->state
+        ]);
+        return !empty($parts) ? implode(', ', $parts) : null;
     }
 
     /*--- MUTATORS ---*/

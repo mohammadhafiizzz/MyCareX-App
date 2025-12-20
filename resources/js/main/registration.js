@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Get form elements
-    const fullNameInput = document.getElementById('full_name');
+    const uppercaseInputs = document.querySelectorAll('[data-uppercase]');
     const icNumberInput = document.getElementById('ic_number');
     const passwordInput = document.getElementById('password');
     const passwordConfirmationInput = document.getElementById('password_confirmation');
     const registrationForm = document.querySelector('form');
     const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
 
     const isMiddleSegmentValid = (value) => {
         if (value.length < 8) {
@@ -19,11 +20,98 @@ document.addEventListener('DOMContentLoaded', function() {
         return numericValue >= 1 && numericValue <= 15;
     };
 
-    // Full Name - Auto uppercase
-    if (fullNameInput) {
-        fullNameInput.addEventListener('input', function(e) {
-            this.value = this.value.toUpperCase();
+    // Full Name fields - Auto uppercase
+    if (uppercaseInputs.length) {
+        uppercaseInputs.forEach((input) => {
+            input.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
         });
+    }
+
+    // Phone Number Formatting
+    if (phoneInput) {
+        // Create phone validation indicator
+        const phoneContainer = phoneInput.parentElement;
+        const phoneIndicator = document.createElement('div');
+        phoneIndicator.id = 'phoneValidation';
+        phoneIndicator.className = 'mt-2 text-xs hidden';
+        phoneContainer.appendChild(phoneIndicator);
+
+        phoneInput.addEventListener('input', function(e) {
+            const rawDigits = e.target.value.replace(/\D/g, '');
+
+            // Determine local number with the leading 0
+            let localNumber = rawDigits;
+            if (rawDigits.startsWith('60')) {
+                localNumber = '0' + rawDigits.slice(2);
+            } else if (!rawDigits.startsWith('0')) {
+                localNumber = '0' + rawDigits;
+            }
+
+            if (!localNumber.startsWith('01')) {
+                localNumber = '';
+            }
+
+            const digitsWithoutZero = localNumber.slice(1);
+            const prefix = digitsWithoutZero.slice(0, 2);
+            const isSpecialPrefix = prefix === '11' || prefix === '15';
+
+            const value = digitsWithoutZero.slice(0, isSpecialPrefix ? 10 : 9);
+
+            let formatted = '';
+            if (value.length > 0) {
+                formatted = '+60 ' + value.slice(0, 2);
+                if (isSpecialPrefix) {
+                    if (value.length > 2) {
+                        formatted += '-' + value.slice(2, 6);
+                    }
+                    if (value.length > 6) {
+                        formatted += '-' + value.slice(6, 10);
+                    }
+                } else {
+                    if (value.length > 2) {
+                        formatted += '-' + value.slice(2, 5);
+                    }
+                    if (value.length > 5) {
+                        formatted += ' ' + value.slice(5, 9);
+                    }
+                }
+            }
+
+            e.target.value = formatted;
+            e.target.dataset.rawValue = value ? '60' + value : '';
+
+            const validPrefixes = ['11', '12', '13', '14', '15', '16', '17', '18', '19'];
+            const isPrefixValid = validPrefixes.includes(prefix);
+
+            const requiredLength = isSpecialPrefix ? 10 : 9;
+            const isLengthValid = value.length === requiredLength;
+
+            if (value.length > 0) {
+                phoneIndicator.classList.remove('hidden');
+                if (isPrefixValid && isLengthValid) {
+                    phoneIndicator.innerHTML = '<i class="fas fa-check-circle text-green-600 mr-1"></i><span class="text-green-600">Valid phone number</span>';
+                } else if (!isPrefixValid) {
+                    phoneIndicator.innerHTML = '<i class="fas fa-exclamation-circle text-amber-600 mr-1"></i><span class="text-amber-600">Please enter a valid phone number.</span>';
+                } else if (!isLengthValid) {
+                    phoneIndicator.innerHTML = '<i class="fas fa-exclamation-circle text-amber-600 mr-1"></i><span class="text-amber-600">Please enter a valid phone number.</span>';
+                } else {
+                    phoneIndicator.innerHTML = '<i class="fas fa-info-circle text-gray-600 mr-1"></i><span class="text-gray-600">Enter a valid phone number</span>';
+                }
+            } else {
+                phoneIndicator.classList.add('hidden');
+            }
+        });
+
+        // Before form submission, set the raw value with country code
+        if (registrationForm) {
+            registrationForm.addEventListener('submit', function(e) {
+                if (phoneInput.dataset.rawValue) {
+                    phoneInput.value = phoneInput.dataset.rawValue;
+                }
+            });
+        }
     }
 
     // Email Validation
@@ -91,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (lengthValid && middleValid) {
                     icIndicator.innerHTML = '<i class="fas fa-check-circle text-green-600 mr-1"></i><span class="text-green-600">Valid IC number</span>';
                 } else if (!lengthValid) {
-                    icIndicator.innerHTML = '<i class="fas fa-exclamation-circle text-amber-600 mr-1"></i><span class="text-amber-600">IC number must be 12 digits (' + value.length + '/12)</span>';
+                    icIndicator.innerHTML = '<i class="fas fa-exclamation-circle text-amber-600 mr-1"></i><span class="text-amber-600">IC number must be 12 digits.</span>';
                 } else {
                     icIndicator.innerHTML = '<i class="fas fa-exclamation-circle text-amber-600 mr-1"></i><span class="text-amber-600">Digits in the middle must be between 01 and 15</span>';
                 }
@@ -257,6 +345,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 errors.push('IC number must be 12 digits');
             } else if (!isMiddleSegmentValid(icRaw)) {
                 errors.push('Digits 7-8 of the IC number must be between 01 and 15');
+            }
+
+            // Validate phone number
+            if (phoneInput) {
+                const phoneRaw = phoneInput.dataset.rawValue || '';
+                const phoneDigits = phoneRaw.replace(/\D/g, '');
+
+                if (phoneDigits.length === 0) {
+                    errors.push('Phone number is required');
+                } else {
+                    let localNumber = phoneDigits;
+                    if (phoneDigits.startsWith('60')) {
+                        localNumber = '0' + phoneDigits.slice(2);
+                    } else if (!phoneDigits.startsWith('0')) {
+                        localNumber = '0' + phoneDigits;
+                    }
+
+                    if (!localNumber.startsWith('01')) {
+                        errors.push('Phone number must start with 01');
+                    } else {
+                        const digitsWithoutZero = localNumber.slice(1);
+                        const prefix = digitsWithoutZero.slice(0, 2);
+                        const validPrefixes = ['11', '12', '13', '14', '15', '16', '17', '18', '19'];
+                        const isSpecialPrefix = prefix === '11' || prefix === '15';
+                        const requiredLength = isSpecialPrefix ? 10 : 9;
+
+                        if (!validPrefixes.includes(prefix)) {
+                            errors.push('Phone number must start with a valid Malaysian prefix (011-019)');
+                        } else if (digitsWithoutZero.length !== requiredLength) {
+                            errors.push('Phone number with prefix ' + prefix + ' must have ' + requiredLength + ' digits after the zero');
+                        }
+                    }
+                }
             }
 
             if (errors.length > 0) {

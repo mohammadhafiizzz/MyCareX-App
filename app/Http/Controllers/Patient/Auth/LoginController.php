@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Patient;
 
 class LoginController extends Controller
 {
@@ -43,17 +44,29 @@ class LoginController extends Controller
 
         $remember = $request->boolean('remember');
 
+        // Check if account exists first
+        $patient = Patient::where('ic_number', $credentials['ic_number'])->first();
+
+        if (!$patient) {
+            // Account does not exist at all
+            RateLimiter::hit($this->throttleKey($request));
+            
+            return back()
+                ->withInput($request->only('ic_number'))
+                ->with('error', 'Account does not exist. Please sign up.');
+        }
+
+        // Attempt to log the user in
         if (Auth::guard('patient')->attempt($credentials, $remember)) {
             $patient = Auth::guard('patient')->user();
             
-            // Check email verification
+            // If the email is NOT verified, we consider this account "invalid" for login.
             if (!$patient->hasVerifiedEmail()) {
                 Auth::guard('patient')->logout();
-                RateLimiter::hit($this->throttleKey($request));
-                
+            
                 return back()
                     ->withInput($request->only('ic_number'))
-                    ->with('error', 'Please verify your email address before logging in');
+                    ->with('error', 'Account does not exist. Please sign up.');
             }
 
             RateLimiter::clear($this->throttleKey($request));
@@ -67,6 +80,7 @@ class LoginController extends Controller
                 ->with('success', 'Welcome back, ' . $patient->full_name . '!');
         }
 
+        // Account exists but password is incorrect
         RateLimiter::hit($this->throttleKey($request));
 
         return back()

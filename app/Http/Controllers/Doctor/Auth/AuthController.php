@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Doctor\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\HealthcareProvider;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -25,14 +27,14 @@ class AuthController extends Controller
             $seconds = RateLimiter::availableIn($this->throttleKey($request));
             
             throw ValidationException::withMessages([
-                'id' => "Too many login attempts. Please try again in {$seconds} seconds.",
+                'email' => "Too many login attempts. Please try again in {$seconds} seconds.",
             ]);
         }
     }
 
     // Generate throttle key
     protected function throttleKey(Request $request) {
-        return 'login.' . $request->input('id') . '|' . $request->ip();
+        return 'login.' . $request->input('email') . '|' . $request->ip();
     }
 
     // doctor login
@@ -41,6 +43,7 @@ class AuthController extends Controller
 
         // Validate credentials
         $credentials = $request->validate([
+            'provider_id' => 'required|exists:healthcare_providers,id',
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
@@ -48,9 +51,23 @@ class AuthController extends Controller
         // Remember me
         $remember = $request->boolean('remember');
 
+        // Check if doctor exists first
+        $doctor = Doctor::where('email', $credentials['email'])
+            ->where('provider_id', $credentials['provider_id'])
+            ->first();
+
+        if (!$doctor) {
+            // Account does not exist at all for this provider
+            RateLimiter::hit($this->throttleKey($request));
+            
+            return back()
+                ->withInput($request->only('email', 'provider_id', 'remember'))
+                ->with('error', 'Account does not exist.');
+        }
+
         // Attempt login
-        if (auth()->guard('doctor')->attempt($credentials, $remember)) {
-            $doctor = auth()->guard('doctor')->user();
+        if (Auth::guard('doctor')->attempt($credentials, $remember)) {
+            $doctor = Auth::guard('doctor')->user();
 
             // Clear login attempts
             RateLimiter::clear($this->throttleKey($request));
@@ -60,14 +77,15 @@ class AuthController extends Controller
             $doctor->last_login = now();
             $doctor->save();
 
-            return redirect()->route('doctor.dashboard');
+            return redirect()->route('doctor.dashboard')
+                ->with('success', 'Welcome back, Dr. ' . $doctor->full_name . '!');
         }
 
         // Failed login
         RateLimiter::hit($this->throttleKey($request));
         return back()
-            ->withInput($request->only('email', 'remember'))
-            ->with('login_error', 'Invalid email or Password.');
+            ->withInput($request->only('email', 'provider_id', 'remember'))
+            ->with('error', 'Invalid email or Password.');
     }
 
     public function logout(Request $request) {

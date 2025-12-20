@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/main/registration.js'])
-    <title>MyCareX - Register</title>
+    <title>MyCareX - Register Admin</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -27,8 +27,20 @@
                 <div class="border border-gray-200 p-8 rounded-lg shadow-sm bg-white">
                     <div class="mb-6 text-center">
                         <h2 class="text-2xl font-semibold text-gray-900">Sign Up for MyCareX</h2>
-                        <p class="text-sm text-gray-600 mb-8">Create your personal health records account</p>
+                        <p class="text-sm text-gray-600 mb-8">Create a new administrator account</p>
                     </div>
+
+                    <!-- First Admin Notice -->
+                    @if (!$recordExists)
+                        <div class="mb-6 p-4 bg-blue-50 border border-blue-200 text-blue-800 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                <p class="text-sm font-medium">
+                                    No admin user is registered. You are registering the first admin who will be the "Super Admin" with full system privileges.
+                                </p>
+                            </div>
+                        </div>
+                    @endif
 
                     <!-- Error Messages -->
                     @if ($errors->any())
@@ -49,7 +61,7 @@
                     @endif
 
                     <!-- Registration Form -->
-                    <form action="{{ route('patient.register') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('admin.register') }}" method="POST" class="space-y-6">
                         @csrf
                         
                         <!-- Full Name -->
@@ -86,6 +98,18 @@
                                 class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                 placeholder="Enter your email address">
                             @error('email') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-phone text-gray-600 mr-2"></i>Phone Number
+                            </label>
+                            <input type="tel" id="phone" name="phone_number" required 
+                                value="{{ old('phone_number') }}"
+                                class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                placeholder="Enter your phone number">
+                            @error('phone_number') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- Divider -->
@@ -131,11 +155,6 @@
                             @error('password_confirmation') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                         </div>
 
-                        <!-- Terms and Conditions -->
-                        <div class="text-xs text-gray-600 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                            <p><i class="fas fa-info-circle mr-1 text-blue-500"></i> By creating an account, you agree to our <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline">Terms of Service</a> and have read and acknowledge our <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline">Privacy Policy</a>. You understand that your health information will be stored securely and used only for healthcare purposes.</p>
-                        </div>
-
                         <!-- Sign Up Button -->
                         <div>
                             <button type="submit"
@@ -147,7 +166,7 @@
                         <!-- Login Link -->
                         <div class="text-center">
                             <span class="text-sm text-gray-600">Already have an account? </span>
-                            <a href="{{ route('patient.login') }}" 
+                            <a href="{{ route('admin.login') }}" 
                                class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
                                 Log in here
                             </a>
@@ -157,10 +176,10 @@
 
                 <!-- Back to Main Site -->
                 <div class="mt-8 text-center">
-                    <a href="{{ route('organisation.index') }}" 
+                    <a href="{{ route('admin.login') }}" 
                        class="text-sm text-gray-500 hover:text-gray-700 transition-colors">
                         <i class="fas fa-arrow-left mr-1"></i>
-                        Back to main site
+                        Back to login
                     </a>
                 </div>
             </div>

@@ -69,7 +69,7 @@
                                 @php
                                     $userRelationship = Auth::guard('patient')->user()->emergency_contact_relationship;
                                     $predefinedRelationships = ['Spouse', 'Parent', 'Child', 'Sibling', 'Friend'];
-                                    $isOtherRelationship = !in_array($userRelationship, $predefinedRelationships);
+                                    $isOtherRelationship = $userRelationship && !in_array($userRelationship, $predefinedRelationships);
                                 @endphp
                                 <option value="">Select Relationship</option>
                                 <option value="Spouse" {{ $userRelationship === 'Spouse' ? 'selected' : '' }}>Spouse

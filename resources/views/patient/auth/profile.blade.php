@@ -32,7 +32,7 @@
                 </div>
                 <div class="flex items-center gap-2 text-sm text-gray-500">
                     <i class="fas fa-clock"></i>
-                    <span>Last login: {{ Auth::guard('patient')->user()->last_login ? Auth::guard('patient')->user()->last_login->diffForHumans() : 'Just now' }}</span>
+                    <span>Last login: {{ $lastLogin }}</span>
                 </div>
             </div>
         </div>
@@ -76,6 +76,17 @@
             </div>
         @endif
 
+        <!-- Need for completion -->
+        @if($needsProfileCompletion)
+            <div class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
+                <i class="fas fa-exclamation-triangle text-amber-600 mt-0.5" aria-hidden="true"></i>
+                <div class="text-sm text-amber-800">
+                    <p class="font-medium">Your profile is incomplete.</p>
+                    <p>Please complete your information to ensure healthcare providers have your complete medical information.</p>
+                </div>
+            </div>
+        @endif
+
         <!-- Profile Overview Hero Card -->
         <div class="bg-white rounded-2xl shadow-sm mb-8 overflow-hidden transition-all duration-200 ease-in-out hover:shadow-xl">
             <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 sm:px-8">
@@ -99,25 +110,27 @@
                     <!-- User Info -->
                     <div class="text-center sm:text-left">
                         <h2 class="text-2xl sm:text-3xl font-bold text-white">
-                            {{ Auth::guard('patient')->user()->full_name }}
+                            {{ $patient->full_name }}
                         </h2>
                         <p class="text-blue-100 mt-1 flex items-center justify-center sm:justify-start gap-2">
                             <i class="fas fa-id-card text-sm"></i>
-                            {{ Auth::guard('patient')->user()->ic_number }}
+                            {{ $patient->ic_number }}
                         </p>
                         <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-4">
                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-sm text-white">
                                 <i class="fas fa-birthday-cake text-xs"></i>
-                                {{ Auth::guard('patient')->user()->age }} years old
+                                {{ $age }} years old
                             </span>
+                            @if($patient->gender)
                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-sm text-white capitalize">
                                 <i class="fas fa-venus-mars text-xs"></i>
-                                {{ Auth::guard('patient')->user()->gender }}
+                                {{ $patient->gender }}
                             </span>
-                            @if(Auth::guard('patient')->user()->blood_type)
+                            @endif
+                            @if($bloodType)
                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-500/80 backdrop-blur rounded-lg text-sm text-white font-semibold">
                                 <i class="fas fa-tint text-xs"></i>
-                                {{ Auth::guard('patient')->user()->blood_type }}
+                                {{ $bloodType }}
                             </span>
                             @endif
                         </div>
@@ -131,11 +144,7 @@
                     <!-- Height -->
                     <div class="px-4 py-5 text-center">
                         <p class="text-2xl font-bold text-gray-900">
-                            @if(Auth::guard('patient')->user()->height)
-                                {{ Auth::guard('patient')->user()->height }}
-                            @else
-                                --
-                            @endif
+                            {{ $height }}
                         </p>
                         <p class="text-xs text-gray-500 mt-1">Height (cm)</p>
                     </div>
@@ -143,39 +152,13 @@
                     <!-- Weight -->
                     <div class="px-4 py-5 text-center">
                         <p class="text-2xl font-bold text-gray-900">
-                            @if(Auth::guard('patient')->user()->weight)
-                                {{ Auth::guard('patient')->user()->weight }}
-                            @else
-                                --
-                            @endif
+                            {{ $weight }}
                         </p>
                         <p class="text-xs text-gray-500 mt-1">Weight (kg)</p>
                     </div>
                     
                     <!-- BMI -->
                     <div class="px-4 py-5 text-center">
-                        @php
-                            $bmi = Auth::guard('patient')->user()->bmi;
-                            $bmiColor = 'text-gray-900';
-                            $bmiLabel = 'BMI';
-                            
-                            if ($bmi) {
-                                if ($bmi < 18.5) {
-                                    $bmiColor = 'text-blue-600';
-                                    $bmiLabel = 'Underweight';
-                                } elseif ($bmi >= 18.5 && $bmi < 25) {
-                                    $bmiColor = 'text-green-600';
-                                    $bmiLabel = 'Normal';
-                                } elseif ($bmi >= 25 && $bmi < 30) {
-                                    $bmiColor = 'text-yellow-600';
-                                    $bmiLabel = 'Overweight';
-                                } else {
-                                    $bmiColor = 'text-red-600';
-                                    $bmiLabel = 'Obese';
-                                }
-                            }
-                        @endphp
-                        
                         <p class="text-2xl font-bold {{ $bmiColor }}">
                             {{ $bmi ?? '--' }}
                         </p>
@@ -228,37 +211,35 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1">
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Full Name</label>
-                                <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->full_name }}</p>
+                                <p class="text-gray-900 font-medium">{{ $patient->full_name }}</p>
                             </div>
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">IC Number</label>
-                                <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->ic_number }}</p>
+                                <p class="text-gray-900 font-medium">{{ $patient->ic_number }}</p>
                             </div>
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Email Address</label>
-                                <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->email }}</p>
+                                <p class="text-gray-900 font-medium">{{ $patient->email }}</p>
                             </div>
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Phone Number</label>
-                                <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->phone_number }}</p>
+                                <p class="text-gray-900 font-medium">{{ $phoneNumber }}</p>
                             </div>
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Date of Birth</label>
-                                <p class="text-gray-900 font-medium">
-                                    {{ Auth::guard('patient')->user()->date_of_birth->format('d M Y') }}
-                                </p>
+                                <p class="text-gray-900 font-medium">{{ $dateOfBirth }}</p>
                             </div>
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Gender</label>
-                                <p class="text-gray-900 font-medium capitalize">{{ Auth::guard('patient')->user()->gender }}</p>
+                                <p class="text-gray-900 font-medium capitalize">{{ $patient->gender ?? 'Not specified' }}</p>
                             </div>
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Blood Type</label>
                                 <p class="text-gray-900 font-medium">
-                                    @if(Auth::guard('patient')->user()->blood_type)
+                                    @if($bloodType)
                                         <span class="inline-flex items-center gap-1.5">
                                             <span class="w-2 h-2 bg-red-500 rounded-full"></span>
-                                            {{ Auth::guard('patient')->user()->blood_type }}
+                                            {{ $bloodType }}
                                         </span>
                                     @else
                                         <span class="text-gray-400">Not specified</span>
@@ -267,7 +248,7 @@
                             </div>
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Race</label>
-                                <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->race ?? 'Not specified' }}</p>
+                                <p class="text-gray-900 font-medium">{{ $race }}</p>
                             </div>
                         </div>
                     </div>
@@ -297,23 +278,23 @@
                     <div class="p-6">
                         <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50 mb-2">
                             <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Street Address</label>
-                            <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->address ?? 'Not specified' }}</p>
+                            <p class="text-gray-900 font-medium">{{ $address }}</p>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1">
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Postal Code</label>
-                                <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->postal_code ?? 'Not specified' }}</p>
+                                <p class="text-gray-900 font-medium">{{ $postalCode }}</p>
                             </div>
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
                                 <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">State</label>
-                                <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->state ?? 'Not specified' }}</p>
+                                <p class="text-gray-900 font-medium">{{ $state }}</p>
                             </div>
                         </div>
                         <div class="mt-4 p-4 bg-gray-50 rounded-xl">
                             <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
                                 <i class="fas fa-location-dot mr-1"></i> Full Address
                             </label>
-                            <p class="text-gray-700">{{ Auth::guard('patient')->user()->full_address ?? 'No address on file' }}</p>
+                            <p class="text-gray-700">{{ $fullAddress }}</p>
                         </div>
                     </div>
                 </div>
@@ -350,10 +331,10 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-lg font-semibold text-gray-900 truncate">
-                                    {{ Auth::guard('patient')->user()->emergency_contact_name ?? 'Not specified' }}
+                                    {{ $emergencyName }}
                                 </p>
                                 <p class="text-sm text-blue-600 font-medium">
-                                    {{ Auth::guard('patient')->user()->emergency_contact_relationship ?? 'Relationship not specified' }}
+                                    {{ $emergencyRelationship }}
                                 </p>
                             </div>
                         </div>
@@ -362,14 +343,14 @@
                                 <i class="fas fa-phone text-gray-400 w-4"></i>
                                 <div>
                                     <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider">Phone</label>
-                                    <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->emergency_contact_number ?? 'Not specified' }}</p>
+                                    <p class="text-gray-900 font-medium">{{ $emergencyPhone }}</p>
                                 </div>
                             </div>
                             <div class="relative p-3 rounded-lg transition-colors duration-150 hover:bg-gray-50 flex items-center gap-3">
                                 <i class="fas fa-id-card text-gray-400 w-4"></i>
                                 <div>
                                     <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider">IC Number</label>
-                                    <p class="text-gray-900 font-medium">{{ Auth::guard('patient')->user()->emergency_contact_ic_number ?? 'Not specified' }}</p>
+                                    <p class="text-gray-900 font-medium">{{ $emergencyIc }}</p>
                                 </div>
                             </div>
                         </div>
@@ -417,7 +398,7 @@
                                 <div>
                                     <p class="text-gray-900 font-medium">Account Created</p>
                                     <p class="text-xs text-gray-500">
-                                        {{ Auth::guard('patient')->user()->created_at->format('d M Y, H:i') }}
+                                        {{ $accountCreated }}
                                     </p>
                                 </div>
                             </div>

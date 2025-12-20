@@ -11,11 +11,46 @@ class RegistrationController extends Controller
     // Show the admin registration form
     public function showRegistrationForm() {
         $recordExists = Admin::exists();
-        return view("admin.auth.adminRegister", ['recordExists' => $recordExists]);
+        return view("admin.auth.registration", ['recordExists' => $recordExists]);
     }
 
     // Handle the admin registration
     public function register(Request $request) {
+        // ---------------------------------------------------------
+        // STEP 1: Handle Existing Accounts
+        // ---------------------------------------------------------
+        
+        // Check if an admin exists with this IC Number
+        $existingAdminByIC = Admin::where('ic_number', $request->ic_number)->first();
+
+        if ($existingAdminByIC) {
+            // If the admin exists and has verified their email
+            if ($existingAdminByIC->email_verified_at !== null) {
+                return back()->withErrors([
+                    'ic_number' => 'This IC number is already registered. Please login instead.'
+                ])->withInput();
+            }
+            // If unverified, delete the stale record
+            $existingAdminByIC->delete();
+        }
+
+        // Check if an admin exists with this Email Address
+        $existingAdminByEmail = Admin::where('email', $request->email)->first();
+
+        if ($existingAdminByEmail) {
+            // If the admin exists and has verified their email
+            if ($existingAdminByEmail->email_verified_at !== null) {
+                return back()->withErrors([
+                    'email' => 'This email address is already registered. Please use another email address.'
+                ])->withInput();
+            }
+            // If unverified, delete the stale record
+            $existingAdminByEmail->delete();
+        }
+
+        // ---------------------------------------------------------
+        // STEP 2: Standard Validation
+        // ---------------------------------------------------------
         // Validate the incoming request data
         $validatedData = $request->validate([
             'full_name' => 'required|string|max:100',
@@ -27,6 +62,9 @@ class RegistrationController extends Controller
             'profile_image_url' => 'nullable|string',
         ]);
 
+        // ---------------------------------------------------------
+        // STEP 3: Determine Role & Create Admin
+        // ---------------------------------------------------------
         // Determine role
         if (!Admin::exists()) {
             // First admin is Super Admin, Verified by default

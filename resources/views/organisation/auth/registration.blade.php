@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/main/registration.js'])
-    <title>MyCareX - Register</title>
+    <title>MyCareX - Register Organisation</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -27,7 +27,7 @@
                 <div class="border border-gray-200 p-8 rounded-lg shadow-sm bg-white">
                     <div class="mb-6 text-center">
                         <h2 class="text-2xl font-semibold text-gray-900">Sign Up for MyCareX</h2>
-                        <p class="text-sm text-gray-600 mb-8">Create your personal health records account</p>
+                        <p class="text-sm text-gray-600 mb-8">Create a new organisation account</p>
                     </div>
 
                     <!-- Error Messages -->
@@ -49,31 +49,31 @@
                     @endif
 
                     <!-- Registration Form -->
-                    <form action="{{ route('patient.register') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('organisation.register') }}" method="POST" class="space-y-6">
                         @csrf
                         
-                        <!-- Full Name -->
+                        <!-- Organisation Name -->
                         <div>
-                            <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-user text-gray-600 mr-2"></i>Full Name
+                            <label for="organisation_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-hospital text-gray-600 mr-2"></i>Organisation Name
                             </label>
-                            <input type="text" id="fullName" name="full_name" required 
-                                value="{{ old('full_name') }}" data-uppercase="true"
+                            <input type="text" id="organisation_name" name="organisation_name" data-uppercase="true" required 
+                                value="{{ old('organisation_name') }}"
                                 class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                placeholder="Enter your full name">
-                            @error('full_name') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                                placeholder="Enter your organisation name">
+                            @error('organisation_name') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                         </div>
 
-                        <!-- IC Number -->
+                        <!-- Registrant Name -->
                         <div>
-                            <label for="ic_number" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-id-card text-gray-600 mr-2"></i>IC Number
+                            <label for="contact_person_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-user text-gray-600 mr-2"></i>Registrant Name
                             </label>
-                            <input type="text" id="ic_number" name="ic_number" required 
-                                value="{{ old('ic_number') }}"
+                            <input type="text" id="contact_person_name" name="contact_person_name" data-uppercase="true" required 
+                                value="{{ old('contact_person_name') }}"
                                 class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                placeholder="Enter your IC number" maxlength="14">
-                            @error('ic_number') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                                placeholder="Enter your full name">
+                            @error('contact_person_name') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- Email Address -->
@@ -84,7 +84,7 @@
                             <input type="email" id="email" name="email" required 
                                 value="{{ old('email') }}"
                                 class="w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                placeholder="Enter your email address">
+                                placeholder="Enter your organisation email address">
                             @error('email') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -133,7 +133,7 @@
 
                         <!-- Terms and Conditions -->
                         <div class="text-xs text-gray-600 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                            <p><i class="fas fa-info-circle mr-1 text-blue-500"></i> By creating an account, you agree to our <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline">Terms of Service</a> and have read and acknowledge our <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline">Privacy Policy</a>. You understand that your health information will be stored securely and used only for healthcare purposes.</p>
+                            <p><i class="fas fa-info-circle mr-1 text-blue-500"></i> By creating an account, you agree to our <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline">Terms of Service</a> and have read and acknowledge our <a href="#" class="text-blue-600 hover:text-blue-700 hover:underline">Privacy Policy</a>. You understand that your organisation's information will be stored securely and used only for healthcare purposes.</p>
                         </div>
 
                         <!-- Sign Up Button -->
@@ -147,7 +147,7 @@
                         <!-- Login Link -->
                         <div class="text-center">
                             <span class="text-sm text-gray-600">Already have an account? </span>
-                            <a href="{{ route('patient.login') }}" 
+                            <a href="{{ route('organisation.login.form') }}" 
                                class="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
                                 Log in here
                             </a>
@@ -157,10 +157,10 @@
 
                 <!-- Back to Main Site -->
                 <div class="mt-8 text-center">
-                    <a href="{{ route('organisation.index') }}" 
+                    <a href="{{ route('organisation.login.form') }}" 
                        class="text-sm text-gray-500 hover:text-gray-700 transition-colors">
                         <i class="fas fa-arrow-left mr-1"></i>
-                        Back to main site
+                        Back to login
                     </a>
                 </div>
             </div>

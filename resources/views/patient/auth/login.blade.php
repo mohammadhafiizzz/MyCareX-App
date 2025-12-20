@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/main/patient/login.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/main/login.js'])
     <title>Patient Login - MyCareX</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
@@ -96,11 +96,8 @@
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-exclamation-circle text-red-400"></i>
                                 </div>
-                                <div class="ml-3">
-                                    <h3 class="text-sm font-medium text-red-800">Authentication failed</h3>
-                                    <div class="mt-2 text-sm text-red-700">
-                                        <p>{{ session('error') }}</p>
-                                    </div>
+                                <div class="ml-3 text-sm text-red-700">
+                                    <p>{{ session('error') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -108,18 +105,14 @@
 
                     {{-- Session Expired Alert --}}
                     @if(session('session_expired'))
-                    <div class="mb-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-lg shadow-sm animate-pulse" role="alert">
+                    <div class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3" role="alert">
                         <div class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-clock text-amber-600 text-xl"></i>
+                                <i class="fas fa-clock text-amber-600"></i>
                             </div>
-                            <div class="ml-3 flex-1">
-                                <h3 class="text-sm font-semibold text-amber-800">Session Expired</h3>
-                                <p class="mt-1 text-sm text-amber-700">{{ session('session_expired') }}</p>
+                            <div class="ml-3 text-sm text-amber-700">
+                                <p>{{ session('session_expired') }}</p>
                             </div>
-                            <button type="button" onclick="this.parentElement.parentElement.remove()" class="ml-auto text-amber-600 hover:text-amber-800">
-                                <i class="fas fa-times"></i>
-                            </button>
                         </div>
                     </div>
                     @endif
