@@ -20,8 +20,12 @@
         <div class="p-4 border-b border-gray-200 bg-gray-50">
             <div class="flex items-start space-x-3">
                 <div class="flex-shrink-0">
-                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                        <i class="fas fa-hospital text-blue-600 text-lg"></i>
+                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+                        @if(Auth::guard('organisation')->user()->profile_image_url)
+                            <img src="{{ asset(Auth::guard('organisation')->user()->profile_image_url) }}" alt="Profile" class="w-full h-full object-cover">
+                        @else
+                            <i class="fas fa-user-shield text-blue-600 text-lg"></i>
+                        @endif
                     </div>
                 </div>
                 <div class="flex-1 min-w-0">
@@ -56,9 +60,9 @@
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Home</p>
 
                 <a href="{{ route('organisation.dashboard') }}"
-                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('organisation.dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('organisation.dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
                     <i
-                        class="fas fa-home w-5 {{ request()->routeIs('organisation.dashboard') ? 'text-blue-600' : 'text-gray-400' }}"></i>
+                        class="fas fa-home w-5 {{ request()->routeIs('organisation.dashboard') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
 
@@ -72,75 +76,70 @@
             </div>
 
             @if ($isVerified)  
-            <!-- Doctors Section - Unverified providers -->
-            <div class="pt-2">
-                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Doctors</p>
+                <!-- Doctors Section - Unverified providers -->
+                <div class="pt-2">
+                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Doctors</p>
 
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-search w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Search</span>
-                </a>
+                    <a href="#"
+                        class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-search w-5 text-gray-400 group-hover:text-gray-600"></i>
+                        <span class="ml-3">Search</span>
+                    </a>
 
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-user-doctor w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">All Doctors</span>
-                    <span
-                        class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
-                </a>
+                    <a href="#"
+                        class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-user-doctor w-5 text-gray-400 group-hover:text-gray-600"></i>
+                        <span class="ml-3">All Doctors</span>
+                        <span
+                            class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
+                    </a>
 
-                <a href="{{ route('organisation.addDoctor') }}"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-plus w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Add Doctor</span>
-                </a>
-            </div>
+                    <a href="{{ route('organisation.addDoctor') }}"
+                        class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('organisation.addDoctor') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                        <i class="fas fa-plus w-5 {{ request()->routeIs('organisation.addDoctor') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                        <span class="ml-3">Add Doctor</span>
+                    </a>
+                </div>
 
             @else
-            <!-- Doctors Section - Unverified providers -->
-            <div class="pt-2">
-                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Doctors
-                    <i class="fas fa-lock"></i>
-                </p>
+                <!-- Doctors Section - Unverified providers -->
+                <div class="pt-2">
+                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Doctors
+                        <i class="fas fa-lock"></i>
+                    </p>
 
-                <a href="#"
-                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-search w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Search</span>
-                </a>
+                    <a href="#"
+                        class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-search w-5 text-gray-400 group-hover:text-gray-600"></i>
+                        <span class="ml-3">Search</span>
+                    </a>
 
-                <a href="#"
-                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-user-doctor w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">All Doctors</span>
-                    <span
-                        class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
-                </a>
+                    <a href="#"
+                        class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-user-doctor w-5 text-gray-400 group-hover:text-gray-600"></i>
+                        <span class="ml-3">All Doctors</span>
+                        <span
+                            class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
+                    </a>
 
-                <a href="#"
-                    class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-plus w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Add Doctor</span>
-                </a>
-            </div>
+                    <a href="#"
+                        class="sidebar-link group flex cursor-not-allowed items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-plus w-5 text-gray-400 group-hover:text-gray-600"></i>
+                        <span class="ml-3">Add Doctor</span>
+                    </a>
+                </div>
             @endif
 
-            <!-- Settings -->
+            <!-- Profile -->
             <div class="pt-2">
-                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Settings</p>
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Profile</p>
 
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-building w-5 text-gray-400 group-hover:text-gray-600"></i>
+                <a href="{{ route('organisation.profile') }}"
+                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('organisation.profile') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-building w-5 {{ request()->routeIs('organisation.profile') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                     <span class="ml-3">Organisation Profile</span>
                 </a>
 
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-cog w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Settings</span>
-                </a>
             </div>
         </nav>
 

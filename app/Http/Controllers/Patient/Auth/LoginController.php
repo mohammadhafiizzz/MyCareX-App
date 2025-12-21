@@ -76,7 +76,7 @@ class LoginController extends Controller
             $patient->last_login = now();
             $patient->save();
 
-            return redirect()->intended(route('patient.dashboard'))
+            return redirect()->route('patient.dashboard')
                 ->with('success', 'Welcome back, ' . $patient->full_name . '!');
         }
 

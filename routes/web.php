@@ -424,6 +424,7 @@ Route::prefix('organisation')->group(function () {
 
     // Password Reset
     Route::middleware('guest:organisation')->group(function () {
+
         // forgot password form
         Route::get('/forgot-password', [Organisation\Auth\AuthController::class, 'showForgotPasswordForm'])
             ->name('organisation.forgot.form');
@@ -447,19 +448,37 @@ Route::prefix('organisation')->group(function () {
     
     // Authenticated Organisation Routes (Protected)
     Route::middleware(['auth:organisation', 'verified'])->group(function () {
+
         // Organisation Dashboard
-        Route::get('/dashboard', [Organisation\DashboardController::class, 'index'])
+        Route::get('/dashboard', [Organisation\MainController::class, 'index'])
             ->name('organisation.dashboard');
 
         // Doctor Management Routes
         Route::prefix('/doctors')->group(function () {
+
             // Doctor Management Page
-            Route::get('/', [Organisation\DashboardController::class, 'addDoctor'])
+            Route::get('/', [Organisation\MainController::class, 'addDoctor'])
                 ->name('organisation.addDoctor');
 
             // Store New Doctor
             Route::post('/store', [Doctor\DoctorManagementController::class, 'addDoctor'])
                 ->name('organisation.doctor.store');
+        });
+
+        // Organisation Profile Page
+        Route::prefix('/profile')->group(function () {
+
+            // View Profile Page
+            Route::get('/', [Organisation\MainController::class, 'profile'])
+                ->name('organisation.profile');
+
+            // Update Profile Sections
+            Route::put('/update-details', [Organisation\MainController::class, 'updateDetails'])->name('organisation.profile.update.details');
+            Route::put('/update-contact', [Organisation\MainController::class, 'updateContact'])->name('organisation.profile.update.contact');
+            Route::put('/update-pic', [Organisation\MainController::class, 'updatePic'])->name('organisation.profile.update.pic');
+            Route::put('/update-legal', [Organisation\MainController::class, 'updateLegal'])->name('organisation.profile.update.legal');
+            Route::put('/update-picture', [Organisation\MainController::class, 'updatePicture'])->name('organisation.profile.update.picture');
+            Route::put('/update-password', [Organisation\MainController::class, 'updatePassword'])->name('organisation.profile.update.password');
         });
     });
 });
@@ -506,6 +525,18 @@ Route::prefix('doctor')->group(function () {
         // Doctor Dashboard
         Route::get('/dashboard', [Doctor\DoctorController::class, 'index'])
             ->name('doctor.dashboard');
+
+        // Doctor Profile Page
+        Route::prefix('/profile')->group(function () {
+            // View Profile Page
+            Route::get('/', [Doctor\MainController::class, 'profile'])
+                ->name('doctor.profile');
+
+            // Update Profile Sections
+            Route::put('/update-personal', [Doctor\MainController::class, 'updatePersonal'])->name('doctor.profile.update.personal');
+            Route::post('/update-picture', [Doctor\MainController::class, 'updatePicture'])->name('doctor.profile.update.picture');
+            Route::put('/update-password', [Doctor\MainController::class, 'updatePassword'])->name('doctor.profile.update.password');
+        });
 
         // My Patients - List all patients with granted access
         Route::get('/patients', [Doctor\DoctorController::class, 'patients'])
@@ -613,6 +644,18 @@ Route::prefix('admin')->group(function () {
         // Admin Dashboard
         Route::get('/dashboard', [Admin\DashboardController::class, 'index'])
             ->name('admin.dashboard');
+
+        // Admin Profile Page
+        Route::prefix('/profile')->group(function () {
+            // View Profile Page
+            Route::get('/', [Admin\MainController::class, 'profile'])
+                ->name('admin.profile');
+
+            // Update Profile Sections
+            Route::put('/update-personal', [Admin\MainController::class, 'updatePersonal'])->name('admin.profile.update.personal');
+            Route::put('/update-picture', [Admin\MainController::class, 'updatePicture'])->name('admin.profile.update.picture');
+            Route::put('/update-password', [Admin\MainController::class, 'updatePassword'])->name('admin.profile.update.password');
+        });
 
         // Admin Management Page
         Route::prefix('/management')->group(function () {

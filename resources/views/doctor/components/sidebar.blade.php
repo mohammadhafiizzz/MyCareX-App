@@ -20,8 +20,12 @@
         <div class="p-4 border-b border-gray-200 bg-gray-50">
             <div class="flex items-start space-x-3">
                 <div class="flex-shrink-0">
-                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                        <i class="fas fa-user-doctor text-blue-600 text-lg"></i>
+                    <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-xl font-bold border-2 border-white shadow-sm overflow-hidden shrink-0">
+                        @if(Auth::guard('doctor')->user()->profile_image_url)
+                            <img src="{{ asset(Auth::guard('doctor')->user()->profile_image_url) }}" alt="Profile" class="w-full h-full object-cover">
+                        @else
+                            <i class="fas fa-user-doctor"></i>
+                        @endif
                     </div>
                 </div>
                 <div class="flex-1 min-w-0">
@@ -108,9 +112,9 @@
             <div class="pt-2">
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Settings</p>
 
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-user-doctor w-5 text-gray-400 group-hover:text-gray-600"></i>
+                <a href="{{ route('doctor.profile') }}"
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.profile') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-user-doctor w-5 {{ request()->routeIs('doctor.profile') ? 'text-blue-600' : 'text-gray-400' }}"></i>
                     <span class="ml-3">My Profile</span>
                 </a>
             </div>

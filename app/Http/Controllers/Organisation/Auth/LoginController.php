@@ -80,7 +80,7 @@ class LoginController extends Controller
             $organisation->save();
 
             // Redirect to dashboard
-            return redirect()->intended(route('organisation.dashboard'))
+            return redirect()->route('organisation.dashboard')
                 ->with('success', 'Welcome back, ' . $organisation->organisation_name . '!');
         }
 

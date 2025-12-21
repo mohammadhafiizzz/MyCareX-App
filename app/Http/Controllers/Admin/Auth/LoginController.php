@@ -49,7 +49,7 @@ class LoginController extends Controller
                 Auth::guard('admin')->logout();
                 return back()
                     ->withInput($request->only('admin_id'))
-                    ->with('login_error', 'Your account is not verified by the Super Admin.');
+                    ->with('error', 'Your account is not verified by the Super Admin.');
             }
 
             // Clear login attempts
@@ -57,7 +57,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             // Redirect to dashboard
-            return redirect()->intended(route('admin.dashboard'))
+            return redirect()->route('admin.dashboard')
                     ->with('success', 'Welcome back, ' . $admin->full_name . '!');
         }
 
@@ -66,7 +66,7 @@ class LoginController extends Controller
 
         return back()
             ->withInput($request->only('admin_id'))
-            ->with('login_error', 'The admin ID or password is incorrect.');
+            ->with('error', 'The admin ID or password is incorrect.');
     }
 
     // Handle Logout

@@ -78,15 +78,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebarLinks = document.querySelectorAll('.sidebar-link');
     
     sidebarLinks.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
-            link.classList.add('bg-blue-50', 'text-blue-700');
-            link.classList.remove('text-gray-700', 'hover:bg-gray-100');
+        const href = link.getAttribute('href');
+        if (!href || href === '#') return;
+
+        // Create a URL object to handle both relative and absolute URLs
+        try {
+            const linkPath = new URL(link.href, window.location.origin).pathname;
             
-            const icon = link.querySelector('i');
-            if (icon) {
-                icon.classList.remove('text-gray-400');
-                icon.classList.add('text-blue-600');
+            // Check if paths match (ignoring trailing slashes)
+            const normalizedLinkPath = linkPath.replace(/\/$/, '');
+            const normalizedCurrentPath = currentPath.replace(/\/$/, '');
+
+            if (normalizedLinkPath === normalizedCurrentPath) {
+                link.classList.add('bg-blue-50', 'text-blue-700');
+                link.classList.remove('text-gray-700', 'hover:bg-gray-100');
+                
+                const icon = link.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('text-gray-400');
+                    icon.classList.add('text-blue-600');
+                }
             }
+        } catch (e) {
+            console.error('Error parsing link href:', e);
         }
     });
 
