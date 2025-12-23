@@ -38,7 +38,7 @@ class MainController extends Controller
         $admin = auth()->guard('admin')->user();
 
         $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg|max:5120',
         ]);
 
         if ($request->hasFile('profile_picture')) {

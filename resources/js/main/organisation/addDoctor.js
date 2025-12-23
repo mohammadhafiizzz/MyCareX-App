@@ -1,250 +1,249 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('add-doctor-form');
-    const submitBtn = document.getElementById('submit-btn');
-    
-    // Input Elements
-    const inputs = {
-        full_name: document.getElementById('full_name'),
-        ic_number: document.getElementById('ic_number'),
-        email: document.getElementById('email'),
-        phone_number: document.getElementById('phone_number'),
-        medical_license_number: document.getElementById('medical_license_number'),
-        specialisation: document.getElementById('specialisation'),
-        password: document.getElementById('password'),
-        password_confirmation: document.getElementById('password_confirmation'),
-        profile_image: document.getElementById('profile_image')
-    };
-
-    // Error Elements
-    const errors = {
-        full_name: document.getElementById('error-full_name'),
-        ic_number: document.getElementById('error-ic_number'),
-        email: document.getElementById('error-email'),
-        phone_number: document.getElementById('error-phone_number'),
-        medical_license_number: document.getElementById('error-medical_license_number'),
-        specialisation: document.getElementById('error-specialisation'),
-        password: document.getElementById('error-password'),
-        password_confirmation: document.getElementById('error-password_confirmation')
-    };
-
-    // Validation State
-    const validationState = {
-        full_name: false,
-        ic_number: false,
-        email: false,
-        phone_number: false,
-        medical_license_number: false,
-        specialisation: false,
-        password: false,
-        password_confirmation: false
-    };
-
-    // Helper: Show Error
-    const showError = (field, message) => {
-        if (errors[field]) {
-            errors[field].textContent = message;
-            errors[field].classList.remove('hidden');
-            inputs[field].classList.add('border-red-500', 'bg-red-50/30');
-            inputs[field].classList.remove('border-gray-200', 'bg-gray-50/50');
-        }
-        validationState[field] = false;
-        updateSubmitButton();
-    };
-
-    // Helper: Hide Error
-    const hideError = (field) => {
-        if (errors[field]) {
-            errors[field].classList.add('hidden');
-            inputs[field].classList.remove('border-red-500', 'bg-red-50/30');
-            inputs[field].classList.add('border-gray-200', 'bg-gray-50/50');
-        }
-        validationState[field] = true;
-        updateSubmitButton();
-    };
-
-    // Update Submit Button State
-    const updateSubmitButton = () => {
-        const isValid = Object.values(validationState).every(state => state === true);
-        submitBtn.disabled = !isValid;
-    };
-
-    // 1. Full Name Validation
-    inputs.full_name.addEventListener('input', function() {
-        const val = this.value.trim();
-        if (val.length < 3) {
-            showError('full_name', 'Full name must be at least 3 characters.');
-        } else {
-            hideError('full_name');
-        }
-    });
-
-    // 2. IC Number Validation & Formatting
-    inputs.ic_number.addEventListener('input', function(e) {
-        let val = this.value.replace(/\D/g, '');
-        
-        // Formatting: 950101-01-5678
-        if (val.length > 6 && val.length <= 8) {
-            val = val.slice(0, 6) + '-' + val.slice(6);
-        } else if (val.length > 8) {
-            val = val.slice(0, 6) + '-' + val.slice(6, 8) + '-' + val.slice(8, 12);
-        }
-        this.value = val;
-
-        const rawVal = val.replace(/-/g, '');
-        if (rawVal.length !== 12) {
-            showError('ic_number', 'IC Number must be exactly 12 digits.');
-        } else {
-            // Middle segment validation (01-15)
-            const middle = parseInt(rawVal.slice(6, 8));
-            if (middle < 1 || middle > 15) {
-                showError('ic_number', 'Invalid IC Number (State code error).');
-            } else {
-                hideError('ic_number');
-            }
-        }
-    });
-
-    // 3. Email Validation
-    inputs.email.addEventListener('input', function() {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(this.value)) {
-            showError('email', 'Please enter a valid email address.');
-        } else {
-            hideError('email');
-        }
-    });
-
-    // 4. Phone Number Validation & Formatting
-    inputs.phone_number.addEventListener('input', function() {
-        let val = this.value.replace(/\D/g, '');
-        
-        // Formatting: 12-3456789
-        if (val.length > 2) {
-            val = val.slice(0, 2) + '-' + val.slice(2, 10);
-        }
-        this.value = val;
-
-        const rawVal = val.replace(/-/g, '');
-        if (rawVal.length < 9 || rawVal.length > 10) {
-            showError('phone_number', 'Phone number must be 9-10 digits.');
-        } else {
-            hideError('phone_number');
-        }
-    });
-
-    // 5. Medical License Validation
-    inputs.medical_license_number.addEventListener('input', function() {
-        if (this.value.trim().length < 3) {
-            showError('medical_license_number', 'Please enter a valid MMC number.');
-        } else {
-            hideError('medical_license_number');
-        }
-    });
-
-    // 6. Specialisation Validation
-    inputs.specialisation.addEventListener('change', function() {
-        if (!this.value) {
-            showError('specialisation', 'Please select a specialisation.');
-        } else {
-            hideError('specialisation');
-        }
-    });
-
-    // 7. Password Strength & Validation
-    const strengthBar = document.getElementById('strength-bar');
-    const strengthText = document.getElementById('strength-text');
-    const strengthContainer = document.getElementById('password-strength');
-
-    inputs.password.addEventListener('input', function() {
-        const val = this.value;
-        strengthContainer.classList.remove('hidden');
-        
-        let strength = 0;
-        if (val.length >= 8) strength++;
-        if (/[A-Z]/.test(val)) strength++;
-        if (/[0-9]/.test(val)) strength++;
-        if (/[^A-Za-z0-9]/.test(val)) strength++;
-
-        const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500'];
-        const texts = ['Weak', 'Fair', 'Good', 'Strong'];
-        
-        strengthBar.className = 'h-full transition-all duration-500 ' + (colors[strength-1] || 'bg-gray-200');
-        strengthBar.style.width = (strength * 25) + '%';
-        strengthText.textContent = texts[strength-1] || 'Too Short';
-        strengthText.className = 'text-[10px] font-medium uppercase tracking-wider ' + (strength > 2 ? 'text-green-600' : 'text-red-600');
-
-        if (strength < 3) {
-            showError('password', 'Password must be at least 8 characters with letters, numbers and symbols.');
-        } else {
-            hideError('password');
-        }
-
-        // Re-validate confirmation
-        if (inputs.password_confirmation.value) {
-            validateConfirmation();
-        }
-    });
-
-    // 8. Password Confirmation
-    const validateConfirmation = () => {
-        if (inputs.password_confirmation.value !== inputs.password.value) {
-            showError('password_confirmation', 'Passwords do not match.');
-        } else {
-            hideError('password_confirmation');
-        }
-    };
-
-    inputs.password_confirmation.addEventListener('input', validateConfirmation);
-
-    // 9. Profile Image Handling
+    const icInput = document.getElementById('ic_number');
+    const phoneInput = document.getElementById('phone_number');
+    const passwordInput = document.getElementById('password');
+    const passwordConfirmationInput = document.getElementById('password_confirmation');
+    const profileImageInput = document.getElementById('profile_image');
     const imagePreview = document.getElementById('imagePreview');
-    const placeholder = document.getElementById('upload-placeholder');
-    const removeBtn = document.getElementById('remove-image');
-    const imageError = document.getElementById('image-error');
+    const uploadPlaceholder = document.getElementById('upload-placeholder');
+    const removeImageBtn = document.getElementById('remove-image');
+    const submitBtn = document.getElementById('submit-btn');
 
-    inputs.profile_image.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        imageError.classList.add('hidden');
-
-        if (file) {
-            if (file.size > 2 * 1024 * 1024) {
-                imageError.textContent = 'File size exceeds 2MB.';
-                imageError.classList.remove('hidden');
-                this.value = '';
-                return;
+    // Password Toggle Functionality
+    document.querySelectorAll('.toggle-password-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
             }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imagePreview.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-                removeBtn.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
+        });
     });
 
-    removeBtn.addEventListener('click', function() {
-        inputs.profile_image.value = '';
-        imagePreview.src = '';
-        imagePreview.classList.add('hidden');
-        placeholder.classList.remove('hidden');
-        this.classList.add('hidden');
-    });
+    // Helper to check middle segment of IC (01-15)
+    function isMiddleSegmentValid(ic) {
+        if (ic.length < 8) return true;
+        const middle = parseInt(ic.substring(6, 8));
+        return middle >= 1 && middle <= 15;
+    }
 
-    // Initial validation check
-    updateSubmitButton();
+    // IC Number Formatting and Validation
+    if (icInput) {
+        const icContainer = icInput.parentElement;
+        const icIndicator = document.createElement('div');
+        icIndicator.className = 'mt-1 text-xs hidden';
+        icContainer.appendChild(icIndicator);
+
+        icInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 12) value = value.slice(0, 12);
+            
+            let formatted = value;
+            if (value.length > 6) formatted = value.slice(0, 6) + '-' + value.slice(6);
+            if (value.length > 8) formatted = value.slice(0, 6) + '-' + value.slice(6, 8) + '-' + value.slice(8);
+            
+            e.target.value = formatted;
+            e.target.dataset.rawValue = value;
+
+            if (value.length > 0) {
+                icIndicator.classList.remove('hidden');
+                const lengthValid = value.length === 12;
+                const middleValid = isMiddleSegmentValid(value);
+                
+                if (lengthValid && middleValid) {
+                    icIndicator.innerHTML = '<i class="fas fa-check-circle text-green-600 mr-1"></i><span class="text-green-600">Valid IC number</span>';
+                } else if (!lengthValid) {
+                    icIndicator.innerHTML = '<i class="fas fa-exclamation-circle text-amber-600 mr-1"></i><span class="text-amber-600">IC number must be 12 digits.</span>';
+                } else {
+                    icIndicator.innerHTML = '<i class="fas fa-exclamation-circle text-amber-600 mr-1"></i><span class="text-amber-600">Digits in the middle must be between 01 and 15</span>';
+                }
+            } else {
+                icIndicator.classList.add('hidden');
+            }
+        });
+    }
+
+    // Phone Number Formatting
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) value = value.slice(0, 10);
+            
+            let formatted = value;
+            if (value.length > 2) formatted = value.slice(0, 2) + '-' + value.slice(2);
+            
+            e.target.value = formatted;
+            e.target.dataset.rawValue = value;
+        });
+    }
+
+    // Password Validation (Matching registration.js)
+    if (passwordInput) {
+        const passwordContainer = passwordInput.parentElement.parentElement;
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.id = 'passwordStrength';
+        strengthIndicator.className = 'mt-2 text-xs hidden';
+        passwordContainer.appendChild(strengthIndicator);
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const errors = [];
+            
+            if (password.length < 8) errors.push('At least 8 characters');
+            if (!/\d/.test(password)) errors.push('At least one number');
+            if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+                errors.push('At least one special character (e.g., -, _, $, etc.)');
+            }
+            
+            if (password.length > 0) {
+                strengthIndicator.classList.remove('hidden');
+                if (errors.length === 0) {
+                    strengthIndicator.innerHTML = '<i class="fas fa-check-circle text-green-600 mr-1"></i><span class="text-green-600">Strong password</span>';
+                } else {
+                    strengthIndicator.innerHTML = '<i class="fas fa-exclamation-circle text-amber-600 mr-1"></i><span class="text-amber-600">Password must have: ' + errors.join(', ') + '</span>';
+                }
+            } else {
+                strengthIndicator.classList.add('hidden');
+            }
+        });
+    }
+
+    // Password Match Validation
+    if (passwordConfirmationInput && passwordInput) {
+        const confirmContainer = passwordConfirmationInput.parentElement.parentElement;
+        const matchIndicator = document.createElement('div');
+        matchIndicator.id = 'passwordMatch';
+        matchIndicator.className = 'mt-2 text-xs hidden';
+        confirmContainer.appendChild(matchIndicator);
+
+        const checkMatch = () => {
+            const password = passwordInput.value;
+            const confirmPassword = passwordConfirmationInput.value;
+            
+            if (confirmPassword.length > 0) {
+                matchIndicator.classList.remove('hidden');
+                if (password === confirmPassword) {
+                    matchIndicator.innerHTML = '<i class="fas fa-check-circle text-green-600 mr-1"></i><span class="text-green-600">Passwords match</span>';
+                } else {
+                    matchIndicator.innerHTML = '<i class="fas fa-times-circle text-red-600 mr-1"></i><span class="text-red-600">Passwords do not match</span>';
+                }
+            } else {
+                matchIndicator.classList.add('hidden');
+            }
+        };
+
+        passwordConfirmationInput.addEventListener('input', checkMatch);
+        passwordInput.addEventListener('input', checkMatch);
+    }
+
+    // Image Preview
+    if (profileImageInput) {
+        profileImageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Image size must be less than 5MB');
+                    this.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                    uploadPlaceholder.classList.add('hidden');
+                    removeImageBtn.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removeImageBtn.addEventListener('click', function() {
+            profileImageInput.value = '';
+            imagePreview.src = '';
+            imagePreview.classList.add('hidden');
+            uploadPlaceholder.classList.remove('hidden');
+            removeImageBtn.classList.add('hidden');
+        });
+    }
 
     // Form Submission
-    form.addEventListener('submit', function() {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Clear previous errors
+        document.querySelectorAll('[id^="error-"]').forEach(el => el.classList.add('hidden'));
+        
+        const password = passwordInput.value;
+        const confirmPassword = passwordConfirmationInput.value;
+        const clientErrors = [];
+
+        // Client-side validation (matching registration.js logic)
+        if (password.length < 8) clientErrors.push('Password must be at least 8 characters long');
+        if (!/\d/.test(password)) clientErrors.push('Password must contain at least one number');
+        if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) clientErrors.push('Password must contain at least one special character');
+        if (password !== confirmPassword) clientErrors.push('Passwords do not match');
+
+        const icRaw = icInput.dataset.rawValue || icInput.value.replace(/\D/g, '');
+        if (icRaw.length !== 12) {
+            clientErrors.push('IC number must be 12 digits');
+        } else if (!isMiddleSegmentValid(icRaw)) {
+            clientErrors.push('Digits 7-8 of the IC number must be between 01 and 15');
+        }
+
+        if (clientErrors.length > 0) {
+            alert('Please fix the following errors:\n\n' + clientErrors.join('\n'));
+            return;
+        }
+
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span>Registering...</span>
-        `;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+
+        const formData = new FormData(this);
+        
+        // Use raw values
+        if (icInput.dataset.rawValue) formData.set('ic_number', icInput.dataset.rawValue);
+        if (phoneInput.dataset.rawValue) formData.set('phone_number', phoneInput.dataset.rawValue);
+
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = data.redirect;
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Register Doctor</span><i class="fas fa-check text-xs"></i>';
+                
+                if (data.errors) {
+                    Object.keys(data.errors).forEach(key => {
+                        const errorEl = document.getElementById(`error-${key}`);
+                        if (errorEl) {
+                            errorEl.textContent = data.errors[key][0];
+                            errorEl.classList.remove('hidden');
+                        }
+                    });
+                    const firstError = document.querySelector('[id^="error-"]:not(.hidden)');
+                    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Register Doctor</span><i class="fas fa-check text-xs"></i>';
+            alert('An error occurred. Please try again.');
+        });
     });
 });

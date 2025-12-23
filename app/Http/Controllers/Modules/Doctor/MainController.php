@@ -14,21 +14,23 @@ class MainController extends Controller
     public function doctorProfile($id) {
         $organisation = auth()->guard('organisation')->user();
         $isVerified = $organisation && $organisation->verification_status === 'Approved';
+        $totalDoctors = $organisation->doctors()->count();
 
         // Get doctor details
         $doctor = Doctor::where('id', $id)
             ->where('provider_id', $organisation->id)
             ->firstOrFail();
 
-        return view('organisation.modules.doctor.doctorProfile', compact('organisation', 'isVerified', 'doctor'));
+        return view('organisation.modules.doctor.doctorProfile', compact('organisation', 'isVerified', 'doctor', 'totalDoctors'));
     }
 
     // Show Add Doctor Form
     public function addDoctor() {
         $organisation = auth()->guard('organisation')->user();
         $isVerified = $organisation && $organisation->verification_status === 'Approved';
+        $totalDoctors = $organisation->doctors()->count();
 
-        return view('organisation.modules.doctor.addDoctor', compact('organisation', 'isVerified'));
+        return view('organisation.modules.doctor.addDoctor', compact('organisation', 'isVerified', 'totalDoctors'));
     }
 
     // Show Doctors List
@@ -67,7 +69,7 @@ class MainController extends Controller
             'medical_license_number' => 'required|string|max:100|unique:doctors,medical_license_number',
             'specialisation' => 'nullable|in:General Practitioner,Cardiologist,Dermatologist,Neurologist,Pediatrician,Psychiatrist,Radiologist,Surgeon',
             'active_status' => 'nullable|boolean',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
 
         // get authenticated organisation id
@@ -93,8 +95,8 @@ class MainController extends Controller
         if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $filename = time() . '_' . $data['ic_number'] . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('files/doctor/profile_images'), $filename);
-            $data['profile_image_url'] = 'files/doctor/profile_images/' . $filename;
+            $file->move(public_path('files/doctor/profile'), $filename);
+            $data['profile_image_url'] = 'files/doctor/profile/' . $filename;
         }
 
         // create new doctor record

@@ -23,102 +23,104 @@
     @include('organisation.components.sidebar')
 
     <!-- Main Content -->
-    <main class="ml-68 mt-20 min-h-screen">
-        <div class="py-8 px-6 max-w-7xl mx-auto">
-            <!-- Page Header -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Add New Doctor</h1>
-                <p class="text-gray-500 mt-2">Register a new medical professional to your healthcare organisation.</p>
+    <main class="lg:ml-68 mt-20 min-h-screen transition-all duration-300">
+        <div class="bg-gray-50 min-h-screen py-6 px-4 sm:px-6 lg:px-8">
+
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold text-gray-900">Add New Doctor</h1>
+                <p class="text-sm text-gray-500">Fill in the details below to register a new medical professional.</p>
             </div>
 
-            <form id="add-doctor-form" method="POST" action="{{ route('organisation.doctor.store') }}" enctype="multipart/form-data">
+            <form id="add-doctor-form" method="POST" action="{{ route('organisation.doctor.store') }}" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Left Column: Profile Image -->
-                    <div class="lg:col-span-1">
-                        <div class="bg-white/80 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl p-8 sticky top-28">
-                            <div class="text-center">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-6">Profile Photo</h3>
-                                
-                                <div class="relative group mx-auto w-48 h-48">
-                                    <div id="image-preview-container" class="w-full h-full rounded-3xl overflow-hidden bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center transition-all group-hover:border-blue-400">
-                                        <img id="imagePreview" src="" alt="Preview" class="hidden w-full h-full object-cover">
-                                        <div id="upload-placeholder" class="text-center p-4">
-                                            <i class="fas fa-camera text-4xl text-gray-400 mb-2"></i>
-                                            <p class="text-xs text-gray-500">Click to upload photo</p>
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                    <!-- Section: Profile Photo -->
+                    <div class="p-6 md:p-8 border-b border-gray-100 bg-gray-50/50">
+                        <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center">
+                            <label class="block text-sm font-bold text-gray-400 uppercase tracking-wider">Profile Photo</label>
+                            <div class="mt-4 sm:mt-0 sm:col-span-2">
+                                <div class="flex items-center gap-6">
+                                    <div class="relative group w-24 h-24">
+                                        <div id="image-preview-container" class="w-full h-full rounded-full overflow-hidden bg-white border-2 border-dashed border-gray-300 flex items-center justify-center transition-all group-hover:border-blue-400">
+                                            <img id="imagePreview" src="" alt="Preview" class="hidden w-full h-full object-cover">
+                                            <div id="upload-placeholder" class="text-center">
+                                                <i class="fas fa-camera text-xl text-gray-400"></i>
+                                            </div>
                                         </div>
+                                        <input type="file" id="profile_image" name="profile_image" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                                        <button type="button" id="remove-image" class="hidden absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white rounded-full shadow-sm flex items-center justify-center hover:bg-red-600 transition-colors">
+                                            <i class="fas fa-times text-[10px]"></i>
+                                        </button>
                                     </div>
-                                    <input type="file" id="profile_image" name="profile_image" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
-                                    
-                                    <button type="button" id="remove-image" class="hidden absolute -top-2 -right-2 w-8 h-8 bg-red-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-red-600 transition-colors">
-                                        <i class="fas fa-times text-xs"></i>
-                                    </button>
-                                </div>
-                                
-                                <div class="mt-6 space-y-2">
-                                    <p class="text-xs text-gray-500">Allowed formats: JPG, PNG, GIF</p>
-                                    <p class="text-xs text-gray-500">Maximum size: 2MB</p>
-                                </div>
-
-                                <div id="image-error" class="hidden mt-4 p-3 rounded-2xl bg-red-50 border border-red-100 text-xs text-red-600">
+                                    <div>
+                                        <p class="text-xs text-gray-500">JPG, PNG or GIF. Max 5MB.</p>
+                                        <div id="image-error" class="hidden mt-2 text-xs text-red-600"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column: Form Details -->
-                    <div class="lg:col-span-2 space-y-8">
-                        <!-- Personal Information -->
-                        <div class="bg-white/80 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl p-8">
-                            <div class="flex items-center gap-3 mb-8">
-                                <div class="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
-                                    <i class="fas fa-user"></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-gray-900">Personal Information</h3>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="md:col-span-2">
-                                    <label for="full_name" class="block text-sm font-semibold text-gray-700 mb-2 ml-1">Full Name (as per IC/Passport)</label>
+                    <!-- Section: Personal Information -->
+                    <div class="p-6 md:p-8 space-y-8">
+                        <div class="space-y-6 sm:space-y-5">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-4">Personal Information</h3>
+                            
+                            <!-- Full Name -->
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                                <label for="full_name" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Full Name</label>
+                                <div class="mt-1 sm:mt-0 sm:col-span-2">
                                     <input type="text" id="full_name" name="full_name" required
-                                        class="w-full px-5 py-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                        class="max-w-2xl block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm"
                                         placeholder="DR. MOHAMMAD BIN ABDULLAH"
                                         oninput="this.value = this.value.toUpperCase()">
-                                    <p class="mt-1.5 ml-1 text-xs text-red-500 hidden" id="error-full_name"></p>
+                                    <p class="mt-1 text-xs text-red-500 hidden" id="error-full_name"></p>
                                 </div>
+                            </div>
 
-                                <div>
-                                    <label for="ic_number" class="block text-sm font-semibold text-gray-700 mb-2 ml-1">IC Number</label>
+                            <!-- IC Number -->
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                                <label for="ic_number" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">IC Number</label>
+                                <div class="mt-1 sm:mt-0 sm:col-span-2">
                                     <input type="text" id="ic_number" name="ic_number" required
-                                        class="w-full px-5 py-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                        class="max-w-md block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm"
                                         placeholder="950101-01-5678">
-                                    <p class="mt-1.5 ml-1 text-xs text-red-500 hidden" id="error-ic_number"></p>
+                                    <p class="mt-1 text-xs text-red-500 hidden" id="error-ic_number"></p>
                                 </div>
+                            </div>
 
-                                <div>
-                                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2 ml-1">Email Address</label>
+                            <!-- Email -->
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                                <label for="email" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Email Address</label>
+                                <div class="mt-1 sm:mt-0 sm:col-span-2">
                                     <input type="email" id="email" name="email" required
-                                        class="w-full px-5 py-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                        class="max-w-md block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm"
                                         placeholder="doctor@mycarex.com">
-                                    <p class="mt-1.5 ml-1 text-xs text-red-500 hidden" id="error-email"></p>
+                                    <p class="mt-1 text-xs text-red-500 hidden" id="error-email"></p>
                                 </div>
+                            </div>
 
-                                <div>
-                                    <label for="phone_number" class="block text-sm font-semibold text-gray-700 mb-2 ml-1">Phone Number</label>
-                                    <div class="relative">
-                                        <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 font-medium">+60</span>
+                            <!-- Phone Number -->
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                                <label for="phone_number" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Phone Number</label>
+                                <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                    <div class="relative max-w-md">
+                                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">+60</span>
                                         <input type="tel" id="phone_number" name="phone_number" required
-                                            class="w-full pl-14 pr-5 py-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                            class="w-full pl-12 pr-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm"
                                             placeholder="12-3456789">
                                     </div>
-                                    <p class="mt-1.5 ml-1 text-xs text-red-500 hidden" id="error-phone_number"></p>
+                                    <p class="mt-1 text-xs text-red-500 hidden" id="error-phone_number"></p>
                                 </div>
+                            </div>
 
-                                <div>
-                                    <label for="specialisation" class="block text-sm font-semibold text-gray-700 mb-2 ml-1">Specialisation</label>
+                            <!-- Specialisation -->
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                                <label for="specialisation" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Specialisation</label>
+                                <div class="mt-1 sm:mt-0 sm:col-span-2">
                                     <select id="specialisation" name="specialisation"
-                                        class="w-full px-5 py-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none appearance-none">
+                                        class="max-w-md block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm appearance-none">
                                         <option value="">Select Specialisation</option>
                                         <option value="General Practitioner">General Practitioner</option>
                                         <option value="Cardiologist">Cardiologist</option>
@@ -129,121 +131,93 @@
                                         <option value="Radiologist">Radiologist</option>
                                         <option value="Surgeon">Surgeon</option>
                                     </select>
-                                    <p class="mt-1.5 ml-1 text-xs text-red-500 hidden" id="error-specialisation"></p>
+                                    <p class="mt-1 text-xs text-red-500 hidden" id="error-specialisation"></p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Professional Credentials -->
-                        <div class="bg-white/80 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl p-8">
-                            <div class="flex items-center gap-3 mb-8">
-                                <div class="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600">
-                                    <i class="fas fa-id-card"></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-gray-900">Professional Credentials</h3>
-                            </div>
-
-                            <div class="grid grid-cols-1 gap-6">
-                                <div>
-                                    <label for="medical_license_number" class="block text-sm font-semibold text-gray-700 mb-2 ml-1">Medical License Number (MMC)</label>
+                        <div class="space-y-6 sm:space-y-5 pt-8">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-4">Professional Credentials</h3>
+                            
+                            <!-- MMC Number -->
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                                <label for="medical_license_number" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Medical License Number (MMC)</label>
+                                <div class="mt-1 sm:mt-0 sm:col-span-2">
                                     <input type="text" id="medical_license_number" name="medical_license_number" required
-                                        class="w-full px-5 py-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                        class="max-w-md block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm"
                                         placeholder="MMC-12345">
-                                    <p class="mt-1.5 ml-1 text-xs text-red-500 hidden" id="error-medical_license_number"></p>
+                                    <p class="mt-1 text-xs text-red-500 hidden" id="error-medical_license_number"></p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Security -->
-                        <div class="bg-white/80 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl p-8">
-                            <div class="flex items-center gap-3 mb-8">
-                                <div class="w-10 h-10 rounded-2xl bg-green-50 flex items-center justify-center text-green-600">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-gray-900">Security</h3>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2 ml-1">Password</label>
-                                    <div class="relative">
+                        <div class="space-y-6 sm:space-y-5 pt-8">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-4">Security</h3>
+                            
+                            <!-- Password -->
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                                <label for="password" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Password</label>
+                                <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                    <div class="relative max-w-md">
                                         <input type="password" id="password" name="password" required
-                                            class="w-full px-5 py-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                            class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm"
                                             placeholder="••••••••">
-                                        <button type="button" onclick="togglePassword('password', this)" class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                            <i class="fas fa-eye"></i>
+                                        <button type="button" class="toggle-password-btn absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" data-target="password">
+                                            <i class="fas fa-eye text-sm"></i>
                                         </button>
                                     </div>
-                                    <div id="password-strength" class="mt-3 space-y-2 hidden">
-                                        <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                                            <div id="strength-bar" class="h-full w-0 transition-all duration-500"></div>
-                                        </div>
-                                        <p id="strength-text" class="text-[10px] font-medium uppercase tracking-wider"></p>
-                                    </div>
-                                    <p class="mt-1.5 ml-1 text-xs text-red-500 hidden" id="error-password"></p>
+                                    <p class="mt-1 text-xs text-red-500 hidden" id="error-password"></p>
                                 </div>
+                            </div>
 
-                                <div>
-                                    <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2 ml-1">Confirm Password</label>
-                                    <div class="relative">
+                            <!-- Confirm Password -->
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Confirm Password</label>
+                                <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                    <div class="relative max-w-md">
                                         <input type="password" id="password_confirmation" name="password_confirmation" required
-                                            class="w-full px-5 py-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                            class="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm"
                                             placeholder="••••••••">
-                                        <button type="button" onclick="togglePassword('password_confirmation', this)" class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                            <i class="fas fa-eye"></i>
+                                        <button type="button" class="toggle-password-btn absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" data-target="password_confirmation">
+                                            <i class="fas fa-eye text-sm"></i>
                                         </button>
                                     </div>
-                                    <p class="mt-1.5 ml-1 text-xs text-red-500 hidden" id="error-password_confirmation"></p>
+                                    <p class="mt-1 text-xs text-red-500 hidden" id="error-password_confirmation"></p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Account Status -->
-                        <div class="bg-white/80 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl p-8">
-                            <label class="flex items-center cursor-pointer group">
-                                <div class="relative">
-                                    <input type="checkbox" id="active_status" name="active_status" value="1" checked class="sr-only peer">
-                                    <div class="w-12 h-6 bg-gray-200 rounded-full peer peer-checked:bg-blue-500 transition-colors"></div>
-                                    <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full peer-checked:translate-x-6 transition-transform"></div>
+                        <div class="pt-8">
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                                <div class="text-sm font-bold text-gray-400 uppercase tracking-wider sm:mt-px sm:pt-2">Account Status</div>
+                                <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                    <label class="flex items-center cursor-pointer group">
+                                        <div class="relative">
+                                            <input type="checkbox" id="active_status" name="active_status" value="1" checked class="sr-only peer">
+                                            <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
+                                            <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full peer-checked:translate-x-5 transition-transform shadow-sm"></div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <span class="block text-sm font-semibold text-gray-900">Active Account</span>
+                                            <span class="block text-xs text-gray-500">Allow immediate system access.</span>
+                                        </div>
+                                    </label>
                                 </div>
-                                <div class="ml-4">
-                                    <span class="block text-sm font-bold text-gray-900">Active Account</span>
-                                    <span class="block text-xs text-gray-500">Allow doctor to access the system immediately after registration.</span>
-                                </div>
-                            </label>
+                            </div>
                         </div>
+                    </div>
 
-                        <!-- Form Actions -->
-                        <div class="flex items-center justify-end gap-4 pt-4">
-                            <a href="{{ route('organisation.dashboard') }}" 
-                                class="px-8 py-4 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors">
-                                Cancel
-                            </a>
-                            <button type="submit" id="submit-btn"
-                                class="px-10 py-4 bg-blue-600 text-white text-sm font-bold rounded-2xl shadow-lg shadow-blue-500/30 hover:bg-blue-700 hover:shadow-blue-500/40 transition-all flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed">
-                                <span>Register Doctor</span>
-                                <i class="fas fa-arrow-right text-xs"></i>
-                            </button>
-                        </div>
+                    <!-- Form Actions -->
+                    <div class="px-8 py-6 bg-gray-50 border-t border-gray-100 flex items-center justify-end gap-3">
+                        <button type="submit" id="submit-btn"
+                            class="px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-lg shadow-sm hover:bg-blue-700 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span>Register</span>
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
     </main>
-
-    <script>
-        function togglePassword(id, btn) {
-            const input = document.getElementById(id);
-            const icon = btn.querySelector('i');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        }
-    </script>
 
     <!-- Javascript and Footer -->
     @include('organisation.components.footer')

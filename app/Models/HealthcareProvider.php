@@ -32,6 +32,24 @@ class HealthcareProvider extends Authenticatable implements MustVerifyEmail, Can
     // hidden fields
     protected $hidden = ['password', 'remember_token'];
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'last_login' => 'datetime',
+            'license_expiry_date' => 'date',
+            'establishment_date' => 'date',
+            'approved_at' => 'datetime',
+            'rejected_at' => 'datetime',
+        ];
+    }
+
     // the username field for authentication
     public function username() {
         return 'email';
@@ -72,5 +90,11 @@ class HealthcareProvider extends Authenticatable implements MustVerifyEmail, Can
     // Set the password attribute and hash it
     public function setPasswordAttribute($value) {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    /*--- RELATIONSHIPS ---*/
+    // Get the doctors associated with the healthcare provider
+    public function doctors() {
+        return $this->hasMany(Doctor::class, 'provider_id');
     }
 }

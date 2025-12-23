@@ -27,6 +27,9 @@ class Admin extends Authenticatable implements CanResetPasswordContract
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'account_verified_at' => 'datetime',
+        'account_rejected_at' => 'datetime',
+        'last_login' => 'datetime',
     ];
 
     // Auto-generate admin_id

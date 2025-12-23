@@ -21,7 +21,7 @@
         <div class="min-h-screen">
             <div class="py-6 px-4 sm:px-6 lg:px-8">
 
-                <div class="mb-8">
+                <div class="mb-6">
                     <h1 class="text-2xl font-bold text-gray-900">Organisation Profile</h1>
                     <p class="text-sm text-gray-500">Manage your facility details and account settings.</p>
                 </div>
@@ -270,15 +270,18 @@
                         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                             <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                                 <h3 class="text-md font-bold text-gray-900 flex items-center gap-2">
-                                    <i class="fa-solid fa-shield-halved text-gray-400"></i> SECURITY & ACCOUNT
+                                    <i class="fas fa-gear text-gray-400"></i> ACCOUNT SETTING
                                 </h3>
                             </div>
                             
                             <div class="p-6 space-y-2">
                                 <div class="flex items-center justify-between py-3 border-b border-gray-50">
-                                    <label class="text-sm font-medium text-gray-800">Last Login</label>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Last Login</p>
+                                        <p class="text-xs text-gray-500">Last login: {{ $organisation->last_login ? $organisation->last_login->diffForHumans() : 'Never' }}</p>
+                                    </div>
                                     <p class="text-sm text-gray-900 font-medium">
-                                        {{ $organisation->last_login ? date('d M Y, h:i A', strtotime($organisation->last_login)) : 'Never' }}
+                                        {{ $organisation->last_login ? $organisation->last_login->format('d M Y, h:i A') : 'Never' }}
                                     </p>
                                 </div>
 

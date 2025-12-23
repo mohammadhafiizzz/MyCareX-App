@@ -28,11 +28,9 @@
             <!-- Page Content -->
             <div class="py-6 px-4 sm:px-6 lg:px-8">
 
-                <div class="mb-8">
-                    <h1 class="text-3xl font-bold text-gray-900">
-                        Doctor Management
-                    </h1>
-                    <p class="mt-1 text-lg text-gray-700">Manage and monitor your healthcare professionals.</p>
+                <div class="mb-6">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Doctor Management</h1>
+                    <p class="text-xs sm:text-sm text-gray-500">Manage and monitor your healthcare professionals.</p>
                 </div>
 
                 {{-- Success Message --}}
@@ -44,13 +42,19 @@
 
                 <!-- Doctors List Section -->
                 <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="doctors-heading">
-                    <div class="p-6">
+                    <div class="p-4 sm:p-6">
                         {{-- Header with Actions --}}
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                             <div>
-                                <h2 id="doctors-heading" class="text-xl font-semibold text-gray-900">Doctors List</h2>
-                                <p class="mt-1 text-sm text-gray-600">Search and manage your registered doctors.</p>
+                                <h2 id="doctors-heading" class="text-lg sm:text-xl font-semibold text-gray-900">Doctors List</h2>
+                                <p class="mt-1 text-xs sm:text-sm text-gray-600">Search and manage your registered doctors.</p>
                             </div>
+                            @if ($totalDoctors > 0)
+                                <a href="{{ route('organisation.addDoctor') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-blue-700 transition-all duration-200">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    Add Doctor
+                                </a>
+                            @endif
                         </div>
 
                         @if ($totalDoctors > 0)
@@ -116,45 +120,45 @@
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doctor</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IC Number</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialisation</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                            <th scope="col" class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doctor</th>
+                                            <th scope="col" class="hidden md:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IC Number</th>
+                                            <th scope="col" class="hidden lg:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialisation</th>
+                                            <th scope="col" class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th scope="col" class="px-4 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
                                         @forelse ($doctors as $doctor)
                                             <tr class="doctor-row hover:bg-gray-50 transition-colors">
-                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                                     <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center overflow-hidden">
+                                                        <div class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center overflow-hidden">
                                                             @if($doctor->profile_image_url)
                                                                 <img src="{{ asset($doctor->profile_image_url) }}" alt="{{ $doctor->full_name }}" class="h-full w-full object-cover">
                                                             @else
-                                                                <span class="text-sm font-bold">{{ substr($doctor->full_name, 0, 1) }}</span>
+                                                                <span class="text-xs sm:text-sm font-bold">{{ substr($doctor->full_name, 0, 1) }}</span>
                                                             @endif
                                                         </div>
-                                                        <div class="ml-4">
-                                                            <div class="text-sm font-medium text-gray-900 doctor-name">{{ $doctor->full_name }}</div>
-                                                            <div class="text-sm text-gray-500">{{ $doctor->email }}</div>
+                                                        <div class="ml-3 sm:ml-4">
+                                                            <div class="text-xs sm:text-sm font-medium text-gray-900 doctor-name">{{ $doctor->full_name }}</div>
+                                                            <div class="text-[10px] sm:text-sm text-gray-500">{{ $doctor->email }}</div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 doctor-ic">
+                                                <td class="hidden md:table-cell px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 doctor-ic">
                                                     {{ $doctor->ic_number }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <td class="hidden lg:table-cell px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     {{ $doctor->specialisation ?? 'General Practitioner' }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $doctor->active_status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium {{ $doctor->active_status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                                         {{ $doctor->active_status ? 'Active' : 'Inactive' }}
                                                     </span>
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     <a href="{{ route('organisation.doctor.profile', $doctor->id) }}" 
-                                                        class="px-4 py-2 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
+                                                        class="px-2 py-1 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
                                                         View
                                                     </a>
                                                 </td>

@@ -14,20 +14,28 @@ class MainController extends Controller
     public function index() {
         $organisation = auth()->guard('organisation')->user();
         $isVerified = $organisation && $organisation->verification_status === 'Approved';
+        
+        $totalDoctors = $organisation->doctors()->count();
+        $activeDoctors = $organisation->doctors()->where('active_status', 1)->count();
+        $inactiveDoctors = $organisation->doctors()->where('active_status', 0)->count();
 
-        return view('organisation.dashboard', compact('organisation', 'isVerified'));
+        return view('organisation.dashboard', compact('organisation', 'isVerified', 'totalDoctors', 'activeDoctors', 'inactiveDoctors'));
     }
 
     public function profile() {
         $organisation = auth()->guard('organisation')->user();
         $isVerified = $organisation && $organisation->verification_status === 'Approved';
-        return view('organisation.profile', compact('organisation', 'isVerified'));
+        $totalDoctors = $organisation->doctors()->count();
+        
+        return view('organisation.profile', compact('organisation', 'isVerified', 'totalDoctors'));
     }
 
     public function settings() {
         $organisation = auth()->guard('organisation')->user();
         $isVerified = $organisation && $organisation->verification_status === 'Approved';
-        return view('organisation.settings', compact('organisation', 'isVerified'));
+        $totalDoctors = $organisation->doctors()->count();
+
+        return view('organisation.settings', compact('organisation', 'isVerified', 'totalDoctors'));
     }
 
     // Update Organisation Details
@@ -94,8 +102,8 @@ class MainController extends Controller
             'registration_number' => 'required|string|max:50',
             'license_number' => 'nullable|string|max:50',
             'license_expiry_date' => 'nullable|date',
-            'business_license_document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'medical_license_document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'business_license_document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'medical_license_document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
         $data = $request->only(['registration_number', 'license_number', 'license_expiry_date']);
@@ -134,7 +142,7 @@ class MainController extends Controller
         $organisation = auth()->guard('organisation')->user();
 
         $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg|max:5120',
         ]);
 
         if ($request->hasFile('profile_picture')) {

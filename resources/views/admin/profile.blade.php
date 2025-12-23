@@ -107,7 +107,7 @@
                             <div>
                                 <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Last Login</label>
                                 <p class="text-sm text-gray-900 font-medium">
-                                    {{ $admin->last_login ? date('d M Y, h:i A', strtotime($admin->last_login)) : 'Never' }}
+                                    {{ $admin->last_login ? $admin->last_login->format('d M Y, h:i A') : 'Never' }}
                                 </p>
                             </div>
                             <div>

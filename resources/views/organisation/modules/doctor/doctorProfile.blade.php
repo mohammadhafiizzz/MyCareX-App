@@ -45,13 +45,13 @@
                     <div class="space-y-6">
                         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                             <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                                <h3 class="text-md font-bold text-gray-900 flex items-center gap-2">
+                                <h3 class="text-sm sm:text-md font-bold text-gray-900 flex items-center gap-2">
                                     <i class="fas fa-user text-gray-400"></i> PROFILE
                                 </h3>
                             </div>
-                            <div class="p-8 flex flex-col items-center text-center">
-                                <div class="relative w-32 h-32 mb-5 mx-auto shrink-0">
-                                    <div class="w-32 h-32 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-4xl font-bold border-4 border-white shadow-sm overflow-hidden shrink-0">
+                            <div class="p-6 sm:p-8 flex flex-col items-center text-center">
+                                <div class="relative w-24 h-24 sm:w-32 sm:h-32 mb-4 sm:mb-5 mx-auto shrink-0">
+                                    <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-3xl sm:text-4xl font-bold border-4 border-white shadow-sm overflow-hidden shrink-0">
                                         @if($doctor->profile_image_url)
                                             <img src="{{ asset($doctor->profile_image_url) }}" alt="{{ $doctor->full_name }}" class="w-full h-full object-cover">
                                         @else
@@ -81,12 +81,12 @@
                     <!-- Right Column: Doctor Information -->
                     <div class="bg-white rounded-xl lg:col-span-2 shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                            <h3 class="text-md font-bold text-gray-900 flex items-center gap-2">
+                            <h3 class="text-sm sm:text-md font-bold text-gray-900 flex items-center gap-2">
                                 <i class="fa-solid fa-user-md text-gray-400"></i> DOCTOR INFORMATION
                             </h3>
                         </div>
                         
-                        <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-8">
+                        <div class="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-y-6 sm:gap-y-8 gap-x-8">
                             <div>
                                 <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Full Name</label>
                                 <p class="text-sm text-gray-900 font-medium">{{ $doctor->full_name }}</p>
@@ -137,38 +137,38 @@
                         <!-- Actions -->
                         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                             <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                                <h3 class="text-md font-bold text-gray-900 flex items-center gap-2">
+                                <h3 class="text-sm sm:text-md font-bold text-gray-900 flex items-center gap-2">
                                     <i class="fas fa-gear text-gray-400"></i> ACTIONS
                                 </h3>
                             </div>
                             
-                            <div class="p-6 space-y-2">
-                                <div class="flex items-center justify-between py-3 border-b border-gray-50">
+                            <div class="p-4 sm:p-6 space-y-2">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between py-3 border-b border-gray-50 gap-2">
                                     <div>
                                         <p class="text-sm font-medium text-gray-900">Last Login</p>
                                         <p class="text-xs text-gray-500">Last login: {{ $doctor->last_login ? $doctor->last_login->diffForHumans() : 'Never' }}</p>
                                     </div>
-                                    <p class="text-sm text-gray-900 font-medium">
+                                    <p class="text-xs sm:text-sm text-gray-900 font-medium">
                                         {{ $doctor->last_login ? $doctor->last_login->format('d M Y, h:i A') : 'Never' }}
                                     </p>
                                 </div>
 
-                                <div class="flex items-center justify-between py-4 border-b border-gray-50">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between py-4 border-b border-gray-50 gap-3">
                                     <div>
                                         <p class="text-sm font-medium text-gray-900">Edit Doctor Profile</p>
                                         <p class="text-xs text-gray-500">Update professional and personal details</p>
                                     </div>
-                                    <button class="px-4 py-2 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
+                                    <button class="w-full sm:w-auto px-4 py-2 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
                                         Edit Profile
                                     </button>
                                 </div>
 
-                                <div class="flex items-center justify-between py-4">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between py-4 gap-3">
                                     <div>
                                         <p class="text-sm font-medium text-red-600">Remove Doctor</p>
                                         <p class="text-xs text-red-400">Permanently remove this doctor from the organisation</p>
                                     </div>
-                                    <button class="px-4 py-2 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                                    <button class="w-full sm:w-auto px-4 py-2 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
                                         Remove Doctor
                                     </button>
                                 </div>

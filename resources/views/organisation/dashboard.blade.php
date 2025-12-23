@@ -61,7 +61,7 @@
                                         <dl>
                                             <dt class="text-sm font-medium text-gray-500 truncate">Total Doctors</dt>
                                             <dd class="flex items-baseline">
-                                                <div class="text-2xl font-semibold text-gray-900">0</div>
+                                                <div class="text-2xl font-semibold text-gray-900">{{ $totalDoctors }}</div>
                                             </dd>
                                         </dl>
                                     </div>
@@ -82,7 +82,7 @@
                                         <dl>
                                             <dt class="text-sm font-medium text-gray-500 truncate">Active Doctors</dt>
                                             <dd class="flex items-baseline">
-                                                <div class="text-2xl font-semibold text-gray-900">0</div>
+                                                <div class="text-2xl font-semibold text-gray-900">{{ $activeDoctors }}</div>
                                             </dd>
                                         </dl>
                                     </div>
@@ -103,7 +103,7 @@
                                         <dl>
                                             <dt class="text-sm font-medium text-gray-500 truncate">Inactive Doctors</dt>
                                             <dd class="flex items-baseline">
-                                                <div class="text-2xl font-semibold text-gray-900">0</div>
+                                                <div class="text-2xl font-semibold text-gray-900">{{ $inactiveDoctors }}</div>
                                             </dd>
                                         </dl>
                                     </div>
