@@ -74,7 +74,7 @@ class DeleteProfileController extends Controller
                 $patient->save();
             }
 
-            return redirect()->route('patient.auth.profile')->with('success', 'Profile picture removed successfully.');
+            return redirect()->route('patient.profile')->with('success', 'Profile picture removed successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to remove profile picture. Please try again.');
         }

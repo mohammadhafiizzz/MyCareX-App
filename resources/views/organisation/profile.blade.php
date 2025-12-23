@@ -287,7 +287,7 @@
                                         <p class="text-sm font-medium text-gray-900">Change Password</p>
                                         <p class="text-xs text-gray-500">Update your account password</p>
                                     </div>
-                                    <button id="openEditPassword" class="px-4 py-2 text-xs font-bold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
+                                    <button id="openEditPassword" class="px-4 py-2 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
                                         Change Password
                                     </button>
                                 </div>
@@ -299,7 +299,7 @@
                                     </div>
                                     <form action="{{ route('organisation.logout') }}" method="POST">
                                         @csrf
-                                        <button class="px-4 py-2 text-xs font-bold text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                                        <button class="px-4 py-2 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
                                             Logout
                                         </button>
                                     </form>

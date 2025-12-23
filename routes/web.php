@@ -61,32 +61,32 @@ Route::prefix('patient')->group(function () {
 
         // Patient Profile
         Route::get('/profile', [Patient\ProfileController::class, 'showProfilePage'])
-            ->name('patient.auth.profile');
+            ->name('patient.profile');
 
         // Update and Delete Profile
         Route::put('/profile/personal-info', [Patient\UpdateProfileController::class, 'updatePersonalInfo'])
-            ->name('patient.auth.profile.update.personal');
+            ->name('patient.profile.update.personal');
 
         Route::put('/profile/physical-info', [Patient\UpdateProfileController::class, 'updatePhysicalInfo'])
-            ->name('patient.auth.profile.update.physical');
+            ->name('patient.profile.update.physical');
 
         Route::put('/profile/address-info', [Patient\UpdateProfileController::class, 'updateAddressInfo'])
-            ->name('patient.auth.profile.update.address');
+            ->name('patient.profile.update.address');
 
         Route::put('/profile/emergency-contact', [Patient\UpdateProfileController::class, 'updateEmergencyInfo'])
-            ->name('patient.auth.profile.update.emergency');
+            ->name('patient.profile.update.emergency');
 
         Route::put('/profile/password', [Patient\UpdateProfileController::class, 'updatePassword'])
-            ->name('patient.auth.profile.update.password');
+            ->name('patient.profile.update.password');
 
         Route::put('/profile/picture', [Patient\UpdateProfileController::class, 'updateProfilePicture'])
-            ->name('patient.auth.profile.update.picture');
+            ->name('patient.profile.update.picture');
 
         Route::delete('/profile/account', [Patient\DeleteProfileController::class, 'deleteAccount'])
-            ->name('patient.auth.profile.delete.account');
+            ->name('patient.profile.delete.account');
 
         Route::delete('/profile/picture', [Patient\DeleteProfileController::class, 'deleteProfilePicture'])
-            ->name('patient.auth.profile.delete.picture');
+            ->name('patient.profile.delete.picture');
 
         // My Records
         Route::prefix('/my-records')->group(function () {
@@ -456,12 +456,20 @@ Route::prefix('organisation')->group(function () {
         // Doctor Management Routes
         Route::prefix('/doctors')->group(function () {
 
-            // Doctor Management Page
-            Route::get('/', [Organisation\MainController::class, 'addDoctor'])
+            // Doctors List Page
+            Route::get('/', [Modules\Doctor\MainController::class, 'doctor'])
+                ->name('organisation.doctors');
+
+            // View Doctor Profile
+            Route::get('/profile/{id}', [Modules\Doctor\MainController::class, 'doctorProfile'])
+                ->name('organisation.doctor.profile');
+
+            // Add New Doctor Form
+            Route::get('/add', [Modules\Doctor\MainController::class, 'addDoctor'])
                 ->name('organisation.addDoctor');
 
             // Store New Doctor
-            Route::post('/store', [Doctor\DoctorManagementController::class, 'addDoctor'])
+            Route::post('/store', [Modules\Doctor\MainController::class, 'store'])
                 ->name('organisation.doctor.store');
         });
 

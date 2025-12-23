@@ -104,7 +104,7 @@
                         Fill them in so doctors, medications, and notifications stay tailored to you.
                     </p>
                 </div>
-                <a href="{{ route('patient.auth.profile') }}" class="ml-4 inline-flex items-center px-3 py-1.5 text-sm font-medium text-amber-600 bg-white border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors">
+                <a href="{{ route('patient.profile') }}" class="ml-4 inline-flex items-center px-3 py-1.5 text-sm font-medium text-amber-600 bg-white border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors">
                     Update profile
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
@@ -488,7 +488,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('patient.auth.profile') }}" class="group flex items-center p-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                                    <a href="{{ route('patient.profile') }}" class="group flex items-center p-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
                                         <div class="flex items-center justify-center h-9 w-9 rounded-lg bg-gray-100 group-hover:bg-gray-200 transition-colors">
                                             <i class="fas fa-user-edit text-gray-600" aria-hidden="true"></i>
                                         </div>

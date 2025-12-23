@@ -66,7 +66,7 @@ class ProfileController extends Controller
             'emergencyIc' => $patient->emergency_contact_ic_number ?? 'Not specified',
         ];
         
-        return view('patient.auth.profile', $profileData);
+        return view('patient.profile', $profileData);
     }
     
     /**

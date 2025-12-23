@@ -1,14 +1,8 @@
 // Permission Request Management
 let currentPermissionId = null;
 
-// Debug log to confirm script is loaded
-console.log('Permission Requests JS loaded');
-
-/**
- * Open the confirm access modal
- */
+// Open the confirm access modal
 function openConfirmAccessModal(permissionId, doctorName, providerName, accessScope) {
-    console.log('openConfirmAccessModal called with:', { permissionId, doctorName, providerName, accessScope });
     currentPermissionId = permissionId;
     
     // Set modal content
@@ -50,9 +44,7 @@ function openConfirmAccessModal(permissionId, doctorName, providerName, accessSc
     }, 10);
 }
 
-/**
- * Close the confirm access modal
- */
+// Close the confirm access modal
 function closeConfirmAccessModal() {
     const modal = document.getElementById('confirmAccessModal');
     const modalContent = document.getElementById('modalContent');
@@ -70,9 +62,7 @@ function closeConfirmAccessModal() {
     }, 300);
 }
 
-/**
- * Confirm and grant access
- */
+// Confirm and grant access
 function confirmAccessGrant() {
     if (!currentPermissionId) {
         showNotification('Error: No permission selected', 'error');
@@ -138,9 +128,7 @@ function confirmAccessGrant() {
     });
 }
 
-/**
- * Show notification message
- */
+// Show notification message
 function showNotification(message, type = 'info') {
     // Create notification element
     const notification = document.createElement('div');

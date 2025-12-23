@@ -18,13 +18,6 @@ class MainController extends Controller
         return view('organisation.dashboard', compact('organisation', 'isVerified'));
     }
 
-    public function addDoctor() {
-        $organisation = auth()->guard('organisation')->user();
-        $isVerified = $organisation && $organisation->verification_status === 'Approved';
-
-        return view('organisation.modules.doctor.addDoctor', compact('organisation', 'isVerified'));
-    }
-
     public function profile() {
         $organisation = auth()->guard('organisation')->user();
         $isVerified = $organisation && $organisation->verification_status === 'Approved';

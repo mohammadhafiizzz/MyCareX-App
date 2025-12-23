@@ -10,11 +10,9 @@ use Illuminate\Support\Facades\Validator;
 
 class RequestPermissionController extends Controller
 {
-    /**
-     * Show all permission requests made by the authenticated doctor
-     */
-    public function index(Request $request)
-    {
+    
+    // Show all permission requests made by the authenticated doctor
+    public function index(Request $request) {
         $doctor = Auth::guard('doctor')->user();
         $query = trim($request->input('query', ''));
 
@@ -41,9 +39,7 @@ class RequestPermissionController extends Controller
         ]);
     }
 
-    /**
-     * Request access to patient's medical records
-     */
+    // Request access to patient's medical records
     public function requestAccess(Request $request)
     {
         // Validate the request

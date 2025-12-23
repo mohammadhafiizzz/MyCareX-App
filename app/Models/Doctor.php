@@ -34,6 +34,11 @@ class Doctor extends Model implements Authenticatable, CanResetPasswordContract
         'remember_token',
     ];
 
+    protected $casts = [
+        'last_login' => 'datetime',
+        'active_status' => 'boolean',
+    ];
+
     // Relationship with HealthcareProvider
     public function provider()
     {

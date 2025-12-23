@@ -12,8 +12,7 @@ use App\Models\Allergy;
 
 class EmergencyKitController extends Controller
 {
-    public function index()
-    {
+    public function index() {
         $patient = Auth::guard('patient')->user();
         
         // Eager load the polymorphic relation 'record'
@@ -39,14 +38,12 @@ class EmergencyKitController extends Controller
         ));
     }
 
-    public function create()
-    {
+    public function create() {
         $patient = Auth::guard('patient')->user();
         return view('patient.modules.emergencyKit.create', compact('patient'));
     }
 
-    public function fetchRecords(Request $request)
-    {
+    public function fetchRecords(Request $request) {
         $patient = Auth::guard('patient')->user();
         $type = $request->input('type');
         $records = [];
@@ -90,8 +87,7 @@ class EmergencyKitController extends Controller
         return response()->json($records);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $request->validate([
             'type' => 'required|in:condition,medication,allergy',
             'record_id' => 'required|integer',
@@ -144,8 +140,7 @@ class EmergencyKitController extends Controller
         return redirect()->route('patient.emergency-kit.index')->with('success', 'Item added to Emergency Kit successfully.');
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $patient = Auth::guard('patient')->user();
         
         $emergencyItem = Emergency::where('id', $id)
