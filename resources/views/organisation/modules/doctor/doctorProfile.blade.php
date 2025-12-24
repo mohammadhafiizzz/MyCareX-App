@@ -158,9 +158,9 @@
                                         <p class="text-sm font-medium text-gray-900">Edit Doctor Profile</p>
                                         <p class="text-xs text-gray-500">Update professional and personal details</p>
                                     </div>
-                                    <button class="w-full sm:w-auto px-4 py-2 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
+                                    <a href="{{ route('organisation.doctor.edit', $doctor->id) }}" class="w-full sm:w-auto px-4 py-2 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100 text-center">
                                         Edit Profile
-                                    </button>
+                                    </a>
                                 </div>
 
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between py-4 gap-3">
@@ -168,7 +168,7 @@
                                         <p class="text-sm font-medium text-red-600">Remove Doctor</p>
                                         <p class="text-xs text-red-400">Permanently remove this doctor from the organisation</p>
                                     </div>
-                                    <button class="w-full sm:w-auto px-4 py-2 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                                    <button id="removeDoctorBtn" class="w-full sm:w-auto px-4 py-2 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
                                         Remove Doctor
                                     </button>
                                 </div>
@@ -181,10 +181,13 @@
         </div>
     </div>
 
+    <!-- Delete Doctor Modal -->
+    @include('organisation.modules.doctor.deleteDoctor')
+
     <!-- Javascript and Footer -->
     @include('organisation.components.footer')
 
-    @vite(['resources/js/main/organisation/header.js'])
+    @vite(['resources/js/main/organisation/header.js', 'resources/js/main/organisation/deleteDoctor.js'])
 
 </body>
 

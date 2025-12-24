@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>MyCareX - Authorized Providers</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
@@ -119,7 +123,12 @@
 
                             <!-- Actions -->
                             <div class="flex flex-col gap-2 ml-4">
-                                <button class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2">
+                                <button 
+                                    class="revoke-access-btn px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
+                                    data-provider-id="{{ $permission->provider_id }}"
+                                    data-doctor-id="{{ $permission->doctor_id }}"
+                                    data-doctor-name="{{ $permission->doctor->full_name ?? 'this doctor' }}"
+                                >
                                     <i class="fas fa-times mr-1"></i>
                                     Revoke Access
                                 </button>
@@ -153,8 +162,11 @@
 
     </div>
 
+    <!-- Revoke Permission Modal -->
+    @include('patient.modules.permission.revokePermission')
+
     <!-- Javascript and Footer -->
-    @vite(['resources/js/main/patient/header.js'])
+    @vite(['resources/js/main/patient/header.js', 'resources/js/main/permission/permission.js'])
     @include('patient.components.footer')
 </body>
 

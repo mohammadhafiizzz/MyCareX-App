@@ -351,24 +351,36 @@ Route::prefix('patient')->group(function () {
         Route::prefix('/permissions')->group(function () {
 
             // Permission Page
-            Route::get('/', [Modules\Permission\PermissionController::class, 'index'])
+            Route::get('/', [Modules\Permission\MainController::class, 'patientIndex'])
                 ->name('patient.permission');
 
             // Authorized Doctors List
-            Route::get('/doctors', [Modules\Permission\PermissionController::class, 'doctors'])
+            Route::get('/doctors', [Modules\Permission\MainController::class, 'patientDoctors'])
                 ->name('patient.permission.doctors');
 
             // Pending Requests List
-            Route::get('/requests', [Modules\Permission\PermissionController::class, 'requests'])
+            Route::get('/requests', [Modules\Permission\MainController::class, 'patientRequests'])
                 ->name('patient.permission.requests');
 
+            // View and Confirm Permission Request
+            Route::get('/requests/{id}', [Modules\Permission\MainController::class, 'showConfirmPermission'])
+                ->name('patient.permission.confirm');
+
             // Activity History
-            Route::get('/activity', [Modules\Permission\PermissionController::class, 'activity'])
+            Route::get('/activity', [Modules\Permission\MainController::class, 'patientActivity'])
                 ->name('patient.permission.activity');
 
             // Approve Permission Request
-            Route::post('/approve/{id}', [Modules\Permission\PermissionController::class, 'approve'])
+            Route::post('/approve/{id}', [Modules\Permission\MainController::class, 'approveRequest'])
                 ->name('patient.permission.approve');
+
+            // Decline Permission Request
+            Route::delete('/decline/{id}', [Modules\Permission\MainController::class, 'declineRequest'])
+                ->name('patient.permission.decline');
+
+            // Revoke Permission
+            Route::delete('/revoke', [Modules\Permission\MainController::class, 'revokePermission'])
+                ->name('patient.permission.revoke');
         });
 
         // Emergency Kit
@@ -471,6 +483,18 @@ Route::prefix('organisation')->group(function () {
             // Store New Doctor
             Route::post('/store', [Modules\Doctor\MainController::class, 'store'])
                 ->name('organisation.doctor.store');
+
+            // Edit Doctor Form
+            Route::get('/edit/{id}', [Modules\Doctor\MainController::class, 'edit'])
+                ->name('organisation.doctor.edit');
+
+            // Update Doctor
+            Route::put('/update/{id}', [Modules\Doctor\MainController::class, 'update'])
+                ->name('organisation.doctor.update');
+
+            // Delete Doctor
+            Route::delete('/delete/{id}', [Modules\Doctor\MainController::class, 'destroy'])
+                ->name('organisation.doctor.delete');
         });
 
         // Organisation Profile Page
@@ -577,11 +601,11 @@ Route::prefix('doctor')->group(function () {
         // Permission Routes
         Route::prefix('/permission')->group(function () {
             // View All Permission Requests
-            Route::get('/requests', [Modules\Permission\RequestPermissionController::class, 'index'])
+            Route::get('/requests', [Modules\Permission\MainController::class, 'doctorIndex'])
                 ->name('doctor.permission.requests');
 
             // Request Access to Patient Records
-            Route::post('/request', [Modules\Permission\RequestPermissionController::class, 'requestAccess'])
+            Route::post('/request', [Modules\Permission\MainController::class, 'requestAccess'])
                 ->name('doctor.permission.request');
         });
 

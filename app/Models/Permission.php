@@ -20,8 +20,8 @@ class Permission extends Model
 
     protected $casts = [
         'permission_scope' => 'array',
-        'requested_at' => 'date',
-        'granted_at' => 'date',
+        'requested_at' => 'datetime',
+        'granted_at' => 'datetime',
         'expiry_date' => 'date',
     ];
 

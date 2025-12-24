@@ -81,8 +81,8 @@
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Doctors</p>
 
                     <a href="{{ route('organisation.doctors') }}"
-                        class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('organisation.doctors') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                        <i class="fas fa-user-doctor w-5 {{ request()->routeIs('organisation.doctors') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                        class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('organisation.doctors', 'organisation.doctor.profile') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                        <i class="fas fa-user-doctor w-5 {{ request()->routeIs('organisation.doctors', 'organisation.doctor.profile') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                         <span class="ml-3">All Doctors</span>
                         <span class="ml-auto bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">{{ $totalDoctors ?? 0 }}</span>
                     </a>

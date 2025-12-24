@@ -133,14 +133,10 @@
 
                             <!-- Actions -->
                             <div class="flex flex-col gap-2 ml-4">
-                                <button 
-                                    data-permission-id="{{ $permission->id }}"
-                                    data-doctor-name="{{ $permission->doctor->full_name ?? 'N/A' }}"
-                                    data-provider-name="{{ $permission->doctor->provider->organisation_name ?? 'N/A' }}"
-                                    data-access-scope="{{ json_encode($permission->permission_scope ?? []) }}"
-                                    class="confirm-access-btn flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                                    Confirm
-                                </button>
+                                <a href="{{ route('patient.permission.confirm', $permission->id) }}" 
+                                   class="flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
+                                    View
+                                </a>
                                 <button class="flex items-center justify-center px-5 py-2.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2">
                                     <i class="fas fa-info-circle mr-1"></i>
                                     Details
@@ -171,11 +167,8 @@
 
     </div>
 
-    <!-- Confirm Access Modal -->
-    @include('patient.modules.permission.confirmAccessModal')
-
     <!-- Javascript and Footer -->
-    @vite(['resources/js/main/patient/header.js', 'resources/js/main/permission/permissionRequests.js'])
+    @vite(['resources/js/main/patient/header.js'])
     @include('patient.components.footer')
 </body>
 
