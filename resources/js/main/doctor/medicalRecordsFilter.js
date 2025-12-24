@@ -11,16 +11,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const recordRows = document.querySelectorAll('.record-row');
     
     // Get the empty state elements
-    const mainEmptyState = document.querySelector('.text-center.py-12:not(#filteredEmptyState)');
     const filteredEmptyState = document.getElementById('filteredEmptyState');
     
     // Get the table body
     const tableBody = document.getElementById('recordsTableBody');
     
+    // Get the count element
+    const recordsCountText = document.getElementById('doctors-count');
+
+    // Search elements
+    const searchInput = document.getElementById('doctor-search');
+    const clearSearchBtn = document.getElementById('clear-search');
+    const resetSearchBtn = document.getElementById('reset-search');
+
+    let currentFilter = 'all';
+    let currentSearch = '';
+    
     // Add click event to each filter button
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const filterType = this.getAttribute('data-filter');
+            currentFilter = this.getAttribute('data-filter');
             
             // Update active button styling
             filterButtons.forEach(btn => {
@@ -32,30 +42,66 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('bg-blue-600', 'text-white');
             
             // Filter the records
-            filterRecords(filterType);
+            applyFilters();
         });
     });
+
+    // Search functionality
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            currentSearch = this.value.toLowerCase();
+            
+            if (clearSearchBtn) {
+                if (currentSearch.length > 0) {
+                    clearSearchBtn.classList.remove('hidden');
+                } else {
+                    clearSearchBtn.classList.add('hidden');
+                }
+            }
+            
+            applyFilters();
+        });
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', function() {
+            if (searchInput) {
+                searchInput.value = '';
+                currentSearch = '';
+                this.classList.add('hidden');
+                applyFilters();
+            }
+        });
+    }
+
+    if (resetSearchBtn) {
+        resetSearchBtn.addEventListener('click', function() {
+            if (searchInput) {
+                searchInput.value = '';
+                currentSearch = '';
+                if (clearSearchBtn) clearSearchBtn.classList.add('hidden');
+                applyFilters();
+            }
+        });
+    }
     
     /**
-     * Filter records based on selected type
-     * @param {string} filterType - The type to filter by ('all' or specific type)
+     * Apply both search and type filters
      */
-    function filterRecords(filterType) {
+    function applyFilters() {
         let visibleCount = 0;
         
         recordRows.forEach(row => {
             const rowType = row.getAttribute('data-type');
+            const rowText = row.textContent.toLowerCase();
             
-            if (filterType === 'all') {
-                // Show all records
-                row.style.display = '';
-                visibleCount++;
-            } else if (rowType === filterType) {
-                // Show only matching records
+            const matchesFilter = currentFilter === 'all' || rowType === currentFilter;
+            const matchesSearch = currentSearch === '' || rowText.includes(currentSearch);
+            
+            if (matchesFilter && matchesSearch) {
                 row.style.display = '';
                 visibleCount++;
             } else {
-                // Hide non-matching records
                 row.style.display = 'none';
             }
         });
@@ -80,11 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
      * @param {number} count - Number of visible records
      */
     function updateRecordCount(count) {
-        // This will be handled by pagination script
-        // const countElement = document.querySelector('.text-sm.text-gray-600.mt-1');
-        // if (countElement) {
-        //     countElement.textContent = `Total: ${count} record${count !== 1 ? 's' : ''}`;
-        // }
+        if (recordsCountText) {
+            recordsCountText.innerHTML = `Showing <span class="font-medium text-gray-900">${count}</span> record${count !== 1 ? 's' : ''}`;
+        }
     }
     
     /**
@@ -92,18 +136,27 @@ document.addEventListener('DOMContentLoaded', function() {
      * @param {number} count - Number of visible records
      */
     function toggleEmptyState(count) {
+        const tableContainer = tableBody ? tableBody.closest('.overflow-x-auto') : null;
+        const paginationControls = document.getElementById('pagination-controls');
+        
         if (count === 0) {
-            // Hide table, show filtered empty state
-            if (tableBody) {
-                tableBody.closest('.overflow-x-auto').style.display = 'none';
+            // Hide table and pagination, show filtered empty state
+            if (tableContainer) {
+                tableContainer.classList.add('hidden');
+            }
+            if (paginationControls) {
+                paginationControls.classList.add('hidden');
             }
             if (filteredEmptyState) {
                 filteredEmptyState.classList.remove('hidden');
             }
         } else {
-            // Show table, hide filtered empty state
-            if (tableBody) {
-                tableBody.closest('.overflow-x-auto').style.display = '';
+            // Show table and pagination, hide filtered empty state
+            if (tableContainer) {
+                tableContainer.classList.remove('hidden');
+            }
+            if (paginationControls) {
+                paginationControls.classList.remove('hidden');
             }
             if (filteredEmptyState) {
                 filteredEmptyState.classList.add('hidden');

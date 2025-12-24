@@ -1,24 +1,133 @@
 <?php
 
-namespace App\Http\Controllers\Doctor;
+namespace App\Http\Controllers\Modules\Permission;
 
 use App\Http\Controllers\Controller;
-use App\Models\Patient;
+use Illuminate\Http\Request;
 use App\Models\Permission;
+use App\Models\Patient;
 use App\Models\Condition;
 use App\Models\Medication;
 use App\Models\Allergy;
 use App\Models\Immunisation;
 use App\Models\Lab;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PatientRecordController extends Controller
+class ReadController extends Controller
 {
-    /**
-     * Display medical records page with statistics and records list
-     */
-    public function index(Request $request)
+    protected $methodController;
+
+    public function __construct(MethodController $methodController)
+    {
+        $this->methodController = $methodController;
+    }
+
+    // READ: Show Permission Page (Patient)
+    public function patientIndex() {
+        $patient = Auth::guard('patient')->user();
+        
+        // Count providers with granted access
+        $totalProvidersWithAccess = Permission::where('patient_id', $patient->id)
+            ->where('status', 'Active')
+            ->count();
+        
+        // Count pending access requests
+        $pendingRequests = Permission::where('patient_id', $patient->id)
+            ->where('status', 'Pending')
+            ->count();
+
+        // Get authorized doctors list
+        $doctors = Permission::where('patient_id', $patient->id)
+            ->where('status', 'Active')
+            ->with(['doctor', 'provider'])
+            ->orderBy('granted_at', 'desc')
+            ->get();
+        
+        return view('patient.permission', compact(
+            'totalProvidersWithAccess',
+            'pendingRequests',
+            'doctors'
+        ));
+    }
+
+    // READ: Show View Permission Details (Patient)
+    public function viewPermission($id) {
+        $patient = Auth::guard('patient')->user();
+
+        $permission = Permission::where('id', $id)
+            ->where('patient_id', $patient->id)
+            ->with(['doctor', 'provider'])
+            ->firstOrFail();
+    
+        return view('patient.modules.permission.viewPermission', compact('permission'));
+    }
+
+    // READ: Show Pending Access Requests (Patient)
+    public function patientRequests() {
+        $patient = Auth::guard('patient')->user();
+        
+        $requests = Permission::where('patient_id', $patient->id)
+            ->where('status', 'Pending')
+            ->with(['doctor', 'provider'])
+            ->orderBy('requested_at', 'desc')
+            ->paginate(10);
+        
+        return view('patient.modules.permission.requests', compact('requests'));
+    }
+
+    // READ: Show Confirm Permission Page (Patient)
+    public function showConfirmPermission($id) {
+        $patient = Auth::guard('patient')->user();
+        
+        $permission = Permission::where('id', $id)
+            ->where('patient_id', $patient->id)
+            ->where('status', 'Pending')
+            ->with(['doctor', 'provider'])
+            ->firstOrFail();
+        
+        return view('patient.modules.permission.confirmPermission', compact('permission'));
+    }
+
+    // READ: Show Full Activity History (Patient)
+    public function patientActivity() {
+        $patient = Auth::guard('patient')->user();
+        
+        // For now, return empty collection until tracking tables are implemented
+        $activities = collect([]);
+        
+        return view('patient.modules.permission.activity', compact('activities'));
+    }
+
+    // READ: Show Permission Requests List (Doctor)
+    public function doctorIndex(Request $request) {
+        $doctor = Auth::guard('doctor')->user();
+        $query = trim($request->input('query', ''));
+
+        // Build the base query
+        $permissionsQuery = Permission::where('doctor_id', $doctor->id)
+            ->with(['patient', 'provider']);
+
+        // Apply search filter if query is provided
+        if ($query !== '') {
+            $permissionsQuery->whereHas('patient', function($q) use ($query) {
+                $q->where('full_name', 'like', '%' . $query . '%')
+                  ->orWhere('ic_number', 'like', '%' . $query . '%');
+            });
+        }
+
+        // Get paginated results
+        $permissions = $permissionsQuery->orderBy('requested_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('doctor.modules.permission.request', [
+            'permissions' => $permissions,
+            'query' => $query,
+        ]);
+    }
+
+    // READ: Display medical records page with statistics and records list
+    public function medicalRecordIndex(Request $request)
     {
         $doctorId = Auth::guard('doctor')->id();
         
@@ -53,7 +162,7 @@ class PatientRecordController extends Controller
             $scope = $permission->permission_scope ?? [];
             
             // Check if scope allows access to each record type
-            if ($this->hasPermission($scope, 'conditions')) {
+            if ($this->methodController->hasPermissionScope($scope, 'medical_conditions')) {
                 $conditions = $patient->conditions;
                 $stats['conditions'] += $conditions->count();
                 
@@ -63,8 +172,10 @@ class PatientRecordController extends Controller
                         'id' => $condition->id,
                         'patient_name' => $patient->full_name,
                         'patient_ic' => $patient->ic_number,
+                        'patient_image' => $patient->profile_image_url,
                         'name' => $condition->condition_name,
                         'date' => $condition->diagnosis_date,
+                        'granted_at' => $permission->created_at,
                         'status' => $condition->status ?? 'N/A',
                         'severity' => $condition->severity ?? 'N/A',
                         'patient_id' => $patient->id
@@ -72,7 +183,7 @@ class PatientRecordController extends Controller
                 }
             }
             
-            if ($this->hasPermission($scope, 'medications')) {
+            if ($this->methodController->hasPermissionScope($scope, 'medications')) {
                 $medications = $patient->medications;
                 $stats['medications'] += $medications->count();
                 
@@ -82,8 +193,10 @@ class PatientRecordController extends Controller
                         'id' => $medication->id,
                         'patient_name' => $patient->full_name,
                         'patient_ic' => $patient->ic_number,
+                        'patient_image' => $patient->profile_image_url,
                         'name' => $medication->medication_name,
                         'date' => $medication->start_date,
+                        'granted_at' => $permission->created_at,
                         'status' => $medication->status ?? 'N/A',
                         'dosage' => $medication->dosage . ' mg',
                         'patient_id' => $patient->id
@@ -91,7 +204,7 @@ class PatientRecordController extends Controller
                 }
             }
             
-            if ($this->hasPermission($scope, 'allergies')) {
+            if ($this->methodController->hasPermissionScope($scope, 'allergies')) {
                 $allergies = $patient->allergies;
                 $stats['allergies'] += $allergies->count();
                 
@@ -101,8 +214,10 @@ class PatientRecordController extends Controller
                         'id' => $allergy->id,
                         'patient_name' => $patient->full_name,
                         'patient_ic' => $patient->ic_number,
+                        'patient_image' => $patient->profile_image_url,
                         'name' => $allergy->allergen,
                         'date' => $allergy->first_observed_date,
+                        'granted_at' => $permission->created_at,
                         'status' => $allergy->status ?? 'N/A',
                         'severity' => $allergy->severity ?? 'N/A',
                         'patient_id' => $patient->id
@@ -110,7 +225,7 @@ class PatientRecordController extends Controller
                 }
             }
             
-            if ($this->hasPermission($scope, 'immunisations')) {
+            if ($this->methodController->hasPermissionScope($scope, 'immunisations')) {
                 $immunisations = $patient->immunisations;
                 $stats['immunisations'] += $immunisations->count();
                 
@@ -120,15 +235,17 @@ class PatientRecordController extends Controller
                         'id' => $immunisation->id,
                         'patient_name' => $patient->full_name,
                         'patient_ic' => $patient->ic_number,
+                        'patient_image' => $patient->profile_image_url,
                         'name' => $immunisation->vaccine_name,
                         'date' => $immunisation->vaccination_date,
+                        'granted_at' => $permission->created_at,
                         'administered_by' => $immunisation->administered_by ?? 'N/A',
                         'patient_id' => $patient->id
                     ]);
                 }
             }
             
-            if ($this->hasPermission($scope, 'labs')) {
+            if ($this->methodController->hasPermissionScope($scope, 'lab_tests')) {
                 $labs = $patient->labs;
                 $stats['labs'] += $labs->count();
                 
@@ -138,8 +255,10 @@ class PatientRecordController extends Controller
                         'id' => $lab->id,
                         'patient_name' => $patient->full_name,
                         'patient_ic' => $patient->ic_number,
+                        'patient_image' => $patient->profile_image_url,
                         'name' => $lab->test_name,
                         'date' => $lab->test_date,
+                        'granted_at' => $permission->created_at,
                         'category' => $lab->test_category ?? 'N/A',
                         'facility' => $lab->facility_name ?? 'N/A',
                         'patient_id' => $patient->id
@@ -161,121 +280,65 @@ class PatientRecordController extends Controller
         $allRecords = $allRecords->sortByDesc('date')->values();
         
         return view('doctor.modules.patient.medicalRecord', compact('stats', 'allRecords', 'search'));
-    }
-    
-    /**
-     * Check if permission scope allows access to a specific record type
-     */
-    private function hasPermission($scope, $type)
-    {
-        // If scope is empty or null, deny access
-        if (empty($scope)) {
-            return false;
-        }
-        
-        // If scope contains 'all', grant access to everything
-        if (in_array('all', $scope)) {
-            return true;
-        }
-        
-        // Check if specific type is in scope
-        return in_array($type, $scope);
-    }
-    
-    /**
-     * Show detailed view of a specific condition
-     */
+    }    
+
+     // READ: Show detailed view of a specific condition
     public function showCondition($id)
     {
         $doctorId = Auth::guard('doctor')->id();
         $condition = Condition::with('patient', 'doctor')->findOrFail($id);
         
         // Verify permission
-        $this->verifyPermission($doctorId, $condition->patient_id, 'conditions');
+        $this->methodController->verifyRecordPermission($doctorId, $condition->patient_id, 'medical_conditions');
         
         return view('doctor.modules.patient.records.condition', compact('condition'));
     }
     
-    /**
-     * Show detailed view of a specific medication
-     */
+    // READ: Show detailed view of a specific medication
     public function showMedication($id)
     {
         $doctorId = Auth::guard('doctor')->id();
         $medication = Medication::with('patient', 'doctor')->findOrFail($id);
         
         // Verify permission
-        $this->verifyPermission($doctorId, $medication->patient_id, 'medications');
+        $this->methodController->verifyRecordPermission($doctorId, $medication->patient_id, 'medications');
         
         return view('doctor.modules.patient.records.medication', compact('medication'));
     }
     
-    /**
-     * Show detailed view of a specific allergy
-     */
+    // READ: Show detailed view of a specific allergy
     public function showAllergy($id)
     {
         $doctorId = Auth::guard('doctor')->id();
         $allergy = Allergy::with('patient', 'doctor')->findOrFail($id);
         
         // Verify permission
-        $this->verifyPermission($doctorId, $allergy->patient_id, 'allergies');
+        $this->methodController->verifyRecordPermission($doctorId, $allergy->patient_id, 'allergies');
         
         return view('doctor.modules.patient.records.allergy', compact('allergy'));
     }
     
-    /**
-     * Show detailed view of a specific immunisation
-     */
+    // READ: Show detailed view of a specific immunisation
     public function showImmunisation($id)
     {
         $doctorId = Auth::guard('doctor')->id();
         $immunisation = Immunisation::with('patient', 'doctor')->findOrFail($id);
         
         // Verify permission
-        $this->verifyPermission($doctorId, $immunisation->patient_id, 'immunisations');
+        $this->methodController->verifyRecordPermission($doctorId, $immunisation->patient_id, 'immunisations');
         
         return view('doctor.modules.patient.records.immunisation', compact('immunisation'));
     }
     
-    /**
-     * Show detailed view of a specific lab test
-     */
+    // READ: Show detailed view of a specific lab test
     public function showLab($id)
     {
         $doctorId = Auth::guard('doctor')->id();
         $lab = Lab::with('patient', 'doctor')->findOrFail($id);
         
         // Verify permission
-        $this->verifyPermission($doctorId, $lab->patient_id, 'labs');
+        $this->methodController->verifyRecordPermission($doctorId, $lab->patient_id, 'lab_tests');
         
         return view('doctor.modules.patient.records.lab', compact('lab'));
-    }
-    
-    /**
-     * Verify if doctor has permission to access specific record type for a patient
-     */
-    private function verifyPermission($doctorId, $patientId, $recordType)
-    {
-        $permission = Permission::where('doctor_id', $doctorId)
-            ->where('patient_id', $patientId)
-            ->where('status', 'Active')
-            ->where(function($query) {
-                $query->whereNull('expiry_date')
-                      ->orWhere('expiry_date', '>=', now());
-            })
-            ->first();
-        
-        if (!$permission) {
-            abort(403, 'You do not have permission to access this record.');
-        }
-        
-        $scope = $permission->permission_scope ?? [];
-        
-        if (!$this->hasPermission($scope, $recordType)) {
-            abort(403, 'You do not have permission to access this type of record.');
-        }
-        
-        return true;
     }
 }

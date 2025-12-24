@@ -33,7 +33,7 @@ class DoctorController extends Controller
     }
 
     // view detailed patient information with medical records
-    public function viewPatientDetails($patientId) {
+    public function viewPatient($patientId) {
         $doctorId = Auth::guard('doctor')->id();
         
         // Check if doctor has permission to view this patient
@@ -55,7 +55,7 @@ class DoctorController extends Controller
             'labs'
         ])->findOrFail($patientId);
 
-        return view('doctor.modules.patient.patientDetails', [
+        return view('doctor.modules.patient.patientProfile', [
             'patient' => $patient,
             'permission' => $permission
         ]);

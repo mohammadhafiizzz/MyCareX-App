@@ -13,11 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Get DOM elements
     const tableBody = document.getElementById('recordsTableBody');
-    const prevPageBtn = document.getElementById('prevPageBtn');
-    const nextPageBtn = document.getElementById('nextPageBtn');
-    const paginationInfo = document.getElementById('paginationInfo');
-    const paginationControls = document.getElementById('paginationControls');
-    const recordsCountText = document.getElementById('recordsCountText');
+    const prevPageBtn = document.getElementById('prev-page');
+    const nextPageBtn = document.getElementById('next-page');
+    const paginationInfo = document.getElementById('page-info');
+    const paginationControls = document.getElementById('pagination-controls');
+    const recordsCountText = document.getElementById('doctors-count');
     
     /**
      * Initialize pagination
@@ -47,19 +47,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return row.style.display !== 'none';
         });
         
-        totalPages = Math.ceil(visibleRows.length / recordsPerPage);
+        totalPages = Math.max(1, Math.ceil(visibleRows.length / recordsPerPage));
         
         // Reset to page 1 if current page is beyond total pages
-        if (currentPage > totalPages && totalPages > 0) {
-            currentPage = 1;
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
         }
         
-        // Hide pagination if no records or only one page
+        // Hide pagination only if no records at all
         if (paginationControls) {
-            if (visibleRows.length <= recordsPerPage) {
-                paginationControls.style.display = 'none';
+            if (visibleRows.length === 0) {
+                paginationControls.classList.add('hidden');
             } else {
-                paginationControls.style.display = 'flex';
+                paginationControls.classList.remove('hidden');
             }
         }
     }
@@ -80,16 +80,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayCurrentPage() {
         // Hide all rows first
         allRows.forEach(row => {
-            if (row.style.display !== 'none') {
-                row.classList.add('pagination-hidden');
-            }
+            row.classList.add('pagination-hidden');
         });
         
-        // Calculate start and end indices
+        // Show only the rows for current page
         const startIndex = (currentPage - 1) * recordsPerPage;
         const endIndex = startIndex + recordsPerPage;
         
-        // Show only the rows for current page
         visibleRows.slice(startIndex, endIndex).forEach(row => {
             row.classList.remove('pagination-hidden');
         });
@@ -101,23 +98,21 @@ document.addEventListener('DOMContentLoaded', function() {
     function updatePaginationInfo() {
         if (!paginationInfo) return;
         
-        if (totalPages === 0) {
-            paginationInfo.textContent = 'No records';
+        if (visibleRows.length === 0) {
+            paginationInfo.textContent = 'Page 0 of 0';
         } else {
-            const startRecord = ((currentPage - 1) * recordsPerPage) + 1;
-            const endRecord = Math.min(currentPage * recordsPerPage, visibleRows.length);
-            paginationInfo.textContent = `${startRecord}-${endRecord} of ${visibleRows.length}`;
+            paginationInfo.textContent = `Page ${currentPage} of ${totalPages}`;
         }
         
         // Update total count text
         if (recordsCountText) {
-            const totalRecords = allRows.length;
-            const visibleCount = visibleRows.length;
-            
-            if (visibleCount === totalRecords) {
-                recordsCountText.textContent = `Total: ${totalRecords} record${totalRecords !== 1 ? 's' : ''}`;
+            const total = visibleRows.length;
+            if (total === 0) {
+                recordsCountText.innerHTML = `Showing <span class="font-medium text-gray-900">0</span> records`;
             } else {
-                recordsCountText.textContent = `Showing: ${visibleCount} of ${totalRecords} record${totalRecords !== 1 ? 's' : ''}`;
+                const startIndex = (currentPage - 1) * recordsPerPage + 1;
+                const endIndex = Math.min(currentPage * recordsPerPage, total);
+                recordsCountText.innerHTML = `Showing <span class="font-medium text-gray-900">${startIndex}-${endIndex}</span> of <span class="font-medium text-gray-900">${total}</span> record${total !== 1 ? 's' : ''}`;
             }
         }
     }

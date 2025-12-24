@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - Confirm Permission</title>
+    <title>MyCareX - View Permission</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -23,14 +23,14 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         <div class="mb-5">
-            <a href="{{ route('patient.permission.requests') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium inline-flex items-center gap-1">
-                <i class="fa-solid fa-arrow-left text-xs"></i> Back to Requests
+            <a href="{{ route('patient.permission') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium inline-flex items-center gap-1">
+                <i class="fa-solid fa-arrow-left text-xs"></i> Back to Permissions
             </a>
         </div>
 
         <div class="mb-8">
-            <h1 class="text-2xl font-bold text-gray-900">Review Access Request</h1>
-            <p class="text-sm text-gray-500">Review the doctor's information and decide which records they can access.</p>
+            <h1 class="text-2xl font-bold text-gray-900">Permission Details</h1>
+            <p class="text-sm text-gray-500">View and manage access permissions for this doctor.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
@@ -116,7 +116,7 @@
                     </div>
                     
                     <div class="p-6">
-                        <p class="text-sm text-gray-600 mb-6">Select the medical records you want to share with this doctor. You can change these permissions at any time.</p>
+                        <p class="text-sm text-gray-600 mb-6">This doctor has access to the following medical records. You can modify the access scope or revoke permission at any time.</p>
                         
                         @if($permission->notes)
                         <div class="mb-8 p-4 bg-blue-50 rounded-xl border border-blue-100">
@@ -127,66 +127,81 @@
                         </div>
                         @endif
 
-                        <form id="approvePermissionForm" data-permission-id="{{ $permission->id }}">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                                @php
-                                    $scopes = [
-                                        'medical_conditions' => ['label' => 'Medical Conditions', 'icon' => 'fas fa-heartbeat'],
-                                        'medications' => ['label' => 'Medications', 'icon' => 'fas fa-pills'],
-                                        'allergies' => ['label' => 'Allergies', 'icon' => 'fas fa-allergies'],
-                                        'immunisations' => ['label' => 'Immunisations', 'icon' => 'fas fa-syringe'],
-                                        'lab_tests' => ['label' => 'Lab Tests', 'icon' => 'fas fa-flask'],
-                                    ];
-                                @endphp
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            @php
+                                $scopes = [
+                                    'medical_conditions' => ['label' => 'Medical Conditions', 'icon' => 'fas fa-heartbeat'],
+                                    'medications' => ['label' => 'Medications', 'icon' => 'fas fa-pills'],
+                                    'allergies' => ['label' => 'Allergies', 'icon' => 'fas fa-allergies'],
+                                    'immunisations' => ['label' => 'Immunisations', 'icon' => 'fas fa-syringe'],
+                                    'lab_tests' => ['label' => 'Lab Tests', 'icon' => 'fas fa-flask'],
+                                ];
+                                $grantedScopes = is_array($permission->permission_scope) ? $permission->permission_scope : [];
+                            @endphp
 
-                                @foreach($scopes as $key => $data)
-                                <label class="relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors group">
-                                    <div class="flex items-center h-5">
-                                        <input type="checkbox" name="permission_scope[]" value="{{ $key }}" checked class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                                    </div>
-                                    <div class="ml-4 flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
-                                            <i class="fas {{ $data['icon'] }} text-sm"></i>
-                                        </div>
-                                        <span class="text-sm font-medium text-gray-900">{{ $data['label'] }}</span>
-                                    </div>
-                                </label>
-                                @endforeach
-                            </div>
-
-                            <div class="mb-8 max-w-md">
-                                <label for="expiry_date" class="block text-sm font-semibold text-gray-900 mb-2">Access Expiry Date</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fas fa-calendar text-gray-400"></i>
-                                    </div>
-                                    <input type="date" id="expiry_date" name="expiry_date" required
-                                        min="{{ date('Y-m-d', strtotime('+1 day')) }}"
-                                        value="{{ date('Y-m-d', strtotime('+1 month')) }}"
-                                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
+                            @foreach($scopes as $key => $data)
+                            <div class="relative flex items-center p-4 border {{ in_array($key, $grantedScopes) ? 'border-blue-200 bg-blue-50/30' : 'border-gray-100 bg-gray-50/30 opacity-60' }} rounded-xl">
+                                <div class="flex items-center h-5">
+                                    @if(in_array($key, $grantedScopes))
+                                        <i class="fas fa-check-circle text-blue-600 text-lg"></i>
+                                    @else
+                                        <i class="fas fa-times-circle text-gray-300 text-lg"></i>
+                                    @endif
                                 </div>
-                                <p class="mt-2 text-xs text-gray-500">The doctor's access will automatically expire after this date.</p>
+                                <div class="ml-4 flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg {{ in_array($key, $grantedScopes) ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-400' }} flex items-center justify-center">
+                                        <i class="fas {{ $data['icon'] }} text-sm"></i>
+                                    </div>
+                                    <span class="text-sm font-medium {{ in_array($key, $grantedScopes) ? 'text-gray-900' : 'text-gray-400' }}">{{ $data['label'] }}</span>
+                                </div>
                             </div>
+                            @endforeach
+                        </div>
 
-                            <div class="flex flex-col text-sm sm:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
-                                <button type="button" id="declineRequestBtn" class="inline-flex items-center justify-center px-4 py-2.5 bg-red-500/5 backdrop-blur-md text-red-700 rounded-xl border border-red-400/20 shadow-sm text-sm font-medium hover:bg-red-500/20 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50 focus-visible:ring-offset-0">
-                                    Decline Request
-                                </button>
-                                <button type="submit" id="grantAccessBtn" class="inline-flex items-center cursor-pointer px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
-                                    Grant Access
-                                </button>
+                        <div class="mb-8 max-w-md">
+                            <label class="block text-sm font-semibold text-gray-900 mb-2">Access Expiry Date</label>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 w-fit">
+                                <i class="fas fa-calendar-alt text-blue-600"></i>
+                                <span class="text-sm font-medium text-gray-900">
+                                    {{ $permission->expiry_date ? $permission->expiry_date->format('d M Y') : 'No Expiry Set' }}
+                                    @if($permission->expiry_date && $permission->expiry_date->isPast())
+                                        <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-bold rounded uppercase">Expired</span>
+                                    @elseif($permission->expiry_date && $permission->expiry_date->diffInDays(now()) <= 7)
+                                        <span class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-bold rounded uppercase">Expiring Soon</span>
+                                    @endif
+                                </span>
                             </div>
-                        </form>
+                            <p class="mt-2 text-xs text-gray-500">Access was granted on {{ $permission->granted_at ? $permission->granted_at->format('d M Y') : 'N/A' }}.</p>
+                        </div>
+
+                        <div class="flex flex-col text-sm sm:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
+                            <button type="button" 
+                                class="revoke-access-btn inline-flex items-center justify-center px-4 py-2.5 bg-red-500/5 backdrop-blur-md text-red-700 rounded-xl border border-red-400/20 shadow-sm text-sm font-medium hover:bg-red-500/20 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50 focus-visible:ring-offset-0"
+                                data-provider-id="{{ $permission->provider_id }}"
+                                data-doctor-id="{{ $permission->doctor_id }}"
+                                data-doctor-name="{{ $permission->doctor->full_name }}">
+                                Revoke Access
+                            </button>
+                            <button type="button" id="openEditModalBtn" class="inline-flex items-center cursor-pointer px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                Edit Scope
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Revoke Permission Modal -->
+    @include('patient.modules.permission.revokePermission')
+
+    <!-- Edit Permission Modal -->
+    @include('patient.modules.permission.editPermission')
+
     <!-- Javascript and Footer -->
     @include('patient.components.footer')
 
-    @vite(['resources/js/main/patient/header.js', 'resources/js/main/permission/confirmPermission.js'])
+    @vite(['resources/js/main/patient/header.js', 'resources/js/main/permission/permission.js', 'resources/js/main/permission/editPermission.js'])
 
 </body>
 
