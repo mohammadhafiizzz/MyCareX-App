@@ -21,117 +21,106 @@
     @include('doctor.components.sidebar')
 
     <!-- Main Content -->
-    <div class="lg:ml-68 transition-all duration-300 pt-[75px]" id="mainContent">
-        <div class="bg-gray-50 min-h-screen">
+    <div class="lg:ml-68 transition-all duration-300 mt-20" id="mainContent">
+        <div class="min-h-screen bg-gray-50/50">
             <div class="py-6 px-4 sm:px-6 lg:px-8">
 
                 <!-- Back Button -->
-                <div class="mb-6">
-                    <a href="{{ route('doctor.medical.records') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Back to Medical Records
+                <div class="mb-4">
+                    <a href="{{ route('doctor.medical.records') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium inline-flex items-center gap-1">
+                        <i class="fa-solid fa-arrow-left text-xs"></i> Back to Medical Records
                     </a>
                 </div>
 
                 <!-- Page Header -->
-                <div class="mb-6">
-                    <h1 class="text-3xl font-bold text-gray-900">Allergy Details</h1>
-                    <p class="mt-2 text-sm text-gray-600">Detailed information about the allergy</p>
+                <div class="mb-8">
+                    <h1 class="text-2xl font-bold text-gray-900">Allergy Details</h1>
+                    <p class="text-sm text-gray-500">Detailed information about the patient's allergy.</p>
                 </div>
 
-                <!-- Allergy Details Card -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
-                    <div class="px-6 py-4 bg-red-50 border-b border-gray-200">
-                        <h2 class="text-xl font-semibold text-gray-900">{{ $allergy->allergen }}</h2>
+                <!-- Single Card Layout -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <!-- Card Header -->
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+                            <i class="fa-solid fa-hand-dots text-gray-400"></i> ALLERGY INFORMATION
+                        </h3>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase">Record ID: #{{ $allergy->id }}</span>
                     </div>
-
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Patient Information -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2">Patient Information</h3>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Patient Name</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $allergy->patient->full_name }}</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">IC Number</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $allergy->patient->ic_number }}</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Age</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $allergy->patient->age }} years old</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Gender</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ ucfirst($allergy->patient->gender) }}</p>
-                                </div>
+                    
+                    <div class="p-6 sm:p-8">
+                        <!-- Top Section: Allergen & Status -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Allergen</label>
+                                <p class="text-xl font-bold text-gray-900">{{ $allergy->allergen }}</p>
                             </div>
-
-                            <!-- Allergy Details -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2">Allergy Details</h3>
-                                
+                            <div class="flex flex-wrap gap-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600">Allergy Type</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ ucfirst($allergy->allergy_type ?? 'Not specified') }}</p>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Status</label>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border 
+                                        {{ $allergy->status === 'active' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-green-50 text-green-600 border-green-100' }}">
+                                        {{ ucfirst($allergy->status ?? 'N/A') }}
+                                    </span>
                                 </div>
-
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600">Severity</label>
-                                    <p class="mt-1">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            {{ $allergy->severity === 'severe' ? 'bg-red-100 text-red-800' : ($allergy->severity === 'moderate' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800') }}">
-                                            {{ ucfirst($allergy->severity ?? 'Not specified') }}
-                                        </span>
-                                    </p>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Severity</label>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border 
+                                        {{ $allergy->severity === 'severe' ? 'bg-red-600 text-white border-red-700' : 
+                                           ($allergy->severity === 'moderate' ? 'bg-orange-500 text-white border-orange-600' : 'bg-blue-500 text-white border-blue-600') }}">
+                                        {{ ucfirst($allergy->severity ?? 'N/A') }}
+                                    </span>
                                 </div>
-
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600">First Observed Date</label>
-                                    <p class="mt-1 text-base text-gray-900">
-                                        {{ $allergy->first_observed_date ? \Carbon\Carbon::parse($allergy->first_observed_date)->format('d F Y') : 'Unknown' }}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Status</label>
-                                    <p class="mt-1">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            {{ $allergy->status === 'active' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
-                                            {{ ucfirst($allergy->status ?? 'Unknown') }}
-                                        </span>
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Verification Status</label>
-                                    <p class="mt-1">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            {{ $allergy->verification_status === 'verified' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                            {{ ucfirst($allergy->verification_status ?? 'Unverified') }}
-                                        </span>
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Recorded By</label>
-                                    <p class="mt-1 text-base text-gray-900">
-                                        {{ $allergy->doctor->full_name ?? 'Unknown' }}
-                                    </p>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Verification</label>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border 
+                                        {{ $allergy->verification_status === 'verified' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-gray-50 text-gray-600 border-gray-100' }}">
+                                        {{ ucfirst($allergy->verification_status ?? 'Unverified') }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Reaction Description -->
-                        <div class="mt-6">
-                            <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Reaction Description</h3>
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <p class="text-gray-700 whitespace-pre-wrap">{{ $allergy->reaction_desc ?? 'No reaction description provided.' }}</p>
+                        <!-- Middle Section: Grid of Info -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Allergy Type</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ ucfirst($allergy->allergy_type ?? 'Not specified') }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">First Observed</label>
+                                <p class="text-sm text-gray-900 font-medium">
+                                    {{ $allergy->first_observed_date ? \Carbon\Carbon::parse($allergy->first_observed_date)->format('d M Y') : 'Unknown' }}
+                                </p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Recorded By</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $allergy->doctor->full_name ?? 'Unknown Doctor' }}</p>
+                                <p class="text-[10px] text-gray-500 uppercase font-bold">{{ $allergy->doctor->specialisation ?? 'Healthcare Professional' }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Patient Info Section -->
+                        <div class="mb-10 p-4 bg-blue-50/50 rounded-xl border border-blue-100 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                    {{ substr($allergy->patient->full_name, 0, 1) }}
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-gray-900">{{ $allergy->patient->full_name }}</p>
+                                    <p class="text-[10px] text-gray-500">IC: {{ $allergy->patient->ic_number }} • {{ $allergy->patient->age }} yrs • {{ ucfirst($allergy->patient->gender) }}</p>
+                                </div>
+                            </div>
+                            <a href="{{ route('doctor.patient.details', $allergy->patient->id) }}" class="text-blue-600 hover:text-blue-800 text-[10px] font-bold uppercase flex items-center gap-1">
+                                View Profile <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                            </a>
+                        </div>
+
+                        <!-- Bottom Section: Reaction Description -->
+                        <div class="pt-8 border-t border-gray-100">
+                            <label class="text-xs font-bold text-gray-400 uppercase block mb-3">Reaction Description</label>
+                            <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $allergy->reaction_desc ?? 'No reaction description provided.' }}</p>
                             </div>
                         </div>
                     </div>

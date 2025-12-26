@@ -21,102 +21,87 @@
     @include('doctor.components.sidebar')
 
     <!-- Main Content -->
-    <div class="lg:ml-68 transition-all duration-300 pt-[75px]" id="mainContent">
-        <div class="bg-gray-50 min-h-screen">
+    <div class="lg:ml-68 transition-all duration-300 mt-20" id="mainContent">
+        <div class="min-h-screen bg-gray-50/50">
             <div class="py-6 px-4 sm:px-6 lg:px-8">
 
                 <!-- Back Button -->
-                <div class="mb-6">
-                    <a href="{{ route('doctor.medical.records') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Back to Medical Records
+                <div class="mb-4">
+                    <a href="{{ route('doctor.medical.records') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium inline-flex items-center gap-1">
+                        <i class="fa-solid fa-arrow-left text-xs"></i> Back to Medical Records
                     </a>
                 </div>
 
                 <!-- Page Header -->
-                <div class="mb-6">
-                    <h1 class="text-3xl font-bold text-gray-900">Medical Condition Details</h1>
-                    <p class="mt-2 text-sm text-gray-600">Detailed information about the medical condition</p>
+                <div class="mb-8">
+                    <h1 class="text-2xl font-bold text-gray-900">Condition Details</h1>
+                    <p class="text-sm text-gray-500">Detailed information about the medical diagnosis.</p>
                 </div>
 
-                <!-- Condition Details Card -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
-                    <div class="px-6 py-4 bg-blue-50 border-b border-gray-200">
-                        <h2 class="text-xl font-semibold text-gray-900">{{ $condition->condition_name }}</h2>
+                <!-- Single Card Layout -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <!-- Card Header -->
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+                            <i class="fa-solid fa-notes-medical text-gray-400"></i> CONDITION INFORMATION
+                        </h3>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase">Record ID: #{{ $condition->id }}</span>
                     </div>
-
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Patient Information -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2">Patient Information</h3>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Patient Name</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $condition->patient->full_name }}</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">IC Number</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $condition->patient->ic_number }}</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Age</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $condition->patient->age }} years old</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Gender</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ ucfirst($condition->patient->gender) }}</p>
-                                </div>
+                    
+                    <div class="p-6 sm:p-8">
+                        <!-- Top Section: Condition & Status -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Condition Name</label>
+                                <p class="text-xl font-bold text-gray-900">{{ $condition->condition_name }}</p>
                             </div>
-
-                            <!-- Condition Details -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2">Condition Details</h3>
-                                
+                            <div class="flex flex-wrap gap-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600">Diagnosis Date</label>
-                                    <p class="mt-1 text-base text-gray-900">
-                                        {{ \Carbon\Carbon::parse($condition->diagnosis_date)->format('d F Y') }}
-                                    </p>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Status</label>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border 
+                                        {{ $condition->status === 'active' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-green-50 text-green-600 border-green-100' }}">
+                                        {{ ucfirst($condition->status ?? 'N/A') }}
+                                    </span>
                                 </div>
-
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600">Status</label>
-                                    <p class="mt-1">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            {{ $condition->status === 'active' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
-                                            {{ ucfirst($condition->status ?? 'Unknown') }}
-                                        </span>
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Severity</label>
-                                    <p class="mt-1">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            {{ $condition->severity === 'severe' ? 'bg-red-100 text-red-800' : ($condition->severity === 'moderate' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800') }}">
-                                            {{ ucfirst($condition->severity ?? 'Not specified') }}
-                                        </span>
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Diagnosed By</label>
-                                    <p class="mt-1 text-base text-gray-900">
-                                        {{ $condition->doctor->full_name ?? 'Unknown' }}
-                                    </p>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Severity</label>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border 
+                                        {{ $condition->severity === 'severe' ? 'bg-red-600 text-white border-red-700' : 
+                                           ($condition->severity === 'moderate' ? 'bg-orange-500 text-white border-orange-600' : 'bg-blue-500 text-white border-blue-600') }}">
+                                        {{ ucfirst($condition->severity ?? 'N/A') }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Description -->
-                        <div class="mt-6">
-                            <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Description</h3>
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <p class="text-gray-700 whitespace-pre-wrap">{{ $condition->description ?? 'No description provided.' }}</p>
+                        <!-- Middle Section: Grid of Info -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Diagnosis Date</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ \Carbon\Carbon::parse($condition->diagnosis_date)->format('d M Y') }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Diagnosed By</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $condition->doctor->full_name ?? 'Unknown Doctor' }}</p>
+                                <p class="text-[10px] text-gray-500 uppercase font-bold">{{ $condition->doctor->specialisation ?? 'Healthcare Professional' }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Patient</label>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-sm text-gray-900 font-medium">{{ $condition->patient->full_name }}</p>
+                                    <a href="{{ route('doctor.patient.details', $condition->patient->id) }}" class="text-blue-600 hover:text-blue-800 text-[10px] font-bold uppercase flex items-center gap-1">
+                                        View Profile <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                                    </a>
+                                </div>
+                                <p class="text-[10px] text-gray-500 font-medium">IC: {{ $condition->patient->ic_number }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Section: Description -->
+                        <div class="pt-8 border-t border-gray-100">
+                            <label class="text-xs font-bold text-gray-400 uppercase block mb-3">Description / Clinical Notes</label>
+                            <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $condition->description ?? 'No additional notes provided.' }}</p>
                             </div>
                         </div>
                     </div>

@@ -21,113 +21,119 @@
     @include('doctor.components.sidebar')
 
     <!-- Main Content -->
-    <div class="lg:ml-68 transition-all duration-300 pt-[75px]" id="mainContent">
-        <div class="bg-gray-50 min-h-screen">
+    <div class="lg:ml-68 transition-all duration-300 mt-20" id="mainContent">
+        <div class="min-h-screen bg-gray-50/50">
             <div class="py-6 px-4 sm:px-6 lg:px-8">
 
                 <!-- Back Button -->
-                <div class="mb-6">
-                    <a href="{{ route('doctor.medical.records') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Back to Medical Records
+                <div class="mb-4">
+                    <a href="{{ route('doctor.medical.records') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium inline-flex items-center gap-1">
+                        <i class="fa-solid fa-arrow-left text-xs"></i> Back to Medical Records
                     </a>
                 </div>
 
                 <!-- Page Header -->
-                <div class="mb-6">
-                    <h1 class="text-3xl font-bold text-gray-900">Lab Test Details</h1>
-                    <p class="mt-2 text-sm text-gray-600">Detailed information about the lab test</p>
+                <div class="mb-8">
+                    <h1 class="text-2xl font-bold text-gray-900">Lab Test Details</h1>
+                    <p class="text-sm text-gray-500">Detailed information about the patient's laboratory test.</p>
                 </div>
 
-                <!-- Lab Test Details Card -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
-                    <div class="px-6 py-4 bg-orange-50 border-b border-gray-200">
-                        <h2 class="text-xl font-semibold text-gray-900">{{ $lab->test_name }}</h2>
+                <!-- Single Card Layout -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <!-- Card Header -->
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+                            <i class="fa-solid fa-flask text-gray-400"></i> LAB TEST INFORMATION
+                        </h3>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase">Record ID: #{{ $lab->id }}</span>
                     </div>
-
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Patient Information -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2">Patient Information</h3>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Patient Name</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $lab->patient->full_name }}</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">IC Number</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $lab->patient->ic_number }}</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Age</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $lab->patient->age }} years old</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Gender</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ ucfirst($lab->patient->gender) }}</p>
-                                </div>
+                    
+                    <div class="p-6 sm:p-8">
+                        <!-- Top Section: Test Name & Date -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Test Name</label>
+                                <p class="text-xl font-bold text-gray-900">{{ $lab->test_name }}</p>
                             </div>
-
-                            <!-- Lab Test Details -->
-                            <div class="space-y-4">
-                                <h3 class="text-lg font-semibold text-gray-900 border-b pb-2">Lab Test Details</h3>
-                                
+                            <div class="flex flex-wrap gap-8">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600">Test Date</label>
-                                    <p class="mt-1 text-base text-gray-900">
-                                        {{ \Carbon\Carbon::parse($lab->test_date)->format('d F Y') }}
-                                    </p>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Test Date</label>
+                                    <p class="text-sm text-gray-900 font-bold">{{ \Carbon\Carbon::parse($lab->test_date)->format('d M Y') }}</p>
                                 </div>
-
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600">Test Category</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ ucfirst($lab->test_category ?? 'Not specified') }}</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Facility Name</label>
-                                    <p class="mt-1 text-base text-gray-900">{{ $lab->facility_name ?? 'Unknown' }}</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-600">Ordered By</label>
-                                    <p class="mt-1 text-base text-gray-900">
-                                        {{ $lab->doctor->full_name ?? 'Unknown' }}
-                                    </p>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Category</label>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-orange-50 text-orange-600 border-orange-100">
+                                        {{ ucfirst($lab->test_category ?? 'General') }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Notes -->
-                        @if($lab->notes)
-                        <div class="mt-6">
-                            <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Additional Notes</h3>
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <p class="text-gray-700 whitespace-pre-wrap">{{ $lab->notes }}</p>
+                        <!-- Middle Section: Grid of Info -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Facility Name</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $lab->facility_name ?? 'Unknown Facility' }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Ordered By</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $lab->doctor->full_name ?? 'Unknown Doctor' }}</p>
+                                <p class="text-[10px] text-gray-500 uppercase font-bold">{{ $lab->doctor->specialisation ?? 'Healthcare Professional' }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Patient</label>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-sm text-gray-900 font-medium">{{ $lab->patient->full_name }}</p>
+                                    <a href="{{ route('doctor.patient.details', $lab->patient->id) }}" class="text-blue-600 hover:text-blue-800 text-[10px] font-bold uppercase flex items-center gap-1">
+                                        View Profile <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                                    </a>
+                                </div>
+                                <p class="text-[10px] text-gray-500 font-medium">IC: {{ $lab->patient->ic_number }}</p>
                             </div>
                         </div>
-                        @endif
 
-                        <!-- Test Results / Attachment -->
-                        @if($lab->file_attachment_url)
-                        <div class="mt-6">
-                            <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Test Results</h3>
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <a 
-                                    href="{{ asset('storage/' . $lab->file_attachment_url) }}" 
-                                    target="_blank"
-                                    class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                                >
-                                    <i class="fas fa-file-pdf mr-2"></i>
-                                    View Test Results
-                                </a>
+                        <!-- Patient Info Section (Alternative style for variety but keeping it consistent) -->
+                        <div class="mb-10 p-4 bg-blue-50/50 rounded-xl border border-blue-100 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                    {{ substr($lab->patient->full_name, 0, 1) }}
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-gray-900">{{ $lab->patient->full_name }}</p>
+                                    <p class="text-[10px] text-gray-500">IC: {{ $lab->patient->ic_number }} • {{ $lab->patient->age }} yrs • {{ ucfirst($lab->patient->gender) }}</p>
+                                </div>
                             </div>
+                            <a href="{{ route('doctor.patient.details', $lab->patient->id) }}" class="text-blue-600 hover:text-blue-800 text-[10px] font-bold uppercase flex items-center gap-1">
+                                View Profile <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                            </a>
                         </div>
-                        @endif
+
+                        <!-- Bottom Section: Notes & Results -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-8 border-t border-gray-100">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-3">Additional Notes</label>
+                                <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                    <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $lab->notes ?? 'No additional notes provided.' }}</p>
+                                </div>
+                            </div>
+                            @if($lab->file_attachment_url)
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-3">Test Results</label>
+                                <div class="bg-gray-50 rounded-xl p-6 border border-gray-100 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-file-medical text-blue-500 text-2xl"></i>
+                                        <div>
+                                            <p class="text-xs font-bold text-gray-900">Lab Report Document</p>
+                                            <p class="text-[10px] text-gray-500">PDF / Image Format</p>
+                                        </div>
+                                    </div>
+                                    <a href="{{ asset('storage/' . $lab->file_attachment_url) }}" target="_blank" class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition-all">
+                                        View Results
+                                    </a>
+                                </div>
+                            </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
 

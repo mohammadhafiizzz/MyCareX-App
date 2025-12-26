@@ -24,88 +24,155 @@
 
     <!-- Main Content -->
     <div class="lg:ml-68 transition-all duration-300 mt-20" id="mainContent">
-        <div class="bg-gray-50 min-h-screen">
+        <div class="min-h-screen">
             <!-- Page Content -->
             <div class="py-6 px-4 sm:px-6 lg:px-8">
 
                 <!-- Back Button -->
-                <a href="{{ route('doctor.patients') }}" 
-                   class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium mb-6">
-                    <i class="fas fa-arrow-left mr-2"></i>
-                    Back to My Patients
-                </a>
-
-                <!-- Page Header -->
-                <div class="mb-6">
-                    <h1 class="text-3xl font-bold text-gray-900">Patient Information</h1>
-                    <p class="mt-2 text-sm text-gray-600">Detailed medical records and information</p>
+                <div class="mb-4">
+                    <a href="{{ route('doctor.patients') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium inline-flex items-center gap-1">
+                        <i class="fa-solid fa-arrow-left text-xs"></i> Back to My Patients
+                    </a>
                 </div>
 
-                <!-- Profile Header -->
-                <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-                    <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-                        <!-- Profile Picture -->
-                        <div class="flex-shrink-0">
-                            @if($patient->profile_image_url)
-                                <img src="{{ asset($patient->profile_image_url) }}" 
-                                     alt="{{ $patient->full_name }}"
-                                     class="w-28 h-28 rounded-full object-cover border-4 border-gray-100">
-                            @else
-                                <div class="w-28 h-28 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center border-4 border-blue-100">
-                                    <i class="fas fa-user text-blue-600 text-4xl"></i>
-                                </div>
-                            @endif
-                        </div>
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <h1 class="text-2xl font-bold text-gray-900">Patient Profile</h1>
+                    <p class="text-sm text-gray-500">Detailed medical records and personal information.</p>
+                </div>
 
-                        <!-- Basic Info -->
-                        <div class="flex-1">
-                            <h2 class="text-2xl font-bold text-gray-900 mb-3">{{ $patient->full_name }}</h2>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                    <i class="fas fa-calendar mr-1.5"></i>
-                                    {{ $patient->age }} years old
-                                </span>
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-{{ $patient->gender === 'Male' ? 'blue' : 'pink' }}-100 text-{{ $patient->gender === 'Male' ? 'blue' : 'pink' }}-800">
-                                    <i class="fas fa-{{ $patient->gender === 'Male' ? 'mars' : 'venus' }} mr-1.5"></i>
-                                    {{ $patient->gender }}
-                                </span>
-                                @if($patient->blood_type)
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                                    <i class="fas fa-tint mr-1.5"></i>
-                                    {{ $patient->blood_type }}
-                                </span>
-                                @endif
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Profile Card -->
+                    <div class="space-y-6 flex flex-col">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex-1">
+                            <div class="p-6 sm:p-8 flex flex-col items-center text-center h-full justify-center">
+                                <div class="relative w-24 h-24 sm:w-32 sm:h-32 mb-4 sm:mb-5 mx-auto shrink-0">
+                                    <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-3xl sm:text-4xl font-bold border-4 border-white shadow-sm overflow-hidden shrink-0">
+                                        @if($patient->profile_image_url)
+                                            <img src="{{ asset($patient->profile_image_url) }}" alt="{{ $patient->full_name }}" class="w-full h-full object-cover">
+                                        @else
+                                            <i class="fas fa-user"></i>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <h2 class="text-xl font-bold text-gray-900">{{ $patient->full_name }}</h2>
+                                <p class="text-sm text-gray-500 mb-4">{{ $patient->age }} years old • {{ $patient->gender }}</p>
+
+                                <div class="w-full border-t border-gray-100 pt-6">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="text-center">
+                                            <span class="block text-[10px] text-gray-400 uppercase font-bold">Height</span>
+                                            <span class="text-sm font-semibold text-gray-900">{{ $patient->height ? $patient->height . ' cm' : 'N/A' }}</span>
+                                        </div>
+                                        <div class="text-center">
+                                            <span class="block text-[10px] text-gray-400 uppercase font-bold">Weight</span>
+                                            <span class="text-sm font-semibold text-gray-900">{{ $patient->weight ? $patient->weight . ' kg' : 'N/A' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-id-card w-5 text-gray-400 mr-2"></i>
-                                    <span class="font-medium text-gray-700 mr-1">IC:</span>
-                                    {{ $patient->ic_number }}
+                        </div>
+                    </div>
+
+                    <!-- Personal Details Card -->
+                    <div class="bg-white rounded-xl lg:col-span-2 shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                            <h3 class="text-sm sm:text-md font-bold text-gray-900 flex items-center gap-2">
+                                <i class="fa-solid fa-address-card text-gray-400"></i> PERSONAL DETAILS
+                            </h3>
+                        </div>
+                        
+                        <div class="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-y-6 sm:gap-y-8 gap-x-8">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Full Name</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $patient->full_name }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">IC Number</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $patient->ic_number }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Email Address</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $patient->email }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Phone Number</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $patient->phone_number }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Date of Birth</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $patient->date_of_birth->format('d M Y') }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Gender</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $patient->gender }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Race</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $patient->race ?? 'N/A' }}</p>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Blood Type</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $patient->blood_type ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact & Location and Emergency Contact -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Contact & Location -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h3 class="text-sm sm:text-md font-bold text-gray-900 flex items-center gap-2">
+                                <i class="fa-solid fa-location-dot text-gray-400"></i> CONTACT & LOCATION
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Home Address</label>
+                                <p class="text-sm text-gray-900 font-medium">{{ $patient->address ?? 'N/A' }}</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Postal Code</label>
+                                    <p class="text-sm text-gray-900 font-medium">{{ $patient->postal_code ?? 'N/A' }}</p>
                                 </div>
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-envelope w-5 text-gray-400 mr-2"></i>
-                                    <span class="font-medium text-gray-700 mr-1">Email:</span>
-                                    {{ $patient->email }}
+                                <div>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">State</label>
+                                    <p class="text-sm text-gray-900 font-medium">{{ $patient->state ?? 'N/A' }}</p>
                                 </div>
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-phone w-5 text-gray-400 mr-2"></i>
-                                    <span class="font-medium text-gray-700 mr-1">Phone:</span>
-                                    {{ $patient->phone_number }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h3 class="text-sm sm:text-md font-bold text-gray-900 flex items-center gap-2">
+                                <i class="fa-solid fa-phone-flip text-gray-400"></i> EMERGENCY CONTACT
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Contact Name</label>
+                                    <p class="text-sm text-gray-900 font-medium">{{ $patient->emergency_contact_name ?? 'N/A' }}</p>
                                 </div>
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-birthday-cake w-5 text-gray-400 mr-2"></i>
-                                    <span class="font-medium text-gray-700 mr-1">DOB:</span>
-                                    {{ $patient->date_of_birth->format('d M Y') }}
+                                <div>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Relationship</label>
+                                    <p class="text-sm text-gray-900 font-medium">{{ $patient->emergency_contact_relationship ?? 'N/A' }}</p>
                                 </div>
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-ruler-vertical w-5 text-gray-400 mr-2"></i>
-                                    <span class="font-medium text-gray-700 mr-1">Height:</span>
-                                    {{ $patient->height ? $patient->height . ' cm' : 'N/A' }}
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">IC Number</label>
+                                    <p class="text-sm text-gray-900 font-medium">{{ $patient->emergency_contact_ic_number ?? 'N/A' }}</p>
                                 </div>
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-weight w-5 text-gray-400 mr-2"></i>
-                                    <span class="font-medium text-gray-700 mr-1">Weight:</span>
-                                    {{ $patient->weight ? $patient->weight . ' kg' : 'N/A' }}
+                                <div>
+                                    <label class="text-xs font-bold text-gray-400 uppercase block mb-1">Phone Number</label>
+                                    <p class="text-sm text-gray-900 font-medium text-blue-600">{{ $patient->emergency_contact_number ?? 'N/A' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -113,50 +180,71 @@
                 </div>
 
                 <!-- Medical Records Section -->
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                        <h3 class="text-md font-bold text-gray-900 flex items-center gap-2">
+                            <i class="fa-solid fa-file-medical text-gray-400"></i> MEDICAL RECORDS
+                        </h3>
+                    </div>
+
                     <!-- Tabs -->
-                    <div class="border-b border-gray-200">
-                        <nav class="flex overflow-x-auto" aria-label="Tabs">
+                    <div class="border-b border-gray-100">
+                        <nav class="flex overflow-x-auto no-scrollbar" aria-label="Tabs">
+                            @if($isAll || in_array('medical_conditions', $scope))
                             <button onclick="showTab('conditions')" 
                                     id="tab-conditions"
-                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-medium transition-colors border-blue-500 text-blue-600 hover:text-gray-700 hover:border-gray-300">
-                                <i class="fas fa-notes-medical mr-2"></i>
-                                Medical Conditions
-                                <span class="ml-2 bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full text-xs">{{ $patient->conditions->count() }}</span>
+                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-bold transition-all border-blue-600 text-blue-600">
+                                <i class="fas fa-heartbeat mr-2"></i>
+                                Conditions
+                                <span class="ml-2 bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full text-[10px] border border-blue-100">{{ $patient->conditions->count() }}</span>
                             </button>
+                            @endif
+
+                            @if($isAll || in_array('medications', $scope))
                             <button onclick="showTab('medications')" 
                                     id="tab-medications"
-                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-medium transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-bold transition-all border-transparent text-gray-400 hover:text-gray-600 hover:border-gray-200">
                                 <i class="fas fa-pills mr-2"></i>
                                 Medications
-                                <span class="ml-2 bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs">{{ $patient->medications->count() }}</span>
+                                <span class="ml-2 bg-gray-50 text-gray-400 px-2 py-0.5 rounded-full text-[10px] border border-gray-100">{{ $patient->medications->count() }}</span>
                             </button>
+                            @endif
+
+                            @if($isAll || in_array('allergies', $scope))
                             <button onclick="showTab('allergies')" 
                                     id="tab-allergies"
-                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-medium transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-bold transition-all border-transparent text-gray-400 hover:text-gray-600 hover:border-gray-200">
+                                <i class="fas fa-allergies mr-2"></i>
                                 Allergies
-                                <span class="ml-2 bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs">{{ $patient->allergies->count() }}</span>
+                                <span class="ml-2 bg-gray-50 text-gray-400 px-2 py-0.5 rounded-full text-[10px] border border-gray-100">{{ $patient->allergies->count() }}</span>
                             </button>
+                            @endif
+
+                            @if($isAll || in_array('immunisations', $scope))
                             <button onclick="showTab('immunisations')" 
                                     id="tab-immunisations"
-                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-medium transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-bold transition-all border-transparent text-gray-400 hover:text-gray-600 hover:border-gray-200">
                                 <i class="fas fa-syringe mr-2"></i>
                                 Immunisations
-                                <span class="ml-2 bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs">{{ $patient->immunisations->count() }}</span>
+                                <span class="ml-2 bg-gray-50 text-gray-400 px-2 py-0.5 rounded-full text-[10px] border border-gray-100">{{ $patient->immunisations->count() }}</span>
                             </button>
+                            @endif
+
+                            @if($isAll || in_array('lab_tests', $scope))
                             <button onclick="showTab('labs')" 
                                     id="tab-labs"
-                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-medium transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    class="tab-button whitespace-nowrap border-b-2 px-6 py-4 text-sm font-bold transition-all border-transparent text-gray-400 hover:text-gray-600 hover:border-gray-200">
                                 <i class="fas fa-flask mr-2"></i>
                                 Lab Tests
-                                <span class="ml-2 bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs">{{ $patient->labs->count() }}</span>
+                                <span class="ml-2 bg-gray-50 text-gray-400 px-2 py-0.5 rounded-full text-[10px] border border-gray-100">{{ $patient->labs->count() }}</span>
                             </button>
+                            @endif
                         </nav>
                     </div>
 
                     <!-- Tab Content -->
                     <div class="p-6">
+                        @if($isAll || in_array('medical_conditions', $scope))
                         <!-- Medical Conditions Tab -->
                         <div id="content-conditions" class="tab-content">
                             @if($patient->conditions->count() > 0)
@@ -169,84 +257,100 @@
                                     $paginatedConditions = $patient->conditions->slice($conditionsOffset, $conditionsPerPage);
                                 @endphp
 
-                                <!-- Pagination -->
-                                @if($conditionsTotalPages > 1)
-                                    <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
-                                        <div class="text-sm text-gray-600">
-                                            Page {{ $conditionsPage }} of {{ $conditionsTotalPages }}
+                                <!-- Pagination & Info -->
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                                    <p class="text-sm text-gray-500">
+                                        Showing <span class="font-medium text-gray-900">{{ $paginatedConditions->count() }}</span> of <span class="font-medium text-gray-900">{{ $conditionsTotal }}</span> conditions
+                                    </p>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                                            <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                                            <span class="hidden sm:inline">Most recent first</span>
                                         </div>
-                                        <div class="flex gap-1">
+                                        <div class="flex items-center gap-2">
                                             @if($conditionsPage > 1)
                                                 <a href="?conditions_page={{ $conditionsPage - 1 }}" 
                                                    onclick="showTab('conditions')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </button>
                                             @endif
+
+                                            <span class="text-sm text-gray-600 px-3 py-1.5 bg-gray-100/50 backdrop-blur-sm rounded-lg font-medium">
+                                                Page {{ $conditionsPage }} of {{ $conditionsTotalPages }}
+                                            </span>
+
                                             @if($conditionsPage < $conditionsTotalPages)
                                                 <a href="?conditions_page={{ $conditionsPage + 1 }}" 
                                                    onclick="showTab('conditions')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </button>
                                             @endif
                                         </div>
                                     </div>
-                                @endif
+                                </div>
                                 
-                                <div class="space-y-4">
-                                    @foreach($paginatedConditions as $condition)
-                                        <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
-                                            <div class="flex items-start justify-between gap-4">
-                                                <div class="flex-1">
-                                                    <h4 class="font-semibold text-gray-900 mb-2">{{ $condition->condition_name }}</h4>
-                                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Diagnosed:</span> 
-                                                            {{ $condition->diagnosed_date ? $condition->diagnosed_date->format('d M Y') : 'N/A' }}
-                                                        </div>
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Status:</span> 
-                                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 
-                                                                {{ $condition->status === 'Active' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800' }}">
-                                                                {{ $condition->status ?? 'N/A' }}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    @if($condition->notes)
-                                                        <div class="mt-3 text-sm text-gray-600">
-                                                            <span class="font-medium">Notes:</span>
-                                                            <p class="mt-1 line-clamp-2">{{ $condition->notes }}</p>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <a href="{{ route('doctor.medical.records.condition', $condition->id) }}" 
-                                                       class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
-                                                        
-                                                        View Details
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                <div class="overflow-x-auto border border-gray-100 rounded-xl">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Condition Name</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Diagnosed Date</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Status</th>
+                                                <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach($paginatedConditions as $condition)
+                                                <tr class="hover:bg-gray-50 transition-colors">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-bold text-gray-900">{{ $condition->condition_name }}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                                                        {{ $condition->diagnosed_date ? $condition->diagnosed_date->format('d M Y') : 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border 
+                                                            {{ $condition->status === 'Active' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-gray-50 text-gray-600 border-gray-100' }}">
+                                                            {{ $condition->status ?? 'N/A' }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="{{ route('doctor.medical.records.condition', $condition->id) }}" 
+                                                           class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-[10px] font-bold rounded-lg transition-all border border-blue-100">
+                                                            View Details
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             @else
-                                <div class="text-center py-12">
-                                    <i class="fas fa-notes-medical text-gray-300 text-5xl mb-4"></i>
-                                    <p class="text-gray-500">No medical conditions recorded</p>
+                                <div class="text-center py-16">
+                                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-heartbeat text-gray-300 text-2xl"></i>
+                                    </div>
+                                    <p class="text-gray-500 font-medium">No medical conditions recorded</p>
                                 </div>
                             @endif
                         </div>
+                        @endif
 
+                        @if($isAll || in_array('medications', $scope))
                         <!-- Medications Tab -->
                         <div id="content-medications" class="tab-content hidden">
                             @if($patient->medications->count() > 0)
@@ -259,85 +363,101 @@
                                     $paginatedMedications = $patient->medications->slice($medicationsOffset, $medicationsPerPage);
                                 @endphp
 
-                                <!-- Pagination -->
-                                @if($medicationsTotalPages > 1)
-                                    <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
-                                        <div class="text-sm text-gray-600">
-                                            Page {{ $medicationsPage }} of {{ $medicationsTotalPages }}
+                                <!-- Pagination & Info -->
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                                    <p class="text-sm text-gray-500">
+                                        Showing <span class="font-medium text-gray-900">{{ $paginatedMedications->count() }}</span> of <span class="font-medium text-gray-900">{{ $medicationsTotal }}</span> medications
+                                    </p>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                                            <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                                            <span class="hidden sm:inline">Most recent first</span>
                                         </div>
-                                        <div class="flex gap-1">
+                                        <div class="flex items-center gap-2">
                                             @if($medicationsPage > 1)
                                                 <a href="?medications_page={{ $medicationsPage - 1 }}" 
                                                    onclick="showTab('medications')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </button>
                                             @endif
+
+                                            <span class="text-sm text-gray-600 px-3 py-1.5 bg-gray-100/50 backdrop-blur-sm rounded-lg font-medium">
+                                                Page {{ $medicationsPage }} of {{ $medicationsTotalPages }}
+                                            </span>
+
                                             @if($medicationsPage < $medicationsTotalPages)
                                                 <a href="?medications_page={{ $medicationsPage + 1 }}" 
                                                    onclick="showTab('medications')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </button>
                                             @endif
                                         </div>
                                     </div>
-                                @endif
+                                </div>
                                 
-                                <div class="space-y-4">
-                                    @foreach($paginatedMedications as $medication)
-                                        <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
-                                            <div class="flex items-start justify-between gap-4">
-                                                <div class="flex-1">
-                                                    <h4 class="font-semibold text-gray-900 mb-2">{{ $medication->medication_name }}</h4>
-                                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Dosage:</span> 
-                                                            {{ $medication->dosage ?? 'N/A' }}
-                                                        </div>
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Frequency:</span> 
-                                                            {{ $medication->frequency ?? 'N/A' }}
-                                                        </div>
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Started:</span> 
-                                                            {{ $medication->start_date ? $medication->start_date->format('d M Y') : 'N/A' }}
-                                                        </div>
-                                                    </div>
-                                                    @if($medication->notes)
-                                                        <div class="mt-3 text-sm text-gray-600">
-                                                            <span class="font-medium">Notes:</span>
-                                                            <p class="mt-1 line-clamp-2">{{ $medication->notes }}</p>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <a href="{{ route('doctor.medical.records.medication', $medication->id) }}" 
-                                                       class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
-                                                        
-                                                        View Details
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                <div class="overflow-x-auto border border-gray-100 rounded-xl">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Medication Name</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Dosage</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Frequency</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Start Date</th>
+                                                <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach($paginatedMedications as $medication)
+                                                <tr class="hover:bg-gray-50 transition-colors">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-bold text-gray-900">{{ $medication->medication_name }}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                                                        {{ $medication->dosage ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                                                        {{ $medication->frequency ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                                                        {{ $medication->start_date ? $medication->start_date->format('d M Y') : 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="{{ route('doctor.medical.records.medication', $medication->id) }}" 
+                                                           class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-[10px] font-bold rounded-lg transition-all border border-blue-100">
+                                                            View Details
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             @else
-                                <div class="text-center py-12">
-                                    <i class="fas fa-pills text-gray-300 text-5xl mb-4"></i>
-                                    <p class="text-gray-500">No medications recorded</p>
+                                <div class="text-center py-16">
+                                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-pills text-gray-300 text-2xl"></i>
+                                    </div>
+                                    <p class="text-gray-500 font-medium">No medications recorded</p>
                                 </div>
                             @endif
                         </div>
+                        @endif
 
+                        @if($isAll || in_array('allergies', $scope))
                         <!-- Allergies Tab -->
                         <div id="content-allergies" class="tab-content hidden">
                             @if($patient->allergies->count() > 0)
@@ -350,88 +470,101 @@
                                     $paginatedAllergies = $patient->allergies->slice($allergiesOffset, $allergiesPerPage);
                                 @endphp
 
-                                <!-- Pagination -->
-                                @if($allergiesTotalPages > 1)
-                                    <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
-                                        <div class="text-sm text-gray-600">
-                                            Page {{ $allergiesPage }} of {{ $allergiesTotalPages }}
+                                <!-- Pagination & Info -->
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                                    <p class="text-sm text-gray-500">
+                                        Showing <span class="font-medium text-gray-900">{{ $paginatedAllergies->count() }}</span> of <span class="font-medium text-gray-900">{{ $allergiesTotal }}</span> allergies
+                                    </p>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                                            <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                                            <span class="hidden sm:inline">Most recent first</span>
                                         </div>
-                                        <div class="flex gap-1">
+                                        <div class="flex items-center gap-2">
                                             @if($allergiesPage > 1)
                                                 <a href="?allergies_page={{ $allergiesPage - 1 }}" 
                                                    onclick="showTab('allergies')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </button>
                                             @endif
+
+                                            <span class="text-sm text-gray-600 px-3 py-1.5 bg-gray-100/50 backdrop-blur-sm rounded-lg font-medium">
+                                                Page {{ $allergiesPage }} of {{ $allergiesTotalPages }}
+                                            </span>
+
                                             @if($allergiesPage < $allergiesTotalPages)
                                                 <a href="?allergies_page={{ $allergiesPage + 1 }}" 
                                                    onclick="showTab('allergies')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </button>
                                             @endif
                                         </div>
                                     </div>
-                                @endif
+                                </div>
                                 
-                                <div class="space-y-4">
-                                    @foreach($paginatedAllergies as $allergy)
-                                        <div class="border border-red-200 bg-red-50 rounded-lg p-4 hover:border-red-300 transition-colors">
-                                            <div class="flex items-start gap-4">
-                                                <div class="flex-shrink-0">
-                                                    <i class="fas fa-exclamation-triangle text-red-500 text-xl"></i>
-                                                </div>
-                                                <div class="flex-1">
-                                                    <h4 class="font-semibold text-gray-900 mb-2">{{ $allergy->allergen }}</h4>
-                                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                                                        <div class="text-gray-700">
-                                                            <span class="font-medium">Type:</span> 
-                                                            {{ $allergy->allergy_type ?? 'N/A' }}
-                                                        </div>
-                                                        <div class="text-gray-700">
-                                                            <span class="font-medium">Severity:</span> 
-                                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 
-                                                                {{ $allergy->severity === 'Severe' ? 'bg-red-600 text-white' : 
-                                                                   ($allergy->severity === 'Moderate' ? 'bg-orange-500 text-white' : 'bg-yellow-500 text-white') }}">
-                                                                {{ $allergy->severity ?? 'N/A' }}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    @if($allergy->reaction)
-                                                        <div class="mt-3 text-sm text-gray-700">
-                                                            <span class="font-medium">Reaction:</span>
-                                                            <p class="mt-1 line-clamp-2">{{ $allergy->reaction }}</p>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <a href="{{ route('doctor.medical.records.allergy', $allergy->id) }}" 
-                                                       class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
-                                                        
-                                                        View Details
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                <div class="overflow-x-auto border border-gray-100 rounded-xl">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Allergen</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Type</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Severity</th>
+                                                <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach($paginatedAllergies as $allergy)
+                                                <tr class="hover:bg-gray-50 transition-colors">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-bold text-gray-900">{{ $allergy->allergen }}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                                                        {{ $allergy->allergy_type ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border 
+                                                            {{ $allergy->severity === 'Severe' ? 'bg-red-600 text-white border-red-700' : 
+                                                               ($allergy->severity === 'Moderate' ? 'bg-orange-500 text-white border-orange-600' : 'bg-yellow-500 text-white border-yellow-600') }}">
+                                                            {{ $allergy->severity ?? 'N/A' }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="{{ route('doctor.medical.records.allergy', $allergy->id) }}" 
+                                                           class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-[10px] font-bold rounded-lg transition-all border border-blue-100">
+                                                            View Details
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             @else
-                                <div class="text-center py-12">
-                                    <i class="fas fa-exclamation-triangle text-gray-300 text-5xl mb-4"></i>
-                                    <p class="text-gray-500">No allergies recorded</p>
+                                <div class="text-center py-16">
+                                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-allergies text-gray-300 text-2xl"></i>
+                                    </div>
+                                    <p class="text-gray-500 font-medium">No allergies recorded</p>
                                 </div>
                             @endif
                         </div>
+                        @endif
 
+                        @if($isAll || in_array('immunisations', $scope))
                         <!-- Immunisations Tab -->
                         <div id="content-immunisations" class="tab-content hidden">
                             @if($patient->immunisations->count() > 0)
@@ -444,87 +577,105 @@
                                     $paginatedImmunisations = $patient->immunisations->slice($immunisationsOffset, $immunisationsPerPage);
                                 @endphp
 
-                                <!-- Pagination -->
-                                @if($immunisationsTotalPages > 1)
-                                    <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
-                                        <div class="text-sm text-gray-600">
-                                            Page {{ $immunisationsPage }} of {{ $immunisationsTotalPages }}
+                                <!-- Pagination & Info -->
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                                    <p class="text-sm text-gray-500">
+                                        Showing <span class="font-medium text-gray-900">{{ $paginatedImmunisations->count() }}</span> of <span class="font-medium text-gray-900">{{ $immunisationsTotal }}</span> immunisations
+                                    </p>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                                            <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                                            <span class="hidden sm:inline">Most recent first</span>
                                         </div>
-                                        <div class="flex gap-1">
+                                        <div class="flex items-center gap-2">
                                             @if($immunisationsPage > 1)
                                                 <a href="?immunisations_page={{ $immunisationsPage - 1 }}" 
                                                    onclick="showTab('immunisations')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </button>
                                             @endif
+
+                                            <span class="text-sm text-gray-600 px-3 py-1.5 bg-gray-100/50 backdrop-blur-sm rounded-lg font-medium">
+                                                Page {{ $immunisationsPage }} of {{ $immunisationsTotalPages }}
+                                            </span>
+
                                             @if($immunisationsPage < $immunisationsTotalPages)
                                                 <a href="?immunisations_page={{ $immunisationsPage + 1 }}" 
                                                    onclick="showTab('immunisations')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </button>
                                             @endif
                                         </div>
                                     </div>
-                                @endif
+                                </div>
                                 
-                                <div class="space-y-4">
-                                    @foreach($paginatedImmunisations as $immunisation)
-                                        <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
-                                            <div class="flex items-start justify-between gap-4">
-                                                <div class="flex-1">
-                                                    <h4 class="font-semibold text-gray-900 mb-2">{{ $immunisation->vaccine_name }}</h4>
-                                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Date Given:</span> 
-                                                            {{ $immunisation->date_given ? $immunisation->date_given->format('d M Y') : 'N/A' }}
-                                                        </div>
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Dose Number:</span> 
-                                                            {{ $immunisation->dose_number ?? 'N/A' }}
-                                                        </div>
+                                <div class="overflow-x-auto border border-gray-100 rounded-xl">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Vaccine Name</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Date Given</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Dose</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Next Dose</th>
+                                                <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach($paginatedImmunisations as $immunisation)
+                                                <tr class="hover:bg-gray-50 transition-colors">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-bold text-gray-900">{{ $immunisation->vaccine_name }}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                                                        {{ $immunisation->date_given ? $immunisation->date_given->format('d M Y') : 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                                                        {{ $immunisation->dose_number ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold">
                                                         @if($immunisation->next_dose_date)
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Next Dose:</span> 
-                                                            {{ $immunisation->next_dose_date->format('d M Y') }}
-                                                        </div>
+                                                            <span class="text-blue-600">{{ $immunisation->next_dose_date->format('d M Y') }}</span>
+                                                        @else
+                                                            <span class="text-gray-400">N/A</span>
                                                         @endif
-                                                    </div>
-                                                    @if($immunisation->notes)
-                                                        <div class="mt-3 text-sm text-gray-600">
-                                                            <span class="font-medium">Notes:</span>
-                                                            <p class="mt-1 line-clamp-2">{{ $immunisation->notes }}</p>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <a href="{{ route('doctor.medical.records.immunisation', $immunisation->id) }}" 
-                                                       class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
-                                                        
-                                                        View Details
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="{{ route('doctor.medical.records.immunisation', $immunisation->id) }}" 
+                                                           class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-[10px] font-bold rounded-lg transition-all border border-blue-100">
+                                                            View Details
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             @else
-                                <div class="text-center py-12">
-                                    <i class="fas fa-syringe text-gray-300 text-5xl mb-4"></i>
-                                    <p class="text-gray-500">No immunisations recorded</p>
+                                <div class="text-center py-16">
+                                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-syringe text-gray-300 text-2xl"></i>
+                                    </div>
+                                    <p class="text-gray-500 font-medium">No immunisations recorded</p>
                                 </div>
                             @endif
                         </div>
+                        @endif
 
+                        @if($isAll || in_array('lab_tests', $scope))
                         <!-- Lab Tests Tab -->
                         <div id="content-labs" class="tab-content hidden">
                             @if($patient->labs->count() > 0)
@@ -537,87 +688,127 @@
                                     $paginatedLabs = $patient->labs->slice($labsOffset, $labsPerPage);
                                 @endphp
 
-                                <!-- Pagination -->
-                                @if($labsTotalPages > 1)
-                                    <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
-                                        <div class="text-sm text-gray-600">
-                                            Page {{ $labsPage }} of {{ $labsTotalPages }}
+                                <!-- Pagination & Info -->
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                                    <p class="text-sm text-gray-500">
+                                        Showing <span class="font-medium text-gray-900">{{ $paginatedLabs->count() }}</span> of <span class="font-medium text-gray-900">{{ $labsTotal }}</span> lab tests
+                                    </p>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                                            <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                                            <span class="hidden sm:inline">Most recent first</span>
                                         </div>
-                                        <div class="flex gap-1">
+                                        <div class="flex items-center gap-2">
                                             @if($labsPage > 1)
                                                 <a href="?labs_page={{ $labsPage - 1 }}" 
                                                    onclick="showTab('labs')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-left"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <i class="fas fa-chevron-left text-xs"></i>
+                                                    <span class="hidden sm:inline">Previous</span>
                                                 </button>
                                             @endif
+
+                                            <span class="text-sm text-gray-600 px-3 py-1.5 bg-gray-100/50 backdrop-blur-sm rounded-lg font-medium">
+                                                Page {{ $labsPage }} of {{ $labsTotalPages }}
+                                            </span>
+
                                             @if($labsPage < $labsTotalPages)
                                                 <a href="?labs_page={{ $labsPage + 1 }}" 
                                                    onclick="showTab('labs')"
-                                                   class="px-3 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                   class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </a>
                                             @else
-                                                <button disabled class="px-3 py-1 bg-gray-100 text-gray-600 rounded opacity-50 cursor-not-allowed">
-                                                    <i class="fas fa-chevron-right"></i>
+                                                <button disabled class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium opacity-40 cursor-not-allowed">
+                                                    <span class="hidden sm:inline">Next</span>
+                                                    <i class="fas fa-chevron-right text-xs"></i>
                                                 </button>
                                             @endif
                                         </div>
                                     </div>
-                                @endif
+                                </div>
                                 
-                                <div class="space-y-4">
-                                    @foreach($paginatedLabs as $lab)
-                                        <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
-                                            <div class="flex items-start justify-between gap-4">
-                                                <div class="flex-1">
-                                                    <h4 class="font-semibold text-gray-900 mb-2">{{ $lab->test_name }}</h4>
-                                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Test Date:</span> 
-                                                            {{ $lab->test_date ? $lab->test_date->format('d M Y') : 'N/A' }}
-                                                        </div>
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Result:</span> 
-                                                            {{ $lab->result ?? 'N/A' }}
-                                                        </div>
-                                                        <div class="text-gray-600">
-                                                            <span class="font-medium">Status:</span> 
-                                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 
-                                                                {{ $lab->status === 'Normal' ? 'bg-green-100 text-green-800' : 
-                                                                   ($lab->status === 'Abnormal' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800') }}">
-                                                                {{ $lab->status ?? 'N/A' }}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    @if($lab->notes)
-                                                        <div class="mt-3 text-sm text-gray-600">
-                                                            <span class="font-medium">Notes:</span>
-                                                            <p class="mt-1 line-clamp-2">{{ $lab->notes }}</p>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <a href="{{ route('doctor.medical.records.lab', $lab->id) }}" 
-                                                       class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
-                                                        
-                                                        View Details
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                <div class="overflow-x-auto border border-gray-100 rounded-xl">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Test Name</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Test Date</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Result</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Status</th>
+                                                <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach($paginatedLabs as $lab)
+                                                <tr class="hover:bg-gray-50 transition-colors">
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-bold text-gray-900">{{ $lab->test_name }}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                                                        {{ $lab->test_date ? $lab->test_date->format('d M Y') : 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                                                        {{ $lab->result ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border 
+                                                            {{ $lab->status === 'Normal' ? 'bg-green-50 text-green-600 border-green-100' : 
+                                                               ($lab->status === 'Abnormal' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-gray-50 text-gray-600 border-gray-100') }}">
+                                                            {{ $lab->status ?? 'N/A' }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="{{ route('doctor.medical.records.lab', $lab->id) }}" 
+                                                           class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-[10px] font-bold rounded-lg transition-all border border-blue-100">
+                                                            View Details
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             @else
-                                <div class="text-center py-12">
-                                    <i class="fas fa-flask text-gray-300 text-5xl mb-4"></i>
-                                    <p class="text-gray-500">No lab tests recorded</p>
+                                <div class="text-center py-16">
+                                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-flask text-gray-300 text-2xl"></i>
+                                    </div>
+                                    <p class="text-gray-500 font-medium">No lab tests recorded</p>
                                 </div>
                             @endif
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Actions Section -->
+                <div class="mt-8">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h3 class="text-sm sm:text-md font-bold text-gray-900 flex items-center gap-2">
+                                <i class="fas fa-gear text-gray-400"></i> ACTIONS
+                            </h3>
+                        </div>
+                        
+                        <div class="p-4 sm:p-6 space-y-2">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between py-4 gap-3">
+                                <div>
+                                    <p class="text-sm font-medium text-red-600">Terminate Access</p>
+                                    <p class="text-xs text-red-400">Permanently terminate your access to this patient's medical records. You will need to request access again if needed.</p>
+                                </div>
+                                <button id="terminateAccessBtn" 
+                                        data-permission-id="{{ $permission->id }}"
+                                        class="w-full sm:w-auto px-4 py-2 text-xs font-bold text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                                    Terminate Access
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -626,11 +817,66 @@
         </div>
     </div>
 
+    <!-- Terminate Access Confirmation Modal -->
+    <div id="terminateModal" class="fixed inset-0 z-[150] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-allergies text-red-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">Terminate Access</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">Are you sure you want to terminate your access to <strong>{{ $patient->full_name }}</strong>'s medical records? This action cannot be undone.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+                    <button type="button" id="confirmTerminateBtn" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-bold text-white hover:bg-red-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                        Terminate Access
+                    </button>
+                    <button type="button" id="closeTerminateModal" class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-[200] transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-white shadow-xl rounded-lg p-4 flex items-center gap-3 min-w-[300px] border border-gray-100">
+            <div id="toastIcon" class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <div>
+                <p id="toastTitle" class="text-sm font-bold text-gray-900">Success</p>
+                <p id="toastMessage" class="text-xs text-gray-500">Action completed successfully.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Javascript and Footer -->
     @include('doctor.components.footer')
 
     <!-- Patient Details Tabs Script -->
-    @vite('resources/js/main/doctor/patientProfileTabs.js')
+    @vite(['resources/js/main/doctor/patientDetailsTabs.js', 'resources/js/main/doctor/terminateAccess.js'])
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('medications_page')) showTab('medications');
+            else if (urlParams.has('allergies_page')) showTab('allergies');
+            else if (urlParams.has('immunisations_page')) showTab('immunisations');
+            else if (urlParams.has('labs_page')) showTab('labs');
+            // Default is conditions, which is already active in HTML
+        });
+    </script>
 
 </body>
 

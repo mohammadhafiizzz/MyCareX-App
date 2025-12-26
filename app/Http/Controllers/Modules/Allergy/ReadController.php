@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Modules\Allergy;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Allergy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
-class AllergyController extends Controller
+class ReadController extends Controller
 {
     // Show Allergy Main Page
     public function index() {
@@ -256,79 +255,6 @@ class AllergyController extends Controller
             'createdLabel' => $createdLabel,
             'updatedLabel' => $updatedLabel,
         ]);
-    }
-
-    /**
-     * Store a newly created allergy.
-     */
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'allergen' => 'required|string|max:150',
-            'allergy_type' => 'required|string|max:150',
-            'severity' => 'required|in:Mild,Moderate,Severe,Life-threatening',
-            'reaction_desc' => 'nullable|string',
-            'status' => 'required|in:Active,Inactive,Resolved,Suspected',
-            'first_observed_date' => 'required|date',
-        ]);
-
-        // Get authenticated patient id
-        $patientId = Auth::guard('patient')->id() ?? Auth::id();
-        if (!$patientId) {
-            return response()->json(['message' => 'Unauthenticated user'], 401);
-        }
-
-        $validatedData['patient_id'] = $patientId;
-
-        // Create new allergy record
-        Allergy::create($validatedData);
-
-        // Return back with success message
-        return redirect()->back()->with('message', 'Allergy added successfully');
-    }
-
-    /**
-     * Update an existing allergy.
-     */
-    public function update(Request $request, Allergy $allergy)
-    {
-        // Check if the authenticated patient owns this allergy
-        if ($allergy->patient_id !== Auth::guard('patient')->id()) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        // Validate the incoming data
-        $validatedData = $request->validate([
-            'allergen' => 'required|string|max:150',
-            'allergy_type' => 'required|string|max:150',
-            'severity' => 'required|in:Mild,Moderate,Severe,Life-threatening',
-            'reaction_desc' => 'nullable|string',
-            'status' => 'required|in:Active,Inactive,Resolved,Suspected',
-            'first_observed_date' => 'required|date',
-        ]);
-
-        // Use the Model to update the record
-        $allergy->update($validatedData);
-
-        // Redirect back to the previous page with a success message
-        return redirect()->back()->with('success', 'Allergy updated successfully.');
-    }
-
-    /**
-     * Delete an existing allergy.
-     */
-    public function destroy(Allergy $allergy)
-    {
-        // Check if the authenticated patient owns this allergy
-        if ($allergy->patient_id !== Auth::guard('patient')->id()) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        // Use the Model to delete the record
-        $allergy->delete();
-
-        // Redirect to allergies page with a success message
-        return redirect()->route('patient.allergy')->with('message', 'Allergy deleted successfully.');
     }
 
     /**

@@ -92,4 +92,38 @@ class DeleteController extends Controller
             ], 500);
         }
     }
+
+    // DELETE: Terminate Access (Doctor)
+    public function terminateAccess($id) {
+        try {
+            $doctor = Auth::guard('doctor')->user();
+            
+            // Find the permission record
+            $permission = Permission::where('id', $id)
+                ->where('doctor_id', $doctor->id)
+                ->where('status', 'Active')
+                ->firstOrFail();
+            
+            // Delete the permission record
+            $permission->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Access terminated successfully!',
+                'redirect' => route('doctor.patients')
+            ]);
+            
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permission record not found.'
+            ], 404);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while terminating access.'
+            ], 500);
+        }
+    }
 }

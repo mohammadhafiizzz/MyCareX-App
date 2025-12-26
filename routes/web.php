@@ -178,31 +178,31 @@ Route::prefix('patient')->group(function () {
             Route::prefix('/allergies')->group(function () {
 
                 // Allergies Page
-                Route::get('/', [Modules\Allergy\AllergyController::class, 'index'])
+                Route::get('/', [Modules\Allergy\ReadController::class, 'index'])
                     ->name('patient.allergy');
 
                 // Add Allergy
-                Route::post('/add', [Modules\Allergy\AllergyController::class, 'store'])
+                Route::post('/add', [Modules\Allergy\CreateController::class, 'store'])
                     ->name('patient.allergy.add');
 
                 // Export Allergies as PDF
-                Route::get('/export-pdf', [Modules\Allergy\AllergyController::class, 'exportPdf'])
+                Route::get('/export-pdf', [Modules\Allergy\ReadController::class, 'exportPdf'])
                     ->name('patient.allergy.export.pdf');
 
                 // Get Allergy JSON (for edit form)
-                Route::get('/allergy/{allergy}/json', [Modules\Allergy\AllergyController::class, 'getAllergyJson'])
+                Route::get('/allergy/{allergy}/json', [Modules\Allergy\ReadController::class, 'getAllergyJson'])
                     ->name('patient.allergy.json');
 
                 // Update Allergy
-                Route::put('/{allergy}', [Modules\Allergy\AllergyController::class, 'update'])
+                Route::put('/{allergy}', [Modules\Allergy\UpdateController::class, 'update'])
                     ->name('patient.allergy.update');
 
                 // Delete Allergy
-                Route::delete('/{allergy}', [Modules\Allergy\AllergyController::class, 'destroy'])
+                Route::delete('/{allergy}', [Modules\Allergy\DeleteController::class, 'destroy'])
                     ->name('patient.allergy.delete');
 
                 // Allergy More Info
-                Route::get('/{allergy}', [Modules\Allergy\AllergyController::class, 'show'])
+                Route::get('/{allergy}', [Modules\Allergy\ReadController::class, 'show'])
                     ->name('patient.allergy.info');
 
             });
@@ -211,39 +211,39 @@ Route::prefix('patient')->group(function () {
             Route::prefix('/immunisation')->group(function () {
 
                 // Immunisation Page
-                Route::get('/', [Modules\Immunisation\ImmunisationController::class, 'index'])
+                Route::get('/', [Modules\Immunisation\ReadController::class, 'index'])
                     ->name('patient.immunisation');
 
                 // Add Vaccination
-                Route::post('/add', [Modules\Immunisation\ImmunisationController::class, 'store'])
+                Route::post('/add', [Modules\Immunisation\CreateController::class, 'store'])
                     ->name('patient.immunisation.add');
 
                 // Export Immunisations as PDF
-                Route::get('/export', [Modules\Immunisation\ImmunisationController::class, 'exportPdf'])
+                Route::get('/export', [Modules\Immunisation\ReadController::class, 'exportPdf'])
                     ->name('patient.immunisation.export');
 
                 // Get Immunisation JSON (for edit form)
-                Route::get('/immunisation/{immunisation}/json', [Modules\Immunisation\ImmunisationController::class, 'getImmunisationJson'])
+                Route::get('/immunisation/{immunisation}/json', [Modules\Immunisation\ReadController::class, 'getImmunisationJson'])
                     ->name('patient.immunisation.json');
 
                 // Upload Certificate for Immunisation
-                Route::post('/{immunisation}/upload-certificate', [Modules\Immunisation\ImmunisationController::class, 'uploadCertificate'])
+                Route::post('/{immunisation}/upload-certificate', [Modules\Immunisation\UpdateController::class, 'uploadCertificate'])
                     ->name('patient.immunisation.upload.certificate');
 
                 // Delete Certificate for Immunisation
-                Route::delete('/{immunisation}/delete-certificate', [Modules\Immunisation\ImmunisationController::class, 'deleteCertificate'])
+                Route::delete('/{immunisation}/delete-certificate', [Modules\Immunisation\DeleteController::class, 'deleteCertificate'])
                     ->name('patient.immunisation.delete.certificate');
 
                 // Update Immunisation
-                Route::put('/{immunisation}', [Modules\Immunisation\ImmunisationController::class, 'update'])
+                Route::put('/{immunisation}', [Modules\Immunisation\UpdateController::class, 'update'])
                     ->name('patient.immunisation.update');
 
                 // Delete Immunisation
-                Route::delete('/{immunisation}', [Modules\Immunisation\ImmunisationController::class, 'destroy'])
+                Route::delete('/{immunisation}', [Modules\Immunisation\DeleteController::class, 'destroy'])
                     ->name('patient.immunisation.delete');
 
                 // Immunisation More Info
-                Route::get('/{immunisation}', [Modules\Immunisation\ImmunisationController::class, 'show'])
+                Route::get('/{immunisation}', [Modules\Immunisation\ReadController::class, 'show'])
                     ->name('patient.immunisation.info');
 
             });
@@ -252,35 +252,35 @@ Route::prefix('patient')->group(function () {
             Route::prefix('/lab-tests')->group(function () {
 
                 // Lab Tests Page
-                Route::get('/', [Modules\Lab\LabTestController::class, 'index'])
+                Route::get('/', [Modules\Lab\ReadController::class, 'index'])
                     ->name('patient.lab');
 
                 // Add Lab Test
-                Route::post('/add', [Modules\Lab\LabTestController::class, 'store'])
+                Route::post('/add', [Modules\Lab\CreateController::class, 'store'])
                     ->name('patient.lab.add');
 
                 // Export Lab Tests as PDF
-                Route::get('/export', [Modules\Lab\LabTestController::class, 'exportPdf'])
+                Route::get('/export', [Modules\Lab\ReadController::class, 'exportPdf'])
                     ->name('patient.lab.export');
 
                 // Get Lab Test JSON (for edit form)
-                Route::get('/test/{labTest}/json', [Modules\Lab\LabTestController::class, 'getLabTestJson'])
+                Route::get('/test/{labTest}/json', [Modules\Lab\ReadController::class, 'getLabTestJson'])
                     ->name('patient.lab.json');
 
                 // Upload Attachment for Lab Test
-                Route::post('/{labTest}/upload-attachment', [Modules\Lab\LabTestController::class, 'uploadAttachment'])
+                Route::post('/{labTest}/upload-attachment', [Modules\Lab\UpdateController::class, 'uploadAttachment'])
                     ->name('patient.lab.upload.attachment');
 
                 // Update Lab Test
-                Route::put('/{labTest}', [Modules\Lab\LabTestController::class, 'update'])
+                Route::put('/{labTest}', [Modules\Lab\UpdateController::class, 'update'])
                     ->name('patient.lab.update');
 
                 // Delete Lab Test
-                Route::delete('/{labTest}', [Modules\Lab\LabTestController::class, 'destroy'])
+                Route::delete('/{labTest}', [Modules\Lab\DeleteController::class, 'destroy'])
                     ->name('patient.lab.delete');
 
                 // Lab Test More Info
-                Route::get('/{labTest}', [Modules\Lab\LabTestController::class, 'show'])
+                Route::get('/{labTest}', [Modules\Lab\ReadController::class, 'show'])
                     ->name('patient.lab.info');
 
             });
@@ -391,23 +391,23 @@ Route::prefix('patient')->group(function () {
         Route::prefix('/emergency-kit')->group(function () {
 
             // Emergency Kit Main Page
-            Route::get('/', [Modules\EmergencyKit\EmergencyKitController::class, 'index'])
+            Route::get('/', [Modules\EmergencyKit\ReadController::class, 'index'])
             ->name('patient.emergency-kit.index');
 
             // Create Emergency Kit Item Page
-            Route::get('/create', [Modules\EmergencyKit\EmergencyKitController::class, 'create'])
+            Route::get('/create', [Modules\EmergencyKit\ReadController::class, 'create'])
             ->name('patient.emergency-kit.create');
 
             // Store Emergency Kit Item
-            Route::post('/', [Modules\EmergencyKit\EmergencyKitController::class, 'store'])
+            Route::post('/', [Modules\EmergencyKit\CreateController::class, 'store'])
             ->name('patient.emergency-kit.store');
 
             // Delete Emergency Kit Item
-            Route::delete('/{id}', [Modules\EmergencyKit\EmergencyKitController::class, 'destroy'])
+            Route::delete('/{id}', [Modules\EmergencyKit\DeleteController::class, 'destroy'])
             ->name('patient.emergency-kit.destroy');
 
             // Fetch Records for Emergency Kit
-            Route::get('/fetch-records', [Modules\EmergencyKit\EmergencyKitController::class, 'fetchRecords'])
+            Route::get('/fetch-records', [Modules\EmergencyKit\ReadController::class, 'fetchRecords'])
             ->name('patient.emergency-kit.fetch-records');
         });
     });
@@ -473,31 +473,31 @@ Route::prefix('organisation')->group(function () {
         Route::prefix('/doctors')->group(function () {
 
             // Doctors List Page
-            Route::get('/', [Modules\Doctor\MainController::class, 'doctor'])
+            Route::get('/', [Modules\Doctor\ReadController::class, 'doctor'])
                 ->name('organisation.doctors');
 
             // View Doctor Profile
-            Route::get('/profile/{id}', [Modules\Doctor\MainController::class, 'doctorProfile'])
+            Route::get('/profile/{id}', [Modules\Doctor\ReadController::class, 'doctorProfile'])
                 ->name('organisation.doctor.profile');
 
             // Add New Doctor Form
-            Route::get('/add', [Modules\Doctor\MainController::class, 'addDoctor'])
+            Route::get('/add', [Modules\Doctor\ReadController::class, 'addDoctor'])
                 ->name('organisation.addDoctor');
 
             // Store New Doctor
-            Route::post('/store', [Modules\Doctor\MainController::class, 'store'])
+            Route::post('/store', [Modules\Doctor\CreateController::class, 'store'])
                 ->name('organisation.doctor.store');
 
             // Edit Doctor Form
-            Route::get('/edit/{id}', [Modules\Doctor\MainController::class, 'edit'])
+            Route::get('/edit/{id}', [Modules\Doctor\ReadController::class, 'edit'])
                 ->name('organisation.doctor.edit');
 
             // Update Doctor
-            Route::put('/update/{id}', [Modules\Doctor\MainController::class, 'update'])
+            Route::put('/update/{id}', [Modules\Doctor\UpdateController::class, 'update'])
                 ->name('organisation.doctor.update');
 
             // Delete Doctor
-            Route::delete('/delete/{id}', [Modules\Doctor\MainController::class, 'destroy'])
+            Route::delete('/delete/{id}', [Modules\Doctor\DeleteController::class, 'destroy'])
                 ->name('organisation.doctor.delete');
         });
 
@@ -611,6 +611,10 @@ Route::prefix('doctor')->group(function () {
             // Request Access to Patient Records
             Route::post('/request', [Modules\Permission\CreateController::class, 'requestAccess'])
                 ->name('doctor.permission.request');
+
+            // Terminate Access to Patient Records
+            Route::delete('/terminate/{id}', [Modules\Permission\DeleteController::class, 'terminateAccess'])
+                ->name('doctor.permission.terminate');
         });
 
         // Medical Records Routes

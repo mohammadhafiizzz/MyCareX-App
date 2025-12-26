@@ -47,17 +47,35 @@ class DoctorController extends Controller
                 ->with('error', 'You do not have permission to view this patient\'s information.');
         }
 
-        $patient = Patient::with([
-            'conditions',
-            'medications',
-            'allergies',
-            'immunisations',
-            'labs'
-        ])->findOrFail($patientId);
+        $scope = $permission->permission_scope ?? [];
+        $isAll = in_array('all', $scope);
+
+        // Build query with conditional relationships based on scope
+        $patientQuery = Patient::query();
+
+        if ($isAll || in_array('medical_conditions', $scope)) {
+            $patientQuery->with('conditions');
+        }
+        if ($isAll || in_array('medications', $scope)) {
+            $patientQuery->with('medications');
+        }
+        if ($isAll || in_array('allergies', $scope)) {
+            $patientQuery->with('allergies');
+        }
+        if ($isAll || in_array('immunisations', $scope)) {
+            $patientQuery->with('immunisations');
+        }
+        if ($isAll || in_array('lab_tests', $scope)) {
+            $patientQuery->with('labs');
+        }
+
+        $patient = $patientQuery->findOrFail($patientId);
 
         return view('doctor.modules.patient.patientProfile', [
             'patient' => $patient,
-            'permission' => $permission
+            'permission' => $permission,
+            'scope' => $scope,
+            'isAll' => $isAll
         ]);
     }
 
