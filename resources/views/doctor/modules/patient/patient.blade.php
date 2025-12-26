@@ -206,7 +206,7 @@
                                 </p>
 
                                 <a href="{{ route('doctor.patient.search') }}" class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white rounded-2xl text-base font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
-                                    <i class="fas fa-search-plus" aria-hidden="true"></i>
+                                    <i class="fas fa-search" aria-hidden="true"></i>
                                     Search for patients
                                 </a>
                             </div>

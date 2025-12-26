@@ -126,4 +126,48 @@ class DeleteController extends Controller
             ], 500);
         }
     }
+
+    // DELETE: Cancel Access Request (Doctor)
+    public function cancelRequest(Request $request, $id) {
+        try {
+            $doctor = Auth::guard('doctor')->user();
+            
+            // Find the pending permission request
+            $permission = Permission::where('id', $id)
+                ->where('doctor_id', $doctor->id)
+                ->where('status', 'Pending')
+                ->firstOrFail();
+            
+            // Delete the permission record
+            $permission->delete();
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Access request cancelled successfully!',
+                    'redirect' => route('doctor.permission.requests')
+                ]);
+            }
+
+            return redirect()->route('doctor.permission.requests')->with('success', 'Access request cancelled successfully!');
+            
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Permission request not found or cannot be cancelled.'
+                ], 404);
+            }
+            return redirect()->route('doctor.permission.requests')->with('error', 'Permission request not found or cannot be cancelled.');
+            
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'An error occurred while cancelling the request.'
+                ], 500);
+            }
+            return redirect()->route('doctor.permission.requests')->with('error', 'An error occurred while cancelling the request.');
+        }
+    }
 }

@@ -71,12 +71,6 @@
             <div class="pt-2">
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Patients</p>
 
-                <a href="{{ route('doctor.patient.search') }}"
-                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.patient.search*', 'doctor.patient.view.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-search w-5 {{ request()->routeIs('doctor.patient.search*', 'doctor.patient.view.*') ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600' }}"></i>
-                    <span class="ml-3">Search</span>
-                </a>
-
                 <a href="{{ route('doctor.patients') }}"
                     class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.patients', 'doctor.patient.details') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
                     <i class="fas fa-users w-5 {{ request()->routeIs('doctor.patients', 'doctor.patient.details') ? 'text-blue-600' : 'text-gray-400' }}"></i>
@@ -95,15 +89,15 @@
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Access & Permissions
                 </p>
 
-                <a href="#"
-                    class="sidebar-link group flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-shield-halved w-5 text-gray-400 group-hover:text-gray-600"></i>
-                    <span class="ml-3">Permissions</span>
+                <a href="{{ route('doctor.patient.search') }}"
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.patient.search*', 'doctor.patient.view.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-search w-5 {{ request()->routeIs('doctor.patient.search*', 'doctor.patient.view.*') ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600' }}"></i>
+                    <span class="ml-3">Search Patients</span>
                 </a>
 
                 <a href="{{ route('doctor.permission.requests') }}"
-                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.permission.requests') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-key w-5 {{ request()->routeIs('doctor.permission.requests') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('doctor.permission.requests', 'doctor.permission.request.details') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-shield-halved w-5 {{ request()->routeIs('doctor.permission.requests', 'doctor.permission.request.details') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                     <span class="ml-3">Access Requests</span>
                 </a>
             </div>

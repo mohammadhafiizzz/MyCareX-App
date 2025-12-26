@@ -31,14 +31,14 @@
                 <!-- Dashboard Content -->
                 <div class="mb-6">
                     <h1 class="text-2xl font-bold text-gray-900">Search</h1>
-                    <p class="mt-1 text-sm text-gray-600">Search for patients and request permissions.</p>
+                    <p class="mt-1 text-sm text-gray-600">Search for patients by IC number and request permissions.</p>
                 </div>
 
                 <!-- Stats Grid -->
                 <div class="mb-6 flex justify-center">
                     <!-- Search form -->
                     <form action="{{ route('doctor.patient.search.results') }}" method="GET" class="flex items-center space-x-4">
-                        <input type="text" name="query" placeholder="Search by name or identification number"
+                        <input type="text" name="query" placeholder="Search by identification number"
                             value="{{ old('query', $query ?? '') }}"
                             class="w-100 px-4 py-2 border-gray-300 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required>
@@ -126,21 +126,25 @@
                                                     <a href="{{ route('doctor.patient.view.profile', ['patientId' => $patient->id]) }}" class="inline-flex items-center mr-2 px-4 py-2 border border-blue-300 shadow-sm text-blue-600 hover:text-blue-800 hover:bg-blue-200 text-sm font-medium rounded-lg transition-colors duration-200">
                                                         View Profile
                                                     </a>
-                                                    <button 
-                                                        id="openRequestAccessModal"
-                                                        data-patient-id="{{ $patient->id }}"
-                                                        data-patient-name="{{ $patient->full_name }}"
-                                                        class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                                                        Request Access
-                                                    </button>
+                                                    @if($patient->has_requested_access)
+                                                        <button 
+                                                            class="inline-flex items-center px-4 py-2 bg-gray-400 text-white text-sm font-medium rounded-lg cursor-not-allowed"
+                                                            disabled>
+                                                            Access Requested
+                                                        </button>
+                                                    @else
+                                                        <button 
+                                                            data-patient-id="{{ $patient->id }}"
+                                                            data-patient-name="{{ $patient->full_name }}"
+                                                            class="openRequestAccessModal inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
+                                                            Request Access
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
-                            </div>
-                            <div class="mt-6">
-                                {{ $patients->links('pagination::tailwind') }}
                             </div>
                         @elseif(isset($patients))
                             <div class="text-center py-12">
@@ -160,7 +164,7 @@
     </div>
 
     <!-- Request Access Modal -->
-    @include('doctor.modules.permission.requestAccessModal')
+    @include('doctor.modules.permission.requestAccess')
 
     <!-- Javascript and Footer -->
     @include('doctor.components.footer')

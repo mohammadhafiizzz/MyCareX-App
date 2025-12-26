@@ -96,18 +96,20 @@
 
                     <!-- Action Buttons -->
                     <div class="mt-6 pt-6 border-t border-gray-200 flex gap-3 flex-wrap">
-                        <button 
-                            id="openRequestAccessModal"
-                            data-patient-id="{{ $patient->id }}"
-                            data-patient-name="{{ $patient->full_name }}"
-                            class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                            Request Access
-                        </button>
-                        <!--
-                        <button class="inline-flex items-center px-4 py-2 border border-blue-300 shadow-sm text-blue-600 hover:text-blue-800 hover:bg-blue-200 text-sm font-medium rounded-lg transition-colors duration-200">
-                            View Medical Records
-                        </button>
-                        -->
+                        @if($hasRequestedAccess)
+                            <button 
+                                class="inline-flex items-center px-4 py-2 bg-gray-400 text-white text-sm font-medium rounded-lg cursor-not-allowed"
+                                disabled>
+                                Access Requested
+                            </button>
+                        @else
+                            <button 
+                                data-patient-id="{{ $patient->id }}"
+                                data-patient-name="{{ $patient->full_name }}"
+                                class="openRequestAccessModal inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
+                                Request Access
+                            </button>
+                        @endif
                     </div>
                 </div>
 
@@ -167,39 +169,13 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Emergency Contact -->
-                    <div class="bg-white rounded-lg shadow-sm p-6 lg:col-span-2">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                            <i class="fas fa-phone-alt text-red-500 mr-2"></i>
-                            Emergency Contact
-                        </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div>
-                                <label class="text-sm font-medium text-gray-600">Name</label>
-                                <p class="text-sm text-gray-900 mt-1">{{ $patient->emergency_contact_name ?? 'N/A' }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-600">IC Number</label>
-                                <p class="text-sm text-gray-900 mt-1">{{ $patient->emergency_contact_ic_number ?? 'N/A' }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-600">Phone Number</label>
-                                <p class="text-sm text-gray-900 mt-1">{{ $patient->emergency_contact_number ?? 'N/A' }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-600">Relationship</label>
-                                <p class="text-sm text-gray-900 mt-1">{{ $patient->emergency_contact_relationship ?? 'N/A' }}</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Request Access Modal -->
-    @include('doctor.modules.permission.requestAccessModal')
+    @include('doctor.modules.permission.requestAccess')
 
     <!-- Javascript and Footer -->
     @include('doctor.components.footer')

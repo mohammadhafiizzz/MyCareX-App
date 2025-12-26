@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - Request Access</title>
+    <title>Access Permission</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -30,203 +30,204 @@
 
                 <!-- Page Header -->
                 <div class="mb-6">
-                    <h1 class="text-2xl font-bold text-gray-900">Access Requests</h1>
-                    <p class="mt-1 text-sm text-gray-600">View and manage all permission requests you've made to patients.</p>
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Access Requests</h1>
+                    <p class="text-xs sm:text-sm text-gray-500">View and manage all permission requests you've made to patients</p>
                 </div>
 
-                <!-- Search Bar -->
-                <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
-                    <form action="{{ route('doctor.permission.requests') }}" method="GET" class="flex gap-3">
-                        <div class="flex-1">
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-search text-gray-400"></i>
+                <!-- Success/Error Messages -->
+                @if(session('success'))
+                    <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center">
+                        <i class="fas fa-check-circle mr-3 text-green-500"></i>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-center">
+                        <i class="fas fa-exclamation-circle mr-3 text-red-500"></i>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                @endif
+
+                <!-- Requests List Section -->
+                <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8" aria-labelledby="requests-heading">
+                    <div class="p-4 sm:p-6">
+                        {{-- Header with Actions --}}
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                            <div>
+                                <h2 id="requests-heading" class="text-lg sm:text-xl font-semibold text-gray-900">Requests List</h2>
+                                <p class="mt-1 text-xs sm:text-sm text-gray-600">Search and manage your permission requests.</p>
+                            </div>
+                        </div>
+
+                        @if ($permissions->count() > 0)
+                            {{-- Search Bar --}}
+                            <div class="mb-4">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-search text-gray-400" aria-hidden="true"></i>
+                                    </div>
+                                    <input 
+                                        type="text" 
+                                        id="request-search"
+                                        placeholder="Search by patient name, IC number or email..."
+                                        class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-md text-sm leading-4 text-gray-700 bg-white hover:bg-gray-50"
+                                        aria-label="Search requests"
+                                    >
+                                    <button 
+                                        type="button" 
+                                        id="clear-search"
+                                        class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded-full transition-all duration-200"
+                                        aria-label="Clear search">
+                                        <i class="fas fa-times" aria-hidden="true"></i>
+                                    </button>
                                 </div>
-                                <input 
-                                    type="text" 
-                                    name="query" 
-                                    value="{{ $query ?? '' }}"
-                                    class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                                    placeholder="Search by patient name or IC number...">
                             </div>
-                        </div>
-                        <button 
-                            type="submit"
-                            class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                            <i class="fas fa-search mr-2"></i>
-                            Search
-                        </button>
-                        @if($query)
-                            <a 
-                                href="{{ route('doctor.permission.requests') }}"
-                                class="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors duration-200">
-                                <i class="fas fa-times mr-2"></i>
-                                Clear
-                            </a>
-                        @endif
-                    </form>
-                </div>
 
-                <!-- Results Info -->
-                @if($query)
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-600">
-                            Showing results for "<span class="font-semibold text-gray-900">{{ $query }}</span>"
-                            <span class="text-gray-400">•</span>
-                            {{ $permissions->total() }} {{ Str::plural('result', $permissions->total()) }} found
-                        </p>
-                    </div>
-                @endif
+                            {{-- Requests List Header with Pagination --}}
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                                <p class="text-sm text-gray-500" id="requests-count">
+                                    Showing <span class="font-medium text-gray-900">{{ $permissions->count() }}</span> request{{ $permissions->count() !== 1 ? 's' : '' }}
+                                </p>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                                        <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                                        <span class="hidden sm:inline">Most Recent</span>
+                                    </div>
+                                    <div id="pagination-controls" class="flex items-center gap-2">
+                                        <button 
+                                            type="button" 
+                                            id="prev-page"
+                                            class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                            disabled>
+                                            <i class="fas fa-chevron-left text-xs" aria-hidden="true"></i>
+                                            <span class="hidden sm:inline">Previous</span>
+                                        </button>
+                                        <span class="text-sm text-gray-600 px-3 py-1.5 bg-gray-100/50 backdrop-blur-sm rounded-lg font-medium" id="page-info">Page 1 of 1</span>
+                                        <button 
+                                            type="button" 
+                                            id="next-page"
+                                            class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                            disabled>
+                                            <span class="hidden sm:inline">Next</span>
+                                            <i class="fas fa-chevron-right text-xs" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                <!-- Permissions List -->
-                @if($permissions->count() > 0)
-                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Patient
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            IC Number
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Requested Date
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Notes
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            More Info
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach($permissions as $permission)
-                                        <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="flex items-center">
-                                                    <div class="flex-shrink-0 h-10 w-10">
-                                                        @if($permission->patient->profile_image_url)
-                                                            <img class="h-10 w-10 rounded-full object-cover" src="{{ asset($permission->patient->profile_image_url) }}" alt="{{ $permission->patient->full_name }}">
-                                                        @else
-                                                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                                                                <i class="fas fa-user text-blue-600 text-sm"></i>
+                            {{-- Requests List Table --}}
+                            <div id="requests-list">
+                                <div class="overflow-x-auto border border-gray-200 rounded-xl">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
+                                                <th scope="col" class="hidden md:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IC Number</th>
+                                                <th scope="col" class="hidden lg:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requested Date</th>
+                                                <th scope="col" class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                <th scope="col" class="px-4 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach($permissions as $permission)
+                                                <tr class="request-row hover:bg-gray-50 transition-colors">
+                                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                                        <div class="flex items-center">
+                                                            <div class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center overflow-hidden">
+                                                                @if($permission->patient->profile_image_url)
+                                                                    <img src="{{ asset($permission->patient->profile_image_url) }}" alt="{{ $permission->patient->full_name }}" class="h-full w-full object-cover">
+                                                                @else
+                                                                    <span class="text-xs sm:text-sm font-bold">{{ substr($permission->patient->full_name, 0, 1) }}</span>
+                                                                @endif
                                                             </div>
+                                                            <div class="ml-3 sm:ml-4">
+                                                                <div class="text-xs sm:text-sm font-medium text-gray-900 patient-name">{{ $permission->patient->full_name }}</div>
+                                                                <div class="text-[10px] sm:text-xs text-gray-500 patient-email">{{ $permission->patient->email }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="hidden md:table-cell px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 patient-ic">
+                                                        {{ $permission->patient->ic_number }}
+                                                    </td>
+                                                    <td class="hidden lg:table-cell px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        <div class="flex flex-col">
+                                                            <span>{{ $permission->requested_at->format('d M Y') }}</span>
+                                                            <span class="text-xs text-gray-400">{{ $permission->requested_at->diffForHumans() }}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
+                                                        @if($permission->status === 'Pending')
+                                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                <i class="fas fa-clock mr-1 text-[10px]"></i>
+                                                                Pending
+                                                            </span>
+                                                        @elseif($permission->status === 'Active')
+                                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-green-100 text-green-800">
+                                                                <i class="fas fa-check-circle mr-1 text-[10px]"></i>
+                                                                Approved
+                                                            </span>
+                                                        @elseif($permission->status === 'Rejected')
+                                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-red-100 text-red-800">
+                                                                <i class="fas fa-times-circle mr-1 text-[10px]"></i>
+                                                                Rejected
+                                                            </span>
+                                                        @elseif($permission->status === 'Expired')
+                                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-gray-100 text-gray-800">
+                                                                <i class="fas fa-calendar-times mr-1 text-[10px]"></i>
+                                                                Expired
+                                                            </span>
+                                                        @else
+                                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-gray-100 text-gray-800">
+                                                                {{ $permission->status }}
+                                                            </span>
                                                         @endif
-                                                    </div>
-                                                    <div class="ml-4">
-                                                        <div class="text-sm font-medium text-gray-900">
-                                                            {{ $permission->patient->full_name }}
-                                                        </div>
-                                                        <div class="text-sm text-gray-500">
-                                                            {{ $permission->patient->email }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900">{{ $permission->patient->ic_number }}</div>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900">
-                                                    {{ $permission->requested_at->format('d M Y') }}
-                                                </div>
-                                                <div class="text-xs text-gray-500">
-                                                    {{ $permission->requested_at->diffForHumans() }}
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                @if($permission->status === 'Pending')
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                        <i class="fas fa-clock mr-1"></i>
-                                                        Pending
-                                                    </span>
-                                                @elseif($permission->status === 'Active')
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                        <i class="fas fa-check-circle mr-1"></i>
-                                                        Approved
-                                                    </span>
-                                                @elseif($permission->status === 'Rejected')
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                        <i class="fas fa-times-circle mr-1"></i>
-                                                        Rejected
-                                                    </span>
-                                                @elseif($permission->status === 'Expired')
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                        <i class="fas fa-calendar-times mr-1"></i>
-                                                        Expired
-                                                    </span>
-                                                @else
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                        {{ $permission->status }}
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                @if($permission->notes)
-                                                    <div class="text-sm text-gray-900 max-w-xs truncate" title="{{ $permission->notes }}">
-                                                        {{ $permission->notes }}
-                                                    </div>
-                                                @else
-                                                    <span class="text-sm text-gray-400 italic">No notes</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="#" class="inline-flex items-center mr-2 px-4 py-2 border border-blue-300 shadow-sm text-blue-600 hover:text-blue-800 hover:bg-blue-200 text-sm font-medium rounded-lg transition-colors duration-200">
-                                                    View Details
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                                    </td>
+                                                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="{{ route('doctor.permission.request.details', $permission->id) }}" 
+                                                            class="px-2 py-1 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
+                                                            View
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                        <!-- Pagination -->
-                        @if($permissions->hasPages())
-                            <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
-                                {{ $permissions->links() }}
+                                {{-- No Results After Search --}}
+                                <div id="no-search-results" class="hidden text-center py-12">
+                                    <i class="fas fa-search text-gray-300 text-5xl mb-4" aria-hidden="true"></i>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">No requests found</h3>
+                                    <p class="text-sm text-gray-600 mb-4">We couldn't find any requests matching your search</p>
+                                    <button type="button" id="reset-search" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200">
+                                        <i class="fas fa-times" aria-hidden="true"></i>
+                                        Clear search
+                                    </button>
+                                </div>
+                            </div>
+                        @else
+                            <!-- Empty State -->
+                            <div class="text-center py-16">
+                                <div class="relative inline-block mb-6">
+                                    <div class="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-inbox text-blue-600 text-5xl" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+
+                                <h3 class="text-2xl font-bold text-gray-900 mb-3">No requests yet</h3>
+                                <p class="max-w-xl mx-auto text-base text-gray-600 mb-8">
+                                    You haven't requested access to any patient records yet.
+                                </p>
+
+                                <a href="{{ route('doctor.patient.search') }}" class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white rounded-2xl text-base font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                    Search for patients
+                                </a>
                             </div>
                         @endif
                     </div>
-                @else
-                    <!-- Empty State -->
-                    <div class="bg-white rounded-lg shadow-sm p-12 text-center">
-                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                            <i class="fas fa-inbox text-gray-400 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">
-                            @if($query)
-                                No results found
-                            @else
-                                No access requests yet
-                            @endif
-                        </h3>
-                        <p class="text-gray-500 mb-6">
-                            @if($query)
-                                Try adjusting your search criteria or clear the search to see all requests.
-                            @else
-                                You haven't requested access to any patient records yet.
-                            @endif
-                        </p>
-                        @if($query)
-                            <a href="{{ route('doctor.permission.requests') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                                <i class="fas fa-list mr-2"></i>
-                                View All Requests
-                            </a>
-                        @else
-                            <a href="{{ route('doctor.patient.search') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                                <i class="fas fa-search mr-2"></i>
-                                Search Patients
-                            </a>
-                        @endif
-                    </div>
-                @endif
+                </section>
 
             </div>
         </div>
@@ -234,6 +235,8 @@
 
     <!-- Javascript and Footer -->
     @include('doctor.components.footer')
+
+    @vite(['resources/js/main/doctor/requestList.js'])
 
 </body>
 

@@ -118,6 +118,36 @@
                     <div class="p-6">
                         <p class="text-sm text-gray-600 mb-6">Select the medical records you want to share with this doctor. You can change these permissions at any time.</p>
                         
+                        @php
+                            $scopes = [
+                                'medical_conditions' => ['label' => 'Medical Conditions', 'icon' => 'fas fa-heartbeat'],
+                                'medications' => ['label' => 'Medications', 'icon' => 'fas fa-pills'],
+                                'allergies' => ['label' => 'Allergies', 'icon' => 'fas fa-allergies'],
+                                'immunisations' => ['label' => 'Immunisations', 'icon' => 'fas fa-syringe'],
+                                'lab_tests' => ['label' => 'Lab Tests', 'icon' => 'fas fa-flask'],
+                            ];
+                        @endphp
+
+                        <!-- Requested Scope -->
+                        <div class="mb-8">
+                            <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 tracking-wider">Requested by Doctor</h4>
+                            <div class="flex flex-wrap gap-2">
+                                @if(in_array('all', $permission->permission_scope ?? []))
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                                        <i class="fas fa-file-medical mr-1.5 text-[10px]"></i>
+                                        All Medical Records
+                                    </span>
+                                @else
+                                    @foreach($permission->permission_scope ?? [] as $scope)
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                                            <i class="fas {{ $scopes[$scope]['icon'] ?? 'fa-file-medical' }} mr-1.5 text-[10px]"></i>
+                                            {{ $scopes[$scope]['label'] ?? ucwords(str_replace('_', ' ', $scope)) }}
+                                        </span>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+
                         @if($permission->notes)
                         <div class="mb-8 p-4 bg-blue-50 rounded-xl border border-blue-100">
                             <div class="flex items-start gap-3">
@@ -128,21 +158,16 @@
                         @endif
 
                         <form id="approvePermissionForm" data-permission-id="{{ $permission->id }}">
+                            <div class="mb-4">
+                                <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 tracking-wider">Grant Access To</h4>
+                            </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                                @php
-                                    $scopes = [
-                                        'medical_conditions' => ['label' => 'Medical Conditions', 'icon' => 'fas fa-heartbeat'],
-                                        'medications' => ['label' => 'Medications', 'icon' => 'fas fa-pills'],
-                                        'allergies' => ['label' => 'Allergies', 'icon' => 'fas fa-allergies'],
-                                        'immunisations' => ['label' => 'Immunisations', 'icon' => 'fas fa-syringe'],
-                                        'lab_tests' => ['label' => 'Lab Tests', 'icon' => 'fas fa-flask'],
-                                    ];
-                                @endphp
-
                                 @foreach($scopes as $key => $data)
                                 <label class="relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors group">
                                     <div class="flex items-center h-5">
-                                        <input type="checkbox" name="permission_scope[]" value="{{ $key }}" checked class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <input type="checkbox" name="permission_scope[]" value="{{ $key }}" 
+                                            {{ in_array($key, $permission->permission_scope ?? []) || in_array('all', $permission->permission_scope ?? []) ? 'checked' : '' }}
+                                            class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                                     </div>
                                     <div class="ml-4 flex items-center gap-3">
                                         <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">

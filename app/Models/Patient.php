@@ -47,10 +47,7 @@ class Patient extends Authenticatable implements MustVerifyEmail, CanResetPasswo
             return $query;
         }
 
-        return $query->where(function ($qry) use ($searchTerm) {
-            $qry->where('full_name', 'like', '%' . $searchTerm . '%')
-                ->orWhere('ic_number', 'like', '%' . $searchTerm . '%');
-        });
+        return $query->where('ic_number', 'like', '%' . $searchTerm . '%');
     }
 
     /*--- ACCESSORS ---*/

@@ -110,4 +110,67 @@ class UpdateController extends Controller
             ], 500);
         }
     }
+
+    // UPDATE: Update Permission Request (Doctor)
+    public function updateRequest(Request $request, $id) {
+        try {
+            $doctor = Auth::guard('doctor')->user();
+            
+            // Find the pending permission request
+            $permission = Permission::where('id', $id)
+                ->where('doctor_id', $doctor->id)
+                ->where('status', 'Pending')
+                ->firstOrFail();
+            
+            // Validate scope and notes
+            $request->validate([
+                'permission_scope' => 'required|array|min:1',
+                'notes' => 'nullable|string|max:500'
+            ]);
+            
+            // Update permission
+            $permission->update([
+                'permission_scope' => $request->permission_scope,
+                'notes' => $request->notes
+            ]);
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Access request updated successfully!',
+                    'permission' => $permission
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Access request updated successfully!');
+            
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Permission request not found or cannot be edited.'
+                ], 404);
+            }
+            return redirect()->back()->with('error', 'Permission request not found or cannot be edited.');
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->errors()['permission_scope'][0] ?? 'Invalid data provided.',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+            return redirect()->back()->withErrors($e->errors())->withInput();
+            
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'An error occurred while updating the request.'
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'An error occurred while updating the request.');
+        }
+    }
 }

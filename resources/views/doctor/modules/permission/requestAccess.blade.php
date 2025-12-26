@@ -1,5 +1,5 @@
 <!-- Request Access Modal -->
-<div id="requestAccessModal" class="hidden fixed inset-0 bg-gray-600/50 overflow-y-auto h-full w-full z-50">
+<div id="requestAccess" class="hidden fixed inset-0 bg-gray-600/50 overflow-y-auto h-full w-full z-50">
     <div class="relative top-50 mx-auto p-5 w-96 shadow-lg rounded-lg bg-white">
         <div>
             <!-- Modal Header -->

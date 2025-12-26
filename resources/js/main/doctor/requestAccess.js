@@ -1,7 +1,7 @@
 // Request Access Modal Handler
 document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('requestAccessModal');
-    const openModalBtn = document.getElementById('openRequestAccessModal');
+    const modal = document.getElementById('requestAccess');
+    const openModalBtns = document.querySelectorAll('.openRequestAccessModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const cancelRequestBtn = document.getElementById('cancelRequestBtn');
     const confirmRequestBtn = document.getElementById('confirmRequestBtn');
@@ -11,12 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Store patient data
     let currentPatientId = null;
     let currentPatientName = null;
+    let currentTriggerBtn = null;
 
     // Open modal
-    if (openModalBtn) {
-        openModalBtn.addEventListener('click', function() {
+    openModalBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
             currentPatientId = this.dataset.patientId;
             currentPatientName = this.dataset.patientName;
+            currentTriggerBtn = this;
             
             // Update patient name in modal
             patientNameDisplay.textContent = currentPatientName;
@@ -27,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show modal
             modal.classList.remove('hidden');
         });
-    }
+    });
 
     // Close modal function
     function closeModal() {
@@ -89,12 +91,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Close modal
                     closeModal();
                     
-                    // Optional: Disable the request access button after successful request
-                    if (openModalBtn) {
-                        openModalBtn.disabled = true;
-                        openModalBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                        openModalBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-                        openModalBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Request Sent';
+                    // Disable the request access button after successful request
+                    if (currentTriggerBtn) {
+                        currentTriggerBtn.disabled = true;
+                        currentTriggerBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'openRequestAccessModal');
+                        currentTriggerBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+                        currentTriggerBtn.innerHTML = 'Access Requested';
                     }
                 } else {
                     // Show error message

@@ -608,9 +608,21 @@ Route::prefix('doctor')->group(function () {
             Route::get('/requests', [Modules\Permission\ReadController::class, 'doctorIndex'])
                 ->name('doctor.permission.requests');
 
+            // View Permission Request Details
+            Route::get('/requests/{id}', [Modules\Permission\ReadController::class, 'viewRequest'])
+                ->name('doctor.permission.request.details');
+
             // Request Access to Patient Records
             Route::post('/request', [Modules\Permission\CreateController::class, 'requestAccess'])
                 ->name('doctor.permission.request');
+
+            // Update Permission Request
+            Route::put('/requests/{id}', [Modules\Permission\UpdateController::class, 'updateRequest'])
+                ->name('doctor.permission.request.update');
+
+            // Cancel Permission Request
+            Route::delete('/requests/{id}', [Modules\Permission\DeleteController::class, 'cancelRequest'])
+                ->name('doctor.permission.request.cancel');
 
             // Terminate Access to Patient Records
             Route::delete('/terminate/{id}', [Modules\Permission\DeleteController::class, 'terminateAccess'])

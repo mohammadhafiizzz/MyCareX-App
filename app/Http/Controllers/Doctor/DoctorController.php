@@ -90,19 +90,27 @@ class DoctorController extends Controller
     // view patient profile
     public function viewPatientProfile($patientId) {
         $patient = Patient::findOrFail($patientId);
+        $doctorId = Auth::guard('doctor')->id();
+
+        $hasRequestedAccess = Permission::where('patient_id', $patientId)
+            ->where('doctor_id', $doctorId)
+            ->whereIn('status', ['Pending', 'Active'])
+            ->exists();
 
         return view('doctor.modules.patient.viewProfile', [
             'patient' => $patient,
+            'hasRequestedAccess' => $hasRequestedAccess,
         ]);
     }
 
     // search patient result page
     public function searchPatientResult(Request $request) {
         $query = trim($request->input('query', ''));
+        $doctorId = Auth::guard('doctor')->id();
 
         if ($query === '') {
             return redirect()->route('doctor.patient.search')
-                ->withErrors(['query' => 'Enter a patient name or identification number to search.'])
+                ->withErrors(['query' => 'Enter a patient identification number to search.'])
                 ->withInput();
         }
 
@@ -110,6 +118,15 @@ class DoctorController extends Controller
             ->orderBy('full_name')
             ->paginate(12)
             ->withQueryString();
+
+        // Check for existing permissions for each patient
+        $patients->getCollection()->transform(function ($patient) use ($doctorId) {
+            $patient->has_requested_access = Permission::where('patient_id', $patient->id)
+                ->where('doctor_id', $doctorId)
+                ->whereIn('status', ['Pending', 'Active'])
+                ->exists();
+            return $patient;
+        });
 
         return view('doctor.modules.patient.searchPatient', [
             'patients' => $patients,

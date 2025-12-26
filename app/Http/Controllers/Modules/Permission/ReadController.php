@@ -101,29 +101,29 @@ class ReadController extends Controller
     // READ: Show Permission Requests List (Doctor)
     public function doctorIndex(Request $request) {
         $doctor = Auth::guard('doctor')->user();
-        $query = trim($request->input('query', ''));
 
-        // Build the base query
-        $permissionsQuery = Permission::where('doctor_id', $doctor->id)
-            ->with(['patient', 'provider']);
-
-        // Apply search filter if query is provided
-        if ($query !== '') {
-            $permissionsQuery->whereHas('patient', function($q) use ($query) {
-                $q->where('full_name', 'like', '%' . $query . '%')
-                  ->orWhere('ic_number', 'like', '%' . $query . '%');
-            });
-        }
-
-        // Get paginated results
-        $permissions = $permissionsQuery->orderBy('requested_at', 'desc')
-            ->paginate(10)
-            ->withQueryString();
+        // Get all permissions for client-side search and pagination
+        $permissions = Permission::where('doctor_id', $doctor->id)
+            ->with(['patient', 'provider'])
+            ->orderBy('requested_at', 'desc')
+            ->get();
 
         return view('doctor.modules.permission.request', [
             'permissions' => $permissions,
-            'query' => $query,
+            'query' => null, // Query will be handled client-side
         ]);
+    }
+
+    // READ: Show Permission Request Details (Doctor)
+    public function viewRequest($id) {
+        $doctor = Auth::guard('doctor')->user();
+
+        $permission = Permission::where('id', $id)
+            ->where('doctor_id', $doctor->id)
+            ->with(['patient', 'provider'])
+            ->firstOrFail();
+    
+        return view('doctor.modules.permission.requestDetails', compact('permission'));
     }
 
     // READ: Display medical records page with statistics and records list
