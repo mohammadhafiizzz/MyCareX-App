@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         let text = item.name;
                         if (item.severity) text += ` (Severity: ${item.severity})`;
                         if (item.dosage) text += ` (${item.dosage} mg)`;
+                        if (item.vaccination_date) text += ` (Date: ${new Date(item.vaccination_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })})`;
+                        if (item.test_date) text += ` (Date: ${new Date(item.test_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })})`;
                         
                         option.text = text;
                         recordSelect.add(option);

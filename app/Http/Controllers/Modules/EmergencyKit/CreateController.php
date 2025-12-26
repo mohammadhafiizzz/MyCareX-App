@@ -9,12 +9,14 @@ use App\Models\Emergency;
 use App\Models\Condition;
 use App\Models\Medication;
 use App\Models\Allergy;
+use App\Models\Immunisation;
+use App\Models\Lab;
 
 class CreateController extends Controller
 {
     public function store(Request $request) {
         $request->validate([
-            'type' => 'required|in:condition,medication,allergy',
+            'type' => 'required|in:condition,medication,allergy,vaccination,lab',
             'record_id' => 'required|integer',
         ]);
 
@@ -33,6 +35,12 @@ class CreateController extends Controller
                 break;
             case 'allergy':
                 $modelClass = Allergy::class;
+                break;
+            case 'vaccination':
+                $modelClass = Immunisation::class;
+                break;
+            case 'lab':
+                $modelClass = Lab::class;
                 break;
         }
 
