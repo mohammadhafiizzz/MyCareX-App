@@ -68,8 +68,8 @@
                                 <select id="type" name="type" class="block w-full rounded-xl border border-gray-200 py-4 pl-5 pr-12 text-gray-900 focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-all shadow-sm appearance-none bg-gray-50 hover:bg-gray-100">
                                     <option value="" disabled selected>Choose a category...</option>
                                     <option value="condition">Medical Condition</option>
-                                    <option value="medication">Current Medication</option>
-                                    <option value="allergy">Known Allergy</option>
+                                    <option value="medication">Medication</option>
+                                    <option value="allergy">Allergy</option>
                                     <option value="vaccination">Vaccination</option>
                                     <option value="lab">Lab Test</option>
                                 </select>
@@ -104,7 +104,7 @@
                         </div>
 
                         <!-- Actions -->
-                        <div class="pt-6 flex flex-col sm:flex-row justify-end gap-2">
+                        <div class="flex flex-col sm:flex-row justify-end gap-2">
                             <a href="{{ route('patient.emergency-kit.index') }}" class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200/30 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                                 Cancel
                             </a>

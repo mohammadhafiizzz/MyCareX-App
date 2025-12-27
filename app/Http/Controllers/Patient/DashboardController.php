@@ -56,7 +56,8 @@ class DashboardController extends Controller
         $immunisations = $patient->immunisations()->latest()->take(2)->get();
         
         // Permissions data
-        $recentPermissions = \App\Models\Permission::where('patient_id', $patient->id)
+        $recentPermissions = \App\Models\Permission::with('doctor')
+            ->where('patient_id', $patient->id)
             ->latest()
             ->take(3)
             ->get();

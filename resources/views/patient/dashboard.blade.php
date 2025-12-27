@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - Patient Dashboard</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -20,10 +20,11 @@
 
     <!-- Banner -->
     <section class="relative h-80 bg-gray-900 overflow-hidden">
+
         {{-- Background Image with Overlay --}}
         <div class="absolute inset-0">
             <img src="{{ asset('images/dashboard_patient.png') }}" 
-                alt="" 
+                alt="Patient Dashboard Background"
                 class="w-full h-full object-cover opacity-60">
             <div class="absolute inset-0 bg-gray-900/40"></div>
         </div>
@@ -43,9 +44,7 @@
     <!-- Dashboard Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-        {{-- ============================================= --}}
-        {{-- ZONE: WELCOME HEADER --}}
-        {{-- ============================================= --}}
+        <!-- Background Image Banner -->
         <div class="mb-6">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -53,8 +52,8 @@
                         {{ $greeting }}!
                     </h1>
                     <p class="mt-1 text-sm text-gray-500">
-                        <i class="fas fa-calendar-alt mr-1"></i>
-                        {{ now()->format('l, F j, Y') }}
+                        <i class="fas fa-clock mr-1"></i>
+                        Last Login: {{ $patient->last_login ? $patient->last_login->format('M d, Y \a\t h:i A') : 'First login' }}
                     </p>
                 </div>
                 <div class="mt-4 sm:mt-0">
@@ -66,9 +65,7 @@
             </div>
         </div>
 
-        {{-- ============================================= --}}
-        {{-- ZONE A: CRITICAL ALERTS BANNER --}}
-        {{-- ============================================= --}}
+        <!-- Pending Permission Alert -->
         @if($pendingPermissions > 0)
         <div class="mb-6">
             {{-- Pending Permission Requests --}}
@@ -90,6 +87,7 @@
         </div>
         @endif
 
+        <!-- Profile Incomplete Alert -->
         @if($needsProfileCompletion)
         <div class="mb-6">
             <div class="flex items-start p-4 bg-amber-50 border border-amber-100 rounded-xl" role="alert">
@@ -112,9 +110,7 @@
         </div>
         @endif
 
-        {{-- ============================================= --}}
-        {{-- ZONE B: KEY METRICS - HERO STATS (Bento Grid) --}}
-        {{-- ============================================= --}}
+        <!-- Summary Card -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {{-- Active Medications --}}
             <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
@@ -158,27 +154,25 @@
                 </div>
             </div>
 
-            {{-- Known Allergies --}}
+            {{-- Active Access --}}
             <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center justify-center h-12 w-12 rounded-xl bg-blue-100">
-                        <i class="fas fa-allergies text-blue-600 text-xl" aria-hidden="true"></i>
+                        <i class="fas fa-user-doctor text-blue-600 text-xl" aria-hidden="true"></i>
                     </div>
-                    <span class="text-3xl font-bold text-gray-900">{{ $allergiesCount }}</span>
+                    <span class="text-3xl font-bold text-gray-900">{{ $activeProviders }}</span>
                 </div>
                 <div class="mt-3">
-                    <p class="text-sm font-medium text-gray-900">Known Allergies</p>
-                    <p class="text-xs text-gray-500">On record</p>
+                    <p class="text-sm font-medium text-gray-900">Active Access</p>
+                    <p class="text-xs text-gray-500">Doctors with access</p>
                 </div>
             </div>
         </div>
 
-        {{-- ============================================= --}}
-        {{-- ZONE C: MAIN CONTENT GRID --}}
-        {{-- ============================================= --}}
+        <!-- Main Content Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            {{-- LEFT COLUMN (2/3 width) --}}
+            {{-- Left Column --}}
             <div class="lg:col-span-2 space-y-6">
 
                 {{-- Today's Medication Schedule --}}
@@ -194,7 +188,7 @@
                                     <p class="text-xs text-gray-500">Your daily medication schedule</p>
                                 </div>
                             </div>
-                            <a href="{{ route('patient.myrecords') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
+                            <a href="{{ route('patient.medication') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
                                 View all
                                 <i class="fas fa-chevron-right ml-1 text-xs"></i>
                             </a>
@@ -255,7 +249,7 @@
                                     <p class="text-xs text-gray-500">Your latest test results</p>
                                 </div>
                             </div>
-                            <a href="{{ route('patient.myrecords') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
+                            <a href="{{ route('patient.lab') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
                                 View all
                                 <i class="fas fa-chevron-right ml-1 text-xs"></i>
                             </a>
@@ -330,27 +324,26 @@
                         <div class="space-y-3">
                             @foreach($recentPermissions as $permission)
                             <div class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div class="flex-shrink-0">
-                                    @php
-                                        $status = $permission->status ?? 'pending';
-                                        $statusBg = [
-                                            'granted' => 'bg-green-100',
-                                            'pending' => 'bg-yellow-100',
-                                            'denied' => 'bg-red-100',
-                                        ][$status] ?? 'bg-gray-100';
-                                        $statusIcon = [
-                                            'granted' => 'fa-check text-green-600',
-                                            'pending' => 'fa-clock text-yellow-600',
-                                            'denied' => 'fa-times text-red-600',
-                                        ][$status] ?? 'fa-question text-gray-500';
-                                    @endphp
-                                    <div class="flex items-center justify-center h-10 w-10 rounded-full {{ $statusBg }}">
-                                        <i class="fas {{ $statusIcon }}" aria-hidden="true"></i>
+                                <div class="flex-shrink-0 relative">
+                                    <div class="h-10 w-10 rounded-full bg-blue-50 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center">
+                                        @if($permission->doctor && $permission->doctor->profile_image_url)
+                                            <img src="{{ asset($permission->doctor->profile_image_url) }}" alt="Doctor" class="h-full w-full object-cover">
+                                        @else
+                                            <i class="fas fa-user-doctor text-blue-600"></i>
+                                        @endif
                                     </div>
+                                    @php
+                                        $statusColor = [
+                                            'granted' => 'bg-green-500',
+                                            'pending' => 'bg-yellow-500',
+                                            'denied' => 'bg-red-500',
+                                        ][$permission->status ?? 'pending'] ?? 'bg-yellow-500';
+                                    @endphp
+                                    <span class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full {{ $statusColor }} ring-2 ring-white"></span>
                                 </div>
                                 <div class="ml-4 flex-1 min-w-0">
                                     <p class="text-sm font-semibold text-gray-900 truncate">
-                                        Healthcare Provider #{{ $permission->provider_id ?? 'Unknown' }}
+                                        Dr. {{ $permission->doctor->full_name ?? 'Unknown Doctor' }}
                                     </p>
                                     <p class="text-xs text-gray-500">
                                         Requested: {{ $permission->requested_at?->format('M d, Y') ?? 'N/A' }}
@@ -410,7 +403,7 @@
 
             </div>
 
-            {{-- RIGHT COLUMN (1/3 width) --}}
+            {{-- Right Column --}}
             <div class="space-y-6">
 
                 {{-- Health Tips Card --}}
@@ -490,66 +483,14 @@
                                 <li>
                                     <a href="{{ route('patient.profile') }}" class="group flex items-center p-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
                                         <div class="flex items-center justify-center h-9 w-9 rounded-lg bg-gray-100 group-hover:bg-gray-200 transition-colors">
-                                            <i class="fas fa-user-edit text-gray-600" aria-hidden="true"></i>
+                                            <i class="fas fa-user text-gray-600" aria-hidden="true"></i>
                                         </div>
-                                        <span class="ml-3">Edit Profile</span>
+                                        <span class="ml-3">My Profile</span>
                                         <i class="fas fa-chevron-right ml-auto text-gray-400 text-xs group-hover:text-gray-600"></i>
                                     </a>
                                 </li>
                             </ul>
                         </nav>
-                    </div>
-                </section>
-
-                {{-- Security & Privacy Card --}}
-                <section class="bg-white rounded-xl shadow-sm border border-gray-200" aria-labelledby="security-heading">
-                    <div class="p-5 border-b border-gray-100">
-                        <h2 id="security-heading" class="text-lg font-semibold text-gray-900">Security & Privacy</h2>
-                    </div>
-                    
-                    <div class="p-5 space-y-4">
-                        {{-- Last Login --}}
-                        <div class="flex items-center space-x-3">
-                            <div class="flex items-center justify-center h-9 w-9 rounded-lg bg-blue-100">
-                                <i class="fas fa-clock text-blue-600 text-sm" aria-hidden="true"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-xs text-gray-500">Last Login</p>
-                                <p class="text-sm font-medium text-gray-900 truncate">
-                                    {{ $patient->last_login ? $patient->last_login->format('M d, Y \a\t h:i A') : 'First login' }}
-                                </p>
-                            </div>
-                        </div>
-
-                        {{-- Account Status --}}
-                        <div class="flex items-center space-x-3">
-                            <div class="flex items-center justify-center h-9 w-9 rounded-lg bg-blue-100">
-                                <i class="fas fa-user-check text-blue-600 text-sm" aria-hidden="true"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-xs text-gray-500">Email Verification</p>
-                                <p class="text-sm font-medium text-gray-900">
-                                    @if($patient->email_verified_at)
-                                    <span class="text-green-600">Verified</span>
-                                    @else
-                                    <span class="text-amber-600">Pending</span>
-                                    @endif
-                                </p>
-                            </div>
-                        </div>
-
-                        {{-- Active Doctors --}}
-                        <div class="flex items-center space-x-3">
-                            <div class="flex items-center justify-center h-9 w-9 rounded-lg bg-blue-100">
-                                <i class="fas fa-user-doctor text-blue-600 text-sm" aria-hidden="true"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-xs text-gray-500">Active Doctors</p>
-                                <p class="text-sm font-medium text-gray-900">
-                                    {{ \App\Models\Permission::where('patient_id', $patient->id)->where('status', 'granted')->count() }} with access
-                                </p>
-                            </div>
-                        </div>
                     </div>
                 </section>
             </div>

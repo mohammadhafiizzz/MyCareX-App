@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - {{ $condition->condition_name }} Details</title>
+    <title>{{ $condition->condition_name }}</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -64,8 +64,7 @@
                         <h1 class="text-3xl font-bold mb-3">{{ $condition->condition_name }}</h1>
                         <div class="flex flex-wrap gap-3">
                             <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
-                                <i class="{{ $severityBadgeIcon }}" aria-hidden="true"></i>
-                                {{ $condition->severity ?? 'Undefined' }} Severity
+                                {{ $condition->severity ?? 'Undefined' }}
                             </span>
                             <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
                                 {{ $condition->status ?? 'Not set' }}
@@ -104,7 +103,7 @@
                     @if ($condition->description)
                         <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
                             <h3 class="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                                <i class="fas fa-notes-medical text-blue-600" aria-hidden="true"></i>
+                                <i class="fas fa-comment text-blue-600" aria-hidden="true"></i>
                                 Description / Notes:
                             </h3>
                             <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $condition->description }}</p>
@@ -173,14 +172,10 @@
                                     <i class="fas fa-upload" aria-hidden="true"></i>
                                     Replace Document
                                 </button>
-                                <form method="POST" action="{{ route('patient.condition.delete.attachment', $condition->id) }}" class="flex-1" onsubmit="return confirm('Are you sure you want to delete this attachment? This action cannot be undone.');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
-                                        <i class="fas fa-trash" aria-hidden="true"></i>
-                                        Delete Document
-                                    </button>
-                                </form>
+                                <button type="button" onclick="openDeleteModal('document')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+                                    <i class="fas fa-trash" aria-hidden="true"></i>
+                                    Delete Document
+                                </button>
                             </div>
                         </div>
                     @else
@@ -244,7 +239,6 @@
                             <dt class="text-sm font-medium text-gray-500 mb-1 sm:mb-0">Severity Level:</dt>
                             <dd class="text-sm">
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-semibold {{ $severityBadgeStyles }}">
-                                    <i class="{{ $severityBadgeIcon }}" aria-hidden="true"></i>
                                     {{ $condition->severity ?? 'Undefined' }}
                                 </span>
                             </dd>
@@ -285,14 +279,10 @@
                             Download
                         </button>
                         <hr class="mt-4 mb-5 border-gray-300">
-                        <form method="POST" action="{{ route('patient.condition.delete', $condition->id) }}" class="inline-block w-full" onsubmit="return confirm('Are you sure you want to delete this condition? This action cannot be undone.');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
-                                <i class="fas fa-trash" aria-hidden="true"></i>
-                                Delete
-                            </button>
-                        </form>
+                        <button type="button" onclick="openDeleteModal('condition')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
                     </div>
                 </section>
 
@@ -351,6 +341,74 @@
     <!-- Edit Condition Form -->
     @include('patient.modules.medicalCondition.editConditionForm')
     @include('patient.modules.medicalCondition.uploadConditionForm')
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 z-[150] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-gray-500/30 transition-opacity" aria-hidden="true" onclick="closeDeleteModal()"></div>
+
+            <!-- Modal Content -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative z-10">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-exclamation-triangle text-red-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">Delete Confirmation</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500" id="modal-description">Are you sure you want to delete this? This action cannot be undone.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+                    <form id="deleteForm" action="" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" id="deleteSubmitBtn" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-bold text-white hover:bg-red-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                            Delete
+                        </button>
+                    </form>
+                    <button type="button" onclick="closeDeleteModal()" class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                        Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openDeleteModal(type) {
+            const modal = document.getElementById('deleteModal');
+            const title = document.getElementById('modal-title');
+            const description = document.getElementById('modal-description');
+            const form = document.getElementById('deleteForm');
+            const submitBtn = document.getElementById('deleteSubmitBtn');
+
+            if (type === 'condition') {
+                title.innerText = 'Delete Medical Condition';
+                description.innerText = 'Are you sure you want to delete this medical condition? This action cannot be undone.';
+                form.action = "{{ route('patient.condition.delete', $condition->id) }}";
+                submitBtn.innerText = 'Delete Condition';
+            } else if (type === 'document') {
+                title.innerText = 'Delete Medical Document';
+                description.innerText = 'Are you sure you want to delete this attachment? This action cannot be undone.';
+                form.action = "{{ route('patient.condition.delete.attachment', $condition->id) }}";
+                submitBtn.innerText = 'Delete Document';
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
 
     <!-- Javascript and Footer -->
     @vite(['resources/js/main/patient/header.js'])

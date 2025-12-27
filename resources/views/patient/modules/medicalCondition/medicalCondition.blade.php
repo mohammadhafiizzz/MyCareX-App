@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - Medical Conditions</title>
+    <title>Medical Conditions</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -48,11 +48,11 @@
                             <button 
                                 type="button" 
                                 id="toggle-filters-btn"
-                                class="inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
+                                class="inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                                 <i class="fas fa-filter" aria-hidden="true"></i>
                                 <span>Filters</span>
                             </button>
-                            <a href="{{ route('patient.condition.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all conditions as PDF" title="Export your complete condition history as PDF">
+                            <a href="{{ route('patient.condition.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all conditions as PDF" title="Export your complete condition history as PDF">
                                 <i class="fas fa-download" aria-hidden="true"></i>
                                 <span class="hidden sm:inline">Export</span>
                             </a>
@@ -141,7 +141,7 @@
                                 <button 
                                     type="button" 
                                     id="prev-page"
-                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
                                     disabled>
                                     <i class="fas fa-chevron-left text-xs" aria-hidden="true"></i>
                                     <span class="hidden sm:inline">Previous</span>
@@ -150,7 +150,7 @@
                                 <button 
                                     type="button" 
                                     id="next-page"
-                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
                                     disabled>
                                     <span class="hidden sm:inline">Next</span>
                                     <i class="fas fa-chevron-right text-xs" aria-hidden="true"></i>
@@ -189,30 +189,29 @@
                                     </div>
                                 </div>
 
+                                <p class="text-sm font-semibold mt-4 text-gray-400">Notes:</p>
                                 @if ($condition['data']->description)
-                                    <p class="mt-4 text-sm text-gray-700 leading-relaxed">
+                                    <p class="text-sm text-gray-700 leading-relaxed">
                                         {{ $condition['data']->description }}
                                     </p>
                                 @endif
 
-                                <div class="mt-4 flex flex-wrap gap-2">
+                                <p class="text-sm font-semibold mt-4 text-gray-400">Severity & Status:</p>
+                                <div class="mt-2 flex flex-wrap gap-2">
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $condition['severityBadgeStyles'] }}" role="status">
                                         <span class="sr-only">Severity:</span>
-                                        <i class="{{ $condition['severityBadgeIcon'] }}" aria-hidden="true"></i>
                                         {{ $condition['data']->severity ?? 'Undefined' }}
                                     </span>
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $condition['statusBadgeStyles'] }}" role="status">
                                         <span class="sr-only">Status:</span>
-                                        <i class="{{ $condition['statusIcon'] }}" aria-hidden="true"></i>
                                         {{ $condition['data']->status ?? 'Not set' }}
                                     </span>
                                 </div>
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">
-                                <a href="{{ route('patient.condition.info', $condition['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
-                                    <i class="fas fa-info-circle" aria-hidden="true"></i>
-                                    More info
+                                <a href="{{ route('patient.condition.info', $condition['data']->id) }}" class="inline-flex items-center justify-center cursor-pointer gap-2 px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                    View Details
                                 </a>
                                 <button type="button" 
                                     onclick="toggleActivity({{ $condition['data']->id }})"

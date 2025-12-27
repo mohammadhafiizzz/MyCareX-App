@@ -46,10 +46,7 @@
                     <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden z-50" id="profileDropdownMenu">
                         <div class="py-2">
                             <a href="{{ route('patient.profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
-                                <i class="fas fa-user-edit mr-2"></i>My Profile
-                            </a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
-                                <i class="fas fa-cog mr-2"></i>Settings
+                                <i class="fas fa-user mr-2"></i>My Profile
                             </a>
                             <hr class="my-1 border-gray-200">
                             <form action="{{ route('patient.logout') }}" method="POST" class="block">
@@ -96,10 +93,7 @@
                 <!-- Mobile Profile Section -->
                 <div class="pt-2 mt-2">
                     <a href="{{ route('patient.profile') }}" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
-                        <i class="fas fa-user-edit mr-3"></i>Profile
-                    </a>
-                    <a href="#" class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-50 rounded-md">
-                        <i class="fas fa-cog mr-3"></i>Settings
+                        <i class="fas fa-user mr-3"></i>Profile
                     </a>
                     <form action="{{ route('patient.logout') }}" method="POST" class="block">
                         @csrf
