@@ -45,7 +45,7 @@
                     </div>
                     <div class="flex flex-wrap gap-2">
                         @if ($totalLabTests > 0)
-                            <a href="{{ route('patient.lab.export') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all lab tests as PDF" title="Export your complete lab test history as PDF">
+                            <a href="{{ route('patient.lab.export') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Download all lab tests as PDF" title="Export your complete lab test history as PDF">
                                 <i class="fas fa-download" aria-hidden="true"></i>
                                 <span class="hidden sm:inline">Export</span>
                             </a>
@@ -99,7 +99,7 @@
                                 <button 
                                     type="button" 
                                     id="prev-page"
-                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
                                     disabled>
                                     <i class="fas fa-chevron-left text-xs" aria-hidden="true"></i>
                                     <span class="hidden sm:inline">Previous</span>
@@ -108,7 +108,7 @@
                                 <button 
                                     type="button" 
                                     id="next-page"
-                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                                    class="inline-flex items-center gap-1 px-3 py-2 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
                                     disabled>
                                     <span class="hidden sm:inline">Next</span>
                                     <i class="fas fa-chevron-right text-xs" aria-hidden="true"></i>
@@ -155,31 +155,24 @@
                                                 Last updated <span class="sr-only">relative time</span> {{ $labTest['lastUpdatedLabel'] }}
                                             </span>
                                         </p>
-                                        <p class="mt-2 text-sm flex items-center gap-2">
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200" role="status">
-                                                <span class="sr-only">Attachment:</span>
-                                                <i class="fas fa-file-pdf" aria-hidden="true"></i>
-                                                Attachment Available
-                                            </span>
-                                        </p>
                                     </div>
                                 </div>
 
+                                <p class="text-sm font-semibold mt-4 text-gray-400">Notes:</p>
                                 @if ($labTest['data']->notes)
-                                    <p class="mt-4 text-sm text-gray-700 leading-relaxed">
+                                    <p class="text-sm text-gray-700 leading-relaxed">
                                         {{ $labTest['data']->notes }}
                                     </p>
                                 @endif
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">
-                                <a href="{{ route('patient.lab.info', $labTest['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-sm text-sm font-semibold hover:bg-blue-700 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                                    <i class="fas fa-eye" aria-hidden="true"></i>
+                                <a href="{{ route('patient.lab.info', $labTest['data']->id) }}" class="inline-flex items-center justify-center cursor-pointer gap-2 px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
                                     View Details
                                 </a>
                                 <button type="button" 
                                     onclick="toggleActivity({{ $labTest['data']->id }})"
-                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
+                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                                     <i class="fas fa-chevron-down" aria-hidden="true"></i>
                                     <span class="activity-toggle-text">Show activity</span>
                                 </button>

@@ -2,13 +2,13 @@
 <div id="uploadMedicationImageModal" class="fixed inset-0 bg-gray-900/50 z-50 flex items-center justify-center p-4" style="display: none;">
     <div class="bg-white rounded-md shadow-2xl max-w-md w-full overflow-hidden transform transition-all">
         <!-- Modal Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
             <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
                     <i class="fas fa-upload" aria-hidden="true"></i>
                     Upload Medication Image
                 </h3>
-                <button type="button" id="closeMedicationImageModal" class="text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-1">
+                <button type="button" id="closeMedicationImageModal" class="text-gray-700 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 rounded-lg p-1">
                     <i class="fas fa-times text-xl" aria-hidden="true"></i>
                 </button>
             </div>
@@ -60,13 +60,24 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="flex gap-3 justify-end">
-                <button type="button" id="cancelMedicationImageBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+            <div class="flex gap-2 flex-col-reverse sm:flex-row sm:justify-end sm:space-x-8 lg:space-x-0">
+                <button 
+                    type="button"  
+                    id="cancelMedicationImageBtn"
+                    class="justify-center inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
+                >
                     Cancel
                 </button>
-                <button type="submit" id="submitMedicationImageBtn" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed">
-                    <i class="fas fa-upload mr-2" aria-hidden="true"></i>
-                    Upload Image
+                <button 
+                    type="submit" 
+                    id="submitMedicationImageBtn"
+                    class="justify-center inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0"
+                >
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span id="save-button-text">Upload</span>
                 </button>
             </div>
         </form>

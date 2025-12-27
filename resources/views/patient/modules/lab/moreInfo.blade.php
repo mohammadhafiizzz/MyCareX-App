@@ -64,7 +64,7 @@
                         <h1 class="text-3xl font-bold mb-3">{{ $labTest->test_name }}</h1>
                         <div class="flex flex-wrap gap-3">
                             <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
-                                Unverified
+                                Self Reported
                             </span>
                             @if ($labTest->test_category)
                                 <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/20 backdrop-blur-sm border border-white/30">
@@ -345,8 +345,6 @@
 
     <!-- Upload Attachment Form -->
     @include('patient.modules.lab.uploadAttachmentForm')
-
-    @include('patient.components.deleteModal')
 
     <!-- Javascript and Footer -->
     @vite(['resources/js/main/patient/header.js'])

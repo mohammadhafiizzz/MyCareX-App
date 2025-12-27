@@ -215,7 +215,7 @@
                                 </a>
                                 <button type="button" 
                                     onclick="toggleActivity({{ $condition['data']->id }})"
-                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                                     <i class="fas fa-chevron-down" aria-hidden="true"></i>
                                     <span class="activity-toggle-text">Show activity</span>
                                 </button>

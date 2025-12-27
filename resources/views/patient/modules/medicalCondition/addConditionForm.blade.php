@@ -175,7 +175,7 @@
                 </div>
             </div>
 
-            <div class="pt-4 flex gap-2 flex-col-reverse sm:flex-row sm:justify-end sm:space-x-8 lg:space-x-0">
+            <div class="flex gap-2 flex-col-reverse sm:flex-row sm:justify-end sm:space-x-8 lg:space-x-0">
                 <button 
                     type="button" 
                     id="modal-cancel-button"

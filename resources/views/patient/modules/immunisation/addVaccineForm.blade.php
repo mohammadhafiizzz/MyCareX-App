@@ -40,22 +40,25 @@
                         @foreach($vaccineOptions as $option)
                             <option value="{{ $option }}">{{ $option }}</option>
                         @endforeach
-                        <option value="other">Other (Type manually)</option>
+                        <option value="other">Other...</option>
                     </select>
                 </div>
-                <div id="vaccine_manual_wrapper" class="mt-2 hidden">
-                    <div class="flex gap-2">
-                        <input 
-                            type="text" 
-                            name="vaccine_name" 
-                            id="vaccine_name" 
-                            class="block p-3 w-full border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
-                            placeholder="Enter vaccine name"
-                        >
-                        <button type="button" id="switch_to_select" class="px-3 py-2 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200 transition-colors" title="Back to list">
-                            <i class="fas fa-list"></i>
-                        </button>
-                    </div>
+                <div id="vaccine_manual_wrapper" class="mt-1 relative hidden">
+                    <input 
+                        type="text" 
+                        name="vaccine_name" 
+                        id="vaccine_name" 
+                        required
+                        class="block w-full p-3 pr-10 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        placeholder="Enter vaccine name"
+                    >
+                    <button
+                        type="button"
+                        id="switch_to_select"
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-blue-600 cursor-pointer"
+                        title="Back to list">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
 
@@ -157,18 +160,18 @@
                 <p class="mt-1 text-xs text-gray-500">Include any additional information about this vaccination.</p>
             </div>
 
-            <div class="pt-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3">
+            <div class="flex gap-2 flex-col-reverse sm:flex-row sm:justify-end sm:space-x-8 lg:space-x-0">
                 <button 
                     type="button" 
                     id="modal-cancel-button"
-                    class="mt-3 sm:mt-0 w-full sm:w-auto inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    class="justify-center inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
                 >
                     Cancel
                 </button>
                 <button 
                     type="submit" 
                     id="save-vaccine-button"
-                    class="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    class="justify-center inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0"
                 >
                     <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

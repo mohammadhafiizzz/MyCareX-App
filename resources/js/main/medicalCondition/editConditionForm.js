@@ -26,10 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editManualInput.value = "";
     });
 
-    // ============================================================
-    // HELPER FUNCTION: Call this when opening the Edit Modal
-    // ============================================================
-    // Pass the existing condition name (e.g., "Asthma" or "Rare Disease X")
+    // Pass the existing condition name
     window.populateEditConditionName = function(existingValue) {
         
         // Check if the existing value is present in the dropdown options
@@ -44,19 +41,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (valueExistsInDropdown) {
-            // SCENARIO A: Value is in the list (e.g., "Asthma")
             // Show dropdown, hide manual input, set values
             editSelectWrapper.classList.remove('hidden');
             editManualWrapper.classList.add('hidden');
             editSelect.value = existingValue;
-            editManualInput.value = existingValue; // Ensure hidden input matches
+            editManualInput.value = existingValue;
         } else {
-            // SCENARIO B: Value is NOT in list (e.g., "Rare Disease X")
             // Hide dropdown, Show manual input, populate text
             editSelectWrapper.classList.add('hidden');
             editManualWrapper.classList.remove('hidden');
-            editSelect.value = 'manual_entry'; // Set select to "Other"
-            editManualInput.value = existingValue; // Fill text box
+            editSelect.value = 'manual_entry';
+            editManualInput.value = existingValue;
         }
     };
 

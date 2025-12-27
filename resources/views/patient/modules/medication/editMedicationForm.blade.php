@@ -58,7 +58,7 @@
                         </optgroup>
 
                         <optgroup label="Other">
-                            <option value="other">Other (Type manually...)</option>
+                            <option value="other">Other...</option>
                         </optgroup>
                     </select>
                 </div>

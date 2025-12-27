@@ -61,21 +61,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Allergy Select Toggle Logic
-    const allergySelect = document.getElementById('allergy_select');
-    const manualAllergyWrapper = document.getElementById('manual_allergy_wrapper');
-    const allergyNameInput = document.getElementById('allergy_name');
+    const select = document.getElementById('allergen_select');
+    const selectWrapper = document.getElementById('allergen_select_wrapper');
+    const manualWrapper = document.getElementById('allergen_manual_wrapper');
+    const manualInput = document.getElementById('allergen');
+    const switchToSelectBtn = document.getElementById('switch_to_select');
 
-    if (allergySelect && manualAllergyWrapper && allergyNameInput) {
-        allergySelect.addEventListener('change', function() {
-            if (this.value === 'Other') {
-                manualAllergyWrapper.classList.remove('hidden');
-                allergyNameInput.value = '';
-                allergyNameInput.required = true;
-            } else {
-                manualAllergyWrapper.classList.add('hidden');
-                allergyNameInput.value = this.value;
-                allergyNameInput.required = false;
-            }
-        });
+    // Logic to toggle between Select and Manual Input
+    select.addEventListener('change', function() {
+        if (this.value === 'manual_entry') {
+            // User chose "Other" -> Hide select, Show input
+            selectWrapper.classList.add('hidden');
+            manualWrapper.classList.remove('hidden');
+            manualInput.value = ''; // Clear input for fresh typing
+            manualInput.focus();
+        } else {
+            // User chose a standard option -> Update hidden input
+            manualInput.value = this.value;
+        }
+    });
+
+    // Logic to switch back to Dropdown
+    switchToSelectBtn.addEventListener('click', function() {
+        manualWrapper.classList.add('hidden');
+        selectWrapper.classList.remove('hidden');
+        select.value = ""; // Reset dropdown
+        manualInput.value = ""; // Clear value
+    });
+
+    // Initialize input with select value if one exists (e.g. on re-edit)
+    if(select.value && select.value !== 'manual_entry') {
+            manualInput.value = select.value;
     }
 });

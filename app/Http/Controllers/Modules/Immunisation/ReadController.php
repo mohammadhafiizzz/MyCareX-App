@@ -106,19 +106,41 @@ class ReadController extends Controller
     /**
      * Download a specific immunisation record as PDF
      */
-    public function downloadImmunisation(Immunisation $immunisation)
+    public function downloadImmunisation($immunisationId)
     {
-        // Policy/Gate check: Ensure this immunisation belongs to the authenticated patient
-        if ($immunisation->patient_id !== Auth::guard('patient')->id()) {
-            return redirect()->route('patient.immunisation')->with('error', 'Unauthorized access to immunisation.');
+        $patientId = Auth::guard('patient')->id() ?? Auth::id();
+
+        // Check if patient is authenticated
+        if (!$patientId) {
+            return response()->json(['message' => 'Unauthenticated user'], 401);
         }
 
         $patient = Auth::guard('patient')->user();
 
+        // Fetch the specific condition
+        $condition = Immunisation::where('id', $immunisationId)
+            ->where('patient_id', $patientId)
+            ->firstOrFail();
+
+        // Process condition for display
+        $processedImmunisation = [
+            'vaccine_name' => $condition->vaccine_name,
+            'dose_details' => $condition->dose_details ?? 'No dose details',
+            'vaccination_date' => $condition->vaccination_date 
+                ? Carbon::parse($condition->vaccination_date)->format('M d, Y') 
+                : 'Not recorded',
+            'administered_by' => $condition->administered_by ?? 'Not specified',
+            'vaccine_lot_number' => $condition->vaccine_lot_number ?? 'Not specified',
+            'notes' => $condition->notes ?? 'No additional notes',
+            'created_at' => $condition->created_at ? $condition->created_at->format('M d, Y') : 'N/A',
+            'updated_at' => $condition->updated_at ? $condition->updated_at->format('M d, Y') : 'N/A',
+        ];
+
         return view('patient.modules.immunisation.download', [
             'patient' => $patient,
-            'immunisation' => $immunisation,
+            'immunisation' => $processedImmunisation,
             'exportDate' => Carbon::now()->format('F d, Y'),
+            'fileName' => 'Immunisation_' . Carbon::now()->format('Y-m-d'),
         ]);
     }
 
@@ -167,12 +189,36 @@ class ReadController extends Controller
             ? Carbon::parse($immunisation->updated_at)->diffForHumans() 
             : 'Never';
 
+        // Common vaccine options for the select dropdown
+        $vaccineOptions = [
+            'COVID-19 (Pfizer-BioNTech)',
+            'COVID-19 (Moderna)',
+            'COVID-19 (AstraZeneca)',
+            'COVID-19 (Sinovac)',
+            'Influenza (Flu)',
+            'Hepatitis B',
+            'Hepatitis A',
+            'BCG (Tuberculosis)',
+            'DTP (Diphtheria, Tetanus, Pertussis)',
+            'MMR (Measles, Mumps, Rubella)',
+            'Polio (IPV/OPV)',
+            'HPV (Human Papillomavirus)',
+            'Varicella (Chickenpox)',
+            'Pneumococcal',
+            'Meningococcal',
+            'Japanese Encephalitis',
+            'Rabies',
+            'Typhoid',
+            'Yellow Fever'
+        ];
+
         return view('patient.modules.immunisation.moreInfo', [
             'immunisation' => $immunisation,
             'verificationBadgeStyles' => $verificationBadgeStyles,
             'vaccinationLabel' => $vaccinationLabel,
             'createdLabel' => $createdLabel,
             'updatedLabel' => $updatedLabel,
+            'vaccineOptions' => $vaccineOptions,
         ]);
     }
 

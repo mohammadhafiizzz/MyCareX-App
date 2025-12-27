@@ -48,11 +48,11 @@
                             <button 
                                 type="button" 
                                 id="toggle-filters-btn"
-                                class="inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
+                                class="inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                                 <i class="fas fa-filter" aria-hidden="true"></i>
                                 <span>Filters</span>
                             </button>
-                            <a href="{{ route('patient.medication.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Export medications as PDF" title="Download your medications as PDF">
+                            <a href="{{ route('patient.medication.export.pdf') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0" aria-label="Export medications as PDF" title="Download your medications as PDF">
                                 <i class="fas fa-download" aria-hidden="true"></i>
                                 <span class="hidden sm:inline">Export</span>
                             </a>
@@ -195,12 +195,10 @@
                                 <div class="mt-2 flex flex-wrap gap-2">
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $medication['statusBadgeStyles'] }}" role="status">
                                         <span class="sr-only">Status:</span>
-                                        <i class="{{ $medication['statusIcon'] }}" aria-hidden="true"></i>
                                         {{ $medication['data']->status ?? 'Not set' }}
                                     </span>
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200" role="status">
                                         <span class="sr-only">Frequency:</span>
-                                        <i class="fas fa-clock" aria-hidden="true"></i>
                                         {{ $medication['frequency'] }}
                                     </span>
                                 </div>
@@ -212,7 +210,7 @@
                                 </a>
                                 <button type="button" 
                                     onclick="toggleMedicationActivity({{ $medication['data']->id }})"
-                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                                     <i class="fas fa-chevron-down" aria-hidden="true"></i>
                                     <span class="activity-toggle-text">Show activity</span>
                                 </button>

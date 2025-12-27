@@ -71,7 +71,7 @@
                         </optgroup>
 
                         <optgroup label="Other">
-                            <option value="other">Other (Type manually...)</option>
+                            <option value="manual_entry">Other...</option>
                         </optgroup>
                     </select>
                 </div>

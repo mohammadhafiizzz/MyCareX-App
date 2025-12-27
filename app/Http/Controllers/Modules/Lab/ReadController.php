@@ -158,11 +158,35 @@ class ReadController extends Controller
             ? Carbon::parse($labTest->updated_at)->diffForHumans() 
             : 'Never';
 
+        // Common lab test options for the select dropdown
+        $labTestOptions = [
+            'Complete Blood Count (CBC)',
+            'Basic Metabolic Panel (BMP)',
+            'Comprehensive Metabolic Panel (CMP)',
+            'Lipid Panel (Cholesterol)',
+            'Liver Function Test (LFT)',
+            'Thyroid Stimulating Hormone (TSH)',
+            'Hemoglobin A1c (HbA1c)',
+            'Urinalysis',
+            'Prostate-Specific Antigen (PSA)',
+            'Vitamin D Test',
+            'Iron / Ferritin Test',
+            'Electrolyte Panel',
+            'Blood Glucose Test',
+            'C-Reactive Protein (CRP)',
+            'Kidney Function Test (BUN/Creatinine)',
+            'Coagulation Panel (PT/INR)',
+            'Cardiac Biomarkers (Troponin)',
+            'Allergy Testing (IgE)',
+            'Infectious Disease Screening'
+        ];
+
         return view('patient.modules.lab.moreInfo', [
             'labTest' => $labTest,
             'testLabel' => $testLabel,
             'createdLabel' => $createdLabel,
             'updatedLabel' => $updatedLabel,
+            'labTestOptions' => $labTestOptions,
         ]);
     }
 

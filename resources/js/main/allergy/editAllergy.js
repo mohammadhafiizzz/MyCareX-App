@@ -1,5 +1,66 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Edit Allergen Name Select Toggle Logic
+    const editSelect = document.getElementById('edit_allergen_select');
+    const editSelectWrapper = document.getElementById('edit_allergen_select_wrapper');
+    const editManualWrapper = document.getElementById('edit_allergen_manual_wrapper');
+    const editManualInput = document.getElementById('edit_allergen');
+    const editSwitchBtn = document.getElementById('edit_switch_to_select');
+
+    // 1. Toggle Logic (Same as Add Form)
+    editSelect.addEventListener('change', function() {
+        if (this.value === 'manual_entry') {
+            editSelectWrapper.classList.add('hidden');
+            editManualWrapper.classList.remove('hidden');
+            editManualInput.value = ''; 
+            editManualInput.focus();
+        } else {
+            editManualInput.value = this.value;
+        }
+    });
+
+    // 2. Switch Back Logic
+    editSwitchBtn.addEventListener('click', function() {
+        editManualWrapper.classList.add('hidden');
+        editSelectWrapper.classList.remove('hidden');
+        editSelect.value = ""; 
+        editManualInput.value = "";
+    });
+
+    // ============================================================
+    // HELPER FUNCTION: Call this when opening the Edit Modal
+    // ============================================================
+    // Pass the existing allergen name
+    window.populateEditallergenName = function(existingValue) {
+        
+        // Check if the existing value is present in the dropdown options
+        let valueExistsInDropdown = false;
+        
+        // Loop through options to see if we have a match
+        for(let i = 0; i < editSelect.options.length; i++) {
+            if(editSelect.options[i].value === existingValue) {
+                valueExistsInDropdown = true;
+                break;
+            }
+        }
+
+        if (valueExistsInDropdown) {
+            // SCENARIO A: Value is in the list (e.g., "Asthma")
+            // Show dropdown, hide manual input, set values
+            editSelectWrapper.classList.remove('hidden');
+            editManualWrapper.classList.add('hidden');
+            editSelect.value = existingValue;
+            editManualInput.value = existingValue; // Ensure hidden input matches
+        } else {
+            // SCENARIO B: Value is NOT in list (e.g., "Rare Disease X")
+            // Hide dropdown, Show manual input, populate text
+            editSelectWrapper.classList.add('hidden');
+            editManualWrapper.classList.remove('hidden');
+            editSelect.value = 'manual_entry'; // Set select to "Other"
+            editManualInput.value = existingValue; // Fill text box
+        }
+    };
+
     // --- Modal Elements ---
     const editModal = document.getElementById('edit-allergy-modal');
     if (!editModal) return; // Stop if the modal isn't on this page
@@ -10,14 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Form Fields ---
     const fieldAllergen = document.getElementById('edit_allergen');
-    const fieldAllergySelect = document.getElementById('edit_allergy_select');
-    const manualAllergyWrapper = document.getElementById('edit_manual_allergy_wrapper');
     const fieldAllergyType = document.getElementById('edit_allergy_type');
     const fieldReactionDesc = document.getElementById('edit_reaction_desc');
     const fieldFirstObservedDate = document.getElementById('edit_first_observed_date');
     const fieldSeverity = document.getElementById('edit_severity');
     const fieldStatus = document.getElementById('edit_status');
-    const fieldVerificationStatus = document.getElementById('edit_verification_status');
     const errorMessages = document.getElementById('edit-form-error-message');
 
     // --- Modal Control Functions ---
@@ -36,21 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Attach Close Listeners ---
     closeButton.addEventListener('click', closeModal);
     cancelButton.addEventListener('click', closeModal);
-
-    // Allergy Select Toggle Logic for Edit
-    if (fieldAllergySelect && manualAllergyWrapper && fieldAllergen) {
-        fieldAllergySelect.addEventListener('change', function() {
-            if (this.value === 'Other') {
-                manualAllergyWrapper.classList.remove('hidden');
-                fieldAllergen.value = '';
-                fieldAllergen.required = true;
-            } else {
-                manualAllergyWrapper.classList.add('hidden');
-                fieldAllergen.value = this.value;
-                fieldAllergen.required = false;
-            }
-        });
-    }
 
     // --- Attach Listeners to all "Edit" buttons on the page ---
     const editButtons = document.querySelectorAll('.edit-allergy-btn');
@@ -94,29 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateUrl = `/patient/my-records/allergies/${id}`;
         editForm.setAttribute('action', updateUrl);
 
-        // Set field values
-        fieldAllergen.value = allergy.allergen;
-
-        // Handle Select vs Manual Input
-        if (fieldAllergySelect) {
-            let optionExists = false;
-            for (let i = 0; i < fieldAllergySelect.options.length; i++) {
-                if (fieldAllergySelect.options[i].value === allergy.allergen) {
-                    optionExists = true;
-                    break;
-                }
-            }
-
-            if (optionExists) {
-                fieldAllergySelect.value = allergy.allergen;
-                manualAllergyWrapper.classList.add('hidden');
-                fieldAllergen.required = false;
-            } else {
-                fieldAllergySelect.value = 'Other';
-                manualAllergyWrapper.classList.remove('hidden');
-                fieldAllergen.required = true;
-            }
-        }
+        // Set field values using the helper function for allergen name
+        window.populateEditallergenName(allergy.allergen);
 
         fieldAllergyType.value = allergy.allergy_type;
         fieldReactionDesc.value = allergy.reaction_desc || '';
