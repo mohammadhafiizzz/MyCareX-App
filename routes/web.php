@@ -103,7 +103,11 @@ Route::prefix('patient')->group(function () {
 
                 // Export Medical Conditions as PDF
                 Route::get('/export-pdf', [Modules\MedicalCondition\ExportConditionsController::class, 'exportPdf'])
-                    ->name('patient.condition.export.pdf');
+                    ->name('patient.condition.export');
+
+                // Download Specific Condition as PDF
+                Route::get('/download/{condition}', [Modules\MedicalCondition\ExportConditionsController::class, 'downloadCondition'])
+                    ->name('patient.condition.download');
 
                 // Add Medical Condition
                 Route::post('/add', [Modules\MedicalCondition\AddConditionController::class, 'add'])

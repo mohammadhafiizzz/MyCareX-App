@@ -82,20 +82,17 @@
                         <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Description</div>
                         <div class="text-sm text-gray-800 leading-relaxed">{{ $condition['description'] }}</div>
                     </div>
-                    
-                    @if ($condition['treatment'] !== 'No treatment information')
+
+                    <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
                         <div>
-                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Treatment</div>
-                            <div class="text-sm text-gray-800 leading-relaxed">{{ $condition['treatment'] }}</div>
+                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Record Created</div>
+                            <div class="text-sm text-gray-800">{{ $condition['created_at'] }}</div>
                         </div>
-                    @endif
-                    
-                    @if ($condition['notes'] !== 'No additional notes')
                         <div>
-                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Additional Notes</div>
-                            <div class="text-sm text-gray-800 leading-relaxed">{{ $condition['notes'] }}</div>
+                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Last Updated</div>
+                            <div class="text-sm text-gray-800">{{ $condition['updated_at'] }}</div>
                         </div>
-                    @endif
+                    </div>
                 </div>
             </div>
         @empty

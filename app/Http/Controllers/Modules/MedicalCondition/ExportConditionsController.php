@@ -40,8 +40,8 @@ class ExportConditionsController extends Controller
                     ? Carbon::parse($condition->diagnosis_date)->format('M d, Y') 
                     : 'Not recorded',
                 'description' => $condition->description ?? 'No description provided',
-                'treatment' => $condition->treatment ?? 'No treatment information',
-                'notes' => $condition->notes ?? 'No additional notes',
+                'created_at' => $condition->created_at ? $condition->created_at->format('M d, Y') : 'N/A',
+                'updated_at' => $condition->updated_at ? $condition->updated_at->format('M d, Y') : 'N/A',
             ];
         });
 
@@ -52,6 +52,43 @@ class ExportConditionsController extends Controller
             'exportDate' => Carbon::now()->format('F d, Y'),
             'totalConditions' => $conditions->count(),
             'fileName' => 'Medical_Conditions_' . Carbon::now()->format('Y-m-d'),
+        ]);
+    }
+
+    // Download Specific Condition as PDF
+    public function downloadCondition($conditionId) {
+        $patientId = Auth::guard('patient')->id() ?? Auth::id();
+
+        // Check if patient is authenticated
+        if (!$patientId) {
+            return response()->json(['message' => 'Unauthenticated user'], 401);
+        }
+
+        $patient = Auth::guard('patient')->user();
+
+        // Fetch the specific condition
+        $condition = Condition::where('id', $conditionId)
+            ->where('patient_id', $patientId)
+            ->firstOrFail();
+
+        // Process condition for display
+        $processedCondition = [
+            'condition_name' => $condition->condition_name,
+            'severity' => $condition->severity ?? 'Not specified',
+            'status' => $condition->status ?? 'Not specified',
+            'diagnosis_date' => $condition->diagnosis_date 
+                ? Carbon::parse($condition->diagnosis_date)->format('M d, Y') 
+                : 'Not recorded',
+            'description' => $condition->description ?? 'No description provided',
+            'created_at' => $condition->created_at ? $condition->created_at->format('M d, Y') : 'N/A',
+            'updated_at' => $condition->updated_at ? $condition->updated_at->format('M d, Y') : 'N/A',
+        ];
+
+        return view('patient.modules.medicalCondition.download', [
+            'patient' => $patient,
+            'condition' => $processedCondition,
+            'exportDate' => Carbon::now()->format('F d, Y'),
+            'fileName' => 'Medical_Condition_' . Carbon::now()->format('Y-m-d'),
         ]);
     }
 }

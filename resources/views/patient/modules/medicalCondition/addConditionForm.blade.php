@@ -27,20 +27,61 @@
             @csrf 
 
             <div id="form-error-message" class="hidden p-3 rounded-md bg-red-50 border border-red-200">
-                </div>
+            </div>
 
             <div>
                 <label for="condition_name" class="block text-sm font-medium text-gray-700">Condition Name <span class="text-red-500">*</span></label>
-                <input 
-                    type="text" 
-                    name="condition_name" 
-                    id="condition_name" 
-                    required
-                    class="mt-1 block p-3 w-full border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
-                    placeholder="e.g., Asthma"
-                >
-            </div>
+                
+                <div id="condition_select_wrapper" class="relative mt-1">
+                    <select 
+                        id="condition_select"
+                        class="block w-full shadow-sm p-3 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white"
+                    >
+                        <option value="" selected disabled>Select a condition...</option>
+                        
+                        <optgroup label="Common Chronic Conditions">
+                            <option value="Hypertension">Hypertension (High Blood Pressure)</option>
+                            <option value="Type 2 Diabetes Mellitus">Type 2 Diabetes</option>
+                            <option value="Hyperlipidemia">Hyperlipidemia (High Cholesterol)</option>
+                            <option value="Asthma">Asthma</option>
+                            <option value="Osteoarthritis">Osteoarthritis</option>
+                            <option value="Gastroesophageal Reflux Disease (GERD)">GERD (Acid Reflux)</option>
+                        </optgroup>
 
+                        <optgroup label="Acute & Infectious">
+                            <option value="Upper Respiratory Infection">Upper Respiratory Infection</option>
+                            <option value="Influenza">Influenza</option>
+                            <option value="COVID-19">COVID-19</option>
+                            <option value="Urinary Tract Infection">Urinary Tract Infection</option>
+                        </optgroup>
+
+                        <optgroup label="Other">
+                            <option value="Allergic Rhinitis">Allergic Rhinitis</option>
+                            <option value="Migraine">Migraine</option>
+                            <option value="manual_entry" class="font-bold text-blue-600">Other...</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div id="condition_manual_wrapper" class="hidden mt-1 relative">
+                    <input 
+                        type="text" 
+                        name="condition_name" 
+                        id="condition_name" 
+                        required
+                        class="block w-full p-3 pr-10 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
+                        placeholder="Type condition name here..."
+                    >
+                    <button 
+                        type="button" 
+                        id="switch_to_select"
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-blue-600 cursor-pointer"
+                        title="Back to list"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
             <div>
                 <label for="description" class="block text-sm font-medium text-gray-700">Description / Notes</label>
                 <textarea 
@@ -134,18 +175,18 @@
                 </div>
             </div>
 
-            <div class="pt-4 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3">
+            <div class="pt-4 flex gap-2 flex-col-reverse sm:flex-row sm:justify-end sm:space-x-8 lg:space-x-0">
                 <button 
                     type="button" 
                     id="modal-cancel-button"
-                    class="mt-3 sm:mt-0 w-full sm:w-auto inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    class="justify-center inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0"
                 >
                     Cancel
                 </button>
                 <button 
                     type="submit" 
                     id="save-condition-button"
-                    class="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    class="justify-center inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0"
                 >
                     <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

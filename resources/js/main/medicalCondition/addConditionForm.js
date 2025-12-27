@@ -1,4 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    const select = document.getElementById('condition_select');
+    const selectWrapper = document.getElementById('condition_select_wrapper');
+    const manualWrapper = document.getElementById('condition_manual_wrapper');
+    const manualInput = document.getElementById('condition_name');
+    const switchToSelectBtn = document.getElementById('switch_to_select');
+
+    // Logic to toggle between Select and Manual Input
+    select.addEventListener('change', function() {
+        if (this.value === 'manual_entry') {
+            // User chose "Other" -> Hide select, Show input
+            selectWrapper.classList.add('hidden');
+            manualWrapper.classList.remove('hidden');
+            manualInput.value = ''; // Clear input for fresh typing
+            manualInput.focus();
+        } else {
+            // User chose a standard option -> Update hidden input
+            manualInput.value = this.value;
+        }
+    });
+
+    // Logic to switch back to Dropdown
+    switchToSelectBtn.addEventListener('click', function() {
+        manualWrapper.classList.add('hidden');
+        selectWrapper.classList.remove('hidden');
+        select.value = ""; // Reset dropdown
+        manualInput.value = ""; // Clear value
+    });
+
+    // Initialize input with select value if one exists (e.g. on re-edit)
+    if(select.value && select.value !== 'manual_entry') {
+            manualInput.value = select.value;
+    }
     
     const modal = document.getElementById('add-condition-modal');
     const showButton = document.getElementById('show-add-condition-modal');

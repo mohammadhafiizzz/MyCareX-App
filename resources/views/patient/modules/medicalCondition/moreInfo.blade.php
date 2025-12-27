@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2 hidden sm:flex">
                     <a href="{{ route('patient.medicalCondition') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm text-white text-sm font-semibold rounded-lg border border-white/30 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2">
                         <i class="fas fa-arrow-left" aria-hidden="true"></i>
                         Back to List
@@ -274,10 +274,10 @@
                             <i class="fas fa-pen-to-square" aria-hidden="true"></i>
                             Edit
                         </button>
-                        <button type="button" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
-                            <i class="fas fa-download" aria-hidden="true"></i>
+                        <a href="{{ route('patient.condition.download', ['condition' => $condition->id]) }}" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+                            <i class="fas fa-download" aria-hidden="true"></i>    
                             Download
-                        </button>
+                        </a>
                         <hr class="mt-4 mb-5 border-gray-300">
                         <button type="button" onclick="openDeleteModal('condition')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
                             <i class="fas fa-trash" aria-hidden="true"></i>
@@ -344,13 +344,13 @@
 
     <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="fixed inset-0 z-[150] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 text-center sm:block sm:p-0">
             <!-- Backdrop -->
             <div class="fixed inset-0 bg-gray-500/30 transition-opacity" aria-hidden="true" onclick="closeDeleteModal()"></div>
 
             <!-- Modal Content -->
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative z-10">
+            <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative z-10">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
@@ -364,15 +364,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
-                    <form id="deleteForm" action="" method="POST">
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 flex flex-col sm:flex-row-reverse gap-2">
+                    <form id="deleteForm" action="" method="POST" class="w-full sm:w-auto">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" id="deleteSubmitBtn" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-bold text-white hover:bg-red-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                        <button type="submit" id="deleteSubmitBtn" class="inline-flex w-full sm:w-auto items-center cursor-pointer gap-2 justify-center px-4 py-2.5 bg-gradient-to-br from-red-500/90 to-red-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 hover:from-red-500 hover:to-red-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50 focus-visible:ring-offset-0">
                             Delete
                         </button>
                     </form>
-                    <button type="button" onclick="closeDeleteModal()" class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                    <button type="button" onclick="closeDeleteModal()" class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                         Back
                     </button>
                 </div>
@@ -392,7 +392,7 @@
                 title.innerText = 'Delete Medical Condition';
                 description.innerText = 'Are you sure you want to delete this medical condition? This action cannot be undone.';
                 form.action = "{{ route('patient.condition.delete', $condition->id) }}";
-                submitBtn.innerText = 'Delete Condition';
+                submitBtn.innerText = 'Delete';
             } else if (type === 'document') {
                 title.innerText = 'Delete Medical Document';
                 description.innerText = 'Are you sure you want to delete this attachment? This action cannot be undone.';

@@ -1,5 +1,65 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    const editSelect = document.getElementById('edit_condition_select');
+    const editSelectWrapper = document.getElementById('edit_condition_select_wrapper');
+    const editManualWrapper = document.getElementById('edit_condition_manual_wrapper');
+    const editManualInput = document.getElementById('edit_condition_name');
+    const editSwitchBtn = document.getElementById('edit_switch_to_select');
+
+    // 1. Toggle Logic (Same as Add Form)
+    editSelect.addEventListener('change', function() {
+        if (this.value === 'manual_entry') {
+            editSelectWrapper.classList.add('hidden');
+            editManualWrapper.classList.remove('hidden');
+            editManualInput.value = ''; 
+            editManualInput.focus();
+        } else {
+            editManualInput.value = this.value;
+        }
+    });
+
+    // 2. Switch Back Logic
+    editSwitchBtn.addEventListener('click', function() {
+        editManualWrapper.classList.add('hidden');
+        editSelectWrapper.classList.remove('hidden');
+        editSelect.value = ""; 
+        editManualInput.value = "";
+    });
+
+    // ============================================================
+    // HELPER FUNCTION: Call this when opening the Edit Modal
+    // ============================================================
+    // Pass the existing condition name (e.g., "Asthma" or "Rare Disease X")
+    window.populateEditConditionName = function(existingValue) {
+        
+        // Check if the existing value is present in the dropdown options
+        let valueExistsInDropdown = false;
+        
+        // Loop through options to see if we have a match
+        for(let i = 0; i < editSelect.options.length; i++) {
+            if(editSelect.options[i].value === existingValue) {
+                valueExistsInDropdown = true;
+                break;
+            }
+        }
+
+        if (valueExistsInDropdown) {
+            // SCENARIO A: Value is in the list (e.g., "Asthma")
+            // Show dropdown, hide manual input, set values
+            editSelectWrapper.classList.remove('hidden');
+            editManualWrapper.classList.add('hidden');
+            editSelect.value = existingValue;
+            editManualInput.value = existingValue; // Ensure hidden input matches
+        } else {
+            // SCENARIO B: Value is NOT in list (e.g., "Rare Disease X")
+            // Hide dropdown, Show manual input, populate text
+            editSelectWrapper.classList.add('hidden');
+            editManualWrapper.classList.remove('hidden');
+            editSelect.value = 'manual_entry'; // Set select to "Other"
+            editManualInput.value = existingValue; // Fill text box
+        }
+    };
+
     // --- Modal Elements ---
     const editModal = document.getElementById('edit-condition-modal');
     if (!editModal) return; // Stop if the modal isn't on this page
@@ -73,8 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateUrl = `/patient/my-records/medical-conditions/${id}`;
         editForm.setAttribute('action', updateUrl);
 
-        // Set field values
-        fieldConditionName.value = condition.condition_name;
+        // Set field values using the helper function for condition name
+        window.populateEditConditionName(condition.condition_name);
+        
         fieldDescription.value = condition.description || '';
         
         // Format date from "YYYY-MM-DD ..." to "YYYY-MM-DD" for the input
