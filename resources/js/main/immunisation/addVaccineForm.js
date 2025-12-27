@@ -60,6 +60,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Vaccine Name Select/Manual Toggle
+    const vaccineSelect = document.getElementById('vaccine_select');
+    const vaccineManualWrapper = document.getElementById('vaccine_manual_wrapper');
+    const vaccineSelectWrapper = document.getElementById('vaccine_select_wrapper');
+    const vaccineNameInput = document.getElementById('vaccine_name');
+    const switchToSelectBtn = document.getElementById('switch_to_select');
+
+    if (vaccineSelect && vaccineManualWrapper && vaccineSelectWrapper && vaccineNameInput && switchToSelectBtn) {
+        vaccineSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                vaccineSelectWrapper.classList.add('hidden');
+                vaccineManualWrapper.classList.remove('hidden');
+                vaccineNameInput.value = '';
+                vaccineNameInput.focus();
+                vaccineNameInput.required = true;
+            } else {
+                vaccineNameInput.value = this.value;
+                vaccineNameInput.required = false;
+            }
+        });
+
+        switchToSelectBtn.addEventListener('click', function() {
+            vaccineManualWrapper.classList.add('hidden');
+            vaccineSelectWrapper.classList.remove('hidden');
+            vaccineSelect.value = '';
+            vaccineNameInput.value = '';
+            vaccineNameInput.required = false;
+        });
+    }
+
     // File upload handling for add form
     const addFileInput = document.getElementById('add_certificate');
     const addFileDropArea = document.getElementById('add_fileDropArea');

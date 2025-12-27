@@ -276,19 +276,15 @@
                             <i class="fas fa-pen-to-square" aria-hidden="true"></i>
                             Edit
                         </button>
-                        <button type="button" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+                        <a href="{{ route('patient.lab.download', $labTest->id) }}" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
                             <i class="fas fa-download" aria-hidden="true"></i>
                             Download
-                        </button>
+                        </a>
                         <hr class="mt-4 mb-5 border-gray-300">
-                        <form method="POST" action="{{ route('patient.lab.delete', $labTest->id) }}" class="inline-block w-full" onsubmit="return confirm('Are you sure you want to delete this lab test record? This action cannot be undone.');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
-                                <i class="fas fa-trash" aria-hidden="true"></i>
-                                Delete
-                            </button>
-                        </form>
+                        <button type="button" onclick="openDeleteModal('lab')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
                     </div>
                 </section>
 
@@ -349,6 +345,8 @@
 
     <!-- Upload Attachment Form -->
     @include('patient.modules.lab.uploadAttachmentForm')
+
+    @include('patient.components.deleteModal')
 
     <!-- Javascript and Footer -->
     @vite(['resources/js/main/patient/header.js'])

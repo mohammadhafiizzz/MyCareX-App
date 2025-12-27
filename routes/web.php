@@ -148,6 +148,10 @@ Route::prefix('patient')->group(function () {
                 Route::get('/export-pdf', [Modules\Medication\ExportMedicationsController::class, 'exportPdf'])
                     ->name('patient.medication.export.pdf');
 
+                // Download Specific Medication as PDF
+                Route::get('/download/{medication}', [Modules\Medication\ExportMedicationsController::class, 'downloadMedication'])
+                    ->name('patient.medication.download');
+
                 // Add Medication
                 Route::post('/add', [Modules\Medication\AddMedicationController::class, 'add'])
                     ->name('patient.medication.add');
@@ -193,6 +197,10 @@ Route::prefix('patient')->group(function () {
                 Route::get('/export-pdf', [Modules\Allergy\ReadController::class, 'exportPdf'])
                     ->name('patient.allergy.export.pdf');
 
+                // Download Specific Allergy as PDF
+                Route::get('/download/{allergy}', [Modules\Allergy\ReadController::class, 'downloadAllergy'])
+                    ->name('patient.allergy.download');
+
                 // Get Allergy JSON (for edit form)
                 Route::get('/allergy/{allergy}/json', [Modules\Allergy\ReadController::class, 'getAllergyJson'])
                     ->name('patient.allergy.json');
@@ -225,6 +233,10 @@ Route::prefix('patient')->group(function () {
                 // Export Immunisations as PDF
                 Route::get('/export', [Modules\Immunisation\ReadController::class, 'exportPdf'])
                     ->name('patient.immunisation.export');
+
+                // Download Specific Immunisation as PDF
+                Route::get('/download/{immunisation}', [Modules\Immunisation\ReadController::class, 'downloadImmunisation'])
+                    ->name('patient.immunisation.download');
 
                 // Get Immunisation JSON (for edit form)
                 Route::get('/immunisation/{immunisation}/json', [Modules\Immunisation\ReadController::class, 'getImmunisationJson'])
@@ -266,6 +278,10 @@ Route::prefix('patient')->group(function () {
                 // Export Lab Tests as PDF
                 Route::get('/export', [Modules\Lab\ReadController::class, 'exportPdf'])
                     ->name('patient.lab.export');
+
+                // Download Specific Lab Test as PDF
+                Route::get('/download/{labTest}', [Modules\Lab\ReadController::class, 'downloadLab'])
+                    ->name('patient.lab.download');
 
                 // Get Lab Test JSON (for edit form)
                 Route::get('/test/{labTest}/json', [Modules\Lab\ReadController::class, 'getLabTestJson'])

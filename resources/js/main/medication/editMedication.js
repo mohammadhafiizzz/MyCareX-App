@@ -21,6 +21,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const fieldNotes = document.getElementById('edit_notes');
     const errorMessages = document.getElementById('edit-form-error-message');
 
+    // Medication Name Select/Manual Toggle for Edit Form
+    const editMedicationSelect = document.getElementById('edit_medication_select');
+    const editMedicationManualWrapper = document.getElementById('edit_medication_manual_wrapper');
+    const editMedicationSelectWrapper = document.getElementById('edit_medication_select_wrapper');
+    const editSwitchToSelectBtn = document.getElementById('edit_switch_to_select');
+
+    if (editMedicationSelect && editMedicationManualWrapper && editMedicationSelectWrapper && editSwitchToSelectBtn && fieldMedicationName) {
+        editMedicationSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                editMedicationSelectWrapper.classList.add('hidden');
+                editMedicationManualWrapper.classList.remove('hidden');
+                fieldMedicationName.value = '';
+                fieldMedicationName.focus();
+                fieldMedicationName.required = true;
+            } else {
+                fieldMedicationName.value = this.value;
+                fieldMedicationName.required = false;
+            }
+        });
+
+        editSwitchToSelectBtn.addEventListener('click', function() {
+            editMedicationManualWrapper.classList.add('hidden');
+            editMedicationSelectWrapper.classList.remove('hidden');
+            editMedicationSelect.value = '';
+            fieldMedicationName.value = '';
+            fieldMedicationName.required = false;
+        });
+    }
+
     // --- Modal Control Functions ---
     const openModal = () => {
         editModal.style.display = 'flex';
@@ -97,7 +126,37 @@ document.addEventListener('DOMContentLoaded', () => {
         editForm.setAttribute('action', updateUrl);
 
         // Set field values
-        fieldMedicationName.value = medication.medication_name || '';
+        const medicationName = medication.medication_name || '';
+        fieldMedicationName.value = medicationName;
+
+        // Handle medication select/manual toggle
+        if (editMedicationSelect && editMedicationSelectWrapper && editMedicationManualWrapper) {
+            let optionExists = false;
+            for (let i = 0; i < editMedicationSelect.options.length; i++) {
+                if (editMedicationSelect.options[i].value === medicationName) {
+                    optionExists = true;
+                    break;
+                }
+            }
+
+            if (optionExists) {
+                editMedicationSelect.value = medicationName;
+                editMedicationSelectWrapper.classList.remove('hidden');
+                editMedicationManualWrapper.classList.add('hidden');
+                fieldMedicationName.required = false;
+            } else if (medicationName !== '') {
+                editMedicationSelect.value = 'other';
+                editMedicationSelectWrapper.classList.add('hidden');
+                editMedicationManualWrapper.classList.remove('hidden');
+                fieldMedicationName.required = true;
+            } else {
+                editMedicationSelect.value = '';
+                editMedicationSelectWrapper.classList.remove('hidden');
+                editMedicationManualWrapper.classList.add('hidden');
+                fieldMedicationName.required = false;
+            }
+        }
+
         fieldDosage.value = medication.dosage || '';
         fieldStatus.value = medication.status || '';
         

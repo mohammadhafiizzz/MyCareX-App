@@ -57,4 +57,46 @@ class ExportMedicationsController extends Controller
             'fileName' => 'Medications_' . Carbon::now()->format('Y-m-d'),
         ]);
     }
+
+    // Download Specific Medication as PDF
+    public function downloadMedication($medicationId) {
+        $patientId = Auth::guard('patient')->id() ?? Auth::id();
+
+        // Check if patient is authenticated
+        if (!$patientId) {
+            return response()->json(['message' => 'Unauthenticated user'], 401);
+        }
+
+        $patient = Auth::guard('patient')->user();
+
+        // Fetch the specific medication
+        $medication = Medication::where('id', $medicationId)
+            ->where('patient_id', $patientId)
+            ->firstOrFail();
+
+        // Process medication for display
+        $processedMedication = [
+            'medication_name' => $medication->medication_name,
+            'dosage' => $medication->formatted_dosage,
+            'frequency' => $medication->frequency ? \Illuminate\Support\Str::title($medication->frequency) : 'Not specified',
+            'status' => $medication->status ?? 'Not specified',
+            'start_date' => $medication->start_date 
+                ? Carbon::parse($medication->start_date)->format('M d, Y') 
+                : 'Not scheduled',
+            'end_date' => $medication->end_date 
+                ? Carbon::parse($medication->end_date)->format('M d, Y') 
+                : 'No end date',
+            'reason_for_med' => $medication->reason_for_med ?? 'Not specified',
+            'notes' => $medication->notes ?? 'No additional notes',
+            'created_at' => $medication->created_at ? $medication->created_at->format('M d, Y') : 'N/A',
+            'updated_at' => $medication->updated_at ? $medication->updated_at->format('M d, Y') : 'N/A',
+        ];
+
+        return view('patient.modules.medication.download', [
+            'patient' => $patient,
+            'medication' => $processedMedication,
+            'exportDate' => Carbon::now()->format('F d, Y'),
+            'fileName' => 'Medication_' . Carbon::now()->format('Y-m-d'),
+        ]);
+    }
 }

@@ -138,14 +138,10 @@
                                     <i class="fas fa-upload" aria-hidden="true"></i>
                                     Replace Image
                                 </button>
-                                <form method="POST" action="{{ route('patient.medication.delete.image', $medication->id) }}" class="flex-1" onsubmit="return confirm('Are you sure you want to delete this medication image?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
-                                        <i class="fas fa-trash" aria-hidden="true"></i>
-                                        Delete Image
-                                    </button>
-                                </form>
+                                <button type="button" onclick="openDeleteModal('image')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+                                    <i class="fas fa-trash" aria-hidden="true"></i>
+                                    Delete Image
+                                </button>
                             </div>
                         @else
                             <div class="rounded-lg border border-gray-200 bg-gray-50 flex flex-col items-center justify-center py-16">
@@ -255,19 +251,15 @@
                             <i class="fas fa-pen-to-square" aria-hidden="true"></i>
                             Edit
                         </button>
-                        <button type="button" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
+                        <a href="{{ route('patient.medication.download', $medication->id) }}" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-200">
                             <i class="fas fa-download" aria-hidden="true"></i>
                             Download
-                        </button>
+                        </a>
                         <hr class="mt-4 mb-5 border-gray-300">
-                        <form method="POST" action="{{ route('patient.medication.delete', $medication->id) }}" class="inline-block w-full" onsubmit="return confirm('Are you sure you want to delete this medication? This action cannot be undone.');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
-                                <i class="fas fa-trash" aria-hidden="true"></i>
-                                Delete
-                            </button>
-                        </form>
+                        <button type="button" onclick="openDeleteModal('medication')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
                     </div>
                 </section>
 
@@ -328,6 +320,78 @@
 
     <!-- Edit Medication Form -->
     @include('patient.modules.medication.editMedicationForm')
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 z-[150] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 text-center sm:block sm:p-0">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-gray-500/30 transition-opacity" aria-hidden="true" onclick="closeDeleteModal()"></div>
+
+            <!-- Modal Content -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative z-10">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-exclamation-triangle text-red-600" aria-hidden="true"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                Delete Medication
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500" id="modal-description">
+                                    Are you sure you want to delete this medication? This action cannot be undone.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 flex flex-col sm:flex-row-reverse gap-2">
+                    <form id="deleteForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" id="deleteSubmitBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            Delete
+                        </button>
+                    </form>
+                    <button type="button" onclick="closeDeleteModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openDeleteModal(type) {
+            const modal = document.getElementById('deleteModal');
+            const title = document.getElementById('modal-title');
+            const description = document.getElementById('modal-description');
+            const form = document.getElementById('deleteForm');
+            const submitBtn = document.getElementById('deleteSubmitBtn');
+
+            if (type === 'medication') {
+                title.innerText = 'Delete Medication';
+                description.innerText = 'Are you sure you want to delete this medication? This action cannot be undone.';
+                form.action = "{{ route('patient.medication.delete', $medication->id) }}";
+                submitBtn.innerText = 'Delete';
+            } else if (type === 'image') {
+                title.innerText = 'Delete Medication Image';
+                description.innerText = 'Are you sure you want to delete this medication image? This action cannot be undone.';
+                form.action = "{{ route('patient.medication.delete.image', $medication->id) }}";
+                submitBtn.innerText = 'Delete Image';
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
 
     <!-- Javascript and Footer -->
     @vite(['resources/js/main/patient/header.js', 'resources/js/main/medication/uploadMedicationImage.js', 'resources/js/main/medication/editMedication.js'])

@@ -70,12 +70,55 @@ class ReadController extends Controller
             ? Carbon::parse($lastUpdatedAt)->format('M d, Y') 
             : 'Not recorded';
 
+        // Common vaccine options for the select dropdown
+        $vaccineOptions = [
+            'COVID-19 (Pfizer-BioNTech)',
+            'COVID-19 (Moderna)',
+            'COVID-19 (AstraZeneca)',
+            'COVID-19 (Sinovac)',
+            'Influenza (Flu)',
+            'Hepatitis B',
+            'Hepatitis A',
+            'BCG (Tuberculosis)',
+            'DTP (Diphtheria, Tetanus, Pertussis)',
+            'MMR (Measles, Mumps, Rubella)',
+            'Polio (IPV/OPV)',
+            'HPV (Human Papillomavirus)',
+            'Varicella (Chickenpox)',
+            'Pneumococcal',
+            'Meningococcal',
+            'Japanese Encephalitis',
+            'Rabies',
+            'Typhoid',
+            'Yellow Fever'
+        ];
+
         return view('patient.modules.immunisation.immunisation', [
             'immunisations' => $processedImmunisations,
             'timelineImmunisations' => $timelineImmunisations,
             'totalImmunisations' => $totalImmunisations,
             'thisYearImmunisations' => $thisYearImmunisations,
             'lastUpdatedLabel' => $lastUpdatedLabel,
+            'vaccineOptions' => $vaccineOptions,
+        ]);
+    }
+
+    /**
+     * Download a specific immunisation record as PDF
+     */
+    public function downloadImmunisation(Immunisation $immunisation)
+    {
+        // Policy/Gate check: Ensure this immunisation belongs to the authenticated patient
+        if ($immunisation->patient_id !== Auth::guard('patient')->id()) {
+            return redirect()->route('patient.immunisation')->with('error', 'Unauthorized access to immunisation.');
+        }
+
+        $patient = Auth::guard('patient')->user();
+
+        return view('patient.modules.immunisation.download', [
+            'patient' => $patient,
+            'immunisation' => $immunisation,
+            'exportDate' => Carbon::now()->format('F d, Y'),
         ]);
     }
 

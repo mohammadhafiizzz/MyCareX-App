@@ -296,4 +296,42 @@ class ReadController extends Controller
             'fileName' => 'Allergies_' . Carbon::now()->format('Y-m-d'),
         ]);
     }
+
+    // Download Specific Allergy as PDF
+    public function downloadAllergy($allergyId) {
+        $patientId = Auth::guard('patient')->id() ?? Auth::id();
+
+        // Check if patient is authenticated
+        if (!$patientId) {
+            return response()->json(['message' => 'Unauthenticated user'], 401);
+        }
+
+        $patient = Auth::guard('patient')->user();
+
+        // Fetch the specific allergy
+        $allergy = Allergy::where('id', $allergyId)
+            ->where('patient_id', $patientId)
+            ->firstOrFail();
+
+        // Process allergy for display
+        $processedAllergy = [
+            'allergen' => $allergy->allergen,
+            'allergy_type' => $allergy->allergy_type,
+            'severity' => $allergy->severity ? Str::title($allergy->severity) : 'Not specified',
+            'reaction_desc' => $allergy->reaction_desc ?? 'Not specified',
+            'status' => $allergy->status ?? 'Not specified',
+            'first_observed_date' => $allergy->first_observed_date 
+                ? Carbon::parse($allergy->first_observed_date)->format('M d, Y') 
+                : 'Not recorded',
+            'created_at' => $allergy->created_at ? $allergy->created_at->format('M d, Y') : 'N/A',
+            'updated_at' => $allergy->updated_at ? $allergy->updated_at->format('M d, Y') : 'N/A',
+        ];
+
+        return view('patient.modules.allergy.download', [
+            'patient' => $patient,
+            'allergy' => $processedAllergy,
+            'exportDate' => Carbon::now()->format('F d, Y'),
+            'fileName' => 'Allergy_' . Carbon::now()->format('Y-m-d'),
+        ]);
+    }
 }

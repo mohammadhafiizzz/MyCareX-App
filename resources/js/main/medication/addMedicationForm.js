@@ -60,6 +60,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Medication Name Select/Manual Toggle
+    const medicationSelect = document.getElementById('medication_select');
+    const medicationManualWrapper = document.getElementById('medication_manual_wrapper');
+    const medicationSelectWrapper = document.getElementById('medication_select_wrapper');
+    const medicationNameInput = document.getElementById('medication_name');
+    const switchToSelectBtn = document.getElementById('switch_to_select');
+
+    if (medicationSelect && medicationManualWrapper && medicationSelectWrapper && medicationNameInput && switchToSelectBtn) {
+        medicationSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                medicationSelectWrapper.classList.add('hidden');
+                medicationManualWrapper.classList.remove('hidden');
+                medicationNameInput.value = '';
+                medicationNameInput.focus();
+                medicationNameInput.required = true;
+            } else {
+                medicationNameInput.value = this.value;
+                medicationNameInput.required = false;
+            }
+        });
+
+        switchToSelectBtn.addEventListener('click', function() {
+            medicationManualWrapper.classList.add('hidden');
+            medicationSelectWrapper.classList.remove('hidden');
+            medicationSelect.value = '';
+            medicationNameInput.value = '';
+            medicationNameInput.required = false;
+        });
+    }
+
     // File upload handling for add form
     const addFileInput = document.getElementById('add_attachment');
     const addFileDropArea = document.getElementById('add_fileDropArea');

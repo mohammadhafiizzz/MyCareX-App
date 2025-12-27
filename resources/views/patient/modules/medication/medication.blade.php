@@ -184,13 +184,15 @@
                                     </div>
                                 </div>
 
+                                <p class="text-sm font-semibold mt-4 text-gray-400">Notes:</p>
                                 @if ($medication['notes'])
-                                    <p class="mt-4 text-sm text-gray-700 leading-relaxed">
+                                    <p class="text-sm text-gray-700 leading-relaxed">
                                         {{ $medication['notes'] }}
                                     </p>
                                 @endif
 
-                                <div class="mt-4 flex flex-wrap gap-2">
+                                <p class="text-sm font-semibold mt-4 text-gray-400">Status & Frequency:</p>
+                                <div class="mt-2 flex flex-wrap gap-2">
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $medication['statusBadgeStyles'] }}" role="status">
                                         <span class="sr-only">Status:</span>
                                         <i class="{{ $medication['statusIcon'] }}" aria-hidden="true"></i>
@@ -205,9 +207,8 @@
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">
-                                <a href="{{ route('patient.medication.info', $medication['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
-                                    <i class="fas fa-info-circle" aria-hidden="true"></i>
-                                    More info
+                                <a href="{{ route('patient.medication.info', $medication['data']->id) }}" class="inline-flex items-center justify-center cursor-pointer gap-2 px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                    View Details
                                 </a>
                                 <button type="button" 
                                     onclick="toggleMedicationActivity({{ $medication['data']->id }})"

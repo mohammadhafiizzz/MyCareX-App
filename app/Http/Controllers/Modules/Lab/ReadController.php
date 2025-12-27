@@ -70,12 +70,55 @@ class ReadController extends Controller
             ? Carbon::parse($lastUpdatedAt)->format('M d, Y') 
             : 'Not recorded';
 
+        // Common lab test options for the select dropdown
+        $labTestOptions = [
+            'Complete Blood Count (CBC)',
+            'Basic Metabolic Panel (BMP)',
+            'Comprehensive Metabolic Panel (CMP)',
+            'Lipid Panel (Cholesterol)',
+            'Liver Function Test (LFT)',
+            'Thyroid Stimulating Hormone (TSH)',
+            'Hemoglobin A1c (HbA1c)',
+            'Urinalysis',
+            'Prostate-Specific Antigen (PSA)',
+            'Vitamin D Test',
+            'Iron / Ferritin Test',
+            'Electrolyte Panel',
+            'Blood Glucose Test',
+            'C-Reactive Protein (CRP)',
+            'Kidney Function Test (BUN/Creatinine)',
+            'Coagulation Panel (PT/INR)',
+            'Cardiac Biomarkers (Troponin)',
+            'Allergy Testing (IgE)',
+            'Infectious Disease Screening'
+        ];
+
         return view('patient.modules.lab.labTest', [
             'labTests' => $processedLabTests,
             'timelineLabTests' => $timelineLabTests,
             'totalLabTests' => $totalLabTests,
             'thisYearLabTests' => $thisYearLabTests,
             'lastUpdatedLabel' => $lastUpdatedLabel,
+            'labTestOptions' => $labTestOptions,
+        ]);
+    }
+
+    /**
+     * Download a specific lab test record as PDF
+     */
+    public function downloadLab(Lab $labTest)
+    {
+        // Policy/Gate check: Ensure this lab test belongs to the authenticated patient
+        if ($labTest->patient_id !== Auth::guard('patient')->id()) {
+            return redirect()->route('patient.lab')->with('error', 'Unauthorized access to lab test.');
+        }
+
+        $patient = Auth::guard('patient')->user();
+
+        return view('patient.modules.lab.download', [
+            'patient' => $patient,
+            'labTest' => $labTest,
+            'exportDate' => Carbon::now()->format('F d, Y'),
         ]);
     }
 

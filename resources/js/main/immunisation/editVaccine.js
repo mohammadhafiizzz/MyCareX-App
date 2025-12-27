@@ -18,6 +18,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const fieldNotes = document.getElementById('edit_notes');
     const errorMessages = document.getElementById('edit-form-error-message');
 
+    // Vaccine Name Select/Manual Toggle for Edit Form
+    const editVaccineSelect = document.getElementById('edit_vaccine_select');
+    const editVaccineManualWrapper = document.getElementById('edit_vaccine_manual_wrapper');
+    const editVaccineSelectWrapper = document.getElementById('edit_vaccine_select_wrapper');
+    const editSwitchToSelectBtn = document.getElementById('edit_switch_to_select');
+
+    if (editVaccineSelect && editVaccineManualWrapper && editVaccineSelectWrapper && editSwitchToSelectBtn && fieldVaccineName) {
+        editVaccineSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                editVaccineSelectWrapper.classList.add('hidden');
+                editVaccineManualWrapper.classList.remove('hidden');
+                fieldVaccineName.value = '';
+                fieldVaccineName.focus();
+                fieldVaccineName.required = true;
+            } else {
+                fieldVaccineName.value = this.value;
+                fieldVaccineName.required = false;
+            }
+        });
+
+        editSwitchToSelectBtn.addEventListener('click', function() {
+            editVaccineManualWrapper.classList.add('hidden');
+            editVaccineSelectWrapper.classList.remove('hidden');
+            editVaccineSelect.value = '';
+            fieldVaccineName.value = '';
+            fieldVaccineName.required = false;
+        });
+    }
+
     // --- Modal Control Functions ---
     const openModal = () => {
         editModal.style.display = 'flex';
@@ -78,7 +107,37 @@ document.addEventListener('DOMContentLoaded', () => {
         editForm.setAttribute('action', updateUrl);
 
         // Set field values
-        fieldVaccineName.value = immunisation.vaccine_name || '';
+        const vaccineName = immunisation.vaccine_name || '';
+        fieldVaccineName.value = vaccineName;
+
+        // Handle vaccine select/manual toggle
+        if (editVaccineSelect && editVaccineSelectWrapper && editVaccineManualWrapper) {
+            let optionExists = false;
+            for (let i = 0; i < editVaccineSelect.options.length; i++) {
+                if (editVaccineSelect.options[i].value === vaccineName) {
+                    optionExists = true;
+                    break;
+                }
+            }
+
+            if (optionExists) {
+                editVaccineSelect.value = vaccineName;
+                editVaccineSelectWrapper.classList.remove('hidden');
+                editVaccineManualWrapper.classList.add('hidden');
+                fieldVaccineName.required = false;
+            } else if (vaccineName !== '') {
+                editVaccineSelect.value = 'other';
+                editVaccineSelectWrapper.classList.add('hidden');
+                editVaccineManualWrapper.classList.remove('hidden');
+                fieldVaccineName.required = true;
+            } else {
+                editVaccineSelect.value = '';
+                editVaccineSelectWrapper.classList.remove('hidden');
+                editVaccineManualWrapper.classList.add('hidden');
+                fieldVaccineName.required = false;
+            }
+        }
+
         fieldDoseDetails.value = immunisation.dose_details || '';
         
         // Format date from "YYYY-MM-DD ..." to "YYYY-MM-DD" for the input

@@ -173,13 +173,13 @@
                             </div>
 
                             <div class="flex flex-col items-stretch gap-2">
-                                <a href="{{ route('patient.lab.info', $labTest['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
-                                    <i class="fas fa-info-circle" aria-hidden="true"></i>
-                                    More info
+                                <a href="{{ route('patient.lab.info', $labTest['data']->id) }}" class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-sm text-sm font-semibold hover:bg-blue-700 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                                    <i class="fas fa-eye" aria-hidden="true"></i>
+                                    View Details
                                 </a>
                                 <button type="button" 
                                     onclick="toggleActivity({{ $labTest['data']->id }})"
-                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-blue-500/10 backdrop-blur-md text-blue-700 rounded-xl border border-blue-400/20 shadow-sm text-sm font-medium hover:bg-blue-500/20 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                    class="inline-flex gap-2 items-center justify-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-white/20 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
                                     <i class="fas fa-chevron-down" aria-hidden="true"></i>
                                     <span class="activity-toggle-text">Show activity</span>
                                 </button>

@@ -59,4 +59,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Allergy Select Toggle Logic
+    const allergySelect = document.getElementById('allergy_select');
+    const manualAllergyWrapper = document.getElementById('manual_allergy_wrapper');
+    const allergyNameInput = document.getElementById('allergy_name');
+
+    if (allergySelect && manualAllergyWrapper && allergyNameInput) {
+        allergySelect.addEventListener('change', function() {
+            if (this.value === 'Other') {
+                manualAllergyWrapper.classList.remove('hidden');
+                allergyNameInput.value = '';
+                allergyNameInput.required = true;
+            } else {
+                manualAllergyWrapper.classList.add('hidden');
+                allergyNameInput.value = this.value;
+                allergyNameInput.required = false;
+            }
+        });
+    }
 });

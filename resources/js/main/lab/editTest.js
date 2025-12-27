@@ -17,6 +17,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const fieldNotes = document.getElementById('edit_notes');
     const errorMessages = document.getElementById('edit-form-error-message');
 
+    // Lab Test Name Select/Manual Toggle for Edit Form
+    const editTestSelect = document.getElementById('edit_test_select');
+    const editTestManualWrapper = document.getElementById('edit_test_manual_wrapper');
+    const editTestSelectWrapper = document.getElementById('edit_test_select_wrapper');
+    const editSwitchToSelectBtn = document.getElementById('edit_switch_to_select');
+
+    if (editTestSelect && editTestManualWrapper && editTestSelectWrapper && editSwitchToSelectBtn && fieldTestName) {
+        editTestSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                editTestSelectWrapper.classList.add('hidden');
+                editTestManualWrapper.classList.remove('hidden');
+                fieldTestName.value = '';
+                fieldTestName.focus();
+                fieldTestName.required = true;
+            } else {
+                fieldTestName.value = this.value;
+                fieldTestName.required = false;
+            }
+        });
+
+        editSwitchToSelectBtn.addEventListener('click', function() {
+            editTestManualWrapper.classList.add('hidden');
+            editTestSelectWrapper.classList.remove('hidden');
+            editTestSelect.value = '';
+            fieldTestName.value = '';
+            fieldTestName.required = false;
+        });
+    }
+
     // --- Modal Control Functions ---
     const openModal = () => {
         editModal.style.display = 'flex';
@@ -77,7 +106,37 @@ document.addEventListener('DOMContentLoaded', () => {
         editForm.setAttribute('action', updateUrl);
 
         // Set field values
-        fieldTestName.value = labTest.test_name || '';
+        const testName = labTest.test_name || '';
+        fieldTestName.value = testName;
+
+        // Handle test select/manual toggle
+        if (editTestSelect && editTestSelectWrapper && editTestManualWrapper) {
+            let optionExists = false;
+            for (let i = 0; i < editTestSelect.options.length; i++) {
+                if (editTestSelect.options[i].value === testName) {
+                    optionExists = true;
+                    break;
+                }
+            }
+
+            if (optionExists) {
+                editTestSelect.value = testName;
+                editTestSelectWrapper.classList.remove('hidden');
+                editTestManualWrapper.classList.add('hidden');
+                fieldTestName.required = false;
+            } else if (testName !== '') {
+                editTestSelect.value = 'other';
+                editTestSelectWrapper.classList.add('hidden');
+                editTestManualWrapper.classList.remove('hidden');
+                fieldTestName.required = true;
+            } else {
+                editTestSelect.value = '';
+                editTestSelectWrapper.classList.remove('hidden');
+                editTestManualWrapper.classList.add('hidden');
+                fieldTestName.required = false;
+            }
+        }
+
         fieldTestCategory.value = labTest.test_category || '';
         
         // Format date from "YYYY-MM-DD ..." to "YYYY-MM-DD" for the input

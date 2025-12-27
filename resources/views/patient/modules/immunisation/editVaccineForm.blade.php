@@ -35,14 +35,32 @@
             {{-- All form fields now have 'edit_' prefixed IDs --}}
             <div>
                 <label for="edit_vaccine_name" class="block text-sm font-medium text-gray-700">Vaccine Name <span class="text-red-500">*</span></label>
-                <input 
-                    type="text" 
-                    name="vaccine_name" 
-                    id="edit_vaccine_name" 
-                    required
-                    class="mt-1 block p-3 w-full border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
-                    value=""
-                >
+                <div id="edit_vaccine_select_wrapper" class="mt-1">
+                    <select 
+                        id="edit_vaccine_select" 
+                        class="block p-3 w-full border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    >
+                        <option value="" disabled selected>Select a vaccine</option>
+                        @foreach($vaccineOptions as $option)
+                            <option value="{{ $option }}">{{ $option }}</option>
+                        @endforeach
+                        <option value="other">Other (Type manually)</option>
+                    </select>
+                </div>
+                <div id="edit_vaccine_manual_wrapper" class="mt-2 hidden">
+                    <div class="flex gap-2">
+                        <input 
+                            type="text" 
+                            name="vaccine_name" 
+                            id="edit_vaccine_name" 
+                            class="block p-3 w-full border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
+                            placeholder="Enter vaccine name"
+                        >
+                        <button type="button" id="edit_switch_to_select" class="px-3 py-2 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200 transition-colors" title="Back to list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div>

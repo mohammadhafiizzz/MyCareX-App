@@ -60,6 +60,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Lab Test Name Select/Manual Toggle
+    const testSelect = document.getElementById('test_select');
+    const testManualWrapper = document.getElementById('test_manual_wrapper');
+    const testSelectWrapper = document.getElementById('test_select_wrapper');
+    const testNameInput = document.getElementById('test_name');
+    const switchToSelectBtn = document.getElementById('switch_to_select');
+
+    if (testSelect && testManualWrapper && testSelectWrapper && testNameInput && switchToSelectBtn) {
+        testSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                testSelectWrapper.classList.add('hidden');
+                testManualWrapper.classList.remove('hidden');
+                testNameInput.value = '';
+                testNameInput.focus();
+                testNameInput.required = true;
+            } else {
+                testNameInput.value = this.value;
+                testNameInput.required = false;
+            }
+        });
+
+        switchToSelectBtn.addEventListener('click', function() {
+            testManualWrapper.classList.add('hidden');
+            testSelectWrapper.classList.remove('hidden');
+            testSelect.value = '';
+            testNameInput.value = '';
+            testNameInput.required = false;
+        });
+    }
+
     // File upload handling for add form
     const addFileInput = document.getElementById('add_file_attachment');
     const addFileDropArea = document.getElementById('add_fileDropArea');

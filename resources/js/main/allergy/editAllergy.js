@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Form Fields ---
     const fieldAllergen = document.getElementById('edit_allergen');
+    const fieldAllergySelect = document.getElementById('edit_allergy_select');
+    const manualAllergyWrapper = document.getElementById('edit_manual_allergy_wrapper');
     const fieldAllergyType = document.getElementById('edit_allergy_type');
     const fieldReactionDesc = document.getElementById('edit_reaction_desc');
     const fieldFirstObservedDate = document.getElementById('edit_first_observed_date');
@@ -34,6 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Attach Close Listeners ---
     closeButton.addEventListener('click', closeModal);
     cancelButton.addEventListener('click', closeModal);
+
+    // Allergy Select Toggle Logic for Edit
+    if (fieldAllergySelect && manualAllergyWrapper && fieldAllergen) {
+        fieldAllergySelect.addEventListener('change', function() {
+            if (this.value === 'Other') {
+                manualAllergyWrapper.classList.remove('hidden');
+                fieldAllergen.value = '';
+                fieldAllergen.required = true;
+            } else {
+                manualAllergyWrapper.classList.add('hidden');
+                fieldAllergen.value = this.value;
+                fieldAllergen.required = false;
+            }
+        });
+    }
 
     // --- Attach Listeners to all "Edit" buttons on the page ---
     const editButtons = document.querySelectorAll('.edit-allergy-btn');
@@ -79,6 +96,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set field values
         fieldAllergen.value = allergy.allergen;
+
+        // Handle Select vs Manual Input
+        if (fieldAllergySelect) {
+            let optionExists = false;
+            for (let i = 0; i < fieldAllergySelect.options.length; i++) {
+                if (fieldAllergySelect.options[i].value === allergy.allergen) {
+                    optionExists = true;
+                    break;
+                }
+            }
+
+            if (optionExists) {
+                fieldAllergySelect.value = allergy.allergen;
+                manualAllergyWrapper.classList.add('hidden');
+                fieldAllergen.required = false;
+            } else {
+                fieldAllergySelect.value = 'Other';
+                manualAllergyWrapper.classList.remove('hidden');
+                fieldAllergen.required = true;
+            }
+        }
+
         fieldAllergyType.value = allergy.allergy_type;
         fieldReactionDesc.value = allergy.reaction_desc || '';
         
