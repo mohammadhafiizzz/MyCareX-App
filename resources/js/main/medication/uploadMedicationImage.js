@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileDropContent = document.getElementById('imageDropContent');
     const filePreview = document.getElementById('imagePreviewContainer');
     const previewImg = document.getElementById('imagePreviewImg');
+    const fileIconPreview = document.getElementById('fileIconPreview');
     const fileName = document.getElementById('imageFileName');
     const fileSize = document.getElementById('imageFileSize');
     const removeFileBtn = document.getElementById('removeImageFile');
@@ -52,6 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (previewImg) {
             previewImg.src = '';
+            previewImg.classList.add('hidden');
+        }
+        if (fileIconPreview) {
+            fileIconPreview.classList.add('hidden');
         }
         if (uploadError) {
             uploadError.classList.add('hidden');
@@ -99,10 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Validate file type - only images
-        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        // Validate file type - only JPG, JPEG, PNG and PDF
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
         if (!allowedTypes.includes(file.type)) {
-            showError('Invalid file type. Please select a JPG, JPEG, or PNG image.');
+            showError('Invalid file type. Please select a JPG, JPEG, PNG image, or PDF document.');
             if (fileInput) fileInput.value = '';
             return;
         }
@@ -112,12 +117,20 @@ document.addEventListener('DOMContentLoaded', function() {
             fileName.textContent = file.name;
             fileSize.textContent = formatFileSize(file.size);
             
-            // Create image preview
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImg.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+            if (file.type === 'application/pdf') {
+                // For PDF, show a PDF icon instead of image preview
+                if (previewImg) previewImg.classList.add('hidden');
+                if (fileIconPreview) fileIconPreview.classList.remove('hidden');
+            } else {
+                // Create image preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewImg.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+                if (fileIconPreview) fileIconPreview.classList.add('hidden');
+            }
             
             fileDropContent.classList.add('hidden');
             filePreview.classList.remove('hidden');
@@ -171,7 +184,11 @@ document.addEventListener('DOMContentLoaded', function() {
         removeFileBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             if (fileInput) fileInput.value = '';
-            if (previewImg) previewImg.src = '';
+            if (previewImg) {
+                previewImg.src = '';
+                previewImg.classList.add('hidden');
+            }
+            if (fileIconPreview) fileIconPreview.classList.add('hidden');
             if (fileDropContent) fileDropContent.classList.remove('hidden');
             if (filePreview) filePreview.classList.add('hidden');
             hideError();
@@ -210,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
         uploadForm.addEventListener('submit', function(e) {
             if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
                 e.preventDefault();
-                showError('Please select an image to upload.');
+                showError('Please select an attachment to upload.');
                 return;
             }
 

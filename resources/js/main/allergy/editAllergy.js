@@ -7,7 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const editManualInput = document.getElementById('edit_allergen');
     const editSwitchBtn = document.getElementById('edit_switch_to_select');
 
-    // 1. Toggle Logic (Same as Add Form)
+    // Edit Allergy Type Select Toggle Logic
+    const editTypeSelect = document.getElementById('edit_allergy_type_select');
+    const editTypeSelectWrapper = document.getElementById('edit_allergy_type_select_wrapper');
+    const editTypeManualWrapper = document.getElementById('edit_allergy_type_manual_wrapper');
+    const editTypeManualInput = document.getElementById('edit_allergy_type');
+    const editTypeSwitchBtn = document.getElementById('edit_type_switch_to_select');
+
+    // 1. Allergen Toggle Logic
     editSelect.addEventListener('change', function() {
         if (this.value === 'manual_entry') {
             editSelectWrapper.classList.add('hidden');
@@ -19,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 2. Switch Back Logic
+    // 2. Allergen Switch Back Logic
     editSwitchBtn.addEventListener('click', function() {
         editManualWrapper.classList.add('hidden');
         editSelectWrapper.classList.remove('hidden');
@@ -27,9 +34,30 @@ document.addEventListener('DOMContentLoaded', () => {
         editManualInput.value = "";
     });
 
+    // 3. Allergy Type Toggle Logic
+    editTypeSelect.addEventListener('change', function() {
+        if (this.value === 'manual_entry') {
+            editTypeSelectWrapper.classList.add('hidden');
+            editTypeManualWrapper.classList.remove('hidden');
+            editTypeManualInput.value = ''; 
+            editTypeManualInput.focus();
+        } else {
+            editTypeManualInput.value = this.value;
+        }
+    });
+
+    // 4. Allergy Type Switch Back Logic
+    editTypeSwitchBtn.addEventListener('click', function() {
+        editTypeManualWrapper.classList.add('hidden');
+        editTypeSelectWrapper.classList.remove('hidden');
+        editTypeSelect.value = ""; 
+        editTypeManualInput.value = "";
+    });
+
     // ============================================================
-    // HELPER FUNCTION: Call this when opening the Edit Modal
+    // HELPER FUNCTIONS: Call these when opening the Edit Modal
     // ============================================================
+    
     // Pass the existing allergen name
     window.populateEditallergenName = function(existingValue) {
         
@@ -45,19 +73,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (valueExistsInDropdown) {
-            // SCENARIO A: Value is in the list (e.g., "Asthma")
             // Show dropdown, hide manual input, set values
             editSelectWrapper.classList.remove('hidden');
             editManualWrapper.classList.add('hidden');
             editSelect.value = existingValue;
-            editManualInput.value = existingValue; // Ensure hidden input matches
+            editManualInput.value = existingValue;
         } else {
-            // SCENARIO B: Value is NOT in list (e.g., "Rare Disease X")
             // Hide dropdown, Show manual input, populate text
             editSelectWrapper.classList.add('hidden');
             editManualWrapper.classList.remove('hidden');
-            editSelect.value = 'manual_entry'; // Set select to "Other"
-            editManualInput.value = existingValue; // Fill text box
+            editSelect.value = 'manual_entry';
+            editManualInput.value = existingValue;
+        }
+    };
+
+    // Pass the existing allergy type
+    window.populateEditAllergyType = function(existingValue) {
+        
+        // Check if the existing value is present in the dropdown options
+        let valueExistsInDropdown = false;
+        
+        for(let i = 0; i < editTypeSelect.options.length; i++) {
+            if(editTypeSelect.options[i].value === existingValue) {
+                valueExistsInDropdown = true;
+                break;
+            }
+        }
+
+        if (valueExistsInDropdown) {
+            editTypeSelectWrapper.classList.remove('hidden');
+            editTypeManualWrapper.classList.add('hidden');
+            editTypeSelect.value = existingValue;
+            editTypeManualInput.value = existingValue;
+        } else {
+            editTypeSelectWrapper.classList.add('hidden');
+            editTypeManualWrapper.classList.remove('hidden');
+            editTypeSelect.value = 'manual_entry';
+            editTypeManualInput.value = existingValue;
         }
     };
 
@@ -137,10 +189,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateUrl = `/patient/my-records/allergies/${id}`;
         editForm.setAttribute('action', updateUrl);
 
-        // Set field values using the helper function for allergen name
+        // Set field values using the helper functions
         window.populateEditallergenName(allergy.allergen);
+        window.populateEditAllergyType(allergy.allergy_type);
 
-        fieldAllergyType.value = allergy.allergy_type;
         fieldReactionDesc.value = allergy.reaction_desc || '';
         
         // Format date from "YYYY-MM-DD ..." to "YYYY-MM-DD" for the input

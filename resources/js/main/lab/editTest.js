@@ -46,6 +46,89 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Lab Test Category Select/Manual Toggle for Edit Form
+    const editCategorySelect = document.getElementById('edit_test_category_select');
+    const editCategoryManualWrapper = document.getElementById('edit_test_category_manual_wrapper');
+    const editCategorySelectWrapper = document.getElementById('edit_test_category_select_wrapper');
+    const editSwitchToSelectCategoryBtn = document.getElementById('edit_switch_to_select_category');
+
+    if (editCategorySelect && editCategoryManualWrapper && editCategorySelectWrapper && editSwitchToSelectCategoryBtn && fieldTestCategory) {
+        editCategorySelect.addEventListener('change', function() {
+            if (this.value === 'other_category') {
+                editCategorySelectWrapper.classList.add('hidden');
+                editCategoryManualWrapper.classList.remove('hidden');
+                fieldTestCategory.value = '';
+                fieldTestCategory.focus();
+                fieldTestCategory.required = true;
+            } else {
+                fieldTestCategory.value = this.value;
+                fieldTestCategory.required = false;
+            }
+        });
+
+        editSwitchToSelectCategoryBtn.addEventListener('click', function() {
+            editCategoryManualWrapper.classList.add('hidden');
+            editCategorySelectWrapper.classList.remove('hidden');
+            editCategorySelect.value = '';
+            fieldTestCategory.value = '';
+            fieldTestCategory.required = false;
+        });
+    }
+
+    // ============================================================
+    // HELPER FUNCTIONS: Call these when opening the Edit Modal
+    // ============================================================
+    
+    // Pass the existing test name
+    window.populateEditTestName = function(existingValue) {
+        let valueExistsInDropdown = false;
+        for(let i = 0; i < editTestSelect.options.length; i++) {
+            if(editTestSelect.options[i].value === existingValue) {
+                valueExistsInDropdown = true;
+                break;
+            }
+        }
+
+        if (valueExistsInDropdown) {
+            editTestSelectWrapper.classList.remove('hidden');
+            editTestManualWrapper.classList.add('hidden');
+            editTestSelect.value = existingValue;
+            fieldTestName.value = existingValue;
+            fieldTestName.required = false;
+        } else {
+            editTestSelectWrapper.classList.add('hidden');
+            editTestManualWrapper.classList.remove('hidden');
+            editTestSelect.value = 'other';
+            fieldTestName.value = existingValue;
+            fieldTestName.required = true;
+        }
+    };
+
+    // Pass the existing test category
+    window.populateEditTestCategory = function(existingValue) {
+        let valueExistsInDropdown = false;
+        for(let i = 0; i < editCategorySelect.options.length; i++) {
+            if(editCategorySelect.options[i].value === existingValue) {
+                valueExistsInDropdown = true;
+                break;
+            }
+        }
+
+        if (valueExistsInDropdown) {
+            editCategorySelectWrapper.classList.remove('hidden');
+            editCategoryManualWrapper.classList.add('hidden');
+            editCategorySelect.value = existingValue;
+            fieldTestCategory.value = existingValue;
+            fieldTestCategory.required = false;
+        } else {
+            editCategorySelectWrapper.classList.add('hidden');
+            editCategoryManualWrapper.classList.remove('hidden');
+            editCategorySelect.value = 'other_category';
+            fieldTestCategory.value = existingValue;
+            fieldTestCategory.required = true;
+        }
+    };
+
     // --- Modal Control Functions ---
     const openModal = () => {
         editModal.style.display = 'flex';
@@ -105,39 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateUrl = `/patient/my-records/lab-tests/${id}`;
         editForm.setAttribute('action', updateUrl);
 
-        // Set field values
-        const testName = labTest.test_name || '';
-        fieldTestName.value = testName;
-
-        // Handle test select/manual toggle
-        if (editTestSelect && editTestSelectWrapper && editTestManualWrapper) {
-            let optionExists = false;
-            for (let i = 0; i < editTestSelect.options.length; i++) {
-                if (editTestSelect.options[i].value === testName) {
-                    optionExists = true;
-                    break;
-                }
-            }
-
-            if (optionExists) {
-                editTestSelect.value = testName;
-                editTestSelectWrapper.classList.remove('hidden');
-                editTestManualWrapper.classList.add('hidden');
-                fieldTestName.required = false;
-            } else if (testName !== '') {
-                editTestSelect.value = 'other';
-                editTestSelectWrapper.classList.add('hidden');
-                editTestManualWrapper.classList.remove('hidden');
-                fieldTestName.required = true;
-            } else {
-                editTestSelect.value = '';
-                editTestSelectWrapper.classList.remove('hidden');
-                editTestManualWrapper.classList.add('hidden');
-                fieldTestName.required = false;
-            }
-        }
-
-        fieldTestCategory.value = labTest.test_category || '';
+        // Set field values using helper functions
+        window.populateEditTestName(labTest.test_name || '');
+        window.populateEditTestCategory(labTest.test_category || '');
         
         // Format date from "YYYY-MM-DD ..." to "YYYY-MM-DD" for the input
         if (labTest.test_date) {

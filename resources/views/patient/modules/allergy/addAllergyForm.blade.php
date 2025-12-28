@@ -38,37 +38,25 @@
                         class="block w-full shadow-sm p-3 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white"
                     >
                         <option value="" selected disabled>Select an allergen...</option>
-                        
-                        <optgroup label="Common Food Allergies">
-                            <option value="Peanuts">Peanuts</option>
-                            <option value="Tree Nuts">Tree Nuts</option>
-                            <option value="Milk">Milk</option>
-                            <option value="Eggs">Eggs</option>
-                            <option value="Wheat">Wheat</option>
-                            <option value="Soy">Soy</option>
-                            <option value="Fish">Fish</option>
-                            <option value="Shellfish">Shellfish</option>
-                        </optgroup>
-
-                        <optgroup label="Medication Allergies">
-                            <option value="Penicillin">Penicillin</option>
-                            <option value="Sulfa Drugs">Sulfa Drugs</option>
-                            <option value="Aspirin">Aspirin</option>
-                            <option value="NSAIDs">NSAIDs</option>
-                        </optgroup>
-
-                        <optgroup label="Environmental & Other">
-                            <option value="Pollen">Pollen</option>
-                            <option value="Dust Mites">Dust Mites</option>
-                            <option value="Mold">Mold</option>
-                            <option value="Pet Dander">Pet Dander</option>
-                            <option value="Latex">Latex</option>
-                            <option value="Insect Stings">Insect Stings</option>
-                        </optgroup>
-
-                        <optgroup label="Other">
-                            <option value="manual_entry" class="font-bold text-blue-600">Other...</option>
-                        </optgroup>
+                        <option value="Peanuts">Peanuts</option>
+                        <option value="Tree Nuts">Tree Nuts</option>
+                        <option value="Milk">Milk</option>
+                        <option value="Eggs">Eggs</option>
+                        <option value="Wheat">Wheat</option>
+                        <option value="Soy">Soy</option>
+                        <option value="Fish">Fish</option>
+                        <option value="Shellfish">Shellfish</option>
+                        <option value="Penicillin">Penicillin</option>
+                        <option value="Sulfa Drugs">Sulfa Drugs</option>
+                        <option value="Aspirin">Aspirin</option>
+                        <option value="NSAIDs">NSAIDs</option>
+                        <option value="Pollen">Pollen</option>
+                        <option value="Dust Mites">Dust Mites</option>
+                        <option value="Mold">Mold</option>
+                        <option value="Pet Dander">Pet Dander</option>
+                        <option value="Latex">Latex</option>
+                        <option value="Insect Stings">Insect Stings</option>
+                        <option value="manual_entry" class="font-bold text-blue-600">Other...</option>
                     </select>
                 </div>
 
@@ -83,7 +71,7 @@
                     <button 
                         type="button" 
                         id="switch_to_select"
-                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-blue-600 cursor-pointer"
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
                         title="Back to list"
                     >
                         <i class="fas fa-times"></i>
@@ -93,14 +81,39 @@
 
             <div>
                 <label for="allergy_type" class="block text-sm font-medium text-gray-700">Allergy Type <span class="text-red-500">*</span></label>
-                <input 
-                    type="text" 
-                    name="allergy_type" 
-                    id="allergy_type" 
-                    required
-                    class="mt-1 block p-3 w-full border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
-                    placeholder="e.g., Food, Medication, Environmental"
-                >
+                
+                <div id="allergy_type_select_wrapper" class="relative mt-1">
+                    <select 
+                        id="allergy_type_select"
+                        class="block w-full shadow-sm p-3 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white"
+                    >
+                        <option value="" selected disabled>Select an allergy type...</option>
+                        <option value="Food">Food</option>
+                        <option value="Medication">Medication</option>
+                        <option value="Environmental">Environmental</option>
+                        <option value="Insect">Insect</option>
+                        <option value="Latex">Latex</option>
+                        <option value="manual_entry" class="font-bold text-blue-600">Other...</option>
+                    </select>
+                </div>
+
+                <div id="allergy_type_manual_wrapper" class="hidden mt-1 relative">
+                    <input 
+                        type="text" 
+                        name="allergy_type" 
+                        id="allergy_type" 
+                        class="block w-full p-3 pr-10 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
+                        placeholder="Type allergy type here..."
+                    >
+                    <button 
+                        type="button" 
+                        id="type_switch_to_select"
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
+                        title="Back to list"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
 
             <div>

@@ -42,28 +42,19 @@
                         class="block w-full p-3 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white"
                     >
                         <option value="" disabled>Select a condition...</option>
-                        
-                        <optgroup label="Common Chronic Conditions">
-                            <option value="Hypertension">Hypertension (High Blood Pressure)</option>
-                            <option value="Type 2 Diabetes Mellitus">Type 2 Diabetes</option>
-                            <option value="Hyperlipidemia">Hyperlipidemia (High Cholesterol)</option>
-                            <option value="Asthma">Asthma</option>
-                            <option value="Osteoarthritis">Osteoarthritis</option>
-                            <option value="Gastroesophageal Reflux Disease (GERD)">GERD (Acid Reflux)</option>
-                        </optgroup>
-
-                        <optgroup label="Acute & Infectious">
-                            <option value="Upper Respiratory Infection">Upper Respiratory Infection</option>
-                            <option value="Influenza">Influenza</option>
-                            <option value="COVID-19">COVID-19</option>
-                            <option value="Urinary Tract Infection">Urinary Tract Infection</option>
-                        </optgroup>
-
-                        <optgroup label="Other">
-                            <option value="Allergic Rhinitis">Allergic Rhinitis</option>
-                            <option value="Migraine">Migraine</option>
-                            <option value="manual_entry" class="font-bold text-blue-600">Other...</option>
-                        </optgroup>
+                        <option value="Hypertension">Hypertension (High Blood Pressure)</option>
+                        <option value="Type 2 Diabetes Mellitus">Type 2 Diabetes</option>
+                        <option value="Hyperlipidemia">Hyperlipidemia (High Cholesterol)</option>
+                        <option value="Asthma">Asthma</option>
+                        <option value="Osteoarthritis">Osteoarthritis</option>
+                        <option value="Gastroesophageal Reflux Disease (GERD)">GERD (Acid Reflux)</option>
+                        <option value="Upper Respiratory Infection">Upper Respiratory Infection</option>
+                        <option value="Influenza">Influenza</option>
+                        <option value="COVID-19">COVID-19</option>
+                        <option value="Urinary Tract Infection">Urinary Tract Infection</option>
+                        <option value="Allergic Rhinitis">Allergic Rhinitis</option>
+                        <option value="Migraine">Migraine</option>
+                        <option value="manual_entry" class="font-bold text-blue-600">Other...</option>
                     </select>
                 </div>
 
@@ -79,7 +70,7 @@
                     <button 
                         type="button" 
                         id="edit_switch_to_select"
-                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-blue-600 cursor-pointer"
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
                         title="Back to list"
                     >
                         <i class="fas fa-times"></i>

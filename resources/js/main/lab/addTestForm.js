@@ -90,6 +90,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const testCategorySelect = document.getElementById('test_category_select');
+    const testCategoryManualWrapper = document.getElementById('test_category_manual_wrapper');
+    const testCategorySelectWrapper = document.getElementById('test_category_select_wrapper');
+    const testCategoryInput = document.getElementById('test_category');
+    const switchToSelectCategoryBtn = document.getElementById('switch_to_select_category');
+
+    if (testCategorySelect && testCategoryManualWrapper && testCategorySelectWrapper && testCategoryInput && switchToSelectCategoryBtn) {
+        testCategorySelect.addEventListener('change', function() {
+            if (this.value === 'other_category') {
+                testCategorySelectWrapper.classList.add('hidden');
+                testCategoryManualWrapper.classList.remove('hidden');
+                testCategoryInput.value = '';
+                testCategoryInput.focus();
+                testCategoryInput.required = true;
+            } else {
+                testCategoryInput.value = this.value;
+                testCategoryInput.required = false;
+            }
+        });
+
+        switchToSelectCategoryBtn.addEventListener('click', function() {
+            testCategoryManualWrapper.classList.add('hidden');
+            testCategorySelectWrapper.classList.remove('hidden');
+            testCategorySelect.value = '';
+            testCategoryInput.value = '';
+            testCategoryInput.required = false;
+        });
+    }
+
     // File upload handling for add form
     const addFileInput = document.getElementById('add_file_attachment');
     const addFileDropArea = document.getElementById('add_fileDropArea');

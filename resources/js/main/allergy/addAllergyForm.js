@@ -93,4 +93,37 @@ document.addEventListener('DOMContentLoaded', () => {
     if(select.value && select.value !== 'manual_entry') {
             manualInput.value = select.value;
     }
+
+    // Allergy Type Select Toggle Logic
+    const selectType = document.getElementById('allergy_type_select');
+    const selectTypeWrapper = document.getElementById('allergy_type_select_wrapper');
+    const manualTypeWrapper = document.getElementById('allergy_type_manual_wrapper');
+    const manualTypeInput = document.getElementById('allergy_type');
+    const TypeswitchToSelectBtn = document.getElementById('type_switch_to_select');
+    // Logic to toggle between Select and Manual Input
+    selectType.addEventListener('change', function() {
+        if (this.value === 'manual_entry') {
+            // User chose "Other" -> Hide select, Show input
+            selectTypeWrapper.classList.add('hidden');
+            manualTypeWrapper.classList.remove('hidden');
+            manualTypeInput.value = ''; // Clear input for fresh typing
+            manualTypeInput.focus();
+        } else {
+            // User chose a standard option -> Update hidden input
+            manualTypeInput.value = this.value;
+        }
+    });
+
+    // Logic to switch back to Dropdown
+    TypeswitchToSelectBtn.addEventListener('click', function() {
+        manualTypeWrapper.classList.add('hidden');
+        selectTypeWrapper.classList.remove('hidden');
+        selectType.value = ""; // Reset dropdown
+        manualTypeInput.value = ""; // Clear value
+    });
+
+    // Initialize input with select value if one exists (e.g. on re-edit)
+    if(selectType.value && selectType.value !== 'manual_entry') {
+            manualTypeInput.value = selectType.value;
+    }
 });

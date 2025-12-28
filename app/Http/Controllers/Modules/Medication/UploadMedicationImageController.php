@@ -27,7 +27,7 @@ class UploadMedicationImageController extends Controller
         
         // Validate the uploaded file
         $validatedData = $request->validate([
-            'med_image_url' => 'required|file|mimes:jpg,jpeg,png|max:10240', // Max 10MB
+            'med_image_url' => 'required|file|mimes:jpg,jpeg,png,pdf|max:10240', // Max 10MB
         ]);
 
         try {
@@ -38,7 +38,7 @@ class UploadMedicationImageController extends Controller
             }
 
             // Target directory in public path
-            $destinationPath = public_path('images/medication');
+            $destinationPath = public_path('files/medication');
 
             // Ensure directory exists
             if (!File::exists($destinationPath)) {
@@ -54,7 +54,7 @@ class UploadMedicationImageController extends Controller
             // Delete old image if exists
             if ($medication->med_image_url) {
                 $oldFilename = basename($medication->med_image_url);
-                $oldFilePath = public_path('images/medication/' . $oldFilename);
+                $oldFilePath = public_path('files/medication/' . $oldFilename);
                 if (File::exists($oldFilePath)) {
                     File::delete($oldFilePath);
                 }
@@ -68,7 +68,7 @@ class UploadMedicationImageController extends Controller
             }
 
             // Build the public URL to store in DB
-            $publicUrl = asset('images/medication/' . $filename);
+            $publicUrl = asset('files/medication/' . $filename);
 
             // Update the medication with image URL using direct attribute assignment
             $medication->med_image_url = $publicUrl;
@@ -107,7 +107,7 @@ class UploadMedicationImageController extends Controller
             if ($medication->med_image_url) {
                 // Extract filename from URL
                 $filename = basename($medication->med_image_url);
-                $filePath = public_path('images/medication/' . $filename);
+                $filePath = public_path('files/medication/' . $filename);
 
                 // Delete the file if it exists
                 if (File::exists($filePath)) {

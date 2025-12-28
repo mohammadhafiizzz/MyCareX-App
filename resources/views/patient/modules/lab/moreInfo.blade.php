@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - {{ $labTest->test_name }} Details</title>
+    <title>Lab Test</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
@@ -345,6 +345,68 @@
 
     <!-- Upload Attachment Form -->
     @include('patient.modules.lab.uploadAttachmentForm')
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 z-[150] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 text-center sm:block sm:p-0">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-gray-500/30 transition-opacity" aria-hidden="true" onclick="closeDeleteModal()"></div>
+
+            <!-- Modal Content -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative z-10">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-exclamation-triangle text-red-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">Delete Confirmation</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500" id="modal-description">Are you sure you want to delete this record? This action cannot be undone.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 flex flex-col sm:flex-row-reverse gap-2">
+                    <form id="deleteForm" action="" method="POST" class="w-full sm:w-auto">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" id="deleteSubmitBtn" class="inline-flex w-full sm:w-auto items-center cursor-pointer gap-2 justify-center px-4 py-2.5 bg-gradient-to-br from-red-500/90 to-red-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 hover:from-red-500 hover:to-red-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50 focus-visible:ring-offset-0">
+                            Delete
+                        </button>
+                    </form>
+                    <button type="button" onclick="closeDeleteModal()" class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 bg-gray-100/60 backdrop-blur-md text-gray-700 rounded-xl border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-100/80 hover:shadow-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 focus-visible:ring-offset-0">
+                        Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openDeleteModal(type) {
+            const modal = document.getElementById('deleteModal');
+            const title = document.getElementById('modal-title');
+            const description = document.getElementById('modal-description');
+            const form = document.getElementById('deleteForm');
+            const submitBtn = document.getElementById('deleteSubmitBtn');
+
+            if (type === 'lab') {
+                title.innerText = 'Delete Lab Test Record';
+                description.innerText = 'Are you sure you want to delete this lab test record? This action cannot be undone.';
+                form.action = "{{ route('patient.lab.delete', $labTest->id) }}";
+                submitBtn.innerText = 'Delete';
+            }
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
 
     <!-- Javascript and Footer -->
     @vite(['resources/js/main/patient/header.js'])

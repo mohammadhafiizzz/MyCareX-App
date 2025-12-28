@@ -3,110 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab Test Record - {{ $labTest->test_name }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        @media print {
-            .no-print { display: none; }
-            body { background-color: white; }
-            .print-container { box-shadow: none; border: none; width: 100%; max-width: 100%; margin: 0; padding: 0; }
-        }
-    </style>
+    <title>Download {{ $labTest['test_name'] }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100 py-10">
-    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden print-container">
-        {{-- Header --}}
-        <div class="bg-blue-600 p-8 text-white flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-bold">Lab Test Record</h1>
-                <p class="opacity-80 mt-1">MyCareX Personal Health Record</p>
+<body class="bg-white font-sans text-gray-900 p-8 max-w-7xl mx-auto">
+
+    <div class="border-b-4 border-blue-600 pb-5 mb-8">
+        <h1 class="text-4xl font-bold text-blue-900 mb-2">Lab Test: {{ $labTest['test_name'] }}</h1>
+        <p class="text-gray-600 text-sm">Personal Health Record</p>
+    </div>
+    
+    <div class="bg-gray-100 rounded-lg p-6 mb-8">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Patient Information</h2>
+        <div class="grid grid-cols-2 gap-6">
+            <div class="flex flex-col">
+                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Full Name</span>
+                <span class="text-sm text-gray-900 mt-1">{{ $patient->full_name }}</span>
             </div>
-            <div class="text-right">
-                <p class="text-sm opacity-80">Generated on</p>
-                <p class="font-semibold">{{ $exportDate }}</p>
+            <div class="flex flex-col">
+                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</span>
+                <span class="text-sm text-gray-900 mt-1">{{ $patient->email }}</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Date of Birth</span>
+                <span class="text-sm text-gray-900 mt-1">{{ $patient->date_of_birth ? \Carbon\Carbon::parse($patient->date_of_birth)->format('M d, Y') : 'Not provided' }}</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Report Generated</span>
+                <span class="text-sm text-gray-900 mt-1">{{ $exportDate }}</span>
             </div>
         </div>
-
-        <div class="p-8">
-            {{-- Patient Info --}}
-            <div class="grid grid-cols-2 gap-8 mb-10 pb-8 border-b border-gray-200">
+    </div>
+    
+    <div class="mt-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-gray-200">{{ $labTest['test_name'] }}</h2>
+        
+        <div class="border border-gray-200 rounded-xl p-6 mb-6 bg-white page-break-avoid">
+            
+            <div class="space-y-4">
+                @if ($labTest['test_category'] !== 'Not specified')
+                    <div>
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Test Category</div>
+                        <div class="text-sm text-gray-800">{{ $labTest['test_category'] }}</div>
+                    </div>
+                @endif
+                
                 <div>
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Patient Information</h2>
-                    <p class="text-xl font-bold text-gray-900">{{ $patient->first_name }} {{ $patient->last_name }}</p>
-                    <p class="text-gray-600">Patient ID: {{ $patient->id }}</p>
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Test Date</div>
+                    <div class="text-sm text-gray-800">{{ $labTest['test_date'] }}</div>
                 </div>
-                <div class="text-right">
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Record Status</h2>
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-700">
-                        {{ $labTest->verification_status ?? 'Patient Reported' }}
-                    </span>
-                </div>
-            </div>
-
-            {{-- Lab Test Details --}}
-            <div class="mb-10">
-                <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    Lab Test Details
-                </h2>
-                <div class="bg-gray-50 rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                @if ($labTest['facility_name'] !== 'Not specified')
                     <div>
-                        <p class="text-sm text-gray-500">Test Name</p>
-                        <p class="font-semibold text-gray-900 text-lg">{{ $labTest->test_name }}</p>
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Facility Name</div>
+                        <div class="text-sm text-gray-800">{{ $labTest['facility_name'] }}</div>
                     </div>
+                @endif
+                
+                @if ($labTest['notes'] !== 'No additional notes')
                     <div>
-                        <p class="text-sm text-gray-500">Test Date</p>
-                        <p class="font-semibold text-gray-900">{{ \Carbon\Carbon::parse($labTest->test_date)->format('F d, Y') }}</p>
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Additional Notes</div>
+                        <div class="text-sm text-gray-800 leading-relaxed">{{ $labTest['notes'] }}</div>
                     </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Category</p>
-                        <p class="font-semibold text-gray-900">{{ $labTest->test_category }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Facility Name</p>
-                        <p class="font-semibold text-gray-900">{{ $labTest->facility_name ?? 'Not specified' }}</p>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Notes --}}
-            @if($labTest->notes)
-            <div class="mb-10">
-                <h2 class="text-lg font-bold text-gray-900 mb-3">Notes & Additional Information</h2>
-                <div class="bg-white border border-gray-200 rounded-xl p-5 text-gray-700 leading-relaxed">
-                    {{ $labTest->notes }}
-                </div>
-            </div>
-            @endif
-
-            {{-- Footer Info --}}
-            <div class="mt-12 pt-8 border-t border-gray-200 text-center">
-                <p class="text-sm text-gray-500 italic">
-                    This is a personal health record generated by MyCareX. This document is for informational purposes and should be verified with official medical records where necessary.
-                </p>
+                @endif
             </div>
         </div>
     </div>
-
-    {{-- Print Button --}}
-    <div class="max-w-4xl mx-auto mt-8 flex justify-center no-print">
-        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-            </svg>
-            Print / Save as PDF
-        </button>
+    
+    <div class="mt-12 pt-6 border-t-2 border-gray-200 text-center text-gray-600 text-xs page-break-avoid">
+        <p class="font-semibold text-gray-800 mb-1">MyCareX - Personal Health Record System</p>
+        <p class="mb-1">This is a confidential medical document. Please keep it secure.</p>
+        <p>Generated on {{ $exportDate }}</p>
     </div>
 
-    <script>
-        // Auto-trigger print dialog
-        window.onload = function() {
-            // window.print();
-        };
-    </script>
 </body>
 </html>

@@ -194,7 +194,7 @@ class UpdateProfileController extends Controller
             $file = $request->file('profile_image');
 
             // Target directory in public path
-            $destinationPath = public_path('images/userProfile');
+            $destinationPath = public_path('files/patient/profile');
 
             // Ensure directory exists
             if (!File::exists($destinationPath)) {
@@ -202,16 +202,16 @@ class UpdateProfileController extends Controller
             }
 
             // Build filename: {PATIENT_ID}_Profile_Picture.{ext}
-            $patientId = $patient->patient_id; // e.g., "P0001"
+            $patientId = $patient->getFormattedIdAttribute(); // e.g., "P0001"
             $baseName = $patientId . '_Profile_Picture';
             $extension = strtolower($file->getClientOriginalExtension() ?: $file->extension());
             $filename = $baseName . '.' . $extension;
 
-            // Move file into public/images/userProfile
+            // Move file into public/files/patient/profile
             $file->move($destinationPath, $filename);
 
             // Build the public URL to store in DB
-            $publicUrl = asset('images/userProfile/' . $filename);
+            $publicUrl = asset('files/patient/profile/' . $filename);
 
             // Update only the URL in the database
             $patient->profile_image_url = $publicUrl;

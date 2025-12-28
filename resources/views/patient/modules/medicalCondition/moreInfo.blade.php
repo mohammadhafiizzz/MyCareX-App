@@ -172,7 +172,7 @@
                                     <i class="fas fa-upload" aria-hidden="true"></i>
                                     Replace Document
                                 </button>
-                                <button type="button" onclick="openDeleteModal('document')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+                                <button type="button" onclick="openDeleteModal('document')" class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
                                     <i class="fas fa-trash" aria-hidden="true"></i>
                                     Delete Document
                                 </button>

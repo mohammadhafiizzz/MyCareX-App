@@ -33,6 +33,6 @@ class UpdateController extends Controller
         $allergy->update($validatedData);
 
         // Redirect back to the previous page with a success message
-        return redirect()->back()->with('success', 'Allergy updated successfully.');
+        return redirect()->back()->with('message', 'Allergy updated successfully.');
     }
 }

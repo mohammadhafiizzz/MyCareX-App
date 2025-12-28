@@ -50,7 +50,7 @@
                         id="test_name"
                         required
                         class="block w-full p-3 pr-10 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
-                        placeholder="Enter test name"
+                        placeholder="Enter test name..."
                     >
                     <button
                         type="button" 
@@ -64,14 +64,35 @@
 
             <div>
                 <label for="test_category" class="block text-sm font-medium text-gray-700">Test Category <span class="text-red-500">*</span></label>
-                <input 
-                    type="text" 
-                    name="test_category" 
-                    id="test_category" 
-                    required
-                    class="mt-1 block p-3 w-full border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
-                    placeholder="e.g., Hematology, Chemistry, Microbiology"
-                >
+                <div id="test_category_select_wrapper" class="mt-1">
+                    <select 
+                        id="test_category_select" 
+                        class="block p-3 w-full border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    >
+                        <option value="" disabled selected>Select a lab test category</option>
+                        @foreach($labTestCategoryOptions as $option)
+                            <option value="{{ $option }}">{{ $option }}</option>
+                        @endforeach
+                        <option value="other_category">Other...</option>
+                    </select>
+                </div>
+                <div id="test_category_manual_wrapper" class="mt-2 relative hidden">
+                    <input 
+                        type="text" 
+                        name="test_category" 
+                        id="test_category"
+                        required
+                        class="block w-full p-3 pr-10 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm" 
+                        placeholder="Enter test category..."
+                    >
+                    <button
+                        type="button" 
+                        id="switch_to_select_category" 
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer" 
+                        title="Back to list">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
                 <p class="mt-1 text-xs text-gray-500">Specify the type or category of lab test.</p>
             </div>
 

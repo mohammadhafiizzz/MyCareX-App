@@ -6,7 +6,7 @@
             <div class="flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
                     <i class="fas fa-upload" aria-hidden="true"></i>
-                    Upload Medication Image
+                    Upload Medication Attachment
                 </h3>
                 <button type="button" id="closeMedicationImageModal" class="text-gray-700 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 rounded-lg p-1">
                     <i class="fas fa-times text-xl" aria-hidden="true"></i>
@@ -20,26 +20,29 @@
 
             <div class="mb-6">
                 <label for="medImage" class="block text-sm font-medium text-gray-700 mb-2">
-                    Select Image
+                    Select Attachment
                     <span class="text-red-500">*</span>
                 </label>
                 
                 <!-- File Input Area -->
                 <div class="relative">
-                    <input type="file" id="medImage" name="med_image_url" accept=".jpg,.jpeg,.png" required class="hidden">
+                    <input type="file" id="medImage" name="med_image_url" accept=".jpg,.jpeg,.png,.pdf" required class="hidden">
                     <div id="imageDropArea" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition">
                         <div id="imageDropContent">
                             <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3" aria-hidden="true"></i>
                             <p class="text-sm text-gray-600 font-medium mb-1">Click to browse or drag and drop</p>
-                            <p class="text-xs text-gray-500">JPG, JPEG, PNG (Max 10MB)</p>
+                            <p class="text-xs text-gray-500">JPG, JPEG, PNG, PDF (Max 10MB)</p>
                         </div>
                         <div id="imagePreviewContainer" class="hidden">
-                            <img id="imagePreviewImg" src="" alt="Preview" class="max-h-48 mx-auto mb-3 rounded-lg">
+                            <div id="fileIconPreview" class="hidden">
+                                <i class="fas fa-file-pdf text-4xl text-red-600 mb-3" aria-hidden="true"></i>
+                            </div>
+                            <img id="imagePreviewImg" src="" alt="Preview" class="max-h-48 mx-auto mb-3 rounded-lg hidden">
                             <p id="imageFileName" class="text-sm text-gray-900 font-medium mb-1"></p>
                             <p id="imageFileSize" class="text-xs text-gray-500 mb-3"></p>
                             <button type="button" id="removeImageFile" class="text-xs text-red-600 hover:text-red-700 font-medium">
                                 <i class="fas fa-times-circle" aria-hidden="true"></i>
-                                Remove image
+                                Remove attachment
                             </button>
                         </div>
                     </div>
@@ -47,7 +50,7 @@
 
                 <p class="mt-2 text-xs text-gray-500">
                     <i class="fas fa-info-circle" aria-hidden="true"></i>
-                    Supported formats: JPG, JPEG, PNG. Maximum file size: 10MB
+                    Supported formats: JPG, JPEG, PNG, PDF. Maximum file size: 10MB
                 </p>
             </div>
 

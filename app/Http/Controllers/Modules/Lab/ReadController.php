@@ -93,6 +93,22 @@ class ReadController extends Controller
             'Infectious Disease Screening'
         ];
 
+        // Lab test category options for select dropdown]
+        $labTestCategoryOptions = [
+            'Hematology',
+            'Biochemistry',
+            'Microbiology',
+            'Immunology',
+            'Molecular Diagnostics',
+            'Cytology',
+            'Pathology',
+            'Urinalysis',
+            'Blood Gas Analysis',
+            'Toxicology',
+            'Serology',
+            'Coagulation Studies',
+        ];
+
         return view('patient.modules.lab.labTest', [
             'labTests' => $processedLabTests,
             'timelineLabTests' => $timelineLabTests,
@@ -100,25 +116,7 @@ class ReadController extends Controller
             'thisYearLabTests' => $thisYearLabTests,
             'lastUpdatedLabel' => $lastUpdatedLabel,
             'labTestOptions' => $labTestOptions,
-        ]);
-    }
-
-    /**
-     * Download a specific lab test record as PDF
-     */
-    public function downloadLab(Lab $labTest)
-    {
-        // Policy/Gate check: Ensure this lab test belongs to the authenticated patient
-        if ($labTest->patient_id !== Auth::guard('patient')->id()) {
-            return redirect()->route('patient.lab')->with('error', 'Unauthorized access to lab test.');
-        }
-
-        $patient = Auth::guard('patient')->user();
-
-        return view('patient.modules.lab.download', [
-            'patient' => $patient,
-            'labTest' => $labTest,
-            'exportDate' => Carbon::now()->format('F d, Y'),
+            'labTestCategoryOptions' => $labTestCategoryOptions,
         ]);
     }
 
@@ -181,12 +179,29 @@ class ReadController extends Controller
             'Infectious Disease Screening'
         ];
 
+        // Lab test category options for select dropdown]
+        $labTestCategoryOptions = [
+            'Hematology',
+            'Biochemistry',
+            'Microbiology',
+            'Immunology',
+            'Molecular Diagnostics',
+            'Cytology',
+            'Pathology',
+            'Urinalysis',
+            'Blood Gas Analysis',
+            'Toxicology',
+            'Serology',
+            'Coagulation Studies',
+        ];
+
         return view('patient.modules.lab.moreInfo', [
             'labTest' => $labTest,
             'testLabel' => $testLabel,
             'createdLabel' => $createdLabel,
             'updatedLabel' => $updatedLabel,
             'labTestOptions' => $labTestOptions,
+            'labTestCategoryOptions' => $labTestCategoryOptions,
         ]);
     }
 
@@ -225,6 +240,41 @@ class ReadController extends Controller
             'exportDate' => Carbon::now()->format('F d, Y'),
             'totalLabTests' => $labTests->count(),
             'fileName' => 'LabTests_' . Carbon::now()->format('Y-m-d'),
+        ]);
+    }
+
+    // Download Specific Lab Test as PDF
+    public function downloadLab($labTestId) {
+        $patientId = Auth::guard('patient')->id() ?? Auth::id();
+
+        // Check if patient is authenticated
+        if (!$patientId) {
+            return response()->json(['message' => 'Unauthenticated user'], 401);
+        }
+
+        $patient = Auth::guard('patient')->user();
+
+        // Fetch the specific lab test
+        $labTest = Lab::where('id', $labTestId)
+            ->where('patient_id', $patientId)
+            ->firstOrFail();
+
+        // Process lab test for display
+        $processedLabTest = [
+            'test_name' => $labTest->test_name,
+            'test_date' => $labTest->test_date ? Carbon::parse($labTest->test_date)->format('M d, Y') : 'Not recorded',
+            'test_category' => $labTest->test_category ?? 'Not specified',
+            'facility_name' => $labTest->facility_name ?? 'Not specified',
+            'notes' => $labTest->notes ?? 'No additional notes',
+            'created_at' => $labTest->created_at ? $labTest->created_at->format('M d, Y') : 'N/A',
+            'updated_at' => $labTest->updated_at ? $labTest->updated_at->format('M d, Y') : 'N/A',
+        ];
+
+        return view('patient.modules.lab.download', [
+            'patient' => $patient,
+            'labTest' => $processedLabTest,
+            'exportDate' => Carbon::now()->format('F d, Y'),
+            'fileName' => 'LabTest_' . Carbon::now()->format('Y-m-d'),
         ]);
     }
 }

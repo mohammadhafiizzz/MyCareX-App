@@ -174,14 +174,10 @@
                                     <i class="fas fa-upload" aria-hidden="true"></i>
                                     Replace Certificate
                                 </button>
-                                <form method="POST" action="{{ route('patient.immunisation.delete.certificate', $immunisation->id) }}" class="flex-1" onsubmit="return confirm('Are you sure you want to delete this vaccination certificate?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
-                                        <i class="fas fa-trash" aria-hidden="true"></i>
-                                        Delete Certificate
-                                    </button>
-                                </form>
+                                <button type="button" onclick="openDeleteModal('document')" class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+                                    <i class="fas fa-trash" aria-hidden="true"></i>
+                                    Delete Certificate
+                                </button>
                             </div>
                         </div>
                     @else
@@ -413,7 +409,7 @@
             const form = document.getElementById('deleteForm');
             const submitBtn = document.getElementById('deleteSubmitBtn');
 
-            if (type === 'condition') {
+            if (type === 'immunisation') {
                 title.innerText = 'Delete Vaccination';
                 description.innerText = 'Are you sure you want to delete this vaccination? This action cannot be undone.';
                 form.action = "{{ route('patient.immunisation.delete', $immunisation->id) }}";

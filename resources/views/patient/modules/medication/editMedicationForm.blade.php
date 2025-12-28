@@ -42,24 +42,15 @@
                         class="block w-full p-3 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white"
                     >
                         <option value="" disabled>Select a medication...</option>
-                        
-                        <optgroup label="Common Medications">
-                            <option value="Metformin">Metformin</option>
-                            <option value="Atorvastatin">Atorvastatin</option>
-                            <option value="Levothyroxine">Levothyroxine</option>
-                            <option value="Lisinopril">Lisinopril</option>
-                            <option value="Amlodipine">Amlodipine</option>
-                        </option>
-
-                        <optgroup label="Pain Relief">
-                            <option value="Paracetamol">Paracetamol</option>
-                            <option value="Ibuprofen">Ibuprofen</option>
-                            <option value="Aspirin">Aspirin</option>
-                        </optgroup>
-
-                        <optgroup label="Other">
-                            <option value="other">Other...</option>
-                        </optgroup>
+                        <option value="Metformin">Metformin</option>
+                        <option value="Atorvastatin">Atorvastatin</option>
+                        <option value="Levothyroxine">Levothyroxine</option>
+                        <option value="Lisinopril">Lisinopril</option>
+                        <option value="Amlodipine">Amlodipine</option>
+                        <option value="Paracetamol">Paracetamol</option>
+                        <option value="Ibuprofen">Ibuprofen</option>
+                        <option value="Aspirin">Aspirin</option>
+                        <option value="other">Other...</option>
                     </select>
                 </div>
 
@@ -75,7 +66,7 @@
                     <button 
                         type="button" 
                         id="edit_switch_to_select"
-                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-blue-600 cursor-pointer"
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
                         title="Back to list"
                     >
                         <i class="fas fa-times"></i>

@@ -118,39 +118,75 @@
                             Medication Attachment:
                         </h3>
                         @if ($medication->med_image_url)
-                            <div class="rounded-lg overflow-hidden border border-gray-200 bg-white">
-                                <img 
-                                    src="{{ $medication->med_image_url }}" 
-                                    alt="{{ $medication->medication_name }} image" 
-                                    class="w-full h-auto max-h-96 object-contain"
-                                    onerror="this.onerror=null; this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                >
-                                <div class="hidden flex-col items-center justify-center py-16 bg-gray-50">
-                                    <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mb-3">
-                                        <i class="fas fa-prescription-bottle text-gray-400 text-3xl" aria-hidden="true"></i>
+                            @php
+                                $fileExtension = strtolower(pathinfo($medication->med_image_url, PATHINFO_EXTENSION));
+                                $isImage = in_array($fileExtension, ['jpg', 'jpeg', 'png']);
+                            @endphp
+
+                            @if ($isImage)
+                                {{-- Image Preview --}}
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                    <a href="{{ $medication->med_image_url }}" target="_blank" class="block group">
+                                        <div class="relative">
+                                            <img src="{{ $medication->med_image_url }}" alt="Medication Attachment" class="w-full h-auto max-h-96 object-contain bg-white">
+                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200 flex items-center justify-center">
+                                                <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-4 py-2 bg-white rounded-lg shadow-lg text-sm font-medium text-gray-900 flex items-center gap-2">
+                                                    <i class="fas fa-expand-alt" aria-hidden="true"></i>
+                                                    Click to view full size
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="p-4 bg-white border-t border-gray-200">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-image text-blue-600" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-sm font-medium text-gray-900 truncate">Medication Image</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">{{ strtoupper($fileExtension) }} File</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p class="text-sm text-gray-500">Image not available</p>
                                 </div>
-                            </div>
+                            @else
+                                {{-- PDF Document View --}}
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <i class="fas fa-file-pdf text-red-600 text-xl" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">Medication Document</p>
+                                            <p class="text-xs text-gray-500 mt-1">PDF Document</p>
+                                        </div>
+                                        <a href="{{ $medication->med_image_url }}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
+                                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                            View
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+
                             <div class="mt-3 flex gap-2">
                                 <button type="button" id="uploadMedicationImageBtn" class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-medium rounded-lg border border-blue-200 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
                                     <i class="fas fa-upload" aria-hidden="true"></i>
-                                    Replace Image
+                                    Replace Attachment
                                 </button>
-                                <button type="button" onclick="openDeleteModal('image')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+                                <button type="button" onclick="openDeleteModal('attachment')" class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-700 text-sm font-medium rounded-lg border border-red-200 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
                                     <i class="fas fa-trash" aria-hidden="true"></i>
-                                    Delete Image
+                                    Delete Attachment
                                 </button>
                             </div>
                         @else
                             <div class="rounded-lg border border-gray-200 bg-gray-50 flex flex-col items-center justify-center py-16">
                                 <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mb-3">
-                                    <i class="fas fa-prescription-bottle text-gray-400 text-3xl" aria-hidden="true"></i>
+                                    <i class="fas fa-file text-gray-400 text-3xl" aria-hidden="true"></i>
                                 </div>
-                                <p class="text-sm text-gray-500 mb-2">No image uploaded</p>
+                                <p class="text-sm text-gray-500 mb-2">No attachment uploaded</p>
                                 <button type="button" id="uploadMedicationImageBtnEmpty" class="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium">
                                     <i class="fas fa-upload" aria-hidden="true"></i>
-                                    Upload image
+                                    Upload attachment
                                 </button>
                             </div>
                         @endif
@@ -375,11 +411,11 @@
                 description.innerText = 'Are you sure you want to delete this medication? This action cannot be undone.';
                 form.action = "{{ route('patient.medication.delete', $medication->id) }}";
                 submitBtn.innerText = 'Delete';
-            } else if (type === 'image') {
-                title.innerText = 'Delete Medication Image';
-                description.innerText = 'Are you sure you want to delete this medication image? This action cannot be undone.';
+            } else if (type === 'attachment') {
+                title.innerText = 'Delete Medication Attachment';
+                description.innerText = 'Are you sure you want to delete this medication attachment? This action cannot be undone.';
                 form.action = "{{ route('patient.medication.delete.image', $medication->id) }}";
-                submitBtn.innerText = 'Delete Image';
+                submitBtn.innerText = 'Delete Attachment';
             }
 
             modal.classList.remove('hidden');
