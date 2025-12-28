@@ -46,7 +46,7 @@ class DashboardController extends Controller
         $allergiesCount = $patient->allergies()->count();
         $severeAllergies = $patient->allergies()->where('severity', 'severe')->get();
         $pendingPermissions = \App\Models\Permission::where('patient_id', $patient->id)
-            ->where('status', 'pending')
+            ->where('status', 'Pending')
             ->count();
         
         // Recent data
@@ -62,7 +62,7 @@ class DashboardController extends Controller
             ->take(3)
             ->get();
         $activeProviders = \App\Models\Permission::where('patient_id', $patient->id)
-            ->where('status', 'granted')
+            ->where('status', 'Active')
             ->count();
         
         // Health tips

@@ -1,6 +1,6 @@
 <!-- Request Access Modal -->
 <div id="requestAccess" class="hidden fixed inset-0 bg-gray-600/50 overflow-y-auto h-full w-full z-50">
-    <div class="relative top-50 mx-auto p-5 w-96 shadow-lg rounded-lg bg-white">
+    <div class="relative top-20 mx-auto p-5 w-full max-w-md shadow-lg rounded-lg bg-white">
         <div>
             <!-- Modal Header -->
             <div class="flex items-center justify-between mb-4">
@@ -18,6 +18,40 @@
                 <p class="text-sm text-gray-600 mb-4">
                     You are requesting access to <span id="patientNameDisplay" class="font-semibold text-gray-900"></span>'s medical records.
                 </p>
+
+                <!-- Permission Scope Selection -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Select Records to Access <span class="text-red-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="permission_scope[]" value="medications" class="scope-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="ml-2 text-sm text-gray-700">Medications</span>
+                        </label>
+                        <label class="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="permission_scope[]" value="medical_conditions" class="scope-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="ml-2 text-sm text-gray-700">Conditions</span>
+                        </label>
+                        <label class="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="permission_scope[]" value="allergies" class="scope-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="ml-2 text-sm text-gray-700">Allergies</span>
+                        </label>
+                        <label class="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="permission_scope[]" value="lab_tests" class="scope-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="ml-2 text-sm text-gray-700">Lab Results</span>
+                        </label>
+                        <label class="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="permission_scope[]" value="immunisations" class="scope-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="ml-2 text-sm text-gray-700">Immunisations</span>
+                        </label>
+                        <label class="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="permission_scope[]" value="surgeries" class="scope-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="ml-2 text-sm text-gray-700">Surgeries</span>
+                        </label>
+                    </div>
+                    <p id="scopeError" class="hidden mt-1 text-xs text-red-500">Please select at least one record type.</p>
+                </div>
                 
                 <!-- Notes Input -->
                 <div class="mb-4">

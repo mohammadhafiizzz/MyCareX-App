@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmRequestBtn = document.getElementById('confirmRequestBtn');
     const accessNotes = document.getElementById('accessNotes');
     const patientNameDisplay = document.getElementById('patientNameDisplay');
+    const scopeCheckboxes = document.querySelectorAll('.scope-checkbox');
+    const scopeError = document.getElementById('scopeError');
 
     // Store patient data
     let currentPatientId = null;
@@ -23,8 +25,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update patient name in modal
             patientNameDisplay.textContent = currentPatientName;
             
-            // Reset notes
+            // Reset form
             accessNotes.value = '';
+            scopeCheckboxes.forEach(cb => cb.checked = false);
+            if (scopeError) scopeError.classList.add('hidden');
             
             // Show modal
             modal.classList.remove('hidden');
@@ -35,6 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeModal() {
         modal.classList.add('hidden');
         accessNotes.value = '';
+        scopeCheckboxes.forEach(cb => cb.checked = false);
+        if (scopeError) scopeError.classList.add('hidden');
         currentPatientId = null;
         currentPatientName = null;
     }
@@ -59,6 +65,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle confirm request
     if (confirmRequestBtn) {
         confirmRequestBtn.addEventListener('click', function() {
+            // Get selected scopes
+            const selectedScopes = Array.from(scopeCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            // Validate scope
+            if (selectedScopes.length === 0) {
+                if (scopeError) scopeError.classList.remove('hidden');
+                return;
+            } else {
+                if (scopeError) scopeError.classList.add('hidden');
+            }
+
             // Disable button to prevent double submission
             confirmRequestBtn.disabled = true;
             confirmRequestBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Sending...';
@@ -69,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Prepare data
             const requestData = {
                 patient_id: currentPatientId,
+                permission_scope: selectedScopes,
                 notes: accessNotes.value.trim()
             };
 
@@ -149,4 +169,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Hide scope error when a checkbox is checked
+    scopeCheckboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            if (this.checked && scopeError) {
+                scopeError.classList.add('hidden');
+            }
+        });
+    });
 });

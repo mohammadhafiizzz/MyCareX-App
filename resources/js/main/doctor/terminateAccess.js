@@ -8,12 +8,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('terminateModal');
     const closeModal = document.getElementById('closeTerminateModal');
     const confirmBtn = document.getElementById('confirmTerminateBtn');
+    const terminateInput = document.getElementById('confirm_terminate_word');
+    const terminateError = document.getElementById('terminate_error');
+    const patientNameDisplay = document.getElementById('terminatePatientName');
     const toast = document.getElementById('toast');
     
     if (!terminateBtn || !modal) return;
 
     // Show Modal
     terminateBtn.addEventListener('click', () => {
+        const patientName = terminateBtn.getAttribute('data-patient-name');
+        if (patientNameDisplay) patientNameDisplay.textContent = patientName;
+        
+        // Reset input and error
+        if (terminateInput) terminateInput.value = '';
+        if (terminateError) terminateError.classList.add('hidden');
+        if (terminateInput) terminateInput.classList.remove('border-red-500');
+
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     });
@@ -34,6 +45,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Confirm Termination
     confirmBtn.addEventListener('click', async () => {
+        // Validation
+        if (terminateInput && terminateInput.value.trim().toUpperCase() !== 'TERMINATE') {
+            terminateError.classList.remove('hidden');
+            terminateInput.classList.add('border-red-500');
+            return;
+        }
+
         const permissionId = terminateBtn.getAttribute('data-permission-id');
         
         confirmBtn.disabled = true;
@@ -68,6 +86,14 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmBtn.innerHTML = 'Terminate Access';
         }
     });
+
+    // Clear error on input
+    if (terminateInput) {
+        terminateInput.addEventListener('input', () => {
+            terminateError.classList.add('hidden');
+            terminateInput.classList.remove('border-red-500');
+        });
+    }
 
     function showToast(title, message, type = 'success') {
         const toastIcon = document.getElementById('toastIcon');

@@ -16,13 +16,14 @@ class CreateController extends Controller
         // Validate the request
         $validator = Validator::make($request->all(), [
             'patient_id' => 'required|exists:patients,id',
+            'permission_scope' => 'required|array|min:1',
             'notes' => 'nullable|string|max:500',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid data provided.',
+                'message' => $validator->errors()->first() ?? 'Invalid data provided.',
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -51,6 +52,7 @@ class CreateController extends Controller
                 'doctor_id' => $doctor->id,
                 'requested_at' => now(),
                 'status' => 'Pending',
+                'permission_scope' => $request->permission_scope,
                 'notes' => $request->notes
             ]);
 

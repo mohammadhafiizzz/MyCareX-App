@@ -52,7 +52,6 @@
                         {{ $greeting }}!
                     </h1>
                     <p class="mt-1 text-sm text-gray-500">
-                        <i class="fas fa-clock mr-1"></i>
                         Last Login: {{ $patient->last_login ? $patient->last_login->format('M d, Y \a\t h:i A') : 'First login' }}
                     </p>
                 </div>
@@ -333,11 +332,12 @@
                                         @endif
                                     </div>
                                     @php
+                                        $status = ucfirst(strtolower($permission->status ?? 'Pending'));
                                         $statusColor = [
-                                            'granted' => 'bg-green-500',
-                                            'pending' => 'bg-yellow-500',
-                                            'denied' => 'bg-red-500',
-                                        ][$permission->status ?? 'pending'] ?? 'bg-yellow-500';
+                                            'Active' => 'bg-green-500',
+                                            'Pending' => 'bg-yellow-500',
+                                            'Denied' => 'bg-red-500',
+                                        ][$status] ?? 'bg-yellow-500';
                                     @endphp
                                     <span class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full {{ $statusColor }} ring-2 ring-white"></span>
                                 </div>
@@ -353,16 +353,16 @@
                                     </p>
                                 </div>
                                 <div class="ml-4 flex-shrink-0">
-                                    @if($permission->status === 'granted')
+                                    @if(strtolower($permission->status) === 'active')
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                         <span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full"></span>
-                                        Granted
+                                        Active
                                     </span>
-                                    @elseif($permission->status === 'pending')
+                                    @elseif(strtolower($permission->status) === 'pending')
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                         Pending
                                     </span>
-                                    @elseif($permission->status === 'denied')
+                                    @elseif(strtolower($permission->status) === 'denied')
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                         Denied
                                     </span>
