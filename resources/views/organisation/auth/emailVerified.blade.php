@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="refresh" content="5; url={{ route('organisation.login.form') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>MyCareX - Email Verified</title>
+    <title>Email Verified</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
