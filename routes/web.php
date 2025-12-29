@@ -670,6 +670,29 @@ Route::prefix('doctor')->group(function () {
 
             Route::get('/lab/{id}', [Modules\Permission\ReadController::class, 'showLab'])
                 ->name('doctor.medical.records.lab');
+
+            // Add New Records Routes
+            Route::prefix('/add')->group(function () {
+                // Medical Condition
+                Route::get('/condition', [Modules\MedicalCondition\AddConditionController::class, 'showDoctorForm'])->name('doctor.medical.records.add.condition');
+                Route::post('/condition', [Modules\MedicalCondition\AddConditionController::class, 'storeDoctor'])->name('doctor.medical.records.store.condition');
+
+                // Medication
+                Route::get('/medication', [Modules\Medication\AddMedicationController::class, 'showDoctorForm'])->name('doctor.medical.records.add.medication');
+                Route::post('/medication', [Modules\Medication\AddMedicationController::class, 'storeDoctor'])->name('doctor.medical.records.store.medication');
+
+                // Allergy
+                Route::get('/allergy', [Modules\Allergy\CreateController::class, 'showDoctorForm'])->name('doctor.medical.records.add.allergy');
+                Route::post('/allergy', [Modules\Allergy\CreateController::class, 'storeDoctor'])->name('doctor.medical.records.store.allergy');
+
+                // Immunisation
+                Route::get('/immunisation', [Modules\Immunisation\CreateController::class, 'showDoctorForm'])->name('doctor.medical.records.add.immunisation');
+                Route::post('/immunisation', [Modules\Immunisation\CreateController::class, 'storeDoctor'])->name('doctor.medical.records.store.immunisation');
+
+                // Lab Test
+                Route::get('/lab', [Modules\Lab\CreateController::class, 'showDoctorForm'])->name('doctor.medical.records.add.lab');
+                Route::post('/lab', [Modules\Lab\CreateController::class, 'storeDoctor'])->name('doctor.medical.records.store.lab');
+            });
         });
     });
 });

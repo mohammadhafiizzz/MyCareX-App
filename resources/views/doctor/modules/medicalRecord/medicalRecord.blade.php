@@ -116,6 +116,15 @@
                                 <h2 id="records-heading" class="text-lg sm:text-xl font-semibold text-gray-900">All Medical Records</h2>
                                 <p class="mt-1 text-xs sm:text-sm text-gray-600">Search and filter patient medical records you have access to.</p>
                             </div>
+                            @if ($permissions)
+                                <button 
+                                    type="button" 
+                                    id="show-add-record-modal"
+                                    class="inline-flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-gradient-to-br from-blue-500/90 to-blue-600/90 backdrop-blur-md text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 focus-visible:ring-offset-0">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    Add New
+                                </button>
+                            @endif
                         </div>
 
                         {{-- Search Bar --}}
@@ -300,6 +309,121 @@
     <!-- Medical Records Filter and Pagination Scripts -->
     @vite('resources/js/main/doctor/medicalRecordsFilter.js')
     @vite('resources/js/main/doctor/medicalRecordsPagination.js')
+
+    <!-- Add Record Selection Modal -->
+    <div id="select-record-type-modal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Background backdrop -->
+        <div class="fixed inset-0 bg-gray-900/30 transition-opacity"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                                <h3 class="text-xl font-semibold leading-6 text-gray-900" id="modal-title">Add New Record</h3>
+                                <p class="text-sm text-gray-500 mt-1">Select the type of medical record you want to add.</p>
+                                
+                                <div class="mt-4 grid grid-cols-1 gap-3">
+                                    <!-- Medical Condition -->
+                                    <a href="{{ route('doctor.medical.records.add.condition') }}" class="flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all group">
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-red-100 text-red-600 group-hover:bg-white group-hover:text-red-600 transition-colors">
+                                            <i class="fas fa-heartbeat"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class="font-semibold text-gray-900">Medical Condition</div>
+                                            <div class="text-xs text-gray-500">Diagnoses and health conditions</div>
+                                        </div>
+                                        <i class="fas fa-chevron-right ml-auto text-gray-400 group-hover:text-blue-500"></i>
+                                    </a>
+
+                                    <!-- Medication -->
+                                    <a href="{{ route('doctor.medical.records.add.medication') }}" class="flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all group">
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 text-green-600 group-hover:bg-white group-hover:text-green-600 transition-colors">
+                                            <i class="fas fa-pills"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class="font-semibold text-gray-900">Medication</div>
+                                            <div class="text-xs text-gray-500">Prescriptions and treatments</div>
+                                        </div>
+                                        <i class="fas fa-chevron-right ml-auto text-gray-400 group-hover:text-blue-500"></i>
+                                    </a>
+
+                                    <!-- Allergy -->
+                                    <a href="{{ route('doctor.medical.records.add.allergy') }}" class="flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all group">
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 text-orange-600 group-hover:bg-white group-hover:text-orange-600 transition-colors">
+                                            <i class="fas fa-allergies"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class="font-semibold text-gray-900">Allergy</div>
+                                            <div class="text-xs text-gray-500">Allergies and intolerances</div>
+                                        </div>
+                                        <i class="fas fa-chevron-right ml-auto text-gray-400 group-hover:text-blue-500"></i>
+                                    </a>
+
+                                    <!-- Immunisation -->
+                                    <a href="{{ route('doctor.medical.records.add.immunisation') }}" class="flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all group">
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600 group-hover:bg-white group-hover:text-purple-600 transition-colors">
+                                            <i class="fas fa-syringe"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class="font-semibold text-gray-900">Immunisation</div>
+                                            <div class="text-xs text-gray-500">Vaccines and immunisations</div>
+                                        </div>
+                                        <i class="fas fa-chevron-right ml-auto text-gray-400 group-hover:text-blue-500"></i>
+                                    </a>
+
+                                    <!-- Lab Test -->
+                                    <a href="{{ route('doctor.medical.records.add.lab') }}" class="flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all group">
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600 group-hover:bg-white group-hover:text-blue-600 transition-colors">
+                                            <i class="fas fa-flask"></i>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class="font-semibold text-gray-900">Lab Test</div>
+                                            <div class="text-xs text-gray-500">Lab results and diagnostics</div>
+                                        </div>
+                                        <i class="fas fa-chevron-right ml-auto text-gray-400 group-hover:text-blue-500"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <button type="button" id="close-select-modal" class="mt-3 inline-flex w-full justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showModalBtn = document.getElementById('show-add-record-modal');
+            const modal = document.getElementById('select-record-type-modal');
+            const closeModalBtn = document.getElementById('close-select-modal');
+
+            if (showModalBtn && modal) {
+                showModalBtn.addEventListener('click', function() {
+                    modal.classList.remove('hidden');
+                });
+            }
+
+            if (closeModalBtn && modal) {
+                closeModalBtn.addEventListener('click', function() {
+                    modal.classList.add('hidden');
+                });
+            }
+
+            // Close modal when clicking outside
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal || e.target.querySelector('.bg-gray-900\/50') === e.target) {
+                        modal.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
 
 </body>
 

@@ -126,7 +126,7 @@ class ReadController extends Controller
         return view('doctor.modules.permission.requestDetails', compact('permission'));
     }
 
-    // READ: Display medical records page with statistics and records list
+    // READ: Display medical records page with statistics and records list (Doctor)
     public function medicalRecordIndex(Request $request)
     {
         $doctorId = Auth::guard('doctor')->id();
@@ -279,7 +279,7 @@ class ReadController extends Controller
         // Sort by date (most recent first)
         $allRecords = $allRecords->sortByDesc('date')->values();
         
-        return view('doctor.modules.medicalRecord.medicalRecord', compact('stats', 'allRecords', 'search'));
+        return view('doctor.modules.medicalRecord.medicalRecord', compact('stats', 'allRecords', 'search', 'permissions'));
     }    
 
      // READ: Show detailed view of a specific condition

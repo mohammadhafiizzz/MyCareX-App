@@ -34,7 +34,7 @@
             <form id="add-doctor-form" method="POST" action="{{ route('organisation.doctor.store') }}" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                     <!-- Section: Profile Photo -->
                     <div class="p-6 md:p-8 border-b border-gray-100 bg-gray-50/50">
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center">
@@ -119,18 +119,23 @@
                             <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
                                 <label for="specialisation" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Specialisation</label>
                                 <div class="mt-1 sm:mt-0 sm:col-span-2">
-                                    <select id="specialisation" name="specialisation"
-                                        class="max-w-md block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm appearance-none">
-                                        <option value="">Select Specialisation</option>
-                                        <option value="General Practitioner">General Practitioner</option>
-                                        <option value="Cardiologist">Cardiologist</option>
-                                        <option value="Dermatologist">Dermatologist</option>
-                                        <option value="Neurologist">Neurologist</option>
-                                        <option value="Pediatrician">Pediatrician</option>
-                                        <option value="Psychiatrist">Psychiatrist</option>
-                                        <option value="Radiologist">Radiologist</option>
-                                        <option value="Surgeon">Surgeon</option>
-                                    </select>
+                                    <div class="relative max-w-md">
+                                        <select id="specialisation" name="specialisation"
+                                            class="block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-sm appearance-none">
+                                            <option value="">Select Specialisation</option>
+                                            <option value="General Practitioner">General Practitioner</option>
+                                            <option value="Cardiologist">Cardiologist</option>
+                                            <option value="Dermatologist">Dermatologist</option>
+                                            <option value="Neurologist">Neurologist</option>
+                                            <option value="Pediatrician">Pediatrician</option>
+                                            <option value="Psychiatrist">Psychiatrist</option>
+                                            <option value="Radiologist">Radiologist</option>
+                                            <option value="Surgeon">Surgeon</option>
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                                            <i class="fas fa-chevron-down text-xs"></i>
+                                        </div>
+                                    </div>
                                     <p class="mt-1 text-xs text-red-500 hidden" id="error-specialisation"></p>
                                 </div>
                             </div>
