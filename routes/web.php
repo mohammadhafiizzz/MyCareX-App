@@ -711,6 +711,14 @@ Route::prefix('admin')->group(function () {
     Route::get('/register', [Admin\Auth\RegistrationController::class, 'showRegistrationForm'])->name('admin.register.form');
     Route::post('/register', [Admin\Auth\RegistrationController::class, 'register'])->name('admin.register');
 
+    // Email verification
+    Route::prefix('/email')->group(function () {
+        Route::get('/verify', [Admin\Auth\RegistrationController::class, 'showEmailVerificationNotice'])->name('admin.verification.notice');
+        Route::get('/verify/{id}/{hash}', [Admin\Auth\RegistrationController::class, 'verify'])->name('admin.verification.verify');
+        Route::post('/verification-notification', [Admin\Auth\RegistrationController::class, 'resend'])->name('admin.verification.resend');
+        Route::get('/verified', [Admin\Auth\RegistrationController::class, 'showEmailVerified'])->name('admin.verification.success');
+    });
+
     // Authenticated Admin Routes (Protected)
     Route::middleware('auth:admin')->group(function () {
         // Admin Dashboard
@@ -736,6 +744,18 @@ Route::prefix('admin')->group(function () {
             Route::get('/', [Admin\AdminManagementController::class, 'index'])
                 ->name('admin.management');
 
+            // Pending Admin Requests
+            Route::get('/requests', [Admin\AdminManagementController::class, 'newRequests'])
+                ->name('admin.management.newRequests');
+
+            // View Admin Profile
+            Route::get('/profile/{id}', [Admin\AdminManagementController::class, 'adminProfile'])
+                ->name('admin.management.profile');
+
+            // View Request Info
+            Route::get('/request/{id}', [Admin\AdminManagementController::class, 'requestInfo'])
+                ->name('admin.management.requestInfo');
+
             // Get lists of admins
             Route::get('/list/{status}', [Admin\AdminManagementController::class, 'listAdmins'])
                 ->name('admin.management.list');
@@ -757,33 +777,39 @@ Route::prefix('admin')->group(function () {
         // Healthcare Provider Management Page
         Route::prefix('/providers')->group(function () {
             // Provider Management Dashboard
-            Route::get('/', [Organisation\ProviderManagementController::class, 'index'])
-                ->name('organisation.providerManagement');
+            Route::get('/', [Admin\ProviderManagementController::class, 'provider'])
+                ->name('admin.providers');
 
+            // View Provider Profile
+            Route::get('/profile/{id}', [Admin\ProviderManagementController::class, 'viewProfile'])
+                ->name('admin.providers.profile');
+
+            // Provider Requests List
+            Route::get('/requests', [Admin\ProviderManagementController::class, 'requests'])
+                ->name('admin.providers.requests');
+            
             // Provider Verification Dashboard
-            Route::get('/verification', [Organisation\ProviderManagementController::class, 'providerVerification'])
-                ->name('organisation.providerVerification');
+            Route::get('/verification/{id}', [Admin\ProviderManagementController::class, 'providerVerification'])
+                ->name('admin.providerVerification');
 
             // Get lists of providers by status
-            Route::get('/list/{status}', [Organisation\ProviderManagementController::class, 'listProviders'])
-                ->name('organisation.providers.list');
+            Route::get('/list/{status}', [Admin\ProviderManagementController::class, 'listProviders'])
+                ->name('admin.providers.list');
 
             // Provider Verification Requests
-            Route::get('/verification-requests', [Organisation\ProviderManagementController::class, 'verificationRequests'])
-                ->name('organisation.providers.verification.requests');
-
+            Route::get('/verification-requests', [Admin\ProviderManagementController::class, 'verificationRequests'])
+                ->name('admin.providers.verification.requests');
             // Approve Provider
-            Route::post('/approve/{provider:id}', [Organisation\ProviderManagementController::class, 'approveProvider'])
-                ->name('organisation.providers.approve');
+            Route::post('/approve/{id}', [Admin\ProviderManagementController::class, 'approve'])
+                ->name('admin.provider.approve');
 
             // Reject Provider
-            Route::post('/reject/{provider:id}', [Organisation\ProviderManagementController::class, 'rejectProvider'])
-                ->name('organisation.providers.reject');
+            Route::post('/reject/{id}', [Admin\ProviderManagementController::class, 'reject'])
+                ->name('admin.provider.reject');
 
             // Delete Provider
-            Route::post('/delete/{provider:id}', [Organisation\ProviderManagementController::class, 'deleteProvider'])
-                ->name('organisation.providers.delete');
+            Route::delete('/delete/{provider:id}', [Admin\ProviderManagementController::class, 'deleteProvider'])
+                ->name('admin.providers.delete');
         });
     });
 });
-

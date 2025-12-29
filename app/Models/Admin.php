@@ -8,8 +8,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use App\Notifications\AdminVerifyEmail;
 
-class Admin extends Authenticatable implements CanResetPasswordContract
+class Admin extends Authenticatable implements CanResetPasswordContract, MustVerifyEmail
 {
     use HasFactory, Notifiable, CanResetPassword;
     protected $primaryKey = 'admin_id';
@@ -31,6 +32,16 @@ class Admin extends Authenticatable implements CanResetPasswordContract
         'account_rejected_at' => 'datetime',
         'last_login' => 'datetime',
     ];
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new AdminVerifyEmail);
+    }
 
     // Auto-generate admin_id
     protected static function boot() {

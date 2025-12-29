@@ -9,33 +9,51 @@ use Illuminate\Http\Request;
 
 class AdminManagementController extends Controller
 {
-    // Show Admin Management Page
+    // Show Admin Management Page (Verified Admins)
     public function index() {
-        // default data set (pending admins)
-        $admins = $this->queryByStatus('pending')->get();
+        // Get verified admins (except superadmin)
+        $admins = Admin::where('role', '!=', 'superadmin')
+            ->whereNotNull('account_verified_at')
+            ->orderByDesc('created_at')
+            ->get();
 
-        // status counters
-        $pendingCount  = Admin::whereNull('account_verified_at')
-                            ->whereNull('account_rejected_at')
-                            ->where('role', '!=', 'superadmin')
-                            ->count();
+        $totalAdmins = $admins->count();
 
-        $approvedCount = Admin::whereNotNull('account_verified_at')
-                            ->whereNull('account_rejected_at')
-                            ->where('role', '!=', 'superadmin')
-                            ->count();
-
-        $rejectedCount = Admin::whereNotNull('account_rejected_at')
-                            ->where('role', '!=', 'superadmin')
-                            ->count();
-
-        return view('admin.modules.admin.adminManagement', [
-            'defaultStatus' => 'pending',
-            'admins'        => $admins,
-            'pendingCount'  => $pendingCount,
-            'approvedCount' => $approvedCount,
-            'rejectedCount' => $rejectedCount,
+        return view('admin.modules.admin.admin', [
+            'admins'      => $admins,
+            'totalAdmins' => $totalAdmins,
         ]);
+    }
+
+    // Show Pending Admin Requests Page
+    public function newRequests() {
+        // Get pending admins (except superadmin)
+        $admins = Admin::where('role', '!=', 'superadmin')
+            ->whereNull('account_verified_at')
+            ->whereNull('account_rejected_at')
+            ->orderByDesc('created_at')
+            ->get();
+
+        $totalAdmins = $admins->count();
+
+        return view('admin.modules.admin.newRequest', [
+            'admins'      => $admins,
+            'totalAdmins' => $totalAdmins,
+        ]);
+    }
+
+    // Show Admin Profile Page
+    public function adminProfile($id) {
+        $admin = Admin::where('admin_id', $id)->firstOrFail();
+
+        return view('admin.modules.admin.adminProfile', compact('admin'));
+    }
+
+    // Show Request Info Page (for pending admins)
+    public function requestInfo($id) {
+        $admin = Admin::where('admin_id', $id)->firstOrFail();
+
+        return view('admin.modules.admin.requestInfo', compact('admin'));
     }
 
     // get list of admins by status

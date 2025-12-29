@@ -61,29 +61,41 @@
             </div>
 
             <!-- Administration Section -->
-            @if(Auth::guard('admin')->user()->role === 'superadmin')
+            {{-- @if(Auth::guard('admin')->user()->role === 'superadmin')
                 <div class="pt-2">
-                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Administration</p>
+                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Administrator</p>
 
                     <a href="{{ route('admin.management') }}"
                         class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.management') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
                         <i
-                            class="fas fa-user-shield w-5 {{ request()->routeIs('admin.management') ? 'text-blue-600' : 'text-gray-400' }}"></i>
-                        <span class="ml-3">Admin Management</span>
+                            class="fas fa-users w-5 {{ request()->routeIs('admin.management') ? 'text-blue-600' : 'text-gray-400' }}"></i>
+                        <span class="ml-3">Admin List</span>
+                    </a>
+
+                    <a href="{{ route('admin.management.newRequests') }}"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.management.newRequests') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                        <i class="fas fa-user-plus w-5 {{ request()->routeIs('admin.management.newRequests') ? 'text-blue-600' : 'text-gray-400' }}"></i>
+                        <span class="ml-3">New Requests</span>
                     </a>
                 </div>
-            @endif
+            @endif --}}
 
             <!-- Healthcare Providers Section -->
             <div class="pt-2">
-                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Healthcare Providers
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Healthcare Provider
                 </p>
 
-                <a href="{{ route('organisation.providerManagement') }}"
-                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('organisation.providerManagement') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                <a href="{{ route('admin.providers') }}"
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.providers', 'admin.providers.profile') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
                     <i
-                        class="fas fa-hospital w-5 {{ request()->routeIs('organisation.providerManagement') ? 'text-blue-600' : 'text-gray-400' }}"></i>
-                    <span class="ml-3">Provider Management</span>
+                        class="fas fa-hospital w-5 {{ request()->routeIs('admin.providers', 'admin.providers.profile') ? 'text-blue-600' : 'text-gray-400' }}"></i>
+                    <span class="ml-3">Provider List</span>
+                </a>
+
+                <a href="{{ route('admin.providers.requests') }}"
+                    class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 {{ request()->routeIs('admin.providers.requests', 'admin.providerVerification') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-hand-holding-medical w-5 {{ request()->routeIs('admin.providers.requests', 'admin.providerVerification') ? 'text-blue-600' : 'text-gray-400' }}"></i>
+                    <span class="ml-3">New Request</span>
                 </a>
             </div>
 

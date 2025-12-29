@@ -14,7 +14,7 @@
     <script src="https://kit.fontawesome.com/1bdb4b0595.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="font-[Inter] bg-gray-100">
+<body class="font-[Inter]">
 
     <!-- Header -->
     @include('admin.components.header')
@@ -23,8 +23,8 @@
     @include('admin.components.sidebar')
 
     <!-- Main Content -->
-    <div class="lg:ml-68 transition-all duration-300 pt-[75px]" id="mainContent">
-        <div class="bg-gray-100">
+    <div class="lg:ml-68 transition-all duration-300 mt-20" id="mainContent">
+        <div class="bg-gray-50">
             <!-- Page Content -->
             <div class="py-6 px-4 sm:px-6 lg:px-8">
 

@@ -279,7 +279,7 @@ class ReadController extends Controller
         // Sort by date (most recent first)
         $allRecords = $allRecords->sortByDesc('date')->values();
         
-        return view('doctor.modules.patient.medicalRecord', compact('stats', 'allRecords', 'search'));
+        return view('doctor.modules.medicalRecord.medicalRecord', compact('stats', 'allRecords', 'search'));
     }    
 
      // READ: Show detailed view of a specific condition
@@ -291,7 +291,7 @@ class ReadController extends Controller
         // Verify permission
         $this->methodController->verifyRecordPermission($doctorId, $condition->patient_id, 'medical_conditions');
         
-        return view('doctor.modules.patient.records.condition', compact('condition'));
+        return view('doctor.modules.medicalRecord.records.condition', compact('condition'));
     }
     
     // READ: Show detailed view of a specific medication
@@ -303,7 +303,7 @@ class ReadController extends Controller
         // Verify permission
         $this->methodController->verifyRecordPermission($doctorId, $medication->patient_id, 'medications');
         
-        return view('doctor.modules.patient.records.medication', compact('medication'));
+        return view('doctor.modules.medicalRecord.records.medication', compact('medication'));
     }
     
     // READ: Show detailed view of a specific allergy
@@ -315,7 +315,7 @@ class ReadController extends Controller
         // Verify permission
         $this->methodController->verifyRecordPermission($doctorId, $allergy->patient_id, 'allergies');
         
-        return view('doctor.modules.patient.records.allergy', compact('allergy'));
+        return view('doctor.modules.medicalRecord.records.allergy', compact('allergy'));
     }
     
     // READ: Show detailed view of a specific immunisation
@@ -327,7 +327,7 @@ class ReadController extends Controller
         // Verify permission
         $this->methodController->verifyRecordPermission($doctorId, $immunisation->patient_id, 'immunisations');
         
-        return view('doctor.modules.patient.records.immunisation', compact('immunisation'));
+        return view('doctor.modules.medicalRecord.records.immunisation', compact('immunisation'));
     }
     
     // READ: Show detailed view of a specific lab test
@@ -339,6 +339,6 @@ class ReadController extends Controller
         // Verify permission
         $this->methodController->verifyRecordPermission($doctorId, $lab->patient_id, 'lab_tests');
         
-        return view('doctor.modules.patient.records.lab', compact('lab'));
+        return view('doctor.modules.medicalRecord.records.lab', compact('lab'));
     }
 }

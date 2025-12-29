@@ -3,8 +3,8 @@
     <div class="px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- About MyCareX -->
-            <div class="space-y-4">
-                <div class="flex items-center space-x-3">
+            <div class="space-y-4 col-span-4 justify-center items-center text-center">
+                <div class="flex items-center justify-center space-x-3">
                     <div class="flex-shrink-0">
                         <img src="{{ asset('images/MyCareX_Logo.png') }}" alt="MyCareX Logo" class="w-10 h-10 rounded-lg">
                     </div>
@@ -22,7 +22,7 @@
             </div>
 
             <!-- Quick Links -->
-            <div class="space-y-4">
+            <!-- <div class="space-y-4">
                 <h3 class="text-lg font-semibold">Quick Links</h3>
                 <ul class="space-y-2">
                     <li><a href="{{ route('admin.dashboard') }}"
@@ -31,15 +31,15 @@
                     <li><a href="{{ route('admin.management') }}" class="text-gray-300 hover:text-white transition-colors text-sm">Admin Management</a>
                     </li>
                     @endif
-                    <li><a href="{{ route('organisation.providerManagement') }}" class="text-gray-300 hover:text-white transition-colors text-sm">Healthcare Providers</a>
+                    <li><a href="{{ route('admin.providers') }}" class="text-gray-300 hover:text-white transition-colors text-sm">Healthcare Providers</a>
                     </li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Reports</a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
 
             <!-- Support -->
-            <div class="space-y-4">
+            <!-- <div class="space-y-4">
                 <h3 class="text-lg font-semibold">Legal & Support</h3>
                 <ul class="space-y-2">
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Privacy Policy</a>
@@ -53,10 +53,10 @@
                             class="text-gray-300 hover:text-white transition-colors text-sm">Contact Support</a></li>
                     </li>
                 </ul>
-            </div>
+            </div> -->
 
             <!-- Contact Information -->
-            <div class="space-y-4">
+            <!-- <div class="space-y-4">
                 <h3 class="text-lg font-semibold">Contact Information</h3>
                 <div class="space-y-3 text-sm">
                     <p class="font-medium">Ministry of Health Malaysia</p>
@@ -80,12 +80,12 @@
                             class="hover:text-white transition-colors">www.moh.gov.my</a>
                     </p>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <!-- Footer Bottom -->
         <div
-            class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-center text-center items-center space-y-4 md:space-y-0">
             <div class="text-gray-400 text-sm">
                 &copy; {{ date('Y') }} MyCareX. All rights reserved.
             </div>

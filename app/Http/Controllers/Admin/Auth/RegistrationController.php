@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Verified;
 
 class RegistrationController extends Controller
 {
@@ -12,6 +14,16 @@ class RegistrationController extends Controller
     public function showRegistrationForm() {
         $recordExists = Admin::exists();
         return view("admin.auth.registration", ['recordExists' => $recordExists]);
+    }
+
+    // Show email verification notice
+    public function showEmailVerificationNotice() {
+        return view('admin.auth.verifyEmail');
+    }
+
+    // Show email verified success page
+    public function showEmailVerified() {
+        return view('admin.auth.emailVerified');
     }
 
     // Handle the admin registration
@@ -72,13 +84,54 @@ class RegistrationController extends Controller
             $validatedData['email_verified_at'] = now();
             $validatedData['account_verified_at'] = now();
         } else {
-            $validatedData['role'] = 'admin'; // Subsequent admins are regular Admins
+            $validatedData['role'] = 'admin';
+            $validatedData['account_verified_at'] = now();
         }
 
         // Create a new admin user
-        Admin::create($validatedData);
+        $admin = Admin::create($validatedData);
 
-        // Redirect with success message
-        return redirect()->route('admin.login')->with('success', 'Registration successful! Please verify your email before logging in.');
+        // Email verification
+        if (!$admin->hasVerifiedEmail()) {
+            $admin->sendEmailVerificationNotification();
+        }
+
+        // Login the admin
+        Auth::guard('admin')->login($admin);
+
+        // Redirect to verification notice
+        return redirect()->route('admin.verification.notice');
+    }
+
+    // Verify email address
+    public function verify(Request $request) {
+        $admin = Admin::find($request->route('id'));
+
+        if (!$admin) {
+            abort(404);
+        }
+
+        if (!hash_equals((string) $request->route('hash'), sha1($admin->getEmailForVerification()))) {
+            abort(403);
+        }
+
+        if (!$admin->hasVerifiedEmail()) {
+            if ($admin->markEmailAsVerified()) {
+                event(new Verified($admin));
+            }
+        }
+
+        return redirect()->route('admin.verification.success')->with('verified', true);
+    }
+
+    // Resend verification email
+    public function resend(Request $request) {
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('resent', true);
     }
 }
