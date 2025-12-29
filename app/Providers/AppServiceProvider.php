@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\HealthcareProvider;
 use App\Models\Admin;
 use App\Models\Doctor;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
+
         // Custom password reset URL for different models
         ResetPassword::createUrlUsing(function ($user, string $token) {
             if ($user instanceof Patient) {
