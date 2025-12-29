@@ -504,7 +504,6 @@
     @include('patient.components.emergencyFab')
 
     <!-- Javascript -->
-    @vite(['resources/js/main/main.js'])
     @vite(['resources/js/main/patient/header.js'])
 </body>
 
